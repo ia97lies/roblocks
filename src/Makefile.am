@@ -2,7 +2,7 @@
 
 AM_CFLAGS=-I$(top_srcdir)/include $(INCLUDES)
 
-bin_PROGRAMS = robs
+bin_PROGRAMS = roblocks
 
 robs_SOURCES = \
 	BulletOpenGLApplication.cpp main.cpp	
