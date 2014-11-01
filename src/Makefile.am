@@ -4,10 +4,10 @@ AM_CFLAGS=-I$(top_srcdir)/include $(INCLUDES)
 
 bin_PROGRAMS = roblocks
 
-robs_SOURCES = \
+roblocks_SOURCES = \
 	BulletOpenGLApplication.cpp main.cpp	
 
-robs_LDADD = $(HTTEST_MODULES)
+roblocks_LDADD = $(HTTEST_MODULES)
 
 noinst_HEADERS = \
 	BulletOpenGLApplication.cpp FreeGLUTCallbacks.hpp

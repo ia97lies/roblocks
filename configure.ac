@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 CC_PREREQ(2.53)
-AC_INIT(robs, 0.0.1, liesch@gmx.ch)
+AC_INIT(roblocks, 0.0.1, liesch@gmx.ch)
 AC_CONFIG_AUX_DIR([config])
 AM_CONFIG_HEADER([config/config.h])
 
