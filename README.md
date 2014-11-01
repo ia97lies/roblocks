@@ -1,5 +1,5 @@
-# roblocks
-Robot blocks for easily assemble robots.
+# Synthetics
+Lego like frameworke for easily assamble robots out of blocks and triagnles and run them in a synthetic enviroment.
 
 ## Blocks
 * Neutral.Block
