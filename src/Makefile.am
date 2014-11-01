@@ -2,12 +2,12 @@
 
 AM_CFLAGS=-I$(top_srcdir)/include $(INCLUDES)
 
-bin_PROGRAMS = roblocks
+bin_PROGRAMS = synthetics
 
-roblocks_SOURCES = \
+synthetics_SOURCES = \
 	BulletOpenGLApplication.cpp main.cpp	
 
-roblocks_LDADD = $(HTTEST_MODULES)
+synthetics_LDADD = $(HTTEST_MODULES)
 
 noinst_HEADERS = \
 	BulletOpenGLApplication.cpp FreeGLUTCallbacks.hpp
