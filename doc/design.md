@@ -11,18 +11,28 @@ Have a small set of shapes (mostly boxes)
 ## Namespace
 ::ch::game::synthetics
 
-## Objects Hirarchie
+## Base Objects
 ::ch::game::synthetics::objects
 SynObject
-SynStatic:SynObject
-SynBox:SynStatic
-SynActor:SynBox
-SynSensor:SynBox
-SynMorph:SynBox
+SynHub:SynObject
+SynActor:SynHub
+SynSensor:SynHub
+SynMorph:SynHub
 SynMotor:SynActor
 SynDistance:SynSensor
 
-## Graphical Interface
+## Graphic Objects
+SynGraphic:SynObject
+SynGlutBox:SynGraphic
+SynDebugBox:SynGraphic
+...
 
-## Physics
+## Physic Objects
+SynPhysic:SynObject
+SynBulletBox:SynPhysic
+...
+
+## Coupling
+A Base Object holds one or more graphic objcts and one physic object
+
 
