@@ -13,23 +13,23 @@ Have a small set of shapes (mostly boxes)
 
 ## Base Objects
 ::ch::game::synthetics::objects
-SynObject
-SynHub:SynObject
-SynActor:SynHub
-SynSensor:SynHub
-SynMorph:SynHub
-SynMotor:SynActor
-SynDistance:SynSensor
+Object
+Hub:Object
+Actor:Hub
+Sensor:Hub
+Morph:Hub
+Motor:Actor
+Distance:Sensor
 
 ## Graphic Objects
-SynGraphic:SynObject
-SynGlutBox:SynGraphic
-SynDebugBox:SynGraphic
+Graphic:Object
+GlutBox:Graphic
+DebugBox:Graphic
 ...
 
 ## Physic Objects
-SynPhysic:SynObject
-SynBulletBox:SynPhysic
+Physic:Object
+BulletBox:Physic
 ...
 
 ## Coupling
