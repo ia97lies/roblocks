@@ -35,7 +35,7 @@ AC_CHECK_FUNCS([bzero select socket])
 # customize settings
 
 # Store settings for includes, libs and flags
-INCLUDES="-g -std=gnu++11 -I/usr/include/bullet"
+INCLUDES="-g -std=gnu++11 -I/usr/include/bullet -I../include"
 CPPFLAGS="$CFLAGS $INCLUDES"
 LIBS="-lglut -lGL -lGLU -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath"
 
