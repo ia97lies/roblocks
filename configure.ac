@@ -41,6 +41,8 @@ LIBS="-lglut -lGL -lGLU -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLi
 
 # generate makefiles
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+                 include/Makefile
+                 include/Synthetics/Makefile])
 AC_OUTPUT
 

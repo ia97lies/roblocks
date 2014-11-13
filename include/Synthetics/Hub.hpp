@@ -1,3 +1,9 @@
+//----------------------------------------------------------------------------
+// Copyright 2014 Christian Liesch
+// Provide under MIT License
+//
+//----------------------------------------------------------------------------
+
 #ifndef _SYNTHETICS_HUB_H_
 #define _SYNTHETICS_HUB_H_
 

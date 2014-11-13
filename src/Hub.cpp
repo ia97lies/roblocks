@@ -1,3 +1,9 @@
+//----------------------------------------------------------------------------
+// Copyright 2014 Christian Liesch
+// Provide under MIT License
+//
+//----------------------------------------------------------------------------
+
 #include <stdexcept>
 #include "Synthetics/Hub.hpp"
 

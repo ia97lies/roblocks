@@ -1,3 +1,3 @@
 AUTOMAKE_OPTIONS=foreign
-SUBDIRS=src
+SUBDIRS=src include
 ACLOCAL_AMFLAGS=-I m4
