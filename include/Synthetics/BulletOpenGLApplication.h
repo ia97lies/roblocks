@@ -16,6 +16,7 @@
 #include "BulletCollision/CollisionShapes/btShapeHull.h"
 
 // include our custom Motion State object
+#include "Synthetics/Graphic.h"
 #include "Synthetics/OpenGLMotionState.h"
 #include "Synthetics/GameObject.h"
 #include "Synthetics/DebugDrawer.h"
@@ -78,12 +79,7 @@ class BulletOpenGLApplication {
     void RotateCamera(float &angle, float value);
     void ZoomCamera(float distance);
 
-    // drawing functions
-    void DrawBox(const btVector3 &halfSize); 
-    void DrawSphere(const btScalar &radius);
-    void DrawCylinder(const btScalar &radius, const btScalar &halfHeight);
-    void DrawConvexHull(const btCollisionShape* shape);
-    void DrawShape(btScalar* transform, const btCollisionShape* pShape, const btVector3 &color);
+    Graphic *getGraphic() { return m_graphic; }
 
     // object functions
     GameObject* CreateGameObject(btCollisionShape* pShape, 
@@ -155,6 +151,9 @@ class BulletOpenGLApplication {
 
     // grep an object with mouse
     bool m_grepObject;
+
+    // grapic abstraction
+    Graphic *m_graphic;
 };
 #endif
 

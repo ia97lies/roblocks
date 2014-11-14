@@ -5,8 +5,8 @@ AM_CFLAGS=-I$(top_srcdir)/include $(INCLUDES)
 bin_PROGRAMS = synthetics
 
 synthetics_SOURCES = \
-	BulletOpenGLApplication.cpp DebugDrawer.cpp GameObject.cpp Synthetics.cpp \
-	Hub.cpp main.cpp	
+	Graphic.cpp BulletOpenGLApplication.cpp DebugDrawer.cpp GameObject.cpp \
+	Synthetics.cpp Hub.cpp main.cpp	
 
 synthetics_LDADD = $(HTTEST_MODULES)
 

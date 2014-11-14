@@ -1,5 +1,5 @@
 #include "Synthetics/Synthetics.h"
-#include "FreeGLUTCallbacks.hpp"
+#include "Synthetics/FreeGLUTCallbacks.h"
 
 int main(int argc, char** argv)
 {
