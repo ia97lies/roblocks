@@ -18,23 +18,52 @@ class GameObject {
     ~GameObject();
 
     // accessors
-    btCollisionShape* GetShape() { return m_pShape; }
+    btCollisionShape* GetShape() { 
+      return m_pShape; 
+    }
 
-    btRigidBody* GetRigidBody() { return m_pBody; }
+    btRigidBody* GetRigidBody() { 
+      return m_pBody; 
+    }
 
-    btMotionState* GetMotionState() { return m_pMotionState; }
+    btMotionState* GetMotionState() { 
+      return m_pMotionState; 
+    }
 
-    void GetTransform(btScalar* transform) { 
+    void GetTransform(btScalar* transform) 
+    { 
       if (m_pMotionState) m_pMotionState->GetWorldTransform(transform); 
     }
 
-    btVector3 GetColor() { return m_color; }
-    void SetColor(const btVector3 &color) { m_color = color; }
+    btVector3 GetColor() { 
+      return m_color; 
+    }
+
+    void SetColor(const btVector3 &color) 
+    { 
+      m_color = color; 
+    }
+
+    void select() 
+    {
+      m_selected = true;
+    }
+
+    void deselect() 
+    {
+      m_selected = false;
+    }
+
+    bool isSelected()
+    {
+      return m_selected;
+    }
 
   protected:
-    btCollisionShape*  m_pShape;
-    btRigidBody*    m_pBody;
-    OpenGLMotionState*  m_pMotionState;
-    btVector3      m_color;
+    btCollisionShape* m_pShape;
+    btRigidBody* m_pBody;
+    OpenGLMotionState* m_pMotionState;
+    btVector3 m_color;
+    bool m_selected;
 };
 #endif

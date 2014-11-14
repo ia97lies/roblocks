@@ -94,7 +94,6 @@ class BulletOpenGLApplication {
         short int mask = -1,
         const btQuaternion &initialRotation = btQuaternion(0,0,1,1));
 
-    void ShootBox(const btVector3 &direction);
     void DestroyGameObject(btRigidBody* pBody);
     GameObject* FindGameObject(btRigidBody* pBody);
 
@@ -141,6 +140,7 @@ class BulletOpenGLApplication {
 
     // an array of our game objects
     GameObjects m_objects;
+    GameObject *m_selectedGameObj;
 
     // debug renderer
     DebugDrawer* m_pDebugDrawer;
@@ -152,6 +152,9 @@ class BulletOpenGLApplication {
 
     // collision event variables
     CollisionPairs m_pairsLastUpdate;
+
+    // grep an object with mouse
+    bool m_grepObject;
 };
 #endif
 

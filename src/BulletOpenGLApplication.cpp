@@ -20,13 +20,15 @@ BulletOpenGLApplication::BulletOpenGLApplication()
     m_upVector(0.0f, 1.0f, 0.0f),
     m_nearPlane(1.0f),
     m_farPlane(1000.0f),
-    m_pBroadphase(0),
-    m_pCollisionConfiguration(0),
-    m_pDispatcher(0),
-    m_pSolver(0),
-    m_pWorld(0),
-    m_pPickedBody(0),
-    m_pPickConstraint(0)
+    m_pBroadphase(NULL),
+    m_pCollisionConfiguration(NULL),
+    m_pDispatcher(NULL),
+    m_pSolver(NULL),
+    m_pWorld(NULL),
+    m_pPickedBody(NULL),
+    m_pPickConstraint(NULL),
+    m_selectedGameObj(NULL),
+    m_grepObject(false)
 {
 }
 
@@ -100,6 +102,10 @@ void BulletOpenGLApplication::Keyboard(unsigned char key, int x, int y)
               break;
               // toggle AABB debug drawing
     case 'b': m_pDebugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawAabb);
+              break;
+              // release picked object
+    case 'r': RemovePickingConstraint();
+              m_grepObject = false;
               break;
               // quit the app
     case 'q': glutLeaveMainLoop();
@@ -191,21 +197,30 @@ void BulletOpenGLApplication::Mouse(int button, int state, int x, int y)
 		case 0:  // left mouse button
       {
         if (state == 0) { // button down
+          m_grepObject = true;
           // create the picking constraint when we click the LMB
           CreatePickingConstraint(x, y);
         } else { // button up
-          // remove the picking constraint when we release the LMB
-          RemovePickingConstraint();
+          m_grepObject = false;
         }
         break;
       }
     case 2: // right mouse button
       {
         if (state == 0) { // pressed down
-          // shoot a box
-          ShootBox(GetPickingRay(x, y));
+          // select object
+          if (m_selectedGameObj == NULL) {
+            RayResult output;
+            if (Raycast(m_cameraPosition, GetPickingRay(x, y), output)) {
+              m_selectedGameObj = FindGameObject(output.pBody);
+              m_selectedGameObj->select();
+            }
+          }
+          else {
+            m_selectedGameObj->deselect();
+            m_selectedGameObj = NULL;
+          }
         }
-
         break;
       }
   }
@@ -218,7 +233,7 @@ void BulletOpenGLApplication::PassiveMotion(int x, int y) {}
 void BulletOpenGLApplication::Motion(int x, int y) 
 {
   // did we pick a body with the LMB?
-  if (m_pPickedBody) {
+  if (m_pPickedBody && m_grepObject) {
     btGeneric6DofConstraint* pickCon = static_cast<btGeneric6DofConstraint*>(m_pPickConstraint);
     if (!pickCon)
       return;
@@ -563,19 +578,6 @@ btVector3 BulletOpenGLApplication::GetPickingRay(int x, int y) {
   return rayTo;
 }
 
-void BulletOpenGLApplication::ShootBox(const btVector3 &direction) {
-  // create a new box object
-  GameObject* pObject = CreateGameObject(new btBoxShape(btVector3(1, 1, 1)), 1, btVector3(0.4f, 0.f, 0.4f), m_cameraPosition);
-
-  // calculate the velocity
-  btVector3 velocity = direction; 
-  velocity.normalize();
-  velocity *= 25.0f;
-
-  // set the linear velocity of the box
-  pObject->GetRigidBody()->setLinearVelocity(velocity);
-}
-	
 bool BulletOpenGLApplication::Raycast(const btVector3 &startPosition, const btVector3 &direction, RayResult &output, bool includeStatic) {
   if (!m_pWorld) 
     return false;
@@ -635,6 +637,8 @@ void BulletOpenGLApplication::DestroyGameObject(btRigidBody* pBody) {
 
 void BulletOpenGLApplication::CreatePickingConstraint(int x, int y) {
   if (!m_pWorld) 
+    return;
+  if (m_pPickedBody)
     return;
 
   // perform a raycast and return if it fails
@@ -706,8 +710,8 @@ void BulletOpenGLApplication::RemovePickingConstraint() {
   m_pPickedBody->setDeactivationTime( 0.f );
 
   // clear the pointers
-  m_pPickConstraint = 0;
-  m_pPickedBody = 0;
+  m_pPickConstraint = NULL;
+  m_pPickedBody = NULL;
 }
 
 void BulletOpenGLApplication::CheckForCollisionEvents() {
