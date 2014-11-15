@@ -18,24 +18,24 @@ class GameObject {
     ~GameObject();
 
     // accessors
-    btCollisionShape* GetShape() { 
+    btCollisionShape* getShape() { 
       return m_pShape; 
     }
 
-    btRigidBody* GetRigidBody() { 
+    btRigidBody* getRigidBody() { 
       return m_pBody; 
     }
 
-    btMotionState* GetMotionState() { 
+    btMotionState* getMotionState() { 
       return m_pMotionState; 
     }
 
-    void GetTransform(btScalar* transform) 
+    void getTransform(btScalar* transform) 
     { 
       if (m_pMotionState) m_pMotionState->GetWorldTransform(transform); 
     }
 
-    btVector3 GetColor() { 
+    btVector3 getColor() { 
       return m_color; 
     }
 

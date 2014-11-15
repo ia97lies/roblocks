@@ -10,9 +10,9 @@
 class Synthetics : public BulletOpenGLApplication {
   public:
     Synthetics();
-    virtual void InitializePhysics() override;
-    virtual void ShutdownPhysics() override;
+    virtual void initializePhysics() override;
+    virtual void shutdownPhysics() override;
 
-    void CreateObjects();
+    void createObjects();
 
 };

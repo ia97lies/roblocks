@@ -37,18 +37,17 @@ BulletOpenGLApplication::BulletOpenGLApplication()
 BulletOpenGLApplication::~BulletOpenGLApplication() 
 {
   // shutdown the physics system
-  ShutdownPhysics();
+  shutdownPhysics();
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::Initialize() 
+void BulletOpenGLApplication::initialize() 
 {
-
   // initialize graphic system
   getGraphic()->initialize();
 
   // initialize physics system
-  InitializePhysics();
+  initializePhysics();
 
   // create the debug drawer
   m_pDebugDrawer = new DebugDrawer();
@@ -65,9 +64,9 @@ void BulletOpenGLApplication::Keyboard(unsigned char key, int x, int y)
   // generic keys are pressed down.
   switch(key) {
     // zooms in
-    case 'y': ZoomCamera(+CAMERA_STEP_SIZE); break;
+    case 'y': zoomCamera(+CAMERA_STEP_SIZE); break;
               // zoom out
-    case 'x': ZoomCamera(-CAMERA_STEP_SIZE); break;
+    case 'x': zoomCamera(-CAMERA_STEP_SIZE); break;
               // toggle wireframe debug drawing
     case 'w': m_pDebugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawWireframe);
               break;
@@ -75,7 +74,7 @@ void BulletOpenGLApplication::Keyboard(unsigned char key, int x, int y)
     case 'b': m_pDebugDrawer->ToggleDebugFlag(btIDebugDraw::DBG_DrawAabb);
               break;
               // release picked object
-    case 'r': RemovePickingConstraint();
+    case 'r': removePickingConstraint();
               m_grepObject = false;
               break;
               // quit the app
@@ -85,10 +84,10 @@ void BulletOpenGLApplication::Keyboard(unsigned char key, int x, int y)
                 // create a temp object to store the raycast result
                 RayResult result;
                 // perform the raycast
-                if (!Raycast(m_cameraPosition, GetPickingRay(x, y), result))
+                if (!raycast(m_cameraPosition, getPickingRay(x, y), result))
                   return; // return if the test failed
                 // destroy the corresponding game object
-                DestroyGameObject(result.pBody);
+                destroyGameObject(result.pBody);
                 break;
               }
 
@@ -106,13 +105,13 @@ void BulletOpenGLApplication::Special(int key, int x, int y)
   switch(key) {
     // the arrow keys rotate the camera up/down/left/right
     case GLUT_KEY_LEFT: 
-      RotateCamera(m_cameraYaw, +CAMERA_STEP_SIZE); break;
+      rotateCamera(m_cameraYaw, +CAMERA_STEP_SIZE); break;
     case GLUT_KEY_RIGHT:
-      RotateCamera(m_cameraYaw, -CAMERA_STEP_SIZE); break;
+      rotateCamera(m_cameraYaw, -CAMERA_STEP_SIZE); break;
     case GLUT_KEY_UP:	
-      RotateCamera(m_cameraPitch, +CAMERA_STEP_SIZE); break;
+      rotateCamera(m_cameraPitch, +CAMERA_STEP_SIZE); break;
     case GLUT_KEY_DOWN:	
-      RotateCamera(m_cameraPitch, -CAMERA_STEP_SIZE); break;
+      rotateCamera(m_cameraPitch, -CAMERA_STEP_SIZE); break;
   }
 }
 
@@ -131,7 +130,7 @@ void BulletOpenGLApplication::Reshape(int w, int h)
   // set the viewport
   getGraphic()->resizeScreen(w, h);
   // update the camera
-  UpdateCamera();
+  updateCamera();
 }
 
 // --------------------------------------------------------------------------
@@ -149,13 +148,13 @@ void BulletOpenGLApplication::Idle()
   // reset the clock to 0
   m_clock.reset();
   // update the scene (convert ms to s)
-  UpdateScene(dt / 1000.0f);
+  updateScene(dt / 1000.0f);
 
   // update the camera
-  UpdateCamera();
+  updateCamera();
 
   // render the scene
-  RenderScene();
+  renderScene();
 
   // swap the front and back buffers
   getGraphic()->swapBuffer();
@@ -170,7 +169,7 @@ void BulletOpenGLApplication::Mouse(int button, int state, int x, int y)
         if (state == 0) { // button down
           m_grepObject = true;
           // create the picking constraint when we click the LMB
-          CreatePickingConstraint(x, y);
+          createPickingConstraint(x, y);
         } else { // button up
           m_grepObject = false;
         }
@@ -182,8 +181,8 @@ void BulletOpenGLApplication::Mouse(int button, int state, int x, int y)
           // select object
           if (m_selectedGameObj == NULL) {
             RayResult output;
-            if (Raycast(m_cameraPosition, GetPickingRay(x, y), output)) {
-              m_selectedGameObj = FindGameObject(output.pBody);
+            if (raycast(m_cameraPosition, getPickingRay(x, y), output)) {
+              m_selectedGameObj = findGameObject(output.pBody);
               m_selectedGameObj->select();
             }
           }
@@ -210,7 +209,7 @@ void BulletOpenGLApplication::Motion(int x, int y)
       return;
 
     // use another picking ray to get the target direction
-    btVector3 dir = GetPickingRay(x,y) - m_cameraPosition;
+    btVector3 dir = getPickingRay(x,y) - m_cameraPosition;
     dir.normalize();
 
     // use the same distance as when we originally picked the object
@@ -226,7 +225,7 @@ void BulletOpenGLApplication::Motion(int x, int y)
 void BulletOpenGLApplication::Display() {}
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::UpdateCamera() 
+void BulletOpenGLApplication::updateCamera() 
 {
   // exit in erroneous situations
   if (m_screenWidth == 0 && m_screenHeight == 0)
@@ -305,7 +304,7 @@ void BulletOpenGLApplication::UpdateCamera()
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::RotateCamera(float &angle, float value) 
+void BulletOpenGLApplication::rotateCamera(float &angle, float value) 
 {
   // change the value (it is passed by reference, so we
   // can edit it here)
@@ -314,21 +313,21 @@ void BulletOpenGLApplication::RotateCamera(float &angle, float value)
   if (angle < 0) angle += 360; 
   if (angle >= 360) angle -= 360;
   // update the camera since we changed the angular value
-  UpdateCamera(); 
+  updateCamera(); 
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::ZoomCamera(float distance) {
+void BulletOpenGLApplication::zoomCamera(float distance) {
   // change the distance value
   m_cameraDistance -= distance;
   // prevent it from zooming in too far
   if (m_cameraDistance < 0.1f) m_cameraDistance = 0.1f;
   // update the camera since we changed the zoom distance
-  UpdateCamera();
+  updateCamera();
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::RenderScene() {
+void BulletOpenGLApplication::renderScene() {
 	// create an array of 16 floats (representing a 4x4 matrix)
 	btScalar transform[16];
 
@@ -338,10 +337,10 @@ void BulletOpenGLApplication::RenderScene() {
 		GameObject* pObj = *i;
 
 		// read the transform
-		pObj->GetTransform(transform);
+		pObj->getTransform(transform);
 
 		// get data from the object and draw it
-		getGraphic()->DrawShape(transform, pObj->GetShape(), pObj->GetColor());
+		getGraphic()->drawShape(transform, pObj->getShape(), pObj->getColor());
 	}
 
   // after rendering all game objects, perform debug rendering
@@ -351,7 +350,7 @@ void BulletOpenGLApplication::RenderScene() {
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::UpdateScene(float dt) {
+void BulletOpenGLApplication::updateScene(float dt) {
   // check if the world object exists
   if (m_pWorld) {
     // step the simulation through time. This is called
@@ -360,12 +359,12 @@ void BulletOpenGLApplication::UpdateScene(float dt) {
     m_pWorld->stepSimulation(dt);
 
     // check for any new collisions/separations
-    CheckForCollisionEvents();
+    checkForCollisionEvents();
   }
 }
 
 // --------------------------------------------------------------------------
-GameObject* BulletOpenGLApplication::CreateGameObject(
+GameObject* BulletOpenGLApplication::createGameObject(
     btCollisionShape* pShape, 
     const float &mass, 
     const btVector3 &color, 
@@ -384,13 +383,13 @@ GameObject* BulletOpenGLApplication::CreateGameObject(
   // check if the world object is valid
   if (m_pWorld) {
     // add the object's rigid body to the world
-    m_pWorld->addRigidBody(pObject->GetRigidBody(), group, mask);
+    m_pWorld->addRigidBody(pObject->getRigidBody(), group, mask);
   }
   return pObject;
 }
 
 // --------------------------------------------------------------------------
-btVector3 BulletOpenGLApplication::GetPickingRay(int x, int y) {
+btVector3 BulletOpenGLApplication::getPickingRay(int x, int y) {
   // calculate the field-of-view
   float tanFov = 1.0f / m_nearPlane;
 
@@ -429,7 +428,7 @@ btVector3 BulletOpenGLApplication::GetPickingRay(int x, int y) {
 }
 
 // --------------------------------------------------------------------------
-bool BulletOpenGLApplication::Raycast(
+bool BulletOpenGLApplication::raycast(
     const btVector3 &startPosition, 
     const btVector3 &direction, 
     RayResult &output, 
@@ -474,15 +473,15 @@ bool BulletOpenGLApplication::Raycast(
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::DestroyGameObject(btRigidBody* pBody) {
+void BulletOpenGLApplication::destroyGameObject(btRigidBody* pBody) {
   // we need to search through the objects in order to 
   // find the corresponding iterator (can only erase from 
   // an std::vector by passing an iterator)
   for (GameObjects::iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter) {
-    if ((*iter)->GetRigidBody() == pBody) {
+    if ((*iter)->getRigidBody() == pBody) {
       GameObject* pObject = *iter;
       // remove the rigid body from the world
-      m_pWorld->removeRigidBody(pObject->GetRigidBody());
+      m_pWorld->removeRigidBody(pObject->getRigidBody());
       // erase the object from the list
       m_objects.erase(iter);
       // delete the object from memory
@@ -494,7 +493,7 @@ void BulletOpenGLApplication::DestroyGameObject(btRigidBody* pBody) {
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::CreatePickingConstraint(int x, int y) {
+void BulletOpenGLApplication::createPickingConstraint(int x, int y) {
   if (!m_pWorld) 
     return;
   if (m_pPickedBody)
@@ -502,7 +501,7 @@ void BulletOpenGLApplication::CreatePickingConstraint(int x, int y) {
 
   // perform a raycast and return if it fails
   RayResult output;
-  if (!Raycast(m_cameraPosition, GetPickingRay(x, y), output))
+  if (!raycast(m_cameraPosition, getPickingRay(x, y), output))
     return;
 
   // store the body for future reference
@@ -554,7 +553,7 @@ void BulletOpenGLApplication::CreatePickingConstraint(int x, int y) {
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::RemovePickingConstraint() {
+void BulletOpenGLApplication::removePickingConstraint() {
   // exit in erroneous situations
   if (!m_pPickConstraint || !m_pWorld) 
     return;
@@ -575,7 +574,7 @@ void BulletOpenGLApplication::RemovePickingConstraint() {
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::CheckForCollisionEvents() {
+void BulletOpenGLApplication::checkForCollisionEvents() {
   // keep a list of the collision pairs we
   // found during the current update
   CollisionPairs pairsThisUpdate;
@@ -609,7 +608,7 @@ void BulletOpenGLApplication::CheckForCollisionEvents() {
       // from the previous update, it is a new
       // pair and we must send a collision event
       if (m_pairsLastUpdate.find(thisPair) == m_pairsLastUpdate.end()) {
-        CollisionEvent((btRigidBody*)pBody0, (btRigidBody*)pBody1);
+        collisionEvent((btRigidBody*)pBody0, (btRigidBody*)pBody1);
       }
     }
   }
@@ -629,7 +628,7 @@ void BulletOpenGLApplication::CheckForCollisionEvents() {
   // iterate through all of the removed pairs
   // sending separation events for them
   for (CollisionPairs::const_iterator iter = removedPairs.begin(); iter != removedPairs.end(); ++iter) {
-    SeparationEvent((btRigidBody*)iter->first, (btRigidBody*)iter->second);
+    separationEvent((btRigidBody*)iter->first, (btRigidBody*)iter->second);
   }
 
   // in the next iteration we'll want to
@@ -639,19 +638,19 @@ void BulletOpenGLApplication::CheckForCollisionEvents() {
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::CollisionEvent(btRigidBody * pBody0, btRigidBody * pBody1) {
+void BulletOpenGLApplication::collisionEvent(btRigidBody * pBody0, btRigidBody * pBody1) {
 }
 
 // --------------------------------------------------------------------------
-void BulletOpenGLApplication::SeparationEvent(btRigidBody * pBody0, btRigidBody * pBody1) {
+void BulletOpenGLApplication::separationEvent(btRigidBody * pBody0, btRigidBody * pBody1) {
 }
 
 // --------------------------------------------------------------------------
-GameObject* BulletOpenGLApplication::FindGameObject(btRigidBody* pBody) {
+GameObject* BulletOpenGLApplication::findGameObject(btRigidBody* pBody) {
   // search through our list of gameobjects finding
   // the one with a rigid body that matches the given one
   for (GameObjects::iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter) {
-    if ((*iter)->GetRigidBody() == pBody) {
+    if ((*iter)->getRigidBody() == pBody) {
       // found the body, so return the corresponding game object
       return *iter;
     }

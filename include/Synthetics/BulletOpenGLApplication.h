@@ -51,7 +51,7 @@ class BulletOpenGLApplication {
   public:
     BulletOpenGLApplication();
     ~BulletOpenGLApplication();
-    void Initialize();
+    void initialize();
     // FreeGLUT callbacks //
     virtual void Keyboard(unsigned char key, int x, int y);
     virtual void KeyboardUp(unsigned char key, int x, int y);
@@ -65,24 +65,24 @@ class BulletOpenGLApplication {
     virtual void Display();
 
     // rendering. Can be overrideen by derived classes
-    virtual void RenderScene();
+    virtual void renderScene();
 
     // scene updating. Can be overridden by derived classes
-    virtual void UpdateScene(float dt);
+    virtual void updateScene(float dt);
 
     // physics functions. Can be overriden by derived classes (like BasicDemo)
-    virtual void InitializePhysics() {};
-    virtual void ShutdownPhysics() {};
+    virtual void initializePhysics() {};
+    virtual void shutdownPhysics() {};
 
     // camera functions
-    void UpdateCamera();
-    void RotateCamera(float &angle, float value);
-    void ZoomCamera(float distance);
+    void updateCamera();
+    void rotateCamera(float &angle, float value);
+    void zoomCamera(float distance);
 
     Graphic *getGraphic() { return m_graphic; }
 
     // object functions
-    GameObject* CreateGameObject(btCollisionShape* pShape, 
+    GameObject* createGameObject(btCollisionShape* pShape, 
         const float &mass, 
         const btVector3 &color = btVector3(1.0f,1.0f,1.0f), 
         const btVector3 &initialPosition = btVector3(0.0f,0.0f,0.0f), 
@@ -90,22 +90,22 @@ class BulletOpenGLApplication {
         short int mask = -1,
         const btQuaternion &initialRotation = btQuaternion(0,0,1,1));
 
-    void DestroyGameObject(btRigidBody* pBody);
-    GameObject* FindGameObject(btRigidBody* pBody);
+    void destroyGameObject(btRigidBody* pBody);
+    GameObject* findGameObject(btRigidBody* pBody);
 
     // picking functions
-    btVector3 GetPickingRay(int x, int y);
-    bool Raycast(const btVector3 &startPosition, const btVector3 &direction, RayResult &output, bool includeStatic = false);
+    btVector3 getPickingRay(int x, int y);
+    bool raycast(const btVector3 &startPosition, const btVector3 &direction, RayResult &output, bool includeStatic = false);
 	
 
     // constraint functions
-    void CreatePickingConstraint(int x, int y);
-    void RemovePickingConstraint();
+    void createPickingConstraint(int x, int y);
+    void removePickingConstraint();
 
     // collision event functions
-    void CheckForCollisionEvents();
-    virtual void CollisionEvent(btRigidBody* pBody0, btRigidBody * pBody1);
-    virtual void SeparationEvent(btRigidBody * pBody0, btRigidBody * pBody1);
+    void checkForCollisionEvents();
+    virtual void collisionEvent(btRigidBody* pBody0, btRigidBody * pBody1);
+    virtual void separationEvent(btRigidBody * pBody0, btRigidBody * pBody1);
 
   protected:
     // camera control

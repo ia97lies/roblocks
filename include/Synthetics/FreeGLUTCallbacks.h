@@ -59,7 +59,7 @@ int glutmain(int argc, char **argv, int width, int height, const char* title, Bu
 	glutSetOption (GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 
 	// perform custom initialization our of application
-	g_pApp->Initialize();
+	g_pApp->initialize();
 
 	// give our static
 	glutKeyboardFunc(KeyboardCallback);

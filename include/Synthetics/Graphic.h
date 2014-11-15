@@ -34,11 +34,11 @@ class Graphic {
     void prepareBuffer();
     void swapBuffer();
 
-    void DrawBox(const btVector3 &halfSize); 
-    void DrawSphere(const btScalar &radius);
-    void DrawCylinder(const btScalar &radius, const btScalar &halfHeight);
-    void DrawConvexHull(const btCollisionShape* shape);
-    void DrawShape(
+    void drawBox(const btVector3 &halfSize); 
+    void drawSphere(const btScalar &radius);
+    void drawCylinder(const btScalar &radius, const btScalar &halfHeight);
+    void drawConvexHull(const btCollisionShape* shape);
+    void drawShape(
         btScalar* transform, 
         const btCollisionShape* pShape, 
         const btVector3 &color,

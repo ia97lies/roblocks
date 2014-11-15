@@ -73,7 +73,7 @@ void Graphic::swapBuffer()
 }
 
 //----------------------------------------------------------------------------
-void Graphic::DrawBox(const btVector3 &halfSize)
+void Graphic::drawBox(const btVector3 &halfSize)
 {
   // push the transform onto the stack
   float halfWidth = halfSize.x();
@@ -143,7 +143,7 @@ void Graphic::DrawBox(const btVector3 &halfSize)
   glEnd();
 }
 
-void Graphic::DrawShape(
+void Graphic::drawShape(
     btScalar* transform, 
     const btCollisionShape* pShape, 
     const btVector3 &color,
@@ -173,7 +173,7 @@ void Graphic::DrawShape(
         // get the 'halfSize' of the box
         btVector3 halfSize = box->getHalfExtentsWithMargin();
         // draw the box
-        DrawBox(halfSize);
+        drawBox(halfSize);
         break;
       }
 		case SPHERE_SHAPE_PROXYTYPE:
@@ -183,7 +183,7 @@ void Graphic::DrawShape(
 				// get the sphere's size from the shape
 				float radius = sphere->getMargin();
 				// draw the sphere
-				DrawSphere(radius);
+				drawSphere(radius);
 				break;
 			}
     case CYLINDER_SHAPE_PROXYTYPE:
@@ -194,14 +194,14 @@ void Graphic::DrawShape(
         float radius = pCylinder->getRadius();
         float halfHeight = pCylinder->getHalfExtentsWithMargin()[1];
         // draw the cylinder
-        DrawCylinder(radius,halfHeight);
+        drawCylinder(radius,halfHeight);
 
         break;
       }
     case CONVEX_HULL_SHAPE_PROXYTYPE:
       {
         // draw the convex hull shape...whatever it is
-        DrawConvexHull(pShape);
+        drawConvexHull(pShape);
         break;
       }
     case COMPOUND_SHAPE_PROXYTYPE:
@@ -216,7 +216,7 @@ void Graphic::DrawShape(
           thisTransform.getOpenGLMatrix(thisMatrix);
           // call drawshape recursively for each child. The matrix
           // stack takes care of positioning/orienting the object for us
-          DrawShape(thisMatrix, pCompound->getChildShape(i), color);
+          drawShape(thisMatrix, pCompound->getChildShape(i), color);
         }
         break;
       }
@@ -234,7 +234,7 @@ void Graphic::DrawShape(
 }
 
 //----------------------------------------------------------------------------
-void Graphic::DrawSphere(const btScalar &radius) {
+void Graphic::drawSphere(const btScalar &radius) {
   // some constant values for more many segments to build the sphere from
   static int lateralSegments = 25;
   static int longitudinalSegments = 25;
@@ -283,7 +283,7 @@ void Graphic::DrawSphere(const btScalar &radius) {
 }
 
 //----------------------------------------------------------------------------
-void Graphic::DrawCylinder(const btScalar &radius, const btScalar &halfHeight) {
+void Graphic::drawCylinder(const btScalar &radius, const btScalar &halfHeight) {
   static int slices = 15;
   static int stacks = 10;
   // tweak the starting position of the
@@ -310,7 +310,7 @@ void Graphic::DrawCylinder(const btScalar &radius, const btScalar &halfHeight) {
 }
 
 //----------------------------------------------------------------------------
-void Graphic::DrawConvexHull(const btCollisionShape* shape) {
+void Graphic::drawConvexHull(const btCollisionShape* shape) {
   // get the polyhedral data from the convex hull
   const btConvexPolyhedron* pPoly = shape->isPolyhedral() ? ((btPolyhedralConvexShape*) shape)->getConvexPolyhedron() : 0;
   if (!pPoly) return;
