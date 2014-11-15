@@ -55,6 +55,24 @@ void Graphic::initialize()
 }
 
 //----------------------------------------------------------------------------
+void Graphic::resizeScreen(int width, int hight)
+{
+  glViewport(0, 0, width, hight);
+}
+
+//----------------------------------------------------------------------------
+void Graphic::prepareBuffer()
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+}
+
+//----------------------------------------------------------------------------
+void Graphic::swapBuffer()
+{
+  glutSwapBuffers();
+}
+
+//----------------------------------------------------------------------------
 void Graphic::DrawBox(const btVector3 &halfSize)
 {
   // push the transform onto the stack

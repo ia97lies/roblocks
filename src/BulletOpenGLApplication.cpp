@@ -129,7 +129,7 @@ void BulletOpenGLApplication::Reshape(int w, int h)
   m_screenWidth = w;
   m_screenHeight = h;
   // set the viewport
-  glViewport(0, 0, w, h);
+  getGraphic()->resizeScreen(w, h);
   // update the camera
   UpdateCamera();
 }
@@ -142,7 +142,7 @@ void BulletOpenGLApplication::Idle()
   // to perform any updating and rendering tasks
 
   // clear the backbuffer
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+  getGraphic()->prepareBuffer();
 
   // get the time since the last iteration
   float dt = m_clock.getTimeMilliseconds();
@@ -158,7 +158,7 @@ void BulletOpenGLApplication::Idle()
   RenderScene();
 
   // swap the front and back buffers
-  glutSwapBuffers();
+  getGraphic()->swapBuffer();
 }
 
 // --------------------------------------------------------------------------

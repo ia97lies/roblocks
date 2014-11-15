@@ -30,7 +30,10 @@ class Graphic {
     ~Graphic();
 
     void initialize();
-    // drawing functions
+    void resizeScreen(int width, int hight);
+    void prepareBuffer();
+    void swapBuffer();
+
     void DrawBox(const btVector3 &halfSize); 
     void DrawSphere(const btScalar &radius);
     void DrawCylinder(const btScalar &radius, const btScalar &halfHeight);
