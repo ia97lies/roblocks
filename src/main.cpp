@@ -1,8 +1,15 @@
-#include "Synthetics/Synthetics.h"
-#include "Synthetics/FreeGLUTCallbacks.h"
+//----------------------------------------------------------------------------
+// The MIT License
+// Took the basics from Polycode Examples
+//----------------------------------------------------------------------------
 
-int main(int argc, char** argv)
-{
-  Synthetics app;
-  return glutmain(argc, argv, 768, 500, "Introduction to Game Physics with Bullet Physics and OpenGL", &app);
+#include "Polycode.h"
+#include "PolycodeView.h"
+#include "HelloPolycodeApp.h"
+
+int main(int argc, char *argv[]) {
+	PolycodeView *view = new PolycodeView("Hello Polycode!");
+	HelloPolycodeApp *app = new HelloPolycodeApp(view);
+	while(app->Update()) {}
+	return 0;
 }
