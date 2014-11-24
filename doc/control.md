@@ -4,11 +4,11 @@ We have currently to modes "Build" and "Simulate", to leave a mode press ESC
 ## Modi
 ### Build
 * Enter build mode with key 'i'.
-* Select a block with mouse right klick.
-* Pick a an object by mouse left button down. 
-* Hold picked object in place after left button up.
-* Release object after leaving build mode.
-* all object are transparent except the selected one.
+* Leave build mode with key 'esc'
+* Build mode runs in graphic mode only no physics
+* Differen bricks can be choosen with mouse
+* Orientation of a brick with mouse left button down and point to object
+* Camera orbit around robot with mouse left button down and do not point to object
 
 ### Simulate
 Default mode where everthing comes to live
