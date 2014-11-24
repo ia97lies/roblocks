@@ -7,7 +7,7 @@
 
 namespace synthetics {
 
-  OrbitCamera::OrbitCamera(Core *core, Scene *scene) : EventHandler() {
+  OrbitCamera::OrbitCamera(Core *core, Scene *scene) : Camera() {
 
     m_core = core;
     m_scene = scene;

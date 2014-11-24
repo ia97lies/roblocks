@@ -21,7 +21,7 @@ namespace synthetics {
     m_curBox->setPosition(0.0, 0.5, 0.0);
     m_scene->addEntity(m_curBox);
 
-    OrbitCamera *camera = new OrbitCamera(m_core, m_scene);
+    Camera *camera = new OrbitCamera(m_core, m_scene);
 
     m_core->getInput()->addEventListener(camera, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(camera, InputEvent::EVENT_KEYUP);

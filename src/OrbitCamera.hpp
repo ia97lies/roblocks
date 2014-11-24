@@ -11,21 +11,19 @@
 #include "bullet/LinearMath/btVector3.h"
 #include "bullet/LinearMath/btMatrix3x3.h"
 #include "bullet/LinearMath/btQuaternion.h"
+#include "Camera.h"
 
 using namespace Polycode;
 
 namespace synthetics {
 
-#define RADIANS_PER_DEGREE 0.01745329f
-#define CAMERA_STEP_SIZE 5.0f
-
-  class OrbitCamera : public EventHandler {
+  class OrbitCamera : public Camera {
     public:
       OrbitCamera(Core *core, Scene *scene);
       ~OrbitCamera();
-      void handleEvent(Event *e);
-      void updateTarget(Vector3 pos);
-      void update(); 
+      virtual void handleEvent(Event *e);
+      virtual void updateTarget(Vector3 pos);
+      virtual void update(); 
 
     private:
       Core *m_core;
