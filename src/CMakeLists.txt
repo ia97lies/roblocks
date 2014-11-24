@@ -58,7 +58,7 @@ set_property(TARGET libLinearMath PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEAS
 add_executable(
   synthetics 
   main.cpp 
-  HelloPolycodeApp.cpp
+  SyntheticsApp.cpp
 )
 
 target_link_libraries(
@@ -78,11 +78,6 @@ target_link_libraries(
   libBulletDynamics
   libBulletCollision
   libLinearMath
-  rt
-  dl
-  pthread
-  X11
-  GL
-  GLU
-  SDL
+  rt dl pthread X11 GL GLU SDL
 )
+

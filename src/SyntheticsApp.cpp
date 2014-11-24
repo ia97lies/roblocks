@@ -3,9 +3,9 @@
 // Took the basics from Polycode Examples
 //----------------------------------------------------------------------------
 
-#include "HelloPolycodeApp.h"
+#include "SyntheticsApp.hpp"
 
-HelloPolycodeApp::HelloPolycodeApp(PolycodeView *view) : EventHandler() {
+SyntheticsApp::SyntheticsApp(PolycodeView *view) : EventHandler() {
 
 	m_core = new POLYCODE_CORE(view, 640,480,false,true,0,0,90, 0, true);
 
@@ -26,10 +26,10 @@ HelloPolycodeApp::HelloPolycodeApp(PolycodeView *view) : EventHandler() {
 	m_scene->getDefaultCamera()->lookAt(m_curBox->getCombinedPosition());
 }
 
-HelloPolycodeApp::~HelloPolycodeApp() {
+SyntheticsApp::~SyntheticsApp() {
 }
 
-void HelloPolycodeApp::handleEvent(Event *e) {
+void SyntheticsApp::handleEvent(Event *e) {
 	if(e->getDispatcher() == m_core->getInput()) {
 		InputEvent *inputEvent = (InputEvent*)e;
 		
@@ -63,7 +63,7 @@ void HelloPolycodeApp::handleEvent(Event *e) {
   }
 }
 
-void HelloPolycodeApp::addChildBox(Vector3 orientation) {
+void SyntheticsApp::addChildBox(Vector3 orientation) {
   // XXX: After a couple of cubes it stops rendering the new one. But the childs are
   // there and the camera follows the invisible boxes.
   // TODO: Inspect Polycode why it stops rendering.
@@ -74,7 +74,7 @@ void HelloPolycodeApp::addChildBox(Vector3 orientation) {
   m_curBox = box;
 }
 
-bool HelloPolycodeApp::Update() {
+bool SyntheticsApp::Update() {
     return m_core->updateAndRender();
 }
 

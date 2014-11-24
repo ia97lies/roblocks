@@ -14,10 +14,10 @@ using namespace Polycode;
 #define RADIANS_PER_DEGREE 0.01745329f
 #define CAMERA_STEP_SIZE 5.0f
 
-class HelloPolycodeApp : public EventHandler {
+class SyntheticsApp : public EventHandler {
 public:
-    HelloPolycodeApp(PolycodeView *view);
-    ~HelloPolycodeApp();
+    SyntheticsApp(PolycodeView *view);
+    ~SyntheticsApp();
     void handleEvent(Event *e);
     bool Update();
     
