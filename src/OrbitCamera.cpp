@@ -44,16 +44,16 @@ namespace synthetics {
               break;
             case KEY_UP:
               rotate(m_pitch, +CAMERA_STEP_SIZE);
+              fprintf(stderr, "XXX: %f\n", m_pitch);
               break;
             case KEY_DOWN:
               rotate(m_pitch, -CAMERA_STEP_SIZE);
+              fprintf(stderr, "XXX: %f\n", m_pitch);
               break;
-
           }
           update();
           break;
       }
-
     }
   }
 
@@ -71,14 +71,14 @@ namespace synthetics {
     // did this with bullets linear math
     // TODO: make this with pure Polycode so a Lua example would be possible as
     //       well.
-    btQuaternion rotation(m_upVector, yaw);
     btVector3 position(0, 0, -m_distance);
     btVector3 forward(position[0], position[1], position[2]);
     if (forward.length2() < SIMD_EPSILON) {
       forward.setValue(1.f,0.f,0.f);
     }
     btVector3 right = m_upVector.cross(forward);
-    btQuaternion roll(right, - pitch);
+    btQuaternion rotation(m_upVector, yaw);
+    btQuaternion roll(right, -pitch);
     position = btMatrix3x3(rotation) * btMatrix3x3(roll) * position;
 
     m_position.x = position.getX();
