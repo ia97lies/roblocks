@@ -25,6 +25,7 @@ namespace synthetics {
       ~OrbitCamera();
       void handleEvent(Event *e);
       void updateTarget(Vector3 pos);
+      void update(); 
 
     private:
       Core *m_core;
@@ -37,7 +38,6 @@ namespace synthetics {
       Vector3 m_target;
 
       void rotate(float &angle, float value);
-      void update(); 
   };
 
 }

@@ -42,11 +42,11 @@ namespace synthetics {
             case KEY_RIGHT:
               rotate(m_yaw, -CAMERA_STEP_SIZE);
               break;
-            case KEY_UP:
+            case KEY_DOWN:
               rotate(m_pitch, +CAMERA_STEP_SIZE);
               fprintf(stderr, "XXX: %f\n", m_pitch);
               break;
-            case KEY_DOWN:
+            case KEY_UP:
               rotate(m_pitch, -CAMERA_STEP_SIZE);
               fprintf(stderr, "XXX: %f\n", m_pitch);
               break;

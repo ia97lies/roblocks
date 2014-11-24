@@ -29,8 +29,7 @@ namespace synthetics {
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYUP);
 
-    m_scene->getDefaultCamera()->setPosition(Vector3(7, 7, 7));
-    m_scene->getDefaultCamera()->lookAt(m_curBox->getCombinedPosition());
+    camera->update();
   }
 
   SyntheticsApp::~SyntheticsApp() {
