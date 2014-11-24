@@ -7,6 +7,8 @@
 #include "PolycodeView.h"
 #include "SyntheticsApp.hpp"
 
+using namespace synthetics;
+
 int main(int argc, char *argv[]) {
 	PolycodeView *view = new PolycodeView("Hello Polycode!");
 	SyntheticsApp *app = new SyntheticsApp(view);

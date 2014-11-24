@@ -59,6 +59,7 @@ add_executable(
   synthetics 
   main.cpp 
   SyntheticsApp.cpp
+  OrbitCamera.cpp
 )
 
 target_link_libraries(

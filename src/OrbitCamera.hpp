@@ -3,8 +3,8 @@
 // Took the basics from Polycode Examples
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_APP_H
-#define SYNTHETICS_APP_H
+#ifndef SYNTHETICS_ORBIT_CAMERA_H
+#define SYNTHETICS_ORBIT_CAMERA_H
 
 #include <Polycode.h>
 #include "PolycodeView.h"
@@ -19,19 +19,27 @@ namespace synthetics {
 #define RADIANS_PER_DEGREE 0.01745329f
 #define CAMERA_STEP_SIZE 5.0f
 
-  class SyntheticsApp : public EventHandler {
+  class OrbitCamera : public EventHandler {
     public:
-      SyntheticsApp(PolycodeView *view);
-      ~SyntheticsApp();
+      OrbitCamera(Core *core, Scene *scene);
+      ~OrbitCamera();
       void handleEvent(Event *e);
-      bool Update();
+      void updateTarget(Vector3 pos);
 
     private:
       Core *m_core;
       Scene *m_scene;
-      ScenePrimitive *m_curBox;
+      float m_pitch;
+      float m_yaw;
+      float m_distance;
+      btVector3 m_upVector;
+      Vector3 m_position;
+      Vector3 m_target;
 
-      void addChildBox(Vector3 orientation); 
+      void rotate(float &angle, float value);
+      void update(); 
   };
+
 }
+
 #endif
