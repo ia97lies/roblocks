@@ -14,27 +14,25 @@
 
 #include "MovingCamera.hpp"
 
-using namespace Polycode;
-
 namespace Synthetics {
 
   class OrbitCamera : public MovingCamera {
     public:
-      OrbitCamera(Core *core, Scene *scene);
+      OrbitCamera(::Polycode::Core *core, ::Polycode::Scene *scene);
       ~OrbitCamera();
-      virtual void handleEvent(Event *e);
-      virtual void updateTarget(Vector3 pos);
+      virtual void handleEvent(::Polycode::Event *e);
+      virtual void updateTarget(::Polycode::Vector3 pos);
       virtual void update(); 
 
     private:
-      Core *m_core;
-      Scene *m_scene;
+      ::Polycode::Core *m_core;
+      ::Polycode::Scene *m_scene;
+      ::Polycode::Vector3 m_position;
+      ::Polycode::Vector3 m_target;
       float m_pitch;
       float m_yaw;
       float m_distance;
       btVector3 m_upVector;
-      Vector3 m_position;
-      Vector3 m_target;
 
       void rotate(float &angle, float value);
   };

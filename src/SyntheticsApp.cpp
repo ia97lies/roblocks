@@ -7,6 +7,8 @@
 #include "OrbitCamera.hpp"
 #include "Constructor.hpp"
 
+using namespace Polycode;
+
 namespace Synthetics {
   SyntheticsApp::SyntheticsApp(PolycodeView *view) {
 

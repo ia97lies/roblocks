@@ -11,19 +11,17 @@
 
 #include "MovingCamera.hpp"
 
-using namespace Polycode;
-
 namespace Synthetics {
   class SyntheticsApp {
     public:
-      SyntheticsApp(PolycodeView *view);
+      SyntheticsApp(::Polycode::PolycodeView *view);
       ~SyntheticsApp();
-      void handleEvent(Event *e);
+      void handleEvent(::Polycode::Event *e);
       bool Update();
 
     private:
-      Core *m_core;
-      Scene *m_scene;
+      ::Polycode::Core *m_core;
+      ::Polycode::Scene *m_scene;
       MovingCamera *m_camera;
   };
 }

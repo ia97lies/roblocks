@@ -9,21 +9,19 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 
-using namespace Polycode;
-
 namespace Synthetics {
-  class Constructor : public EventHandler {
+  class Constructor : public ::Polycode::EventHandler {
     public:
-      Constructor(Core *core, Scene *scene);
+      Constructor(::Polycode::Core *core, ::Polycode::Scene *scene);
       ~Constructor();
-      void handleEvent(Event *e);
+      void handleEvent(::Polycode::Event *e);
 
     private:
-      Core *m_core;
-      Scene *m_scene;
-      ScenePrimitive *m_curBox;
+      ::Polycode::Core *m_core;
+      ::Polycode::Scene *m_scene;
+      ::Polycode::ScenePrimitive *m_curBox;
 
-      void addChildBox(Vector3 orientation); 
+      void addChildBox(::Polycode::Vector3 orientation); 
   };
 }
 #endif

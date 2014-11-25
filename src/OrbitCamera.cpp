@@ -5,6 +5,8 @@
 
 #include "OrbitCamera.hpp"
 
+using namespace Polycode;
+
 namespace Synthetics {
 
   OrbitCamera::OrbitCamera(Core *core, Scene *scene) : MovingCamera() {

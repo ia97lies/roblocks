@@ -7,6 +7,7 @@
 #include "PolycodeView.h"
 #include "SyntheticsApp.hpp"
 
+using namespace Polycode;
 using namespace Synthetics;
 
 int main(int argc, char *argv[]) {

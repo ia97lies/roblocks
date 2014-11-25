@@ -5,6 +5,8 @@
 
 #include "Constructor.hpp"
 
+using namespace Polycode;
+
 namespace Synthetics {
   Constructor::Constructor(Core *core, Scene *scene) : EventHandler() {
 
