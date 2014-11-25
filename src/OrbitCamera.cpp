@@ -5,7 +5,7 @@
 
 #include "OrbitCamera.hpp"
 
-namespace synthetics {
+namespace Synthetics {
 
   OrbitCamera::OrbitCamera(Core *core, Scene *scene) : Camera() {
 
@@ -44,11 +44,9 @@ namespace synthetics {
               break;
             case KEY_DOWN:
               rotate(m_pitch, +CAMERA_STEP_SIZE);
-              fprintf(stderr, "XXX: %f\n", m_pitch);
               break;
             case KEY_UP:
               rotate(m_pitch, -CAMERA_STEP_SIZE);
-              fprintf(stderr, "XXX: %f\n", m_pitch);
               break;
           }
           update();

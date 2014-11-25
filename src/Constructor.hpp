@@ -3,8 +3,8 @@
 // Took the basics from Polycode Examples
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_APP_H
-#define SYNTHETICS_APP_H
+#ifndef SYNTHETICS_CONSTRUCTOR_H
+#define SYNTHETICS_CONSTRUCTOR_H
 
 #include <Polycode.h>
 #include "PolycodeView.h"
@@ -12,16 +12,18 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  class SyntheticsApp {
+  class Constructor : public EventHandler {
     public:
-      SyntheticsApp(PolycodeView *view);
-      ~SyntheticsApp();
+      Constructor(Core *core, Scene *scene);
+      ~Constructor();
       void handleEvent(Event *e);
-      bool Update();
 
     private:
       Core *m_core;
       Scene *m_scene;
+      ScenePrimitive *m_curBox;
+
+      void addChildBox(Vector3 orientation); 
   };
 }
 #endif

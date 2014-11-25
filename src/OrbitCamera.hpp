@@ -15,7 +15,7 @@
 
 using namespace Polycode;
 
-namespace synthetics {
+namespace Synthetics {
 
   class OrbitCamera : public Camera {
     public:

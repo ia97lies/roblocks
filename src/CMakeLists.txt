@@ -56,10 +56,11 @@ set_property(TARGET libBulletCollision PROPERTY IMPORTED_LOCATION   ${POLYCODE_R
 set_property(TARGET libLinearMath PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libLinearMath.a)
 
 add_executable(
-  synthetics 
+  Synthetics 
   main.cpp 
   SyntheticsApp.cpp
   OrbitCamera.cpp
+  Constructor.cpp
 )
 
 target_link_libraries(
