@@ -11,7 +11,7 @@
 #include "bullet/LinearMath/btVector3.h"
 #include "bullet/LinearMath/btMatrix3x3.h"
 #include "bullet/LinearMath/btQuaternion.h"
-#include "Camera.h"
+#include "Camera.hpp"
 
 using namespace Polycode;
 

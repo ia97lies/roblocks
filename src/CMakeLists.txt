@@ -6,7 +6,6 @@ set(POLYCODE_HOME $ENV{HOME}/workspace/Polycode)
 set(POLYCODE_RELEASE ${POLYCODE_HOME}/Release/Linux/Framework)
 
 include_directories(
-  .
   ${POLYCODE_RELEASE}/Core/Dependencies/include
   ${POLYCODE_RELEASE}/Core/Dependencies/include/AL
   ${POLYCODE_RELEASE}/Core/include
@@ -14,14 +13,6 @@ include_directories(
   ${POLYCODE_RELEASE}/Modules/Dependencies/include
   ${POLYCODE_RELEASE}/Modules/Dependencies/include/bullet
 )
-
-#find_package(librt)
-#find_package(libdl)
-#find_package(libpthread)
-#find_package(libX11)
-#find_package(libGL)
-#find_package(libGLU)
-#find_package(libSDL)
 
 add_library(libPolycore STATIC IMPORTED)
 add_library(libfreetype STATIC IMPORTED)
@@ -64,7 +55,7 @@ add_executable(
 )
 
 target_link_libraries(
-  synthetics 
+  Synthetics 
   libPolycore
   libfreetype
   liblibvorbisfile
