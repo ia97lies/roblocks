@@ -19,10 +19,10 @@ namespace Synthetics {
 #define RADIANS_PER_DEGREE 0.01745329f
 #define CAMERA_STEP_SIZE 5.0f
 
-  class Camera : public EventHandler {
+  class MovingCamera : public EventHandler {
     public:
-      Camera() : EventHandler() {};
-      virtual ~Camera() {};
+      MovingCamera() : EventHandler() {};
+      virtual ~MovingCamera() {};
       virtual void updateTarget(Vector3 pos) = 0;
       virtual void update() = 0;
   };

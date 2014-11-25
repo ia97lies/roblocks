@@ -17,13 +17,13 @@ namespace Synthetics {
 
     m_scene = new Scene(Scene::SCENE_3D);
 
-    Camera *camera = new OrbitCamera(m_core, m_scene);
-    m_core->getInput()->addEventListener(camera, InputEvent::EVENT_KEYDOWN);
+    m_camera = new OrbitCamera(m_core, m_scene);
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);
 
     Constructor *constructor = new Constructor(m_core, m_scene);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
 
-    camera->update();
+    m_camera->update();
   }
 
   SyntheticsApp::~SyntheticsApp() {

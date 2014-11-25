@@ -11,13 +11,14 @@
 #include "bullet/LinearMath/btVector3.h"
 #include "bullet/LinearMath/btMatrix3x3.h"
 #include "bullet/LinearMath/btQuaternion.h"
-#include "Camera.hpp"
+
+#include "MovingCamera.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
 
-  class OrbitCamera : public Camera {
+  class OrbitCamera : public MovingCamera {
     public:
       OrbitCamera(Core *core, Scene *scene);
       ~OrbitCamera();

@@ -7,7 +7,7 @@
 
 namespace Synthetics {
 
-  OrbitCamera::OrbitCamera(Core *core, Scene *scene) : Camera() {
+  OrbitCamera::OrbitCamera(Core *core, Scene *scene) : MovingCamera() {
 
     m_core = core;
     m_scene = scene;

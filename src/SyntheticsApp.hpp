@@ -9,6 +9,8 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 
+#include "MovingCamera.hpp"
+
 using namespace Polycode;
 
 namespace Synthetics {
@@ -22,6 +24,7 @@ namespace Synthetics {
     private:
       Core *m_core;
       Scene *m_scene;
+      MovingCamera *m_camera;
   };
 }
 #endif

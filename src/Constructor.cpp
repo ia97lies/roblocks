@@ -12,7 +12,7 @@ namespace Synthetics {
     m_scene = scene;
 
     m_curBox = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-    m_curBox->loadTexture("Resources/pink_texture.png");
+    m_curBox->setColor(0.0, 1.0, 1.0, 0.8);
     m_curBox->setPosition(0.0, 0.5, 0.0);
     m_scene->addEntity(m_curBox);
   }
@@ -57,7 +57,6 @@ namespace Synthetics {
     // there and the camera follows the invisible boxes.
     // TODO: Inspect Polycode why it stops rendering.
     ScenePrimitive * box = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-    box->loadTexture("Resources/pink_texture.png");
     box->setPosition(orientation);
     m_curBox->addChild(box);
     m_curBox = box;
