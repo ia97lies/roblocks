@@ -6,6 +6,7 @@
 #include "SyntheticsApp.hpp"
 #include "OrbitCamera.hpp"
 #include "Constructor.hpp"
+#include "Unit.hpp"
 
 using namespace Polycode;
 
