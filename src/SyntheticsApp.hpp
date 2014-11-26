@@ -10,6 +10,7 @@
 #include "PolycodeView.h"
 
 #include "MovingCamera.hpp"
+#include "Configurator.hpp"
 
 namespace Synthetics {
   class SyntheticsApp {
@@ -23,6 +24,7 @@ namespace Synthetics {
       ::Polycode::Core *m_core;
       ::Polycode::Scene *m_scene;
       MovingCamera *m_camera;
+      Configurator *m_configurator;
   };
 }
 #endif

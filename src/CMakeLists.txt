@@ -8,6 +8,7 @@ set(POLYCODE_RELEASE ${POLYCODE_HOME}/Release/Linux/Framework)
 include_directories(
   ${POLYCODE_RELEASE}/Core/Dependencies/include
   ${POLYCODE_RELEASE}/Core/Dependencies/include/AL
+  ${POLYCODE_RELEASE}/Core/Dependencies/include/lua5.1
   ${POLYCODE_RELEASE}/Core/include
   ${POLYCODE_RELEASE}/Modules/include
   ${POLYCODE_RELEASE}/Modules/Dependencies/include
@@ -23,6 +24,7 @@ add_library(libopenal SHARED IMPORTED)
 add_library(libphysfs STATIC IMPORTED)
 add_library(libpng15 STATIC IMPORTED)
 add_library(libz STATIC IMPORTED)
+add_library(liblua STATIC IMPORTED)
 add_library(libPolycode2DPhysics STATIC IMPORTED)
 add_library(libBox2D STATIC IMPORTED)
 add_library(libPolycode3DPhysics STATIC IMPORTED)
@@ -39,6 +41,7 @@ set_property(TARGET libopenal PROPERTY IMPORTED_LOCATION ${POLYCODE_RELEASE}/Cor
 set_property(TARGET libphysfs PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/libphysfs.a)
 set_property(TARGET libpng15 PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/libpng15.a)
 set_property(TARGET libz PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/libz.a)
+set_property(TARGET liblua PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/liblua5.1.a)
 set_property(TARGET libPolycode2DPhysics PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/lib/libPolycode2DPhysics.a)
 set_property(TARGET libBox2D PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libBox2D.a)
 set_property(TARGET libPolycode3DPhysics PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/lib/libPolycode3DPhysics.a)
@@ -50,6 +53,7 @@ add_executable(
   Synthetics 
   main.cpp 
   SyntheticsApp.cpp
+  Configurator.cpp
   OrbitCamera.cpp
   Constructor.cpp
   UnitEvent.cpp
@@ -66,6 +70,7 @@ target_link_libraries(
   libphysfs
   libpng15
   libz
+  liblua
   libPolycode2DPhysics
   libBox2D
   libPolycode3DPhysics

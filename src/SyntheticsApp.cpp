@@ -4,6 +4,7 @@
 //----------------------------------------------------------------------------
 
 #include "SyntheticsApp.hpp"
+#include "Configurator.hpp"
 #include "OrbitCamera.hpp"
 #include "Constructor.hpp"
 #include "Unit.hpp"
@@ -12,6 +13,7 @@ using namespace Polycode;
 
 namespace Synthetics {
   SyntheticsApp::SyntheticsApp(PolycodeView *view) {
+    m_configurator = new Configurator();
 
     m_core = new POLYCODE_CORE(view, 640,480,false,true,0,0,90, 0, true);
 
