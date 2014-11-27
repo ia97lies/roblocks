@@ -3,7 +3,7 @@ Lego like frameworke for easily assamble robots out of blocks and triagnles and 
 
 ## Blocks
 * Neutral.Block
-* Neutral.Rectangle
+* Neutral.Triangle
 * Actor.Motor
 * Actor.Servo
 * Sensor.Light
