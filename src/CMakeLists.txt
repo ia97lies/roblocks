@@ -59,6 +59,11 @@ add_executable(
   UnitEvent.cpp
 )
 
+add_library(
+  PassiveBlock SHARED
+  PassiveBlock.cpp
+)
+
 target_link_libraries(
   Synthetics 
   libPolycore

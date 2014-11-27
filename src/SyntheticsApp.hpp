@@ -24,7 +24,7 @@ namespace Synthetics {
       ::Polycode::Core *m_core;
       ::Polycode::Scene *m_scene;
       MovingCamera *m_camera;
-      Configurator *m_configurator;
+      Configurator *m_conf;
   };
 }
 #endif
