@@ -57,6 +57,7 @@ add_executable(
   OrbitCamera.cpp
   Constructor.cpp
   UnitEvent.cpp
+  UnitFactory.cpp
 )
 
 add_library(

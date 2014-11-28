@@ -8,6 +8,7 @@
 #include "OrbitCamera.hpp"
 #include "Constructor.hpp"
 #include "Unit.hpp"
+#include "UnitFactory.hpp"
 
 using namespace Polycode;
 

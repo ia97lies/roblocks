@@ -2,15 +2,22 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "UnitFactory.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
 
+  //--------------------------------------------------------------------------
+  // public:
+  //--------------------------------------------------------------------------
   Configurator::Configurator() {
     m_width = 640;
     m_height = 480;
     m_L = luaL_newstate();
     luaL_openlibs(m_L);
+
+    UnitFactory *factory = UnitFactory::get();
+
     if (luaL_loadfile(m_L, "Resources/synthetics.conf") || lua_pcall(m_L, 0, 0, 0)) {
       error("cannot load Resources/synthetics.conf: %s\n", lua_tostring(m_L, -1));
     }
@@ -39,6 +46,9 @@ namespace Synthetics {
     return m_height;
   }
 
+  //--------------------------------------------------------------------------
+  // private:
+  //--------------------------------------------------------------------------
   void Configurator::error(const char *fmt, ...) {
     va_list argp;
     va_start(argp, fmt);

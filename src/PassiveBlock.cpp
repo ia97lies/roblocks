@@ -7,6 +7,10 @@
 
 using namespace Polycode;
 namespace Synthetics {
+
+  //--------------------------------------------------------------------------
+  // public:
+  //--------------------------------------------------------------------------
   PassiveBlock::PassiveBlock(Core *core, Scene *scene) {
   }
 

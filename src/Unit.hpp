@@ -21,6 +21,7 @@ namespace Synthetics {
       virtual void handleEvent(::Polycode::Event *event) = 0;
   };
 
+  typedef Unit *(*UnitCreateFn)(::Polycode::Core *core, ::Polycode::Scene *scene);
 }
 
 #endif
