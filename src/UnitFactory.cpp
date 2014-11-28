@@ -21,8 +21,9 @@ namespace Synthetics {
   }
 
   Unit *UnitFactory::createUnit(const std::string name, ::Polycode::Core *core, ::Polycode::Scene *scene) {
-    if (m_map[name] != NULL) {
-      return m_map[name](core, scene);
+    std::map<std::string, UnitCreateFn>::iterator it = m_map.find(name);
+    if (it != m_map.end()) {
+      return it->second(core, scene);
     }
     return NULL;
   }
