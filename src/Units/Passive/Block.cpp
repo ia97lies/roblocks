@@ -16,17 +16,27 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Block::Block(Core *core, Scene *scene) {
         fprintf(stderr, "Create a passive block\n");
+        m_faces[0] = Vector3(0, 0, 0);
+        m_faces[1] = Vector3(1, 0, 0);
+        m_faces[2] = Vector3(-1, 0, 0);
+        m_faces[3] = Vector3(0, 1, 0);
+        m_faces[4] = Vector3(0, -1, 0);
+        m_faces[5] = Vector3(0, 0, 1);
+        m_faces[6] = Vector3(0, 0, -1);
+
+        m_core = core;
+        m_scene = scene;
       }
 
       Block::~Block() {
       }
 
       int Block::noOfFaces() {
-        return 0;
+        return 6;
       }
 
       Vector3 Block::getOrientation(int face) {
-        return Vector3(0, 0, 0);
+        return m_faces[face];
       }
 
       void Block::addUnit(int face, Unit *unit) {

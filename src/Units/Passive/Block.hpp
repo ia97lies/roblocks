@@ -15,14 +15,19 @@ namespace Synthetics {
 
       class Block : public Unit {
         public:
-          Block(::Polycode::Core *core, ::Polycode::Scene *scene);
+          Block(Polycode::Core *core, Polycode::Scene *scene);
           virtual ~Block();
 
           virtual int noOfFaces();
-          virtual ::Polycode::Vector3 getOrientation(int face);
+          virtual Polycode::Vector3 getOrientation(int face);
           virtual void addUnit(int face, Unit *unit);
           virtual Unit *getUnit(int face);
-          virtual void handleEvent(::Polycode::Event *event);
+          virtual void handleEvent(Polycode::Event *event);
+          
+        private:
+          std::vector<Polycode::Vector3> m_faces;
+          Polycode::Core *m_core;
+          Polycode::Scene *m_scene;
       };
 
     }
