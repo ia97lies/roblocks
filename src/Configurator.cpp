@@ -19,7 +19,6 @@ namespace Synthetics {
     UnitFactory *factory = UnitFactory::get();
     lua_pushlightuserdata(m_L, factory);
     lua_setfield(m_L, LUA_REGISTRYINDEX, "factory");
-    fprintf(stderr, "XXXXXXX2 %p:%p\n", m_L, factory);
 
     if (luaL_loadfile(m_L, "Resources/synthetics.conf") || lua_pcall(m_L, 0, 0, 0)) {
       error("cannot load Resources/synthetics.conf: %s\n", lua_tostring(m_L, -1));
@@ -33,9 +32,6 @@ namespace Synthetics {
       readWidth();
       readHeight();
     }
-
-    factory->createUnit("PassiveBlock", NULL, NULL);
-
   }
 
   Configurator::~Configurator() {

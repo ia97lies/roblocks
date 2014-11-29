@@ -38,6 +38,10 @@ namespace Synthetics {
 
 extern "C" {
   static int passiveBlockFactory(lua_State *L) {
+    lua_getfield(L, LUA_REGISTRYINDEX, "factory");
+    void *p = lua_touserdata(L, 1);
+    lua_pop(L, 1);
+    fprintf(stderr, "PassiveBlock factory call: %p:%p\n", L, p);
     return 0;
   }
 
@@ -47,6 +51,7 @@ extern "C" {
   };
 
   int luaopen_libPassiveBlock(lua_State *L) {
+    passiveBlockFactory(L);
     luaL_register(L, "passive.block", passiveBlockFuncs);
     return 1;
   }
