@@ -13,7 +13,7 @@ namespace Synthetics {
     m_scene = scene;
 
     m_curBox = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-    m_curBox->setColor(0.0, 1.0, 1.0, 0.8);
+    m_curBox->setColor(0.0, 1.0, 1.0, 0.4);
     m_curBox->setPosition(0.0, 0.5, 0.0);
     m_scene->addEntity(m_curBox);
   }
