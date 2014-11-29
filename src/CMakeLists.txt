@@ -50,8 +50,7 @@ set_property(TARGET libBulletDynamics PROPERTY IMPORTED_LOCATION   ${POLYCODE_RE
 set_property(TARGET libBulletCollision PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libBulletCollision.a)
 set_property(TARGET libLinearMath PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libLinearMath.a)
 
-add_executable(
-  Synthetics 
+set(Synthetics_SRCS
   main.cpp 
   SyntheticsApp.cpp
   Configurator.cpp
@@ -59,6 +58,21 @@ add_executable(
   Constructor.cpp
   UnitEvent.cpp
   UnitFactory.cpp
+)
+
+set(Synthetics_HDRS
+  SyntheticsApp.hpp
+  Configurator.hpp
+  MovingCamera.hpp
+  OrbitCamera.hpp
+  Constructor.hpp
+  Unit.hpp
+  UnitEvent.hpp
+  UnitFactory.hpp
+)
+
+add_executable(
+  Synthetics ${Synthetics_SRCS} ${Synthetics_HDRS}
 )
 
 add_library(
@@ -90,5 +104,6 @@ target_link_libraries(
 install(TARGETS Synthetics PassiveBlock
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
-  INCLUDES DESTINATION include
 )
+
+install(FILES ${Synthetics_HDRS} DESTINATION include)

@@ -10,5 +10,6 @@ src/Makefile
 *.so
 lib/
 bin/
+include/
 install_manifest.txt
 
