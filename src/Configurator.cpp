@@ -33,7 +33,7 @@ namespace Synthetics {
       readHeight();
     }
 
-    factory->createUnit("Passive::Block", NULL, NULL);
+    factory->createUnit("Passive.Block", NULL, NULL);
   }
 
   Configurator::~Configurator() {

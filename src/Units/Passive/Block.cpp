@@ -4,7 +4,7 @@
 
 #include "lua.hpp"
 #include "UnitFactory.hpp"
-#include "PassiveBlock.hpp"
+#include "Units/Passive/Block.hpp"
 
 using namespace Polycode;
 namespace Synthetics {
@@ -47,7 +47,7 @@ namespace Synthetics {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         UnitFactory *factory = (UnitFactory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Passive::Block", &Passive::BlockCreator);
+        factory->addCreator("Passive.Block", &Passive::BlockCreator);
         return 0;
       }
 
@@ -61,7 +61,7 @@ namespace Synthetics {
 
 extern "C" {
   int luaopen_libPassiveBlock(lua_State *L) {
-    luaL_register(L, "Passive::Block", Synthetics::Units::Passive::BlockFuncs);
+    luaL_register(L, "Passive.Block", Synthetics::Units::Passive::BlockFuncs);
     return 1;
   }
 }

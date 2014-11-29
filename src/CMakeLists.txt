@@ -6,6 +6,7 @@ set(POLYCODE_HOME $ENV{HOME}/workspace/Polycode)
 set(POLYCODE_RELEASE ${POLYCODE_HOME}/Release/Linux/Framework)
 
 include_directories(
+  .
   ${POLYCODE_RELEASE}/Core/Dependencies/include
   ${POLYCODE_RELEASE}/Core/Dependencies/include/AL
   ${POLYCODE_RELEASE}/Core/Dependencies/include/lua5.1
@@ -62,7 +63,7 @@ add_executable(
 
 add_library(
   PassiveBlock SHARED
-  PassiveBlock.cpp
+  Units/Passive/Block.cpp
 )
 
 target_link_libraries(
