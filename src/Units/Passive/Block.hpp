@@ -25,7 +25,7 @@ namespace Synthetics {
           virtual void handleEvent(Polycode::Event *event);
           
         private:
-          std::vector<Polycode::Vector3> m_faces;
+          Polycode::Vector3 m_faces[6];
           Polycode::Core *m_core;
           Polycode::Scene *m_scene;
       };
