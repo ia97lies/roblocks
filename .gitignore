@@ -8,3 +8,7 @@ src/cmake_install.cmake
 Makefile
 src/Makefile
 *.so
+lib/
+bin/
+install_manifest.txt
+

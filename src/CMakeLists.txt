@@ -87,3 +87,8 @@ target_link_libraries(
   rt dl pthread X11 GL GLU SDL
 )
 
+install(TARGETS Synthetics PassiveBlock
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  INCLUDES DESTINATION include
+)

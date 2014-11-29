@@ -27,6 +27,7 @@ namespace Synthetics {
       void readWidth(); 
       void readHeight(); 
       int getNumber(const char *name); 
+      void setLuaCPath(const char* path);
   };
 }
 
