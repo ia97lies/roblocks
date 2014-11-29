@@ -14,7 +14,9 @@ using namespace Polycode;
 
 namespace Synthetics {
   SyntheticsApp::SyntheticsApp(PolycodeView *view) {
-    m_conf = new Configurator();
+    UnitFactory *factory = UnitFactory::get();
+
+    m_conf = new Configurator(factory);
 
     m_core = new POLYCODE_CORE(view, m_conf->getWidth(), m_conf->getHeight(), false, true, 0, 0, 90, 0, true);
 
@@ -26,7 +28,7 @@ namespace Synthetics {
     m_camera = new OrbitCamera(m_core, m_scene);
     m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);
 
-    Constructor *constructor = new Constructor(m_core, m_scene);
+    Constructor *constructor = new Constructor(m_core, m_scene, factory);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
 
     m_camera->update();

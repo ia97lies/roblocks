@@ -10,14 +10,13 @@ namespace Synthetics {
   //--------------------------------------------------------------------------
   // public:
   //--------------------------------------------------------------------------
-  Configurator::Configurator() {
+  Configurator::Configurator(UnitFactory *factory) {
     m_width = 640;
     m_height = 480;
     m_L = luaL_newstate();
     luaL_openlibs(m_L);
 
     setLuaCPath("./lib/?.so");
-    UnitFactory *factory = UnitFactory::get();
     lua_pushlightuserdata(m_L, factory);
     lua_setfield(m_L, LUA_REGISTRYINDEX, "factory");
 

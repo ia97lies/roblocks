@@ -7,10 +7,11 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  Constructor::Constructor(Core *core, Scene *scene) : EventHandler() {
+  Constructor::Constructor(Core *core, Scene *scene, UnitFactory *factory) : EventHandler() {
 
     m_core = core;
     m_scene = scene;
+    m_factory = factory;
 
     m_curBox = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
     m_curBox->setColor(0.0, 1.0, 1.0, 0.4);
@@ -57,6 +58,7 @@ namespace Synthetics {
     // XXX: After a couple of cubes it stops rendering the new one. But the childs are
     // there and the camera follows the invisible boxes.
     // TODO: Inspect Polycode why it stops rendering.
+    m_factory->createUnit("Passive.Block", m_core, m_scene);
     ScenePrimitive * box = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
     box->setPosition(orientation);
     m_curBox->addChild(box);

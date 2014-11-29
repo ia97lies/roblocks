@@ -7,12 +7,13 @@
 
 #include "lua.hpp"
 #include "Unit.hpp"
+#include "UnitFactory.hpp"
 
 namespace Synthetics {
 
   class Configurator {
     public:
-      Configurator();
+      Configurator(UnitFactory *factory);
       virtual ~Configurator();
       int getWidth();
       int getHeight();
