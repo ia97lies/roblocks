@@ -25,6 +25,8 @@ namespace Synthetics {
 
         m_core = core;
         m_scene = scene;
+
+        m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
       }
 
       Block::~Block() {

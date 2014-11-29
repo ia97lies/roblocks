@@ -20,7 +20,7 @@ namespace Synthetics {
     m_map[name] = creator;
   }
 
-  Unit *UnitFactory::createUnit(const std::string name, ::Polycode::Core *core, ::Polycode::Scene *scene) {
+  Unit *UnitFactory::createUnit(const std::string name, Polycode::Core *core, Polycode::Scene *scene) {
     std::map<std::string, UnitCreateFn>::iterator it = m_map.find(name);
     if (it != m_map.end()) {
       return it->second(core, scene);

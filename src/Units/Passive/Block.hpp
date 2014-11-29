@@ -28,6 +28,8 @@ namespace Synthetics {
           Polycode::Vector3 m_faces[6];
           Polycode::Core *m_core;
           Polycode::Scene *m_scene;
+
+          Polycode::ScenePrimitive * m_shape;
       };
 
     }

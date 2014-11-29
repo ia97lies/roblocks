@@ -13,7 +13,7 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  UnitEvent::UnitEvent(int eventCode, ::Polycode::Vector3 value) : Event(eventCode) {
+  UnitEvent::UnitEvent(int eventCode, Vector3 value) : Event(eventCode) {
     m_value = value;
   }
 

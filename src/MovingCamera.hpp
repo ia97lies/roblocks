@@ -16,11 +16,11 @@ namespace Synthetics {
 #define RADIANS_PER_DEGREE 0.01745329f
 #define CAMERA_STEP_SIZE 5.0f
 
-  class MovingCamera : public ::Polycode::EventHandler {
+  class MovingCamera : public Polycode::EventHandler {
     public:
-      MovingCamera() : ::Polycode::EventHandler() {};
+      MovingCamera() : Polycode::EventHandler() {};
       virtual ~MovingCamera() {};
-      virtual void updateTarget(::Polycode::Vector3 pos) = 0;
+      virtual void updateTarget(Polycode::Vector3 pos) = 0;
       virtual void update() = 0;
   };
 
