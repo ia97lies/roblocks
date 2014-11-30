@@ -28,6 +28,14 @@ namespace Synthetics {
       switch(e->getEventCode()) {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
+            case KEY_a:
+              break;
+            case KEY_d:
+              break;
+            case KEY_w:
+              break;
+            case KEY_s:
+              break;
             case KEY_1:
               addChildBox(Vector3(1.0, 0.0, 0.0));
               break;
