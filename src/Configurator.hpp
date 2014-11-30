@@ -20,7 +20,6 @@ namespace Synthetics {
 
     private:
       lua_State *m_L;
-      Polycode::ScenePrimitive * m_marker; 
       int m_width;
       int m_height;
       typedef std::vector<Unit *> *m_units;

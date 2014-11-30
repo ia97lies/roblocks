@@ -18,9 +18,11 @@ namespace Synthetics {
       void handleEvent(Polycode::Event *e);
 
     private:
+      int m_curFace;
       Polycode::Core *m_core;
       Polycode::Scene *m_scene;
       UnitFactory *m_factory;
+      Polycode::ScenePrimitive *m_marker;
       Polycode::ScenePrimitive *m_curBox;
 
       void addChildBox(Polycode::Vector3 orientation); 

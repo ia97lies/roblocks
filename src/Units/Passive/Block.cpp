@@ -27,6 +27,7 @@ namespace Synthetics {
         m_scene = scene;
 
         m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+        m_shape->colorAffectsChildren = false;
         m_shape->setColor(0.0, 1.0, 1.0, 0.4);
         m_shape->setPosition(0.0, 0.0, 0.0);
       }

@@ -16,6 +16,12 @@ namespace Synthetics {
     Unit *block = m_factory->createUnit("Passive.Block", m_core, m_scene);
     m_curBox = block->getPolycodeObject();
     m_scene->addEntity(m_curBox);
+
+    m_curFace = 0;
+    m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.1,0.1,0.1);
+    m_marker->setColor(1.0, 0.0, 0.0, 1.0);
+    m_marker->setPosition(block->getOrientation(m_curFace) * 0.6);
+    m_curBox->addChild(m_marker);
   }
 
   Constructor::~Constructor() {
@@ -33,8 +39,16 @@ namespace Synthetics {
             case KEY_d:
               break;
             case KEY_w:
+              m_curFace += 1;
+              if (m_curFace > 3) {
+                m_curFace = 0;
+              }
               break;
             case KEY_s:
+              m_curFace -= 1;
+              if (m_curFace < 0) {
+                m_curFace = 3;
+              }
               break;
             case KEY_1:
               addChildBox(Vector3(1.0, 0.0, 0.0));
@@ -56,6 +70,7 @@ namespace Synthetics {
               break;
 
           }
+//          m_marker->setPosition(block->getOrientation(m_curFace) * 0.6);
           break;
       }
     }
