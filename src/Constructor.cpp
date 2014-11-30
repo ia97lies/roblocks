@@ -13,9 +13,8 @@ namespace Synthetics {
     m_scene = scene;
     m_factory = factory;
 
-    m_curBox = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-    m_curBox->setColor(0.0, 1.0, 1.0, 0.4);
-    m_curBox->setPosition(0.0, 0.5, 0.0);
+    Unit *block = m_factory->createUnit("Passive.Block", m_core, m_scene);
+    m_curBox = block->getPolycodeObject();
     m_scene->addEntity(m_curBox);
   }
 
