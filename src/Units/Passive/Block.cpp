@@ -12,7 +12,7 @@ namespace Synthetics {
     namespace Passive {
 
       //--------------------------------------------------------------------------
-      // public:
+      // Unit interface
       //--------------------------------------------------------------------------
       Block::Block(Core *core, Scene *scene) {
         fprintf(stderr, "Create a passive block\n");
@@ -27,6 +27,8 @@ namespace Synthetics {
         m_scene = scene;
 
         m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+        m_shape->setColor(0.0, 1.0, 1.0, 0.4);
+        m_shape->setPosition(0.0, 0.0, 0.0);
       }
 
       Block::~Block() {
@@ -50,6 +52,9 @@ namespace Synthetics {
       void Block::handleEvent(Event *event) {
       }
 
+      //----------------------------------------------------------------------
+      // Unit factory
+      //----------------------------------------------------------------------
       Unit *BlockCreator(Polycode::Core *core, Polycode::Scene *scene) {
         return new Block(core, scene);
       }
@@ -70,6 +75,9 @@ namespace Synthetics {
   }
 }
 
+//----------------------------------------------------------------------------
+// Shared library hook
+//----------------------------------------------------------------------------
 extern "C" {
   int luaopen_libPassiveBlock(lua_State *L) {
     luaL_register(L, "Passive.Block", Synthetics::Units::Passive::BlockFuncs);
