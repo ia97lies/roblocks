@@ -23,6 +23,7 @@ namespace Synthetics {
           virtual void addUnit(int face, Unit *unit);
           virtual Unit *getUnit(int face);
           virtual void handleEvent(Polycode::Event *event);
+          virtual Polycode::ScenePrimitive * getPolycodeObject(); 
           
         private:
           Polycode::Vector3 m_faces[6];

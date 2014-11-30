@@ -52,6 +52,10 @@ namespace Synthetics {
       void Block::handleEvent(Event *event) {
       }
 
+      Polycode::ScenePrimitive * Block::getPolycodeObject() {
+        return m_shape;
+      }
+
       //----------------------------------------------------------------------
       // Unit factory
       //----------------------------------------------------------------------

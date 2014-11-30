@@ -19,6 +19,7 @@ namespace Synthetics {
       virtual void addUnit(int face, Unit *unit) = 0;
       virtual Unit *getUnit(int face) = 0;
       virtual void handleEvent(Polycode::Event *event) = 0;
+      virtual Polycode::ScenePrimitive * getPolycodeObject() = 0;
   };
 
   typedef Unit *(*UnitCreateFn)(Polycode::Core *core, Polycode::Scene *scene);
