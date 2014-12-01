@@ -23,6 +23,10 @@ namespace Synthetics {
         m_faces[4] = Vector3(0, 0, 1);
         m_faces[5] = Vector3(0, 0, -1);
 
+        for (int i = 0; i < this->noOfFaces(); i++) {
+          m_units[i] = NULL;
+        }
+
         m_core = core;
         m_scene = scene;
 
@@ -37,7 +41,7 @@ namespace Synthetics {
       }
 
       int Block::noOfFaces() {
-        return 6;
+        return s_noOfFaces;
       }
 
       Vector3 Block::getOrientation(int face) {
@@ -45,6 +49,16 @@ namespace Synthetics {
       }
 
       void Block::addUnit(int face, Unit *unit) {
+        if (face >= 0 && face < s_noOfFaces && m_units[face] == NULL) {
+          m_units[face] = unit;
+          ScenePrimitive *shape = unit->getPolycodeObject();
+          ScenePrimitive *selectedShape = this->getPolycodeObject();
+          shape->setPosition(this->getOrientation(face));
+          selectedShape->addChild(shape);
+        }
+        else {
+          delete unit;
+        }
       }
 
       Unit *Block::getUnit(int face) {

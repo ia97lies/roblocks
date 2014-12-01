@@ -49,11 +49,6 @@ namespace Synthetics {
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
               m_selectedUnit->addUnit(m_curFace, newUnit);
-              ScenePrimitive *newShape = newUnit->getPolycodeObject();
-              ScenePrimitive *selectedShape = m_selectedUnit->getPolycodeObject();
-              newShape->setPosition(m_selectedUnit->getOrientation(m_curFace));
-              selectedShape->addChild(newShape);
-
               break;
 
           }

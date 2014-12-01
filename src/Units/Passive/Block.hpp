@@ -26,9 +26,11 @@ namespace Synthetics {
           virtual Polycode::ScenePrimitive * getPolycodeObject(); 
           
         private:
-          Polycode::Vector3 m_faces[6];
+          static const int s_noOfFaces = 6;
           Polycode::Core *m_core;
           Polycode::Scene *m_scene;
+          Polycode::Vector3 m_faces[s_noOfFaces];
+          Unit *m_units[s_noOfFaces];
 
           Polycode::ScenePrimitive * m_shape;
       };
