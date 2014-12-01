@@ -17,8 +17,8 @@ namespace Synthetics {
       Block::Block(Core *core, Scene *scene) {
         fprintf(stderr, "Create a passive block\n");
         m_faces[0] = Vector3(1, 0, 0);
-        m_faces[1] = Vector3(-1, 0, 0);
-        m_faces[2] = Vector3(0, 1, 0);
+        m_faces[1] = Vector3(0, 1, 0);
+        m_faces[2] = Vector3(-1, 0, 0);
         m_faces[3] = Vector3(0, -1, 0);
         m_faces[4] = Vector3(0, 0, 1);
         m_faces[5] = Vector3(0, 0, -1);
@@ -33,6 +33,7 @@ namespace Synthetics {
       }
 
       Block::~Block() {
+        fprintf(stderr, "Destroy a passive block\n");
       }
 
       int Block::noOfFaces() {
@@ -68,7 +69,7 @@ namespace Synthetics {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         UnitFactory *factory = (UnitFactory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Passive.Block", &Passive::BlockCreator);
+        factory->addCreator("Passive.Block", &BlockCreator);
         return 0;
       }
 

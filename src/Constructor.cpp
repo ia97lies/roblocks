@@ -13,14 +13,14 @@ namespace Synthetics {
     m_scene = scene;
     m_factory = factory;
 
-    Unit *block = m_factory->createUnit("Passive.Block", m_core, m_scene);
-    m_curBox = block->getPolycodeObject();
+    m_selectedUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
+    m_curBox = m_selectedUnit->getPolycodeObject();
     m_scene->addEntity(m_curBox);
 
     m_curFace = 0;
-    m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.1,0.1,0.1);
+    m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
     m_marker->setColor(1.0, 0.0, 0.0, 1.0);
-    m_marker->setPosition(block->getOrientation(m_curFace) * 0.6);
+    m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
     m_curBox->addChild(m_marker);
   }
 
@@ -34,43 +34,29 @@ namespace Synthetics {
       switch(e->getEventCode()) {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
-            case KEY_a:
-              break;
-            case KEY_d:
-              break;
-            case KEY_w:
+            case KEY_PAGEUP:
               m_curFace += 1;
-              if (m_curFace > 3) {
+              if (m_curFace > m_selectedUnit->noOfFaces() - 1) {
                 m_curFace = 0;
               }
               break;
-            case KEY_s:
+            case KEY_PAGEDOWN:
               m_curFace -= 1;
               if (m_curFace < 0) {
-                m_curFace = 3;
+                m_curFace = m_selectedUnit->noOfFaces() - 1;
               }
               break;
-            case KEY_1:
-              addChildBox(Vector3(1.0, 0.0, 0.0));
-              break;
-            case KEY_2:
-              addChildBox(Vector3(-1.0, 0.0, 0.0));
-              break;
-            case KEY_3:
-              addChildBox(Vector3(0.0, 1.0, 0.0));
-              break;
-            case KEY_4:
-              addChildBox(Vector3(0.0, -1.0, 0.0));
-              break;
-            case KEY_5:
-              addChildBox(Vector3(0.0, 0.0, 1.0));
-              break;
-            case KEY_6:
-              addChildBox(Vector3(0.0, 0.0, -1.0));
+            case KEY_a:
+              Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
+              ScenePrimitive *box = newUnit->getPolycodeObject();
+              box->setPosition(m_selectedUnit->getOrientation(m_curFace));
+              m_curBox->addChild(box);
+
               break;
 
           }
-//          m_marker->setPosition(block->getOrientation(m_curFace) * 0.6);
+          m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
+          fprintf(stderr, "Unit: %p\n", m_selectedUnit);
           break;
       }
     }
@@ -80,6 +66,7 @@ namespace Synthetics {
     // XXX: After a couple of cubes it stops rendering the new one. But the childs are
     // there and the camera follows the invisible boxes.
     // TODO: Inspect Polycode why it stops rendering.
+    fprintf(stderr, "Unit: %p\n", m_selectedUnit);
     m_factory->createUnit("Passive.Block", m_core, m_scene);
     ScenePrimitive * box = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
     box->setPosition(orientation);
