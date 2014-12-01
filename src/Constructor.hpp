@@ -24,9 +24,6 @@ namespace Synthetics {
       UnitFactory *m_factory;
       Polycode::ScenePrimitive *m_marker;
       Unit *m_selectedUnit;
-      Polycode::ScenePrimitive *m_curBox;
-
-      void addChildBox(Polycode::Vector3 orientation); 
   };
 }
 #endif

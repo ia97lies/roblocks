@@ -14,14 +14,14 @@ namespace Synthetics {
     m_factory = factory;
 
     m_selectedUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
-    m_curBox = m_selectedUnit->getPolycodeObject();
-    m_scene->addEntity(m_curBox);
+    ScenePrimitive *shape = m_selectedUnit->getPolycodeObject();
+    m_scene->addEntity(shape);
 
     m_curFace = 0;
     m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
     m_marker->setColor(1.0, 0.0, 0.0, 1.0);
     m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
-    m_curBox->addChild(m_marker);
+    shape->addChild(m_marker);
   }
 
   Constructor::~Constructor() {
@@ -48,29 +48,19 @@ namespace Synthetics {
               break;
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
-              ScenePrimitive *box = newUnit->getPolycodeObject();
-              box->setPosition(m_selectedUnit->getOrientation(m_curFace));
-              m_curBox->addChild(box);
+              m_selectedUnit->addUnit(m_curFace, newUnit);
+              ScenePrimitive *newShape = newUnit->getPolycodeObject();
+              ScenePrimitive *selectedShape = m_selectedUnit->getPolycodeObject();
+              newShape->setPosition(m_selectedUnit->getOrientation(m_curFace));
+              selectedShape->addChild(newShape);
 
               break;
 
           }
           m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
-          fprintf(stderr, "Unit: %p\n", m_selectedUnit);
+          //fprintf(stderr, "Unit: %p\n", m_selectedUnit);
           break;
       }
     }
-  }
-
-  void Constructor::addChildBox(Vector3 orientation) {
-    // XXX: After a couple of cubes it stops rendering the new one. But the childs are
-    // there and the camera follows the invisible boxes.
-    // TODO: Inspect Polycode why it stops rendering.
-    fprintf(stderr, "Unit: %p\n", m_selectedUnit);
-    m_factory->createUnit("Passive.Block", m_core, m_scene);
-    ScenePrimitive * box = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-    box->setPosition(orientation);
-    m_curBox->addChild(box);
-    m_curBox = box;
   }
 }
