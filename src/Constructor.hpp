@@ -25,7 +25,10 @@ namespace Synthetics {
       Polycode::CollisionScene *m_scene;
       UnitFactory *m_factory;
       Polycode::ScenePrimitive *m_marker;
-      Unit *m_selectedUnit;
+      Unit *m_curUnit;
+
+      void addMarker();
+      void removeMarker();
   };
 }
 #endif

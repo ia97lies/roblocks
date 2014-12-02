@@ -34,6 +34,7 @@ namespace Synthetics {
         m_shape->colorAffectsChildren = false;
         m_shape->setColor(0.0, 1.0, 1.0, 0.4);
         m_shape->setPosition(0.0, 0.0, 0.0);
+        m_shape->setUserData(this);
       }
 
       Block::~Block() {
@@ -67,6 +68,15 @@ namespace Synthetics {
         }
 
         return NULL;
+      }
+
+      void Block::setActive(bool on) {
+        if (!on) {
+          m_shape->setColor(0.0, 1.0, 1.0, 0.4);
+        }
+        else {
+          m_shape->setColor(1.0, 0.0, 0.0, 0.6);
+        }
       }
 
       void Block::handleEvent(Event *event) {

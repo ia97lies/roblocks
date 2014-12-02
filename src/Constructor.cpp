@@ -13,15 +13,13 @@ namespace Synthetics {
     m_scene = scene;
     m_factory = factory;
 
-    m_selectedUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
-    ScenePrimitive *shape = m_selectedUnit->getPolycodeObject();
+    m_curUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
+    ScenePrimitive *shape = m_curUnit->getPolycodeObject();
     m_scene->addCollisionChild(shape);
 
-    m_curFace = 0;
     m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
     m_marker->setColor(0.8, 0.2, 0.2, 1.0);
-    m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
-    shape->addChild(m_marker);
+    this->addMarker();
   }
 
   Constructor::~Constructor() {
@@ -36,33 +34,53 @@ namespace Synthetics {
           switch (inputEvent->keyCode()) {
             case KEY_PAGEUP:
               m_curFace += 1;
-              if (m_curFace > m_selectedUnit->noOfFaces() - 1) {
+              if (m_curFace > m_curUnit->noOfFaces() - 1) {
                 m_curFace = 0;
               }
               break;
             case KEY_PAGEDOWN:
               m_curFace -= 1;
               if (m_curFace < 0) {
-                m_curFace = m_selectedUnit->noOfFaces() - 1;
+                m_curFace = m_curUnit->noOfFaces() - 1;
               }
               break;
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
-              m_selectedUnit->addUnit(m_curFace, newUnit);
+              m_curUnit->addUnit(m_curFace, newUnit);
+              //m_scene->addCollisionChild(newUnit->getPolycodeObject());
               break;
 
           }
-          m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
-          //fprintf(stderr, "Unit: %p\n", m_selectedUnit);
+          m_marker->setPosition(m_curUnit->getOrientation(m_curFace) * 0.3);
+          //fprintf(stderr, "Unit: %p\n", m_curUnit);
           break;
         case InputEvent::EVENT_MOUSEDOWN:
           Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
           RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 100.0);
            if(res.entity) {
-             res.entity->setColor(1.0, 0.0,0.0,1.0);
+             Unit *selectedUnit = (Unit *)res.entity->getUserData();
+             if (selectedUnit) {
+               this->removeMarker();
+               m_curUnit->setActive(false);
+               selectedUnit->setActive(true);
+               m_curUnit = selectedUnit;
+               this->addMarker();
+             }
            }
           break;
       }
     }
+  }
+
+  void Constructor::addMarker() {
+    ScenePrimitive *shape = m_curUnit->getPolycodeObject();
+    m_curFace = 0;
+    m_marker->setPosition(m_curUnit->getOrientation(m_curFace) * 0.3);
+    shape->addChild(m_marker);
+  }
+
+  void Constructor::removeMarker() {
+    ScenePrimitive *shape = m_curUnit->getPolycodeObject();
+    shape->removeChild(m_marker);
   }
 }
