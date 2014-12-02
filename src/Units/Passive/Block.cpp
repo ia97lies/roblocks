@@ -16,12 +16,12 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Block::Block(Core *core, Scene *scene) {
         fprintf(stderr, "Create a passive block\n");
-        m_faces[0] = Vector3(1, 0, 0);
-        m_faces[1] = Vector3(0, 1, 0);
-        m_faces[2] = Vector3(-1, 0, 0);
-        m_faces[3] = Vector3(0, -1, 0);
-        m_faces[4] = Vector3(0, 0, 1);
-        m_faces[5] = Vector3(0, 0, -1);
+        m_faces[0] = Vector3(0, 0, -1);
+        m_faces[1] = Vector3(-1, 0, 0);
+        m_faces[2] = Vector3(0, 0, 1);
+        m_faces[3] = Vector3(1, 0, 0);
+        m_faces[4] = Vector3(0, 1, 0);
+        m_faces[5] = Vector3(0, -1, 0);
 
         for (int i = 0; i < this->noOfFaces(); i++) {
           m_units[i] = NULL;
@@ -62,6 +62,10 @@ namespace Synthetics {
       }
 
       Unit *Block::getUnit(int face) {
+        if (face >= 0 && face < s_noOfFaces) {
+          return m_units[face];
+        }
+
         return NULL;
       }
 
