@@ -23,7 +23,7 @@ namespace Synthetics {
     CoreServices::getInstance()->getResourceManager()->addArchive("Resources/default.pak");
     CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
 
-    m_scene = new Scene(Scene::SCENE_3D);
+    m_scene = new CollisionScene();
 
     m_camera = new OrbitCamera(m_core, m_scene);
     m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);

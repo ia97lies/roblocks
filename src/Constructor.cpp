@@ -7,7 +7,7 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  Constructor::Constructor(Core *core, Scene *scene, UnitFactory *factory) : EventHandler() {
+  Constructor::Constructor(Core *core, CollisionScene *scene, UnitFactory *factory) : EventHandler() {
 
     m_core = core;
     m_scene = scene;
@@ -15,11 +15,11 @@ namespace Synthetics {
 
     m_selectedUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
     ScenePrimitive *shape = m_selectedUnit->getPolycodeObject();
-    m_scene->addEntity(shape);
+    m_scene->addCollisionChild(shape);
 
     m_curFace = 0;
     m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
-    m_marker->setColor(1.0, 0.0, 0.0, 1.0);
+    m_marker->setColor(0.8, 0.2, 0.2, 1.0);
     m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
     shape->addChild(m_marker);
   }
