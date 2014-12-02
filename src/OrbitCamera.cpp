@@ -50,6 +50,12 @@ namespace Synthetics {
             case KEY_UP:
               rotate(m_pitch, -CAMERA_STEP_SIZE);
               break;
+            case KEY_HOME:
+              m_distance -= CAMERA_STEP_SIZE;
+              break;
+            case KEY_END:
+              m_distance += CAMERA_STEP_SIZE;
+              break;
           }
           update();
           break;
