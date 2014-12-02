@@ -55,6 +55,13 @@ namespace Synthetics {
           m_marker->setPosition(m_selectedUnit->getOrientation(m_curFace) * 0.3);
           //fprintf(stderr, "Unit: %p\n", m_selectedUnit);
           break;
+        case InputEvent::EVENT_MOUSEDOWN:
+          Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
+          RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 100.0);
+           if(res.entity) {
+             res.entity->setColor(1.0, 0.0,0.0,1.0);
+           }
+          break;
       }
     }
   }
