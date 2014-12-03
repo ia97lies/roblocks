@@ -54,8 +54,7 @@ namespace Synthetics {
           m_units[face] = unit;
           ScenePrimitive *shape = unit->getPolycodeObject();
           ScenePrimitive *selectedShape = this->getPolycodeObject();
-          shape->setPosition(this->getOrientation(face));
-          selectedShape->addChild(shape);
+          shape->setPosition(selectedShape->getPosition() + this->getOrientation(face));
         }
         else {
           delete unit;
