@@ -14,8 +14,8 @@ namespace Synthetics {
     m_core = core;
     m_scene = scene;
 
-    m_pitch = 20.0f;
-    m_yaw = 0.0f;
+    m_x = 20.0f;
+    m_y = 0.0f;
     m_distance = 15.0f;
     m_position = Vector3(0.0f, 0.0f, -m_distance);
     m_upVector = btVector3(0.0f, 1.0f, 0.0f);
@@ -39,16 +39,16 @@ namespace Synthetics {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
             case KEY_LEFT:
-              rotate(m_yaw, +CAMERA_STEP_SIZE); 
+              rotate(m_y, +CAMERA_STEP_SIZE); 
               break;
             case KEY_RIGHT:
-              rotate(m_yaw, -CAMERA_STEP_SIZE);
+              rotate(m_y, -CAMERA_STEP_SIZE);
               break;
             case KEY_DOWN:
-              rotate(m_pitch, +CAMERA_STEP_SIZE);
+              rotate(m_x, +CAMERA_STEP_SIZE);
               break;
             case KEY_UP:
-              rotate(m_pitch, -CAMERA_STEP_SIZE);
+              rotate(m_x, -CAMERA_STEP_SIZE);
               break;
             case KEY_HOME:
               m_distance -= CAMERA_STEP_SIZE;
@@ -64,36 +64,18 @@ namespace Synthetics {
   }
 
   void OrbitCamera::rotate(float &angle, float value) {
-    angle -= value; 
-    if (angle < 0) angle += 360; 
+    angle -= value;
+    if (angle < -360) angle += 360; 
     if (angle >= 360) angle -= 360;
   }
 
 
   void OrbitCamera::update() {
-    float pitch = m_pitch * RADIANS_PER_DEGREE;
-    float yaw = m_yaw * RADIANS_PER_DEGREE;
-
-    // did this with bullets linear math
-    // TODO: make this with pure Polycode so a Lua example would be possible as
-    //       well.
-    btVector3 position(0, 0, -m_distance);
-    btVector3 forward(position[0], position[1], position[2]);
-    if (forward.length2() < SIMD_EPSILON) {
-      forward.setValue(1.f,0.f,0.f);
-    }
-    btVector3 right = m_upVector.cross(forward);
-    btQuaternion rotation(m_upVector, yaw);
-    btQuaternion roll(right, -pitch);
-    position = btMatrix3x3(rotation) * btMatrix3x3(roll) * position;
-
-    m_position.x = position.getX();
-    m_position.y = position.getY();
-    m_position.z = position.getZ();
-    m_position += m_target;
-
-
-    m_scene->getDefaultCamera()->setPosition(m_position);
+    Quaternion *rotation = new Quaternion();
+    rotation->fromAxes(m_x, m_y, 0);
+    Vector3 position = rotation->applyTo(Vector3(0.0, 0.0, -m_distance)) + m_target;
+    m_scene->getDefaultCamera()->setPosition(position);
+    m_scene->getDefaultCamera()->setRotationQuat(rotation->w, rotation->x, rotation->y, rotation->z);
     m_scene->getDefaultCamera()->lookAt(m_target);
   }
 }

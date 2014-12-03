@@ -29,8 +29,8 @@ namespace Synthetics {
       Polycode::Scene *m_scene;
       Polycode::Vector3 m_position;
       Polycode::Vector3 m_target;
-      float m_pitch;
-      float m_yaw;
+      float m_x;
+      float m_y;
       float m_distance;
       btVector3 m_upVector;
 
