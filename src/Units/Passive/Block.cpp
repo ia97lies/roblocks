@@ -32,7 +32,7 @@ namespace Synthetics {
 
         m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
         m_shape->colorAffectsChildren = false;
-        m_shape->setColor(0.0, 1.0, 1.0, 0.4);
+        m_shape->setColor(0.3, 0.9, 0.3, 0.4);
         m_shape->setPosition(0.0, 0.0, 0.0);
         m_shape->setUserData(this);
       }
@@ -49,7 +49,8 @@ namespace Synthetics {
         return m_faces[face];
       }
 
-      void Block::addUnit(int face, Unit *unit) {
+      bool Block::addUnit(int face, Unit *unit) {
+        bool ok = true;
         if (face >= 0 && face < s_noOfFaces && m_units[face] == NULL) {
           m_units[face] = unit;
           ScenePrimitive *shape = unit->getPolycodeObject();
@@ -57,8 +58,9 @@ namespace Synthetics {
           shape->setPosition(selectedShape->getPosition() + this->getOrientation(face));
         }
         else {
-          delete unit;
+          ok = false;
         }
+        return ok;
       }
 
       Unit *Block::getUnit(int face) {
@@ -71,10 +73,10 @@ namespace Synthetics {
 
       void Block::setActive(bool on) {
         if (!on) {
-          m_shape->setColor(0.0, 1.0, 1.0, 0.4);
+          m_shape->setColor(0.3, 0.9, 0.3, 0.4);
         }
         else {
-          m_shape->setColor(1.0, 0.0, 0.0, 0.6);
+          m_shape->setColor(0.3, 0.9, 0.3, 1.0);
         }
       }
 

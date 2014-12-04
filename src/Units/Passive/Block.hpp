@@ -20,7 +20,7 @@ namespace Synthetics {
 
           virtual int noOfFaces();
           virtual Polycode::Vector3 getOrientation(int face);
-          virtual void addUnit(int face, Unit *unit);
+          virtual bool addUnit(int face, Unit *unit);
           virtual Unit *getUnit(int face);
           virtual void setActive(bool on);
           virtual Polycode::ScenePrimitive * getPolycodeObject(); 

@@ -64,8 +64,9 @@ namespace Synthetics {
           break;
         case InputEvent::EVENT_MOUSEMOVE:
           if (m_mouseRightClick) {
-            m_x = inputEvent->getMousePosition().x;
-            m_y = inputEvent->getMousePosition().y;
+            m_x += m_core->getInput()->getMouseDelta().x;
+            m_y -= m_core->getInput()->getMouseDelta().y;
+            clamp(m_y, -20, 80);
             update();
             break;
           }
