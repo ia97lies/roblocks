@@ -15,6 +15,7 @@ namespace Synthetics {
 
     m_curUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
     ScenePrimitive *shape = m_curUnit->getPolycodeObject();
+    m_curUnit->setActive(true);
     m_scene->addCollisionChild(shape);
 
     m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
