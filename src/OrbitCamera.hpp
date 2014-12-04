@@ -8,9 +8,6 @@
 
 #include <Polycode.h>
 #include "PolycodeView.h"
-#include "bullet/LinearMath/btVector3.h"
-#include "bullet/LinearMath/btMatrix3x3.h"
-#include "bullet/LinearMath/btQuaternion.h"
 
 #include "MovingCamera.hpp"
 
@@ -32,9 +29,9 @@ namespace Synthetics {
       float m_x;
       float m_y;
       float m_distance;
-      btVector3 m_upVector;
+      bool m_mouseRightClick;
 
-      void rotate(float &angle, float value);
+      float clamp(float angle, float min, float max);
   };
 
 }

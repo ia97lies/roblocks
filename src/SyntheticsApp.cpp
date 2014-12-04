@@ -27,6 +27,9 @@ namespace Synthetics {
 
     m_camera = new OrbitCamera(m_core, m_scene);
     m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEDOWN);
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEUP);
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEMOVE);
 
     Constructor *constructor = new Constructor(m_core, m_scene, factory);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
