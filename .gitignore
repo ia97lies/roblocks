@@ -12,4 +12,4 @@ lib/
 bin/
 include/
 install_manifest.txt
-
+.exrc
