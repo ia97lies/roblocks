@@ -19,6 +19,9 @@ namespace Synthetics {
       virtual bool addUnit(int face, Unit *unit) = 0;
       virtual Unit *getUnit(int face) = 0;
       virtual void setActive(bool on) = 0;
+      virtual bool setActiveFace(int face) = 0;
+      virtual void setParent(Unit *unit) = 0;
+      virtual bool haveChilds() = 0;
       virtual Polycode::ScenePrimitive * getPolycodeObject() = 0;
       virtual void handleEvent(Polycode::Event *event) = 0;
   };

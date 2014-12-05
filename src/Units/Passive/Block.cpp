@@ -23,8 +23,10 @@ namespace Synthetics {
         m_faces[4] = Vector3(0, 1, 0);
         m_faces[5] = Vector3(0, -1, 0);
 
+        m_activeFace = 0;
         for (int i = 0; i < this->noOfFaces(); i++) {
-          m_units[i] = NULL;
+          m_childs[i] = NULL;
+          m_parents[i] = NULL;
         }
 
         m_core = core;
@@ -39,6 +41,7 @@ namespace Synthetics {
 
       Block::~Block() {
         fprintf(stderr, "Destroy a passive block\n");
+        delete m_shape;
       }
 
       int Block::noOfFaces() {
@@ -51,8 +54,9 @@ namespace Synthetics {
 
       bool Block::addUnit(int face, Unit *unit) {
         bool ok = true;
-        if (face >= 0 && face < s_noOfFaces && m_units[face] == NULL) {
-          m_units[face] = unit;
+        if (face >= 0 && face < s_noOfFaces && m_childs[face] == NULL) {
+          m_childs[face] = unit;
+          unit->setParent(this);
           ScenePrimitive *shape = unit->getPolycodeObject();
           ScenePrimitive *selectedShape = this->getPolycodeObject();
           shape->setPosition(selectedShape->getPosition() + this->getOrientation(face));
@@ -65,7 +69,7 @@ namespace Synthetics {
 
       Unit *Block::getUnit(int face) {
         if (face >= 0 && face < s_noOfFaces) {
-          return m_units[face];
+          return m_childs[face];
         }
 
         return NULL;
@@ -78,6 +82,29 @@ namespace Synthetics {
         else {
           m_shape->setColor(0.3, 0.9, 0.3, 1.0);
         }
+      }
+
+      bool Block::setActiveFace(int face) {
+        bool ok = true;
+        if (face >= 0 && face < s_noOfFaces && m_childs[face] == NULL) {
+          m_activeFace = face;
+        }
+        else {
+          ok = false;
+        }
+        return ok;
+      }
+
+      void Block::setParent(Unit *unit) {
+        m_parents[m_activeFace] = unit;
+      }
+
+      bool Block::haveChilds() {
+        bool have = false;
+        for (int face = 0; face < s_noOfFaces; face++) {
+          have |= m_childs[face] != NULL;
+        }
+        return have;
       }
 
       void Block::handleEvent(Event *event) {

@@ -33,6 +33,12 @@ namespace Synthetics {
       switch(e->getEventCode()) {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
+            case KEY_DELETE:
+              if (!m_curUnit->haveChilds()) {
+                //ScenePrimitive *shape = m_curUnit->getPolycodeObject();
+                //m_scene->removeChild(shape);
+              }
+              break;
             case KEY_s:
               m_curFace += 1;
               if (m_curFace > m_curUnit->noOfFaces() - 1) {
@@ -48,7 +54,6 @@ namespace Synthetics {
                 delete newUnit;
               }
               break;
-
           }
           m_marker->setPosition(m_curUnit->getOrientation(m_curFace) * 0.3);
           //fprintf(stderr, "Unit: %p\n", m_curUnit);

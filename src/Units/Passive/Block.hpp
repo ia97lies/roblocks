@@ -23,6 +23,9 @@ namespace Synthetics {
           virtual bool addUnit(int face, Unit *unit);
           virtual Unit *getUnit(int face);
           virtual void setActive(bool on);
+          virtual bool setActiveFace(int face);
+          virtual void setParent(Unit *unit);
+          virtual bool haveChilds();
           virtual Polycode::ScenePrimitive * getPolycodeObject(); 
           virtual void handleEvent(Polycode::Event *event);
           
@@ -31,7 +34,9 @@ namespace Synthetics {
           Polycode::Core *m_core;
           Polycode::Scene *m_scene;
           Polycode::Vector3 m_faces[s_noOfFaces];
-          Unit *m_units[s_noOfFaces];
+          Unit *m_childs[s_noOfFaces];
+          Unit *m_parents[s_noOfFaces];
+          bool m_activeFace;
 
           Polycode::ScenePrimitive * m_shape;
       };
