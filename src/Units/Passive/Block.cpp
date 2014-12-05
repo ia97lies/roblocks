@@ -41,6 +41,11 @@ namespace Synthetics {
 
       Block::~Block() {
         fprintf(stderr, "Destroy a passive block\n");
+        for (int face = 0; face < s_noOfFaces; face++) {
+          if (m_parents[face] != NULL) {
+            m_parents[face]->removeUnit(this);
+          }
+        }
         delete m_shape;
       }
 
@@ -65,6 +70,14 @@ namespace Synthetics {
           ok = false;
         }
         return ok;
+      }
+
+      void Block::removeUnit(Unit *unit) {
+        for (int face = 0; face < s_noOfFaces; face++) {
+          if (m_childs[face] == unit) {
+            m_childs[face] = NULL;
+          }
+        }
       }
 
       Unit *Block::getUnit(int face) {
@@ -103,6 +116,14 @@ namespace Synthetics {
         bool have = false;
         for (int face = 0; face < s_noOfFaces; face++) {
           have |= m_childs[face] != NULL;
+        }
+        return have;
+      }
+
+      bool Block::haveParents() {
+        bool have = false;
+        for (int face = 0; face < s_noOfFaces; face++) {
+          have |= m_parents[face] != NULL;
         }
         return have;
       }
