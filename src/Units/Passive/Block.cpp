@@ -24,7 +24,7 @@ namespace Synthetics {
         m_faces[5] = Vector3(0, -1, 0);
 
         m_activeFace = 0;
-        for (int i = 0; i < this->noOfFaces(); i++) {
+        for (int i = 0; i < this->noFaces(); i++) {
           m_childs[i] = NULL;
           m_parents[i] = NULL;
         }
@@ -41,7 +41,7 @@ namespace Synthetics {
 
       Block::~Block() {
         fprintf(stderr, "Destroy a passive block\n");
-        for (int face = 0; face < s_noOfFaces; face++) {
+        for (int face = 0; face < s_noFaces; face++) {
           if (m_parents[face] != NULL) {
             m_parents[face]->removeUnit(this);
           }
@@ -49,8 +49,8 @@ namespace Synthetics {
         delete m_shape;
       }
 
-      int Block::noOfFaces() {
-        return s_noOfFaces;
+      int Block::noFaces() {
+        return s_noFaces;
       }
 
       Vector3 Block::getOrientation(int face) {
@@ -59,7 +59,7 @@ namespace Synthetics {
 
       bool Block::addUnit(int face, Unit *unit) {
         bool ok = true;
-        if (face >= 0 && face < s_noOfFaces && m_childs[face] == NULL) {
+        if (face >= 0 && face < s_noFaces && m_childs[face] == NULL) {
           m_childs[face] = unit;
           unit->setParent(this);
           ScenePrimitive *shape = unit->getPolycodeObject();
@@ -73,7 +73,7 @@ namespace Synthetics {
       }
 
       void Block::removeUnit(Unit *unit) {
-        for (int face = 0; face < s_noOfFaces; face++) {
+        for (int face = 0; face < s_noFaces; face++) {
           if (m_childs[face] == unit) {
             m_childs[face] = NULL;
           }
@@ -81,11 +81,22 @@ namespace Synthetics {
       }
 
       Unit *Block::getUnit(int face) {
-        if (face >= 0 && face < s_noOfFaces) {
-          return m_childs[face];
+        Unit *child = NULL;
+        if (face >= 0 && face < s_noFaces) {
+          child = m_childs[face];
         }
 
-        return NULL;
+        return child;
+      }
+
+      Unit *Block::getParent(int face) {
+        Unit *parent = NULL;
+        if (face >= 0 && face < s_noFaces) {
+          parent =  m_parents[face];
+        }
+
+        return parent;
+
       }
 
       void Block::setActive(bool on) {
@@ -99,7 +110,7 @@ namespace Synthetics {
 
       bool Block::setActiveFace(int face) {
         bool ok = true;
-        if (face >= 0 && face < s_noOfFaces && m_childs[face] == NULL) {
+        if (face >= 0 && face < s_noFaces && m_childs[face] == NULL) {
           m_activeFace = face;
         }
         else {
@@ -114,7 +125,7 @@ namespace Synthetics {
 
       bool Block::haveChilds() {
         bool have = false;
-        for (int face = 0; face < s_noOfFaces; face++) {
+        for (int face = 0; face < s_noFaces; face++) {
           have |= m_childs[face] != NULL;
         }
         return have;
@@ -122,7 +133,7 @@ namespace Synthetics {
 
       bool Block::haveParents() {
         bool have = false;
-        for (int face = 0; face < s_noOfFaces; face++) {
+        for (int face = 0; face < s_noFaces; face++) {
           have |= m_parents[face] != NULL;
         }
         return have;

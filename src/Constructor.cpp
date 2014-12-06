@@ -36,15 +36,24 @@ namespace Synthetics {
             switch (inputEvent->keyCode()) {
               case KEY_DELETE:
                 if (!m_curUnit->haveChilds() && m_curUnit->haveParents()) {
+                  Unit *selectedUnit = NULL;
+                  for (int i = 0; i < m_curUnit->noFaces(); i++) {
+                    if (m_curUnit->getParent(i)) {
+                      selectedUnit = m_curUnit->getParent(i); 
+                      selectedUnit->setActive(true);
+                      break;
+                    }
+                  }
                   ScenePrimitive *shape = m_curUnit->getPolycodeObject();
                   m_scene->removeEntity(shape);
                   delete m_curUnit;
-                  m_curUnit = NULL;
+                  m_curUnit = selectedUnit;
+                  this->addMarker();
                 }
                 break;
               case KEY_s:
                 m_curFace += 1;
-                if (m_curFace > m_curUnit->noOfFaces() - 1) {
+                if (m_curFace > m_curUnit->noFaces() - 1) {
                   m_curFace = 0;
                 }
                 m_marker->setPosition(m_curUnit->getOrientation(m_curFace) * 0.3);
@@ -60,7 +69,6 @@ namespace Synthetics {
                 break;
             }
           }
-          //fprintf(stderr, "Unit: %p\n", m_curUnit);
           break;
         case InputEvent::EVENT_MOUSEDOWN:
           switch(inputEvent->getMouseButton()) {
