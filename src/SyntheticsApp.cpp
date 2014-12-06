@@ -7,6 +7,7 @@
 #include "Configurator.hpp"
 #include "OrbitCamera.hpp"
 #include "Constructor.hpp"
+#include "Help.hpp"
 #include "Unit.hpp"
 #include "UnitFactory.hpp"
 
@@ -34,6 +35,9 @@ namespace Synthetics {
     Constructor *constructor = new Constructor(m_core, m_scene, factory);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_MOUSEDOWN);
+
+    Help *help = new Help(m_core);
+    m_core->getInput()->addEventListener(help, InputEvent::EVENT_KEYDOWN);
 
     m_camera->update();
   }

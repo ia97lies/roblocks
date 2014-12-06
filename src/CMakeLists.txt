@@ -56,6 +56,7 @@ set(Synthetics_SRCS
   Configurator.cpp
   OrbitCamera.cpp
   Constructor.cpp
+  Help.cpp
   UnitEvent.cpp
   UnitFactory.cpp
 )
@@ -66,6 +67,7 @@ set(Synthetics_HDRS
   MovingCamera.hpp
   OrbitCamera.hpp
   Constructor.hpp
+  Help.hpp
   Unit.hpp
   UnitEvent.hpp
   UnitFactory.hpp
