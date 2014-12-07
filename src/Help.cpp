@@ -10,8 +10,12 @@ namespace Synthetics {
   Help::Help(Core *core) : EventHandler() {
 
     m_core = core;
-    m_helpScene = NULL;
+    m_helpScene = new Scene(Scene::SCENE_2D);
+    m_helpScene->getActiveCamera()->setOrthoSize(640, 480);
     m_helpText = new SceneLabel("Help", 32);
+    m_helpScene->addChild(m_helpText);
+    m_helpText->enabled = false;
+    m_helpText->visible = false;
   }
 
   Help::~Help() {
@@ -25,18 +29,12 @@ namespace Synthetics {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
             case KEY_ESCAPE:
-              if (m_helpScene) {
-                delete m_helpScene;
-                m_helpScene = NULL;
-              }
+              m_helpText->enabled = false;
+              m_helpText->visible = false;
               break;
             case KEY_F1:
-              fprintf(stderr, "XXXXXXXXX\n");
-              if (!m_helpScene) {
-                m_helpScene = new Scene(Scene::SCENE_2D);
-                m_helpScene->getActiveCamera()->setOrthoSize(640, 480);
-                m_helpScene->addChild(m_helpText);
-              }
+              m_helpText->enabled = true;
+              m_helpText->visible = true;
               break;
           }
           break;

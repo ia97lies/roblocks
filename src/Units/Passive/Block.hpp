@@ -19,16 +19,16 @@ namespace Synthetics {
           virtual ~Block();
 
           virtual int noFaces();
-          virtual Polycode::Vector3 getOrientation(int face);
           virtual bool addUnit(int face, Unit *unit);
+          virtual void linkUnit(int face, Unit *unit);
           virtual void removeUnit(Unit *unit);
           virtual Unit *getUnit(int face);
-          virtual Unit *getParent(int face);
           virtual void setActive(bool on);
           virtual bool setActiveFace(int face);
-          virtual void setParent(Unit *unit);
-          virtual bool haveChilds();
-          virtual bool haveParents();
+          virtual int getActiveFace();
+          virtual int noChilds();
+
+          virtual Polycode::Vector3 getOrientation(int face);
           virtual Polycode::ScenePrimitive * getPolycodeObject(); 
           virtual void handleEvent(Polycode::Event *event);
           
@@ -38,10 +38,11 @@ namespace Synthetics {
           Polycode::Scene *m_scene;
           Polycode::Vector3 m_faces[s_noFaces];
           Unit *m_childs[s_noFaces];
-          Unit *m_parents[s_noFaces];
           bool m_activeFace;
 
           Polycode::ScenePrimitive * m_shape;
+
+          float clamp(float value, float min, float max);
       };
 
     }

@@ -34,12 +34,13 @@ namespace Synthetics {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
             case KEY_DELETE:
-              if (!m_curUnit->haveChilds() && m_curUnit->haveParents()) {
+              if (m_curUnit->noChilds() == 1) {
                 Unit *selectedUnit = NULL;
                 for (int i = 0; i < m_curUnit->noFaces(); i++) {
-                  if (m_curUnit->getParent(i)) {
-                    selectedUnit = m_curUnit->getParent(i); 
+                  if (m_curUnit->getUnit(i)) {
+                    selectedUnit = m_curUnit->getUnit(i); 
                     selectedUnit->setActive(true);
+                    selectedUnit->removeUnit(m_curUnit);
                     break;
                   }
                 }

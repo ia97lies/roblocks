@@ -26,7 +26,6 @@ namespace Synthetics {
         m_activeFace = 0;
         for (int i = 0; i < this->noFaces(); i++) {
           m_childs[i] = NULL;
-          m_parents[i] = NULL;
         }
 
         m_core = core;
@@ -41,11 +40,6 @@ namespace Synthetics {
 
       Block::~Block() {
         fprintf(stderr, "Destroy a passive block\n");
-        for (int face = 0; face < s_noFaces; face++) {
-          if (m_parents[face] != NULL) {
-            m_parents[face]->removeUnit(this);
-          }
-        }
         delete m_shape;
       }
 
@@ -53,23 +47,49 @@ namespace Synthetics {
         return s_noFaces;
       }
 
-      Vector3 Block::getOrientation(int face) {
-        return m_faces[face];
-      }
-
       bool Block::addUnit(int face, Unit *unit) {
         bool ok = true;
         if (face >= 0 && face < s_noFaces && m_childs[face] == NULL) {
           m_childs[face] = unit;
-          unit->setParent(this);
+          unit->linkUnit(unit->getActiveFace(), this);
           ScenePrimitive *shape = unit->getPolycodeObject();
           ScenePrimitive *selectedShape = this->getPolycodeObject();
           shape->setPosition(selectedShape->getPosition() + this->getOrientation(face));
+
+          // TODO: as well as rotate in a way that both faces do face each other
+          Vector3 o1 = this->getOrientation(face);
+          Vector3 o2 = unit->getOrientation(unit->getActiveFace());
+          float angle = acos(o1.dot(o2)) + PI;
+          angle = angle < 2*PI ? angle : 0;
+          Vector3 axis = o1.crossProduct(o2);
+          if (axis.length() == 0) {
+            if (o2.x) {
+              axis.x = 1;
+            }
+            else if (o2.y) {
+              axis.y = 1;
+            }
+            else {
+              axis.z = 1;
+            }
+          } 
+          Vector3 rotation = axis * (angle * 180 / PI);
+          fprintf(stderr, "x: %f, y:%f, z: %f\n", rotation.x, rotation.y, rotation.z);
+          shape->setRotationEuler(rotation);
+
+          // TODO: have to rotate the orientation vectors of the added unit as well!
+          //       ==> add a rotate method, maybe protected
         }
         else {
           ok = false;
         }
         return ok;
+      }
+ 
+      void Block::linkUnit(int face, Unit *unit) {
+        if (face >= 0 && face < s_noFaces && m_childs[face] == NULL) {
+          m_childs[face] = unit;
+        }
       }
 
       void Block::removeUnit(Unit *unit) {
@@ -87,16 +107,6 @@ namespace Synthetics {
         }
 
         return child;
-      }
-
-      Unit *Block::getParent(int face) {
-        Unit *parent = NULL;
-        if (face >= 0 && face < s_noFaces) {
-          parent =  m_parents[face];
-        }
-
-        return parent;
-
       }
 
       void Block::setActive(bool on) {
@@ -119,24 +129,20 @@ namespace Synthetics {
         return ok;
       }
 
-      void Block::setParent(Unit *unit) {
-        m_parents[m_activeFace] = unit;
+      int Block::getActiveFace() {
+        return m_activeFace;
       }
 
-      bool Block::haveChilds() {
-        bool have = false;
+      int Block::noChilds() {
+        int no = 0;
         for (int face = 0; face < s_noFaces; face++) {
-          have |= m_childs[face] != NULL;
+          no += m_childs[face] ? 1 : 0;
         }
-        return have;
+        return no;
       }
 
-      bool Block::haveParents() {
-        bool have = false;
-        for (int face = 0; face < s_noFaces; face++) {
-          have |= m_parents[face] != NULL;
-        }
-        return have;
+      Vector3 Block::getOrientation(int face) {
+        return m_faces[face];
       }
 
       void Block::handleEvent(Event *event) {
