@@ -24,7 +24,6 @@ namespace Synthetics {
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
       UnitFactory *m_factory;
-      Polycode::ScenePrimitive *m_marker;
       Unit *m_curUnit;
 
       void addMarker();

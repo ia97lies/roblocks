@@ -23,6 +23,9 @@ namespace Synthetics {
         m_faces[4] = Vector3(0, 1, 0);
         m_faces[5] = Vector3(0, -1, 0);
 
+        m_shapeColor = Vector3(0.3, 0.9, 0.3);
+        m_markerColor = Vector3(0.8, 0.2, 0.2);
+
         m_activeFace = 0;
         for (int i = 0; i < this->noFaces(); i++) {
           m_childs[i] = NULL;
@@ -33,9 +36,18 @@ namespace Synthetics {
 
         m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
         m_shape->colorAffectsChildren = false;
-        m_shape->setColor(0.3, 0.9, 0.3, 0.4);
+        m_shape->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.4);
         m_shape->setPosition(0.0, 0.0, 0.0);
         m_shape->setUserData(this);
+
+        for (int i = 0 ; i < this->noFaces(); i++) {
+          m_connectors[i] = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
+          m_shape->addChild(m_connectors[i]);
+          m_connectors[i]->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.6);
+          m_connectors[i]->setPosition(this->getOrientation(i) * 0.4);
+        }
+
+        this->setActiveFace(0);
       }
 
       Block::~Block() {
@@ -47,26 +59,25 @@ namespace Synthetics {
         return s_noFaces;
       }
 
-      bool Block::addUnit(int face, Unit *unit) {
+      bool Block::addUnit(Unit *unit) {
         bool ok = true;
-        if (face >= 0 && face < s_noFaces && m_childs[face] == NULL) {
-          m_childs[face] = unit;
-          unit->linkUnit(unit->getActiveFace(), this);
+        if (m_childs[m_activeFace] == NULL) {
+          m_childs[m_activeFace] = unit;
+          unit->linkUnit(this);
           ScenePrimitive *shape = unit->getPolycodeObject();
           ScenePrimitive *selectedShape = this->getPolycodeObject();
-          shape->setPosition(selectedShape->getPosition() + this->getOrientation(face));
+          shape->setPosition(selectedShape->getPosition() + this->getOrientation(m_activeFace));
 
-          // TODO: as well as rotate in a way that both faces do face each other
-          Vector3 o1 = this->getOrientation(face);
+          Vector3 o1 = this->getOrientation(m_activeFace);
           Vector3 o2 = unit->getOrientation(unit->getActiveFace());
-          float angle = acos(o1.dot(o2)) + PI;
+          float angle = acos(o1.dot(o2)) - PI;
           angle = angle < 2*PI ? angle : 0;
           Vector3 axis = o1.crossProduct(o2);
           if (axis.length() == 0) {
-            if (o2.x) {
+            if (o2.x == 0) {
               axis.x = 1;
             }
-            else if (o2.y) {
+            else if (o2.y == 0) {
               axis.y = 1;
             }
             else {
@@ -86,10 +97,8 @@ namespace Synthetics {
         return ok;
       }
  
-      void Block::linkUnit(int face, Unit *unit) {
-        if (face >= 0 && face < s_noFaces && m_childs[face] == NULL) {
-          m_childs[face] = unit;
-        }
+      void Block::linkUnit(Unit *unit) {
+        m_childs[m_activeFace] = unit;
       }
 
       void Block::removeUnit(Unit *unit) {
@@ -120,8 +129,10 @@ namespace Synthetics {
 
       bool Block::setActiveFace(int face) {
         bool ok = true;
-        if (face >= 0 && face < s_noFaces && m_childs[face] == NULL) {
+        if (face >= 0 && face < s_noFaces) {
+          m_connectors[m_activeFace]->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.4);
           m_activeFace = face;
+          m_connectors[m_activeFace]->setColor(m_markerColor.x, m_markerColor.y, m_markerColor.z, 1.0);
         }
         else {
           ok = false;

@@ -12,15 +12,12 @@ namespace Synthetics {
     m_core = core;
     m_scene = scene;
     m_factory = factory;
+    m_curFace = 0;
 
     m_curUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
     ScenePrimitive *shape = m_curUnit->getPolycodeObject();
     m_curUnit->setActive(true);
     m_scene->addCollisionChild(shape);
-
-    m_marker = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
-    m_marker->setColor(0.8, 0.2, 0.2, 1.0);
-    this->addMarker();
   }
 
   Constructor::~Constructor() {
@@ -40,15 +37,13 @@ namespace Synthetics {
                   if (m_curUnit->getUnit(i)) {
                     selectedUnit = m_curUnit->getUnit(i); 
                     selectedUnit->setActive(true);
-                    selectedUnit->removeUnit(m_curUnit);
                     break;
                   }
                 }
                 ScenePrimitive *shape = m_curUnit->getPolycodeObject();
-                m_scene->removeEntity(shape);
                 delete m_curUnit;
                 m_curUnit = selectedUnit;
-                this->addMarker();
+                m_curUnit->setActiveFace(0);
               }
               break;
             case KEY_s:
@@ -56,11 +51,11 @@ namespace Synthetics {
               if (m_curFace > m_curUnit->noFaces() - 1) {
                 m_curFace = 0;
               }
-              m_marker->setPosition(m_curUnit->getOrientation(m_curFace) * 0.3);
+              m_curUnit->setActiveFace(m_curFace);
               break;
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
-              if (m_curUnit->addUnit(m_curFace, newUnit)) {
+              if (m_curUnit->addUnit(newUnit)) {
                 m_scene->addCollisionChild(newUnit->getPolycodeObject());
               }
               else {
@@ -77,28 +72,15 @@ namespace Synthetics {
               if(res.entity) {
                 Unit *selectedUnit = (Unit *)res.entity->getUserData();
                 if (selectedUnit) {
-                  this->removeMarker();
                   m_curUnit->setActive(false);
                   selectedUnit->setActive(true);
                   m_curUnit = selectedUnit;
-                  this->addMarker();
+                  m_curUnit->setActiveFace(0);
                 }
               }
               break;
           }
       }
     }
-  }
-
-  void Constructor::addMarker() {
-    ScenePrimitive *shape = m_curUnit->getPolycodeObject();
-    m_curFace = 0;
-    m_marker->setPosition(m_curUnit->getOrientation(m_curFace) * 0.3);
-    shape->addChild(m_marker);
-  }
-
-  void Constructor::removeMarker() {
-    ScenePrimitive *shape = m_curUnit->getPolycodeObject();
-    shape->removeChild(m_marker);
   }
 }

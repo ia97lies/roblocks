@@ -15,12 +15,12 @@ namespace Synthetics {
       virtual ~Unit() {};
 
       virtual int noFaces() = 0;
-      virtual bool addUnit(int face, Unit *unit) = 0;
-      virtual void linkUnit(int face, Unit *unit) = 0;
+      virtual bool setActiveFace(int face) = 0;
+      virtual bool addUnit(Unit *unit) = 0;
+      virtual void linkUnit(Unit *unit) = 0;
       virtual void removeUnit(Unit *unit) = 0;
       virtual Unit *getUnit(int face) = 0;
       virtual void setActive(bool on) = 0;
-      virtual bool setActiveFace(int face) = 0;
       virtual int getActiveFace() = 0;
       virtual int noChilds() = 0;
 
