@@ -7,6 +7,7 @@
 
 #include <Polycode.h>
 #include "PolycodeView.h"
+#include "Polycode3DPhysics.h"
 
 namespace Synthetics {
 
@@ -29,7 +30,7 @@ namespace Synthetics {
       virtual void handleEvent(Polycode::Event *event) = 0;
   };
 
-  typedef Unit *(*UnitCreateFn)(Polycode::Core *core, Polycode::Scene *scene);
+  typedef Unit *(*UnitCreateFn)(Polycode::Core *core, Polycode::CollisionScene *scene);
 }
 
 #endif

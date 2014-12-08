@@ -17,7 +17,7 @@ namespace Synthetics {
       ~UnitFactory();
       
       void addCreator(const std::string name, UnitCreateFn creator);
-      Unit *createUnit(const std::string name, ::Polycode::Core *core, ::Polycode::Scene *scene);
+      Unit *createUnit(const std::string name, ::Polycode::Core *core, ::Polycode::CollisionScene *scene);
 
       static UnitFactory *get() {
         static UnitFactory instance;

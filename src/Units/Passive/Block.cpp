@@ -14,7 +14,7 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       // Unit interface
       //--------------------------------------------------------------------------
-      Block::Block(Core *core, Scene *scene) {
+      Block::Block(Core *core, Polycode::CollisionScene *scene) {
         fprintf(stderr, "Create a passive block\n");
         m_faces[0] = Vector3(0, 0, -1);
         m_faces[1] = Vector3(-1, 0, 0);
@@ -168,7 +168,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Unit factory
       //----------------------------------------------------------------------
-      Unit *BlockCreator(Polycode::Core *core, Polycode::Scene *scene) {
+      Unit *BlockCreator(Polycode::Core *core, Polycode::CollisionScene *scene) {
         return new Block(core, scene);
       }
 

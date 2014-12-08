@@ -15,7 +15,7 @@ namespace Synthetics {
 
       class Block : public Unit {
         public:
-          Block(Polycode::Core *core, Polycode::Scene *scene);
+          Block(Polycode::Core *core, Polycode::CollisionScene *scene);
           virtual ~Block();
 
           virtual int noFaces();
