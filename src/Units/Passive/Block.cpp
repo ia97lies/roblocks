@@ -39,6 +39,7 @@ namespace Synthetics {
         m_shape->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.4);
         m_shape->setPosition(0.0, 0.0, 0.0);
         m_shape->setUserData(this);
+        m_shape->alphaTest = true;
 
         for (int i = 0 ; i < this->noFaces(); i++) {
           m_connectors[i] = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
@@ -57,7 +58,11 @@ namespace Synthetics {
             m_childs[i]->removeUnit(this);
           }
         }
+        m_scene->removeEntity(m_shape);
         delete m_shape;
+        for (int i = 0; i < this->noFaces(); i++) {
+          delete m_connectors[i];
+        }
       }
 
       int Block::noFaces() {
@@ -72,7 +77,7 @@ namespace Synthetics {
           ScenePrimitive *shape = unit->getPolycodeObject();
           ScenePrimitive *selectedShape = this->getPolycodeObject();
           selectedShape->addChild(shape);
-          //shape->setPosition(selectedShape->getPosition() + this->getOrientation(m_activeFace));
+          m_scene->trackCollision(shape);
           shape->setPosition(this->getOrientation(m_activeFace));
 
           Vector3 o1 = this->getOrientation(m_activeFace);

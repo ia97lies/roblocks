@@ -35,7 +35,7 @@ namespace Synthetics {
         private:
           static const int s_noFaces = 6;
           Polycode::Core *m_core;
-          Polycode::Scene *m_scene;
+          Polycode::CollisionScene *m_scene;
           Polycode::Vector3 m_faces[s_noFaces];
           Unit *m_childs[s_noFaces];
           Polycode::ScenePrimitive *m_connectors[s_noFaces];
