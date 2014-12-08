@@ -20,6 +20,7 @@ namespace Synthetics {
 
           virtual int noFaces();
           virtual bool setActiveFace(int face);
+          virtual bool setActiveFace(Polycode::Entity *marker); 
           virtual bool addUnit(Unit *unit);
           virtual void linkUnit(Unit *unit);
           virtual void removeUnit(Unit *unit);

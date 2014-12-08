@@ -14,7 +14,8 @@ namespace Synthetics {
     m_factory = factory;
     m_curFace = 0;
 
-    m_curUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
+    // todo mother block should be exchangable
+    m_mother = m_curUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
     ScenePrimitive *shape = m_curUnit->getPolycodeObject();
     m_curUnit->setActive(true);
     m_scene->addCollisionChild(shape);
@@ -31,7 +32,7 @@ namespace Synthetics {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
             case KEY_DELETE:
-              if (m_curUnit->noChilds() == 1) {
+              if (m_curUnit->noChilds() == 1 && m_curUnit != m_mother) {
                 Unit *selectedUnit = NULL;
                 for (int i = 0; i < m_curUnit->noFaces(); i++) {
                   if (m_curUnit->getUnit(i)) {
@@ -55,9 +56,7 @@ namespace Synthetics {
               break;
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
-              if (m_curUnit->addUnit(newUnit)) {
-              }
-              else {
+              if (!m_curUnit->addUnit(newUnit)) {
                 delete newUnit;
               }
               break;
@@ -75,6 +74,9 @@ namespace Synthetics {
                   selectedUnit->setActive(true);
                   m_curUnit = selectedUnit;
                   m_curUnit->setActiveFace(0);
+                }
+                else {
+                  m_curUnit->setActiveFace(res.entity);
                 }
               }
               break;

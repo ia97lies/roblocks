@@ -46,13 +46,13 @@ namespace Synthetics {
           m_shape->addChild(m_connectors[i]);
           m_connectors[i]->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.6);
           m_connectors[i]->setPosition(this->getOrientation(i) * 0.4);
+          m_scene->trackCollision(m_connectors[i]);
         }
 
         this->setActiveFace(0);
       }
 
       Block::~Block() {
-        fprintf(stderr, "Destroy a passive block\n");
         for (int i = 0; i < this->noFaces(); i++) {
           if (m_childs[i] != NULL) {
             m_childs[i]->removeUnit(this);
@@ -61,6 +61,7 @@ namespace Synthetics {
         m_scene->removeEntity(m_shape);
         delete m_shape;
         for (int i = 0; i < this->noFaces(); i++) {
+          m_scene->removeEntity(m_connectors[i]);
           delete m_connectors[i];
         }
       }
@@ -146,6 +147,19 @@ namespace Synthetics {
         }
         else {
           ok = false;
+        }
+        return ok;
+      }
+
+      bool Block::setActiveFace(Polycode::Entity *marker) {
+        bool ok = false;
+        for (int face = 0; face < this->noFaces(); face++) {
+          if (m_connectors[face] == marker) {
+            ok = true;
+            m_connectors[m_activeFace]->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.4);
+            m_activeFace = face;
+            m_connectors[m_activeFace]->setColor(m_markerColor.x, m_markerColor.y, m_markerColor.z, 1.0);
+          }
         }
         return ok;
       }
