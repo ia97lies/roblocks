@@ -52,6 +52,11 @@ namespace Synthetics {
 
       Block::~Block() {
         fprintf(stderr, "Destroy a passive block\n");
+        for (int i = 0; i < this->noFaces(); i++) {
+          if (m_childs[i] != NULL) {
+            m_childs[i]->removeUnit(this);
+          }
+        }
         delete m_shape;
       }
 
@@ -89,9 +94,6 @@ namespace Synthetics {
           Vector3 rotation = axis * (angle * (-1) * 180 / PI);
           fprintf(stderr, "x: %f, y:%f, z: %f\n", rotation.x, rotation.y, rotation.z);
           shape->setRotationEuler(rotation);
-
-          // TODO: have to rotate the orientation vectors of the added unit as well!
-          //       ==> add a rotate method, maybe protected
         }
         else {
           ok = false;
@@ -106,6 +108,7 @@ namespace Synthetics {
       void Block::removeUnit(Unit *unit) {
         for (int face = 0; face < s_noFaces; face++) {
           if (m_childs[face] == unit) {
+            m_shape->removeChild(unit->getPolycodeObject());
             m_childs[face] = NULL;
           }
         }
