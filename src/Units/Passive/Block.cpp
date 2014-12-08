@@ -66,11 +66,13 @@ namespace Synthetics {
           unit->linkUnit(this);
           ScenePrimitive *shape = unit->getPolycodeObject();
           ScenePrimitive *selectedShape = this->getPolycodeObject();
-          shape->setPosition(selectedShape->getPosition() + this->getOrientation(m_activeFace));
+          selectedShape->addChild(shape);
+          //shape->setPosition(selectedShape->getPosition() + this->getOrientation(m_activeFace));
+          shape->setPosition(this->getOrientation(m_activeFace));
 
           Vector3 o1 = this->getOrientation(m_activeFace);
           Vector3 o2 = unit->getOrientation(unit->getActiveFace());
-          float angle = acos(o1.dot(o2)) - PI;
+          float angle = acos(o1.dot(o2)) + PI;
           angle = angle < 2*PI ? angle : 0;
           Vector3 axis = o1.crossProduct(o2);
           if (axis.length() == 0) {
@@ -84,7 +86,7 @@ namespace Synthetics {
               axis.z = 1;
             }
           } 
-          Vector3 rotation = axis * (angle * 180 / PI);
+          Vector3 rotation = axis * (angle * (-1) * 180 / PI);
           fprintf(stderr, "x: %f, y:%f, z: %f\n", rotation.x, rotation.y, rotation.z);
           shape->setRotationEuler(rotation);
 

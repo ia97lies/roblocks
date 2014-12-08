@@ -56,7 +56,7 @@ namespace Synthetics {
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
               if (m_curUnit->addUnit(newUnit)) {
-                m_scene->addCollisionChild(newUnit->getPolycodeObject());
+                m_scene->trackCollision(newUnit->getPolycodeObject());
               }
               else {
                 delete newUnit;
