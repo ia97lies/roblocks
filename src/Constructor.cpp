@@ -12,7 +12,6 @@ namespace Synthetics {
     m_core = core;
     m_scene = scene;
     m_factory = factory;
-    m_curFace = 0;
 
     // todo mother block should be exchangable
     m_mother = m_curUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
@@ -46,13 +45,6 @@ namespace Synthetics {
                 m_curUnit = selectedUnit;
                 m_curUnit->setActiveFace(0);
               }
-              break;
-            case KEY_s:
-              m_curFace += 1;
-              if (m_curFace > m_curUnit->noFaces() - 1) {
-                m_curFace = 0;
-              }
-              m_curUnit->setActiveFace(m_curFace);
               break;
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);

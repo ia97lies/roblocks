@@ -15,7 +15,6 @@ namespace Synthetics {
       // Unit interface
       //--------------------------------------------------------------------------
       Block::Block(Core *core, Polycode::CollisionScene *scene) {
-        fprintf(stderr, "Create a passive block\n");
         m_faces[0] = Vector3(0, 0, -1);
         m_faces[1] = Vector3(-1, 0, 0);
         m_faces[2] = Vector3(0, 0, 1);
@@ -98,7 +97,6 @@ namespace Synthetics {
             }
           } 
           Vector3 rotation = axis * (angle * (-1) * 180 / PI);
-          fprintf(stderr, "x: %f, y:%f, z: %f\n", rotation.x, rotation.y, rotation.z);
           shape->setRotationEuler(rotation);
         }
         else {

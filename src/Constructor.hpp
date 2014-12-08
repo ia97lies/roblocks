@@ -20,7 +20,6 @@ namespace Synthetics {
       void handleEvent(Polycode::Event *e);
 
     private:
-      int m_curFace;
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
       UnitFactory *m_factory;
