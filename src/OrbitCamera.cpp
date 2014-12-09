@@ -28,8 +28,8 @@ namespace Synthetics {
   OrbitCamera::~OrbitCamera() {
   }
 
-  void OrbitCamera::updateTarget(Vector3 position) {
-    m_position = position;
+  void OrbitCamera::updateTarget(Vector3 target) {
+    m_target = target;
   }
 
   void OrbitCamera::handleEvent(Event *e) {
@@ -39,10 +39,10 @@ namespace Synthetics {
       switch(e->getEventCode()) {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
-            case KEY_HOME:
+            case KEY_w:
               m_distance -= CAMERA_STEP_SIZE;
               break;
-            case KEY_END:
+            case KEY_s:
               m_distance += CAMERA_STEP_SIZE;
               break;
           }
@@ -84,7 +84,7 @@ namespace Synthetics {
   void OrbitCamera::update() {
     Quaternion *rotation = new Quaternion();
     rotation->fromAxes(m_y, m_x, 0);
-    Vector3 position = rotation->applyTo(Vector3(0.0, 0.0, -m_distance)) + m_target;
+    Vector3 position = rotation->applyTo(Vector3(0.0, 0.0, -m_distance));
     m_scene->getDefaultCamera()->setPosition(position);
     m_scene->getDefaultCamera()->setRotationQuat(rotation->w, rotation->x, rotation->y, rotation->z);
     m_scene->getDefaultCamera()->lookAt(m_target);

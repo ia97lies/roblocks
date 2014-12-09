@@ -32,7 +32,7 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEUP);
     m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEMOVE);
 
-    Constructor *constructor = new Constructor(m_core, m_scene, factory);
+    Constructor *constructor = new Constructor(m_core, m_scene, m_camera, factory);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_MOUSEDOWN);
 

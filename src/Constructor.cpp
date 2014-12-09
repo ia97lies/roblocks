@@ -7,10 +7,11 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  Constructor::Constructor(Core *core, CollisionScene *scene, UnitFactory *factory) : EventHandler() {
+  Constructor::Constructor(Core *core, CollisionScene *scene, MovingCamera *camera, UnitFactory *factory) : EventHandler() {
 
     m_core = core;
     m_scene = scene;
+    m_camera = camera;
     m_factory = factory;
 
     // todo mother block should be exchangable
@@ -74,6 +75,8 @@ namespace Synthetics {
               break;
           }
       }
+      m_camera->updateTarget(m_curUnit->getPolycodeObject()->getCombinedPosition());
+      m_camera->update();
     }
   }
 }
