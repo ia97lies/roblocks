@@ -7,7 +7,7 @@
 #include "Configurator.hpp"
 #include "OrbitCamera.hpp"
 #include "Constructor.hpp"
-#include "Help.hpp"
+#include "HeadUpDisplay.hpp"
 #include "Unit.hpp"
 #include "UnitFactory.hpp"
 
@@ -36,8 +36,8 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_MOUSEDOWN);
 
-    Help *help = new Help(m_core);
-    m_core->getInput()->addEventListener(help, InputEvent::EVENT_KEYDOWN);
+    HeadUpDisplay *hud = new HeadUpDisplay(m_core, m_conf);
+    m_core->getInput()->addEventListener(hud, InputEvent::EVENT_KEYDOWN);
 
     m_camera->update();
   }

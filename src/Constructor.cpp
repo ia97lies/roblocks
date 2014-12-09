@@ -75,8 +75,8 @@ namespace Synthetics {
               break;
           }
       }
-      m_camera->updateTarget(m_curUnit->getPolycodeObject()->getCombinedPosition());
-      m_camera->update();
+      //m_camera->updateTarget(m_curUnit->getPolycodeObject()->getCombinedPosition());
+      //m_camera->update();
     }
   }
 }

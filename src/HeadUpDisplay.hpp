@@ -9,20 +9,21 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "Unit.hpp"
-#include "UnitFactory.hpp"
+#include "Configurator.hpp"
 
 namespace Synthetics {
-  class Help : public Polycode::EventHandler {
+  class HeadUpDisplay : public Polycode::EventHandler {
     public:
-      Help(Polycode::Core *core);
-      ~Help();
+      HeadUpDisplay(Polycode::Core *core, Configurator *conf);
+      ~HeadUpDisplay();
       void handleEvent(Polycode::Event *e);
 
     private:
+      Configurator *m_conf;
       Polycode::Core *m_core;
-      Polycode::Scene *m_helpScene;
-      Polycode::SceneLabel *m_helpText;
+      Polycode::Scene *m_hudScene;
+      Polycode::SceneLabel *m_hudHelp;
+      bool m_on;
   };
 }
 #endif
