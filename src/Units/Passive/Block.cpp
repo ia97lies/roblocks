@@ -23,6 +23,7 @@ namespace Synthetics {
         m_faces[5] = Vector3(0, -1, 0);
 
         m_shapeColor = Vector3(0.3, 0.9, 0.3);
+        m_connectorColor = Vector3(0.5, 1.0, 0.5);
         m_markerColor = Vector3(0.8, 0.2, 0.2);
 
         m_activeFace = 0;
@@ -129,17 +130,23 @@ namespace Synthetics {
 
       void Block::setActive(bool on) {
         if (!on) {
-          m_shape->setColor(0.3, 0.9, 0.3, 0.4);
+          m_shape->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.4);
+          for (int face = 0; face < this->noFaces(); face++) {
+            m_connectors[face]->setColor(m_connectorColor.x, m_connectorColor.y, m_connectorColor.z, 0.4);
+          }
         }
         else {
-          m_shape->setColor(0.3, 0.9, 0.3, 1.0);
+          m_shape->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z,  1.0);
+          for (int face = 0; face < this->noFaces(); face++) {
+            m_connectors[face]->setColor(m_connectorColor.x, m_connectorColor.y, m_connectorColor.z, 1.0);
+          }
         }
       }
 
       bool Block::setActiveFace(int face) {
         bool ok = true;
         if (face >= 0 && face < s_noFaces) {
-          m_connectors[m_activeFace]->setColor(m_shapeColor.x, m_shapeColor.y, m_shapeColor.z, 0.4);
+          m_connectors[m_activeFace]->setColor(m_connectorColor.x, m_connectorColor.y, m_connectorColor.z, 1.0);
           m_activeFace = face;
           m_connectors[m_activeFace]->setColor(m_markerColor.x, m_markerColor.y, m_markerColor.z, 1.0);
         }

@@ -11,26 +11,34 @@ namespace Synthetics {
     m_conf = conf;
     m_core = core;
     m_on = false;
-    // XXX: Make the hud configurative, use at lease variables for length and height!!
+
+    float border = 10;
+    float height = 100;
+    float length = m_conf->getWidth() - 2 * border;
+    Vector4 white(1.0, 1.0, 1.0, 1.0);
+
     m_hudScene = new Scene(Scene::SCENE_2D);
     m_hudScene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
-    ScenePrimitive *shape = new ScenePrimitive(ScenePrimitive::TYPE_VPLANE, m_conf->getWidth()-20, 100);
+    ScenePrimitive *shape = new ScenePrimitive(ScenePrimitive::TYPE_VPLANE, length, height);
     shape->setColor(1.0, 1.0, 1.0, 0.3);
-    shape->setPosition(0, -m_conf->getHeight()/2 + 60);
-    shape->enabled = true;
-    shape->visible = true;
+    shape->setPosition(0, -m_conf->getHeight()/2 + border + height/2);
     m_hudScene->addChild(shape);
-    SceneLine *line = new SceneLine(Vector3(-m_conf->getWidth()/2 + 10, - m_conf->getHeight()/2 + 110, 0), Vector3(m_conf->getWidth()/2 - 10,  - m_conf->getHeight()/2 + 110, 0));
-    line->setColor(1.0, 1.0, 1.0, 1.0);
+
+    SceneLine *line = new SceneLine(Vector3(-m_conf->getWidth()/2 + border, - m_conf->getHeight()/2 + border + height, 0), 
+                                    Vector3(m_conf->getWidth()/2  - border, - m_conf->getHeight()/2 + border + height, 0));
+    line->setColor(white.x, white.y, white.z, white.w);
     m_hudScene->addChild(line);
-    line = new SceneLine(Vector3(-m_conf->getWidth()/2 + 10, - m_conf->getHeight()/2 + 10, 0), Vector3(m_conf->getWidth()/2 - 10,  - m_conf->getHeight()/2 + 10, 0));
-    line->setColor(1.0, 1.0, 1.0, 1.0);
+    line = new SceneLine(Vector3(-m_conf->getWidth()/2 + border, - m_conf->getHeight()/2 + border, 0), 
+                         Vector3( m_conf->getWidth()/2 - border, - m_conf->getHeight()/2 + border, 0));
+    line->setColor(white.x, white.y, white.z, white.w);
     m_hudScene->addChild(line);
-    line = new SceneLine(Vector3(-m_conf->getWidth()/2 + 10, - m_conf->getHeight()/2 + 10, 0), Vector3(-m_conf->getWidth()/2 + 10,  - m_conf->getHeight()/2 + 110, 0));
-    line->setColor(1.0, 1.0, 1.0, 1.0);
+    line = new SceneLine(Vector3(-m_conf->getWidth()/2 + border, - m_conf->getHeight()/2 + border, 0), 
+                         Vector3(-m_conf->getWidth()/2 + border, - m_conf->getHeight()/2 + border + height, 0));
+    line->setColor(white.x, white.y, white.z, white.w);
     m_hudScene->addChild(line);
-    line = new SceneLine(Vector3(m_conf->getWidth()/2 - 10, - m_conf->getHeight()/2 + 10, 0), Vector3(m_conf->getWidth()/2 - 10,  - m_conf->getHeight()/2 + 110, 0));
-    line->setColor(1.0, 1.0, 1.0, 1.0);
+    line = new SceneLine(Vector3(m_conf->getWidth()/2 - border, - m_conf->getHeight()/2 + border, 0), 
+                         Vector3(m_conf->getWidth()/2 - border, - m_conf->getHeight()/2 + border + height, 0));
+    line->setColor(white.x, white.y, white.z, white.w);
     m_hudScene->addChild(line);
 
     m_hudHelp = new SceneLabel("Help Screen", 16);

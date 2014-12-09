@@ -42,6 +42,7 @@ namespace Synthetics {
           Polycode::ScenePrimitive *m_connectors[s_noFaces];
           int m_activeFace;
           Polycode::Vector3 m_shapeColor;
+          Polycode::Vector3 m_connectorColor;
           Polycode::Vector3 m_markerColor;
 
           Polycode::ScenePrimitive * m_shape;
