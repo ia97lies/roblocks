@@ -19,34 +19,16 @@ namespace Synthetics {
           virtual ~Block();
 
           virtual void init();
-          virtual int noFaces();
-          virtual bool setActiveFace(int face);
-          virtual bool setActiveFace(Polycode::Entity *marker); 
-          virtual bool addUnit(Unit *unit);
-          virtual void linkUnit(Unit *unit);
-          virtual void removeUnit(Unit *unit);
-          virtual Unit *getUnit(int face);
+          virtual UnitPlugging *getPlugging();
           virtual void setActive(bool on);
-          virtual int getActiveFace();
-          virtual int noChilds();
-
-          virtual Polycode::Vector3 getOrientation(int face);
           virtual Polycode::ScenePrimitive * getPolycodeObject(); 
           virtual void handleEvent(Polycode::Event *event);
           
         private:
-          UnitPlugging *m_plugging;
-          static const int s_noFaces = 6;
           Polycode::Core *m_core;
           Polycode::CollisionScene *m_scene;
-          Polycode::Vector3 m_faces[s_noFaces];
-          Unit *m_childs[s_noFaces];
-          Polycode::ScenePrimitive *m_connectors[s_noFaces];
-          int m_activeFace;
-          Polycode::Vector3 m_shapeColor;
-          Polycode::Vector3 m_connectorColor;
-          Polycode::Vector3 m_markerColor;
-
+          UnitPlugging *m_plugging;
+          Polycode::Color m_color;
           Polycode::ScenePrimitive * m_shape;
 
           float clamp(float value, float min, float max);

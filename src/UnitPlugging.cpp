@@ -17,29 +17,21 @@ namespace Synthetics {
     m_scene = scene;
     m_unit = unit;
     m_noFaces = noFaces;
-    m_childs.reserve(noFaces);
-    m_connectors.reserve(noFaces);
-    m_orientations.reserve(noFaces);
-    m_connectorColor = Vector3(0.5, 1.0, 0.5);
-    m_markerColor = Vector3(0.8, 0.2, 0.2);
+    m_childs.resize(noFaces);
+    m_connectors.resize(noFaces);
+    m_orientations.resize(noFaces);
+    m_connectorColor = Color(0.5, 1.0, 0.5, 1.0);
+    m_markerColor = Color(0.8, 0.2, 0.2, 1.0);
     m_activeFace = 0;
     for (int i = 0 ; i < m_noFaces; i++) {
       m_childs[i] = NULL;
-      ScenePrimitive *shape = unit->getPolycodeObject();
-      m_connectors[i] = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
-      shape->addChild(m_connectors[i]);
-      m_connectors[i]->setColor(m_connectorColor.x, m_connectorColor.y, m_connectorColor.z, 0.6);
-      m_connectors[i]->setPosition(this->getOrientation(i) * 0.4);
-      m_scene->trackCollision(m_connectors[i]);
     }
-
-    this->setActiveFace(0);
   }
 
   UnitPlugging::~UnitPlugging() {
     for (int i = 0; i < m_noFaces; i++) {
       if (m_childs[i] != NULL) {
-        m_childs[i]->removeUnit(m_unit);
+        m_childs[i]->getPlugging()->removeUnit(m_unit);
       }
     }
     for (int i = 0; i < m_noFaces; i++) {
@@ -48,16 +40,19 @@ namespace Synthetics {
     }
   }
 
-  Polycode::ScenePrimitive * UnitPlugging::getPolycodeObject() {
-    return m_unit->getPolycodeObject();
-  }
 
   int UnitPlugging::getNoFaces() {
     return m_noFaces;
   }
 
   void UnitPlugging::addOrientation(int face, Vector3 orientation) {
-    m_orientations.at(face) = orientation;
+    m_orientations[face]= orientation;
+    ScenePrimitive *shape = m_unit->getPolycodeObject();
+    m_connectors[face] = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
+    shape->addChild(m_connectors[face]);
+    m_connectors[face]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 0.6);
+    m_connectors[face]->setPosition(this->getOrientation(face) * 0.4);
+    m_scene->trackCollision(m_connectors[face]);
   }
 
   Polycode::Vector3 UnitPlugging::getOrientation(int face) {
@@ -67,12 +62,13 @@ namespace Synthetics {
   void UnitPlugging::setActive(bool on) {
     if (!on) {
       for (int face = 0; face < m_noFaces; face++) {
-        m_connectors[face]->setColor(m_connectorColor.x, m_connectorColor.y, m_connectorColor.z, 0.4);
+        ScenePrimitive *shape = m_unit->getPolycodeObject();
+        m_connectors[face]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 0.4);
       }
     }
     else {
       for (int face = 0; face < m_noFaces; face++) {
-        m_connectors[face]->setColor(m_connectorColor.x, m_connectorColor.y, m_connectorColor.z, 1.0);
+        m_connectors[face]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 1.0);
       }
     }
   }
@@ -80,9 +76,9 @@ namespace Synthetics {
   bool UnitPlugging::setActiveFace(int face) {
     bool ok = true;
     if (face >= 0 && face < m_noFaces) {
-      m_connectors[m_activeFace]->setColor(m_connectorColor.x, m_connectorColor.y, m_connectorColor.z, 1.0);
+      m_connectors[m_activeFace]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 1.0);
       m_activeFace = face;
-      m_connectors[m_activeFace]->setColor(m_markerColor.x, m_markerColor.y, m_markerColor.z, 1.0);
+      m_connectors[m_activeFace]->setColor(m_markerColor.r, m_markerColor.g, m_markerColor.b, 1.0);
     }
     else {
       ok = false;
@@ -91,7 +87,16 @@ namespace Synthetics {
   }
 
   bool UnitPlugging::setActiveFace(Polycode::Entity *marker) {
-    return false;
+    bool ok = false;
+    for (int face = 0; face < m_noFaces; face++) {
+      if (m_connectors[face] == marker) {
+        ok = true;
+        m_connectors[m_activeFace]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 0.4);
+        m_activeFace = face;
+        m_connectors[m_activeFace]->setColor(m_markerColor.r, m_markerColor.g, m_markerColor.b, 1.0);
+      }
+    }
+    return ok;
   }
 
   int UnitPlugging::getActiveFace() {
@@ -110,7 +115,7 @@ namespace Synthetics {
     bool ok = true;
     if (m_childs[m_activeFace] == NULL) {
       m_childs[m_activeFace] = unit;
-      unit->linkUnit(unit);
+      unit->getPlugging()->linkUnit(m_unit);
       ScenePrimitive *shape = unit->getPolycodeObject();
       ScenePrimitive *selectedShape = m_unit->getPolycodeObject();
       selectedShape->addChild(shape);
@@ -118,7 +123,7 @@ namespace Synthetics {
       shape->setPosition(this->getOrientation(m_activeFace));
 
       Vector3 o1 = this->getOrientation(m_activeFace);
-      Vector3 o2 = unit->getOrientation(unit->getActiveFace());
+      Vector3 o2 = unit->getPlugging()->getOrientation(unit->getPlugging()->getActiveFace());
       float angle = acos(o1.dot(o2)) + PI;
       angle = angle < 2*PI ? angle : 0;
       Vector3 axis = o1.crossProduct(o2);

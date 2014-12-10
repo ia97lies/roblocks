@@ -2,6 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "UnitPlugging.hpp"
 #include "Constructor.hpp"
 
 using namespace Polycode;
@@ -32,11 +33,11 @@ namespace Synthetics {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
             case KEY_DELETE:
-              if (m_curUnit->noChilds() == 1 && m_curUnit != m_mother) {
+              if (m_curUnit->getPlugging()->getNoChilds() == 1 && m_curUnit != m_mother) {
                 Unit *selectedUnit = NULL;
-                for (int i = 0; i < m_curUnit->noFaces(); i++) {
-                  if (m_curUnit->getUnit(i)) {
-                    selectedUnit = m_curUnit->getUnit(i); 
+                for (int i = 0; i < m_curUnit->getPlugging()->getNoFaces(); i++) {
+                  if (m_curUnit->getPlugging()->getUnit(i)) {
+                    selectedUnit = m_curUnit->getPlugging()->getUnit(i); 
                     selectedUnit->setActive(true);
                     break;
                   }
@@ -44,12 +45,12 @@ namespace Synthetics {
                 ScenePrimitive *shape = m_curUnit->getPolycodeObject();
                 delete m_curUnit;
                 m_curUnit = selectedUnit;
-                m_curUnit->setActiveFace(0);
+                m_curUnit->getPlugging()->setActiveFace(0);
               }
               break;
             case KEY_a:
               Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
-              if (!m_curUnit->addUnit(newUnit)) {
+              if (!m_curUnit->getPlugging()->addUnit(newUnit)) {
                 delete newUnit;
               }
               break;
@@ -66,10 +67,10 @@ namespace Synthetics {
                   m_curUnit->setActive(false);
                   selectedUnit->setActive(true);
                   m_curUnit = selectedUnit;
-                  m_curUnit->setActiveFace(0);
+                  m_curUnit->getPlugging()->setActiveFace(0);
                 }
                 else {
-                  m_curUnit->setActiveFace(res.entity);
+                  m_curUnit->getPlugging()->setActiveFace(res.entity);
                 }
               }
               break;

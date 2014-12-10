@@ -17,8 +17,6 @@ namespace Synthetics {
           UnitPlugging(Polycode::Core *core, Polycode::CollisionScene *scene, Unit *unit, int noFaces);
           ~UnitPlugging();
 
-          Polycode::ScenePrimitive * getPolycodeObject(); 
-
           int getNoFaces();
 
           void addOrientation(int face, Polycode::Vector3 position);
@@ -43,8 +41,8 @@ namespace Synthetics {
           Polycode::CollisionScene *m_scene;
           Unit *m_unit; 
           int m_noFaces;
-          Polycode::Vector3 m_connectorColor;
-          Polycode::Vector3 m_markerColor;
+          Polycode::Color m_connectorColor;
+          Polycode::Color m_markerColor;
           int m_activeFace;
   };
 }
