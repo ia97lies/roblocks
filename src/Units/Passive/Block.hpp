@@ -18,6 +18,7 @@ namespace Synthetics {
           Block(Polycode::Core *core, Polycode::CollisionScene *scene);
           virtual ~Block();
 
+          virtual void init();
           virtual int noFaces();
           virtual bool setActiveFace(int face);
           virtual bool setActiveFace(Polycode::Entity *marker); 
@@ -34,6 +35,7 @@ namespace Synthetics {
           virtual void handleEvent(Polycode::Event *event);
           
         private:
+          UnitPlugging *m_plugging;
           static const int s_noFaces = 6;
           Polycode::Core *m_core;
           Polycode::CollisionScene *m_scene;

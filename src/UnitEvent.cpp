@@ -2,9 +2,6 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_UNIT_H
-#define SYNTHETICS_UNIT_H
-
 #include <Polycode.h>
 #include "PolycodeView.h"
 
@@ -29,4 +26,3 @@ namespace Synthetics {
   }
 }
 
-#endif

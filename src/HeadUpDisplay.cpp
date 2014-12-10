@@ -7,7 +7,7 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  HeadUpDisplay::HeadUpDisplay(Core *core, Configurator *conf) : EventHandler() {
+  HeadUpDisplay::HeadUpDisplay(Core *core, Configurator *conf, UnitFactory *factory) : EventHandler() {
     m_conf = conf;
     m_core = core;
     m_on = false;

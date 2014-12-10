@@ -15,6 +15,7 @@ namespace Synthetics {
     public:
       virtual ~Unit() {};
 
+      virtual void init() = 0;
       virtual int noFaces() = 0;
       virtual bool setActiveFace(int face) = 0;
       virtual bool setActiveFace(Polycode::Entity *marker) = 0; 

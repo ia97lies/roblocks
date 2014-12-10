@@ -59,6 +59,7 @@ set(Synthetics_SRCS
   HeadUpDisplay.cpp
   UnitEvent.cpp
   UnitFactory.cpp
+  UnitPlugging.cpp
 )
 
 set(Synthetics_HDRS
@@ -70,7 +71,7 @@ set(Synthetics_HDRS
   HeadUpDisplay.hpp
   Unit.hpp
   UnitEvent.hpp
-  UnitFactory.hpp
+  UnitPlugging.hpp
 )
 
 add_executable(

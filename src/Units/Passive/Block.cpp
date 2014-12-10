@@ -4,6 +4,7 @@
 
 #include "lua.hpp"
 #include "UnitFactory.hpp"
+#include "UnitPlugging.hpp"
 #include "Units/Passive/Block.hpp"
 
 using namespace Polycode;
@@ -64,6 +65,10 @@ namespace Synthetics {
           m_scene->removeEntity(m_connectors[i]);
           delete m_connectors[i];
         }
+      }
+
+      void Block::init() {
+        m_plugging = new UnitPlugging(m_core, m_scene, this, s_noFaces);
       }
 
       int Block::noFaces() {
