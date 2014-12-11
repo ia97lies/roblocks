@@ -5,6 +5,9 @@ set(CMAKE_BUILD_TYPE, "Release" "Build Type")
 set(POLYCODE_HOME $ENV{HOME}/workspace/Polycode)
 set(POLYCODE_RELEASE ${POLYCODE_HOME}/Release/Linux/Framework)
 
+##############################################################################
+# DEFINE 
+##############################################################################
 include_directories(
   .
   ${POLYCODE_RELEASE}/Core/Dependencies/include
@@ -73,6 +76,9 @@ set(Synthetics_HDRS
   UnitPlugging.hpp
 )
 
+##############################################################################
+# BUILD 
+##############################################################################
 add_executable(
   Synthetics
   main.cpp 
@@ -109,6 +115,21 @@ target_link_libraries(
   rt dl pthread X11 GL GLU SDL
 )
 
+##############################################################################
+# INSTALL 
+##############################################################################
+install(TARGETS Synthetics PassiveBlock
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(FILES ${Synthetics_HDRS} DESTINATION include)
+
+##############################################################################
+# TESTING
+##############################################################################
+include( CTest )
+
 find_package(Boost
   COMPONENTS
   system
@@ -119,23 +140,31 @@ find_package(Boost
 
 include_directories(${Boost_INCLUDE_DIR})
 
-enable_testing()
-
 add_definitions(-DBOOST_TEST_DYN_LINK)
 add_executable(test_unit_plugging Tests/test_unit_plugging.cpp)
 target_link_libraries(test_unit_plugging
   synthetics
+  libPolycore
+  libfreetype
+  liblibvorbisfile
+  liblibvorbis
+  liblibogg
+  libopenal
+  libphysfs
+  libpng15
+  libz
+  liblua
+  libPolycode2DPhysics
+  libBox2D
+  libPolycode3DPhysics
+  libBulletDynamics
+  libBulletCollision
+  libLinearMath
+  rt dl pthread X11 GL GLU SDL
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
-add_test(test_unit_plugging test_unit_plugging)
-
-install(TARGETS Synthetics PassiveBlock
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-)
-
-install(FILES ${Synthetics_HDRS} DESTINATION include)
+add_test(test_unit_plugging test_unit_plugging --log-level=all)
 

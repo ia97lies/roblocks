@@ -11,18 +11,18 @@
 #include "Unit.hpp"
 
 namespace Synthetics {
-  namespace test {
+  namespace Tests {
 
     class UnitMock : public Unit {
       public:
         UnitMock() {};
         virtual ~UnitMock() {};
 
-        virtual void init();
-        virtual UnitPlugging *getPlugging();
-        virtual void setActive(bool on); 
-        virtual Polycode::ScenePrimitive * getPolycodeObject();
-        virtual void handleEvent(Polycode::Event *event);
+        virtual void init() {};
+        virtual UnitPlugging *getPlugging() { return NULL; };
+        virtual void setActive(bool on) {}; 
+        virtual Polycode::ScenePrimitive * getPolycodeObject() { return NULL; };
+        virtual void handleEvent(Polycode::Event *event) {};
     };
   }
 }

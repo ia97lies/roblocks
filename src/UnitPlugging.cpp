@@ -34,8 +34,10 @@ namespace Synthetics {
       }
     }
     for (int i = 0; i < m_noFaces; i++) {
-      m_scene->removeEntity(m_connectors[i]);
-      delete m_connectors[i];
+      if (m_connectors[i]) {
+        m_scene->removeEntity(m_connectors[i]);
+        delete m_connectors[i];
+      }
     }
   }
 
