@@ -51,7 +51,6 @@ set_property(TARGET libBulletCollision PROPERTY IMPORTED_LOCATION   ${POLYCODE_R
 set_property(TARGET libLinearMath PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libLinearMath.a)
 
 set(Synthetics_SRCS
-  main.cpp 
   SyntheticsApp.cpp
   Configurator.cpp
   OrbitCamera.cpp
@@ -75,7 +74,8 @@ set(Synthetics_HDRS
 )
 
 add_executable(
-  Synthetics ${Synthetics_SRCS} ${Synthetics_HDRS}
+  Synthetics
+  main.cpp 
 )
 
 add_library(
@@ -83,8 +83,13 @@ add_library(
   Units/Passive/Block.cpp
 )
 
+add_library(
+  synthetics STATIC
+  ${Synthetics_SRCS} ${Synthetics_HDRS}
+)
 target_link_libraries(
   Synthetics 
+  synthetics
   libPolycore
   libfreetype
   liblibvorbisfile
@@ -104,9 +109,33 @@ target_link_libraries(
   rt dl pthread X11 GL GLU SDL
 )
 
+find_package(Boost
+  COMPONENTS
+  system
+  filesystem
+  unit_test_framework
+  REQUIRED
+)
+
+include_directories(${Boost_INCLUDE_DIR})
+
+enable_testing()
+
+add_definitions(-DBOOST_TEST_DYN_LINK)
+add_executable(test_unit_plugging Tests/test_unit_plugging.cpp)
+target_link_libraries(test_unit_plugging
+  synthetics
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_test(test_unit_plugging test_unit_plugging)
+
 install(TARGETS Synthetics PassiveBlock
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )
 
 install(FILES ${Synthetics_HDRS} DESTINATION include)
+

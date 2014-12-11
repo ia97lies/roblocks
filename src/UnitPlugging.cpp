@@ -12,8 +12,7 @@ using namespace Polycode;
 
 namespace Synthetics {
 
-  UnitPlugging::UnitPlugging(Polycode::Core *core, CollisionScene *scene, Unit *unit, int noFaces) {
-    m_core = core;
+  UnitPlugging::UnitPlugging(CollisionScene *scene, Unit *unit, int noFaces) {
     m_scene = scene;
     m_unit = unit;
     m_noFaces = noFaces;

@@ -39,7 +39,7 @@ namespace Synthetics {
       }
 
       void Block::init() {
-        m_plugging = new UnitPlugging(m_core, m_scene, this, 6);
+        m_plugging = new UnitPlugging(m_scene, this, 6);
         m_plugging->addOrientation(0, Vector3(0, 0, -1));
         m_plugging->addOrientation(1, Vector3(-1, 0, 0));
         m_plugging->addOrientation(2, Vector3(0, 0, 1));

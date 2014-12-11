@@ -14,7 +14,7 @@ namespace Synthetics {
 
   class UnitPlugging {
     public:
-          UnitPlugging(Polycode::Core *core, Polycode::CollisionScene *scene, Unit *unit, int noFaces);
+          UnitPlugging(Polycode::CollisionScene *scene, Unit *unit, int noFaces);
           ~UnitPlugging();
 
           int getNoFaces();
@@ -37,7 +37,6 @@ namespace Synthetics {
           std::vector<Polycode::Vector3> m_orientations;
           std::vector<Unit *> m_childs;
           std::vector<Polycode::ScenePrimitive *> m_connectors;
-          Polycode::Core *m_core; 
           Polycode::CollisionScene *m_scene;
           Unit *m_unit; 
           int m_noFaces;

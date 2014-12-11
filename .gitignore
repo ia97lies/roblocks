@@ -13,3 +13,5 @@ bin/
 include/
 install_manifest.txt
 .exrc
+Testing
+CTestTestfile.cmake
