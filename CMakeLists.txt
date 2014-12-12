@@ -3,3 +3,5 @@ project(Synthetics)
 add_subdirectory(src)
 
 include(CTest)
+
+SET(ENV(CTEST_OUTPUT_ON_FAILURE) YES)

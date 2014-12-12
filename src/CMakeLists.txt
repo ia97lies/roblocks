@@ -59,6 +59,7 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   Constructor.cpp
   HeadUpDisplay.cpp
+  UnitEntity.cpp
   UnitEvent.cpp
   UnitFactory.cpp
   UnitPlugging.cpp
@@ -72,8 +73,29 @@ set(Synthetics_HDRS
   Constructor.hpp
   HeadUpDisplay.hpp
   Unit.hpp
+  UnitEntity.hpp
   UnitEvent.hpp
   UnitPlugging.hpp
+)
+
+set(Polycode_LIBS
+  libPolycore
+  libfreetype
+  liblibvorbisfile
+  liblibvorbis
+  liblibogg
+  libopenal
+  libphysfs
+  libpng15
+  libz
+  liblua
+  libPolycode2DPhysics
+  libBox2D
+  libPolycode3DPhysics
+  libBulletDynamics
+  libBulletCollision
+  libLinearMath
+  rt dl pthread X11 GL GLU SDL
 )
 
 ##############################################################################
@@ -96,23 +118,7 @@ add_library(
 target_link_libraries(
   Synthetics 
   synthetics
-  libPolycore
-  libfreetype
-  liblibvorbisfile
-  liblibvorbis
-  liblibogg
-  libopenal
-  libphysfs
-  libpng15
-  libz
-  liblua
-  libPolycode2DPhysics
-  libBox2D
-  libPolycode3DPhysics
-  libBulletDynamics
-  libBulletCollision
-  libLinearMath
-  rt dl pthread X11 GL GLU SDL
+  ${Polycode_LIBS}
 )
 
 ##############################################################################
@@ -128,7 +134,8 @@ install(FILES ${Synthetics_HDRS} DESTINATION include)
 ##############################################################################
 # TESTING
 ##############################################################################
-include( CTest )
+set(ENV(CTEST_OUTPUT_ON_FAILURE) YES)
+enable_testing()
 
 find_package(Boost
   COMPONENTS
@@ -144,26 +151,20 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 add_executable(test_unit_plugging Tests/test_unit_plugging.cpp)
 target_link_libraries(test_unit_plugging
   synthetics
-  libPolycore
-  libfreetype
-  liblibvorbisfile
-  liblibvorbis
-  liblibogg
-  libopenal
-  libphysfs
-  libpng15
-  libz
-  liblua
-  libPolycode2DPhysics
-  libBox2D
-  libPolycode3DPhysics
-  libBulletDynamics
-  libBulletCollision
-  libLinearMath
-  rt dl pthread X11 GL GLU SDL
+  ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_unit_entity Tests/test_unit_entity.cpp)
+target_link_libraries(test_unit_entity
+  synthetics
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_test(test_unit_entity test_unit_entity)
 add_test(test_unit_plugging test_unit_plugging)

@@ -1,10 +1,21 @@
 #define BOOST_TEST_MODULE UnitPlugging
 #include <boost/test/unit_test.hpp>
-#include "Tests/UnitMock.hpp"
 #include "UnitPlugging.hpp"
 
+using namespace Polycode;
 using namespace Synthetics;
-using namespace Synthetics::Tests;
+
+class UnitMock : public Unit {
+  public:
+    UnitMock() {};
+    virtual ~UnitMock() {};
+
+    virtual void init() {};
+    virtual UnitPlugging *getPlugging() { return NULL; };
+    virtual void setActive(bool on) {}; 
+    virtual Polycode::ScenePrimitive * getPolycodeObject() { return NULL; };
+    virtual void handleEvent(Polycode::Event *event) {};
+};
 
 BOOST_AUTO_TEST_SUITE(UnitPluggingInstantiate)
 
