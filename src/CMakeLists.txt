@@ -166,5 +166,4 @@ target_link_libraries(test_unit_plugging
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
-add_test(test_unit_plugging test_unit_plugging --log-level=all)
-
+add_test(test_unit_plugging test_unit_plugging)
