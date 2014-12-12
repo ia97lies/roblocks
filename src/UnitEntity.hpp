@@ -5,7 +5,8 @@
 #ifndef SYNTHETICS_UNIT_ENTITY_H
 #define SYNTHETICS_UNIT_ENTITY_H
 
-#include "Unit.hpp"
+#include <cstddef>
+#include <vector>
 
 namespace Synthetics {
 
@@ -14,15 +15,20 @@ namespace Synthetics {
       UnitEntity(int noFaces);
       ~UnitEntity();
 
+      void setUserData(void *data);
+      void *getUserData();
       void setActiveFace(int face);
-      void addUnit(Unit *unit);
-      Unit *getUnit(int face);
+      void add(UnitEntity *unit);
+      UnitEntity *remove(int face);
+      UnitEntity *remove(UnitEntity *entity); 
+      UnitEntity *get(int face);
       int getNoChilds(); 
 
     private:
       int m_noFaces;
       int m_activeFace;
-      std::vector<Unit *> m_childs;
+      std::vector<UnitEntity *> m_childs;
+      void *m_userData;
   };
 }
 
