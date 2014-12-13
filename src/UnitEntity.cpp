@@ -9,13 +9,21 @@ namespace Synthetics {
     m_noFaces = noFaces;
     m_activeFace = 0;
     m_childs.resize(noFaces);
+    m_notify = NULL;
   }
+
   UnitEntity::~UnitEntity() {
-
+    for (int i = 0; i < m_noFaces; i++) {
+      UnitEntity *cur = m_childs[i];
+      if (cur) {
+        cur->remove(this);
+      }
+    } 
   }
 
-  void UnitEntity::setUserData(void *data) {
+  void UnitEntity::setUserData(void *data, UnitEntityNotifyFn notify) {
     m_userData = data;
+    m_notify = notify;
   }
 
   void *UnitEntity::getUserData() {
@@ -28,7 +36,10 @@ namespace Synthetics {
   }
 
   void UnitEntity::add(UnitEntity *entity) {
-    m_childs[m_activeFace] = entity;
+    if (entity && !get(m_activeFace)) {
+      m_childs[m_activeFace] = entity;
+      entity->add(this);
+    }
   }
 
   UnitEntity *UnitEntity::get(int face) {
@@ -38,6 +49,7 @@ namespace Synthetics {
   UnitEntity *UnitEntity::remove(int face) {
     UnitEntity *ret = m_childs.at(face);
     m_childs.at(face) = NULL;
+    ret->notify(m_userData, UNIT_ENTITY_EVENT_REMOVE);
     return ret;
   }
 
@@ -45,7 +57,7 @@ namespace Synthetics {
     UnitEntity *found;
     for (int face = 0; face < m_noFaces; face++) {
       if (m_childs[face] == entity) {
-        m_childs[face] = NULL;
+        remove(face);
         found = entity;
       }
     }
@@ -58,6 +70,12 @@ namespace Synthetics {
       no += m_childs[face] ? 1 : 0;
     }
     return no;
+  }
+
+  void UnitEntity::notify(void *parentData, int event) {
+    if (m_notify) {
+      m_notify(m_userData, parentData, event);
+    }
   }
 }
 
