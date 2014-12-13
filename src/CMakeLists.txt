@@ -60,6 +60,7 @@ set(Synthetics_SRCS
   Constructor.cpp
   HeadUpDisplay.cpp
   UnitEntity.cpp
+  UnitPosition.cpp
   UnitEvent.cpp
   UnitFactory.cpp
   UnitPlugging.cpp
@@ -74,6 +75,7 @@ set(Synthetics_HDRS
   HeadUpDisplay.hpp
   Unit.hpp
   UnitEntity.hpp
+  UnitPosition.hpp
   UnitEvent.hpp
   UnitPlugging.hpp
 )
@@ -166,5 +168,15 @@ target_link_libraries(test_unit_entity
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_unit_position Tests/test_unit_position.cpp)
+target_link_libraries(test_unit_position
+  synthetics
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_test(test_unit_entity test_unit_entity)
+add_test(test_unit_position test_unit_position)
 add_test(test_unit_plugging test_unit_plugging)
