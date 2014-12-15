@@ -115,7 +115,7 @@ namespace Synthetics {
   bool UnitPlugging::addUnit(Unit *unit) {
     bool ok = true;
     if (m_childs[m_activeFace] == NULL) {
-      m_childs[m_activeFace] = unit;
+      this->linkUnit(unit);
       unit->getPlugging()->linkUnit(m_unit);
       ScenePrimitive *shape = unit->getPolycodeObject();
       ScenePrimitive *selectedShape = m_unit->getPolycodeObject();
