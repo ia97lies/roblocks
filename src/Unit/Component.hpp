@@ -17,6 +17,10 @@ namespace Synthetics {
         ~Component();
 
         void addPlug(int face, Orientation orientation, void *plug);
+        Orientation getOrientation(int face);
+
+      private:
+        std::vector<Orientation > m_orientations;
     };
   }
 }
