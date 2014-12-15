@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 2.8)
-
 set(CMAKE_BUILD_TYPE, "Release" "Build Type")
 
 set(POLYCODE_HOME $ENV{HOME}/workspace/Polycode)
@@ -8,6 +7,15 @@ set(POLYCODE_RELEASE ${POLYCODE_HOME}/Release/Linux/Framework)
 ##############################################################################
 # DEFINE 
 ##############################################################################
+if (CMAKE_CONFIGURATION_TYPES)
+  add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
+    --force-new-ctest-process --output-on-failure
+    --build-config "$<CONFIGURATION>")
+else()
+  add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
+    --force-new-ctest-process --output-on-failure)
+endif()
+
 include_directories(
   .
   ${POLYCODE_RELEASE}/Core/Dependencies/include
@@ -59,8 +67,6 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   Constructor.cpp
   HeadUpDisplay.cpp
-  UnitEntity.cpp
-  UnitPosition.cpp
   UnitEvent.cpp
   UnitFactory.cpp
   UnitPlugging.cpp
@@ -74,8 +80,6 @@ set(Synthetics_HDRS
   Constructor.hpp
   HeadUpDisplay.hpp
   Unit.hpp
-  UnitEntity.hpp
-  UnitPosition.hpp
   UnitEvent.hpp
   UnitPlugging.hpp
 )
@@ -109,16 +113,12 @@ add_executable(
 )
 
 add_library(
-  PassiveBlock SHARED
-  Units/Passive/Block.cpp
-)
-
-add_library(
   synthetics STATIC
   ${Synthetics_SRCS} ${Synthetics_HDRS}
 )
 target_link_libraries(
   Synthetics 
+  unit
   synthetics
   ${Polycode_LIBS}
 )
@@ -126,7 +126,7 @@ target_link_libraries(
 ##############################################################################
 # INSTALL 
 ##############################################################################
-install(TARGETS Synthetics PassiveBlock
+install(TARGETS Synthetics
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )
@@ -159,24 +159,9 @@ target_link_libraries(test_unit_plugging
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
-add_executable(test_unit_entity Tests/test_unit_entity.cpp)
-target_link_libraries(test_unit_entity
-  synthetics
-  ${Polycode_LIBS}
-  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
-)
-
-add_executable(test_unit_position Tests/test_unit_position.cpp)
-target_link_libraries(test_unit_position
-  synthetics
-  ${Polycode_LIBS}
-  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
-)
-
-add_test(test_unit_entity test_unit_entity)
-add_test(test_unit_position test_unit_position)
 add_test(test_unit_plugging test_unit_plugging)
+
+
+add_subdirectory(Unit)
+add_subdirectory(Units)
+
