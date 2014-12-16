@@ -9,14 +9,14 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "PolycodeUnit.hpp"
+#include "Block.hpp"
 #include "MovingCamera.hpp"
-#include "UnitFactory.hpp"
+#include "BlockFactory.hpp"
 
 namespace Synthetics {
   class Constructor : public Polycode::EventHandler {
     public:
-      Constructor(Polycode::Core *core, Polycode::CollisionScene *scene, MovingCamera *camera, UnitFactory *factory);
+      Constructor(Polycode::Core *core, Polycode::CollisionScene *scene, MovingCamera *camera, BlockFactory *factory);
       ~Constructor();
       void handleEvent(Polycode::Event *e);
 
@@ -24,9 +24,9 @@ namespace Synthetics {
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
       MovingCamera *m_camera;
-      UnitFactory *m_factory;
-      PolycodeUnit *m_mother;
-      PolycodeUnit *m_curUnit;
+      BlockFactory *m_factory;
+      Block *m_mother;
+      Block *m_curBlock;
 
       void addMarker();
       void removeMarker();

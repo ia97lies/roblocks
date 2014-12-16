@@ -8,14 +8,14 @@ cmake_minimum_required(VERSION 2.8)
 # BUILD 
 ##############################################################################
 add_library(
-  PassiveBlock SHARED
-  Passive/Block.cpp
+  PassiveHub SHARED
+  Passive/Hub.cpp
 )
 
 ##############################################################################
 # INSTALL 
 ##############################################################################
-install(TARGETS PassiveBlock
+install(TARGETS PassiveHub
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

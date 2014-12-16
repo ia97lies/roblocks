@@ -9,13 +9,13 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "UnitFactory.hpp"
+#include "BlockFactory.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
   class HeadUpDisplay : public Polycode::EventHandler {
     public:
-      HeadUpDisplay(Polycode::Core *core, Configurator *conf, UnitFactory *factory);
+      HeadUpDisplay(Polycode::Core *core, Configurator *conf, BlockFactory *factory);
       ~HeadUpDisplay();
       void handleEvent(Polycode::Event *e);
 

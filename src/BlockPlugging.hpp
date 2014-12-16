@@ -2,20 +2,20 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_UNIT_PLUGGING_H
-#define SYNTHETICS_UNIT_PLUGGING_H
+#ifndef SYNTHETICS_BLOCK_PLUGGING_H
+#define SYNTHETICS_BLOCK_PLUGGING_H
 
 #include <Polycode.h>
 #include "PolycodeView.h"
 
-#include "PolycodeUnit.hpp"
+#include "Block.hpp"
 
 namespace Synthetics {
 
-  class UnitPlugging {
+  class BlockPlugging {
     public:
-          UnitPlugging(Polycode::CollisionScene *scene, PolycodeUnit *unit, int noFaces);
-          ~UnitPlugging();
+          BlockPlugging(Polycode::CollisionScene *scene, Block *block, int noFaces);
+          ~BlockPlugging();
 
           int getNoFaces();
 
@@ -28,21 +28,22 @@ namespace Synthetics {
           int getActiveFace();
           int getNoChilds();
 
-          bool addUnit(PolycodeUnit *unit);
-          void linkUnit(PolycodeUnit *unit);
-          void removeUnit(PolycodeUnit *unit);
-          PolycodeUnit *getUnit(int face);
+          bool addBlock(Block *block);
+          void removeBlock(Block *block);
+          Block *getBlock(int face);
 
     private:
           std::vector<Polycode::Vector3> m_orientations;
-          std::vector<PolycodeUnit *> m_childs;
+          std::vector<Block *> m_childs;
           std::vector<Polycode::ScenePrimitive *> m_connectors;
           Polycode::CollisionScene *m_scene;
-          PolycodeUnit *m_unit; 
+          Block *m_block; 
           int m_noFaces;
           Polycode::Color m_connectorColor;
           Polycode::Color m_markerColor;
           int m_activeFace;
+
+          void linkBlock(Block *block);
   };
 }
 

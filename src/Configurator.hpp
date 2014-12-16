@@ -6,14 +6,14 @@
 #define SYNTHETICS_CONFIGURATOR_H
 
 #include "lua.hpp"
-#include "PolycodeUnit.hpp"
-#include "UnitFactory.hpp"
+#include "Block.hpp"
+#include "BlockFactory.hpp"
 
 namespace Synthetics {
 
   class Configurator {
     public:
-      Configurator(UnitFactory *factory);
+      Configurator(BlockFactory *factory);
       virtual ~Configurator();
       int getWidth();
       int getHeight();
@@ -22,7 +22,7 @@ namespace Synthetics {
       lua_State *m_L;
       int m_width;
       int m_height;
-      typedef std::vector<PolycodeUnit *> *m_units;
+      typedef std::vector<Block *> *m_units;
 
       void error(const char *fmt, ...);
       void readWidth(); 

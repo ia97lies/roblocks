@@ -2,32 +2,30 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_PASSIVE_BLOCK_H
-#define SYNTHETICS_PASSIVE_BLOCK_H
+#ifndef SYNTHETICS_PASSIVE_HUB_H
+#define SYNTHETICS_PASSIVE_HUB_H
 
 #include <Polycode.h>
 #include "PolycodeView.h"
-#include "PolycodeUnit.hpp"
+#include "Block.hpp"
 
 namespace Synthetics {
-  namespace Units {
+  namespace Blocks {
     namespace Passive {
 
-      class Block : public PolycodeUnit {
+      class Hub : public Block {
         public:
-          Block(Polycode::Core *core, Polycode::CollisionScene *scene);
-          virtual ~Block();
+          Hub(Polycode::CollisionScene *scene);
+          virtual ~Hub();
 
           virtual void init();
-          virtual UnitPlugging *getPlugging();
-          virtual void setActive(bool on);
+          virtual BlockPlugging *getPlugging();
           virtual Polycode::ScenePrimitive * getPolycodeObject(); 
           virtual void handleEvent(Unit::Event *event);
           
         private:
-          Polycode::Core *m_core;
           Polycode::CollisionScene *m_scene;
-          UnitPlugging *m_plugging;
+          BlockPlugging *m_plugging;
           Polycode::Color m_color;
           Polycode::ScenePrimitive * m_shape;
 

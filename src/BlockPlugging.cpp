@@ -5,15 +5,18 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 
-#include "UnitPlugging.hpp"
+#include "BlockPlugging.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
 
-  UnitPlugging::UnitPlugging(CollisionScene *scene, PolycodeUnit *unit, int noFaces) {
+  //--------------------------------------------------------------------------
+  // Public
+  //--------------------------------------------------------------------------
+  BlockPlugging::BlockPlugging(CollisionScene *scene, Block *block, int noFaces) {
+    m_block = block;
     m_scene = scene;
-    m_unit = unit;
     m_noFaces = noFaces;
     m_childs.resize(noFaces);
     m_connectors.resize(noFaces);
@@ -26,10 +29,11 @@ namespace Synthetics {
     }
   }
 
-  UnitPlugging::~UnitPlugging() {
+  BlockPlugging::~BlockPlugging() {
+    m_scene->removeEntity(m_block->getPolycodeObject());
     for (int i = 0; i < m_noFaces; i++) {
       if (m_childs[i] != NULL) {
-        m_childs[i]->getPlugging()->removeUnit(m_unit);
+        m_childs[i]->getPlugging()->removeBlock(m_block);
       }
     }
     for (int i = 0; i < m_noFaces; i++) {
@@ -40,14 +44,13 @@ namespace Synthetics {
     }
   }
 
-
-  int UnitPlugging::getNoFaces() {
+  int BlockPlugging::getNoFaces() {
     return m_noFaces;
   }
 
-  void UnitPlugging::addOrientation(int face, Vector3 orientation) {
+  void BlockPlugging::addOrientation(int face, Vector3 orientation) {
     m_orientations[face]= orientation;
-    ScenePrimitive *shape = m_unit->getPolycodeObject();
+    ScenePrimitive *shape = m_block->getPolycodeObject();
     m_connectors[face] = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
     shape->addChild(m_connectors[face]);
     m_connectors[face]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 0.6);
@@ -55,25 +58,28 @@ namespace Synthetics {
     m_scene->trackCollision(m_connectors[face]);
   }
 
-  Polycode::Vector3 UnitPlugging::getOrientation(int face) {
+  Polycode::Vector3 BlockPlugging::getOrientation(int face) {
     return m_orientations.at(face);
   }
 
-  void UnitPlugging::setActive(bool on) {
+  void BlockPlugging::setActive(bool on) {
+    ScenePrimitive *shape = m_block->getPolycodeObject();
+    Color color = shape->getCombinedColor();
     if (!on) {
+      shape->setColor(color.r, color.g, color.b, 0.4);
       for (int face = 0; face < m_noFaces; face++) {
-        ScenePrimitive *shape = m_unit->getPolycodeObject();
         m_connectors[face]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 0.4);
       }
     }
     else {
+      shape->setColor(color.r, color.g, color.b, 1.0);
       for (int face = 0; face < m_noFaces; face++) {
         m_connectors[face]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 1.0);
       }
     }
   }
 
-  bool UnitPlugging::setActiveFace(int face) {
+  bool BlockPlugging::setActiveFace(int face) {
     bool ok = true;
     if (face >= 0 && face < m_noFaces) {
       m_connectors[m_activeFace]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 1.0);
@@ -86,7 +92,7 @@ namespace Synthetics {
     return ok;
   }
 
-  bool UnitPlugging::setActiveFace(Polycode::Entity *marker) {
+  bool BlockPlugging::setActiveFace(Polycode::Entity *marker) {
     bool ok = false;
     for (int face = 0; face < m_noFaces; face++) {
       if (m_connectors[face] == marker) {
@@ -99,11 +105,11 @@ namespace Synthetics {
     return ok;
   }
 
-  int UnitPlugging::getActiveFace() {
+  int BlockPlugging::getActiveFace() {
     return m_activeFace;
   }
 
-  int UnitPlugging::getNoChilds() {
+  int BlockPlugging::getNoChilds() {
     int no = 0;
     for (int face = 0; face < m_noFaces; face++) {
       no += m_childs[face] ? 1 : 0;
@@ -111,19 +117,19 @@ namespace Synthetics {
     return no;
   }
 
-  bool UnitPlugging::addUnit(PolycodeUnit *unit) {
+  bool BlockPlugging::addBlock(Block *block) {
     bool ok = true;
     if (m_childs[m_activeFace] == NULL) {
-      this->linkUnit(unit);
-      unit->getPlugging()->linkUnit(m_unit);
-      ScenePrimitive *shape = unit->getPolycodeObject();
-      ScenePrimitive *selectedShape = m_unit->getPolycodeObject();
+      this->linkBlock(block);
+      block->getPlugging()->linkBlock(m_block);
+      ScenePrimitive *shape = block->getPolycodeObject();
+      ScenePrimitive *selectedShape = m_block->getPolycodeObject();
       selectedShape->addChild(shape);
       m_scene->trackCollision(shape);
       shape->setPosition(this->getOrientation(m_activeFace));
 
       Vector3 o1 = this->getOrientation(m_activeFace);
-      Vector3 o2 = unit->getPlugging()->getOrientation(unit->getPlugging()->getActiveFace());
+      Vector3 o2 = block->getPlugging()->getOrientation(block->getPlugging()->getActiveFace());
       float angle = acos(o1.dot(o2)) + PI;
       angle = angle < 2*PI ? angle : 0;
       Vector3 axis = o1.crossProduct(o2);
@@ -147,22 +153,25 @@ namespace Synthetics {
     return ok;
   }
 
-  void UnitPlugging::linkUnit(PolycodeUnit *unit) {
-    m_childs[m_activeFace] = unit;
-  }
-
-  void UnitPlugging::removeUnit(PolycodeUnit *unit) {
+  void BlockPlugging::removeBlock(Block *block) {
     for (int face = 0; face < m_noFaces; face++) {
-      if (m_childs[face] == unit) {
-        ScenePrimitive *shape = m_unit->getPolycodeObject();
-        shape->removeChild(unit->getPolycodeObject());
+      if (m_childs[face] == block) {
+        ScenePrimitive *shape = m_block->getPolycodeObject();
+        shape->removeChild(block->getPolycodeObject());
         m_childs[face] = NULL;
       }
     }
   }
 
-  PolycodeUnit *UnitPlugging::getUnit(int face) {
+  Block *BlockPlugging::getBlock(int face) {
     return m_childs.at(face);
+  }
+
+  //--------------------------------------------------------------------------
+  // Private
+  //--------------------------------------------------------------------------
+  void BlockPlugging::linkBlock(Block *block) {
+    m_childs[m_activeFace] = block;
   }
 }
 

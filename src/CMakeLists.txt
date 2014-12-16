@@ -67,8 +67,8 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   Constructor.cpp
   HeadUpDisplay.cpp
-  UnitFactory.cpp
-  UnitPlugging.cpp
+  BlockFactory.cpp
+  BlockPlugging.cpp
 )
 
 set(Synthetics_HDRS
@@ -78,8 +78,9 @@ set(Synthetics_HDRS
   OrbitCamera.hpp
   Constructor.hpp
   HeadUpDisplay.hpp
-  PolycodeUnit.hpp
-  UnitPlugging.hpp
+  Block.hpp
+  BlockFactory.hpp
+  BlockPlugging.hpp
 )
 
 set(Polycode_LIBS
@@ -134,7 +135,6 @@ install(FILES ${Synthetics_HDRS} DESTINATION include)
 ##############################################################################
 # TESTING
 ##############################################################################
-set(ENV(CTEST_OUTPUT_ON_FAILURE) YES)
 enable_testing()
 
 find_package(Boost
@@ -148,18 +148,7 @@ find_package(Boost
 include_directories(${Boost_INCLUDE_DIR})
 
 add_definitions(-DBOOST_TEST_DYN_LINK)
-add_executable(test_unit_plugging Tests/test_unit_plugging.cpp)
-target_link_libraries(test_unit_plugging
-  synthetics
-  ${Polycode_LIBS}
-  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
-)
-
-add_test(test_unit_plugging test_unit_plugging)
-
 
 add_subdirectory(Unit)
-add_subdirectory(Units)
+add_subdirectory(Blocks)
 

@@ -3,20 +3,19 @@
 //----------------------------------------------------------------------------
 
 #include "lua.hpp"
-#include "UnitFactory.hpp"
-#include "UnitPlugging.hpp"
-#include "Units/Passive/Block.hpp"
+#include "BlockFactory.hpp"
+#include "BlockPlugging.hpp"
+#include "Blocks/Passive/Hub.hpp"
 
 using namespace Polycode;
 namespace Synthetics {
-  namespace Units {
+  namespace Blocks {
     namespace Passive {
 
       //--------------------------------------------------------------------------
-      // Unit interface
+      // Block interface
       //--------------------------------------------------------------------------
-      Block::Block(Core *core, Polycode::CollisionScene *scene) {
-        m_core = core;
+      Hub::Hub(Polycode::CollisionScene *scene) {
         m_scene = scene;
         m_color = Color(0.3, 0.9, 0.3, 1.0);
 
@@ -30,7 +29,7 @@ namespace Synthetics {
         m_plugging = NULL;
       }
 
-      Block::~Block() {
+      Hub::~Hub() {
         m_scene->removeEntity(m_shape);
         delete m_shape;
         if (m_plugging) {
@@ -38,8 +37,8 @@ namespace Synthetics {
         }
       }
 
-      void Block::init() {
-        m_plugging = new UnitPlugging(m_scene, this, 6);
+      void Hub::init() {
+        m_plugging = new BlockPlugging(m_scene, this, 6);
         m_plugging->addOrientation(0, Vector3(0, 0, -1));
         m_plugging->addOrientation(1, Vector3(-1, 0, 0));
         m_plugging->addOrientation(2, Vector3(0, 0, 1));
@@ -48,47 +47,36 @@ namespace Synthetics {
         m_plugging->addOrientation(5, Vector3(0, -1, 0));
       }
 
-      UnitPlugging *Block::getPlugging() {
+      BlockPlugging *Hub::getPlugging() {
         return m_plugging;
       }
 
-      void Block::setActive(bool on) {
-        m_plugging->setActive(on);
-        if (on) {
-          m_shape->setColor(m_color);
-        }
-        else {
-          m_shape->setColor(m_color.r, m_color.g, m_color.b, 0.4);
-        }
+      void Hub::handleEvent(Unit::Event *event) {
       }
 
-
-      void Block::handleEvent(Unit::Event *event) {
-      }
-
-      Polycode::ScenePrimitive * Block::getPolycodeObject() {
+      Polycode::ScenePrimitive * Hub::getPolycodeObject() {
         return m_shape;
       }
 
       //----------------------------------------------------------------------
-      // Unit factory
+      // Block factory
       //----------------------------------------------------------------------
-      PolycodeUnit *BlockCreator(Polycode::Core *core, Polycode::CollisionScene *scene) {
-        PolycodeUnit *unit = new Block(core, scene);
-        unit->init();
-        return unit;
+      Block *HubCreator(Polycode::CollisionScene *scene) {
+        Hub *hub = new Hub(scene);
+        hub->init();
+        return hub;
       }
 
-      static int BlockRegister(lua_State *L) {
+      static int HubRegister(lua_State *L) {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
-        UnitFactory *factory = (UnitFactory *)lua_touserdata(L, 1);
+        BlockFactory *factory = (BlockFactory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Passive.Block", &BlockCreator);
+        factory->addCreator("Passive.Hub", &HubCreator);
         return 0;
       }
 
-      static const struct luaL_Reg BlockFuncs[] = {
-        { "register", BlockRegister },
+      static const struct luaL_Reg HubFuncs[] = {
+        { "register", HubRegister },
         { NULL, NULL }
       };
     }
@@ -99,8 +87,8 @@ namespace Synthetics {
 // Shared library hook
 //----------------------------------------------------------------------------
 extern "C" {
-  int luaopen_libPassiveBlock(lua_State *L) {
-    luaL_register(L, "Passive.Block", Synthetics::Units::Passive::BlockFuncs);
+  int luaopen_libPassiveHub(lua_State *L) {
+    luaL_register(L, "Passive.Hub", Synthetics::Blocks::Passive::HubFuncs);
     return 1;
   }
 }

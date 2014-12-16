@@ -6,25 +6,25 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "UnitFactory.hpp"
+#include "BlockFactory.hpp"
 
 namespace Synthetics {
 
-  UnitFactory::UnitFactory() {
+  BlockFactory::BlockFactory() {
   }
 
-  UnitFactory::~UnitFactory() {
+  BlockFactory::~BlockFactory() {
     m_map.clear();
   } 
 
-  void UnitFactory::addCreator(const std::string name, UnitCreateFn creator) {
+  void BlockFactory::addCreator(const std::string name, BlockCreateFn creator) {
     m_map[name] = creator;
   }
 
-  PolycodeUnit *UnitFactory::createUnit(const std::string name, Polycode::Core *core, Polycode::CollisionScene *scene) {
-    std::map<std::string, UnitCreateFn>::iterator it = m_map.find(name);
+  Block *BlockFactory::createBlock(const std::string name, Polycode::CollisionScene *scene) {
+    std::map<std::string, BlockCreateFn>::iterator it = m_map.find(name);
     if (it != m_map.end()) {
-      return it->second(core, scene);
+      return it->second(scene);
     }
     return NULL;
   }
