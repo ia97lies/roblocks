@@ -67,7 +67,6 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   Constructor.cpp
   HeadUpDisplay.cpp
-  UnitEvent.cpp
   UnitFactory.cpp
   UnitPlugging.cpp
 )
@@ -79,8 +78,7 @@ set(Synthetics_HDRS
   OrbitCamera.hpp
   Constructor.hpp
   HeadUpDisplay.hpp
-  Unit.hpp
-  UnitEvent.hpp
+  PolycodeUnit.hpp
   UnitPlugging.hpp
 )
 

@@ -4,12 +4,14 @@ cmake_minimum_required(VERSION 2.8)
 # DEFINE 
 ##############################################################################
 set(Unit_SRCS
+  Event.cpp
   Entity.cpp
   Component.cpp
   Orientation.cpp
 )
 
 set(Unit_HDRS
+  Event.hpp
   Entity.hpp
   Component.hpp
   Orientation.hpp

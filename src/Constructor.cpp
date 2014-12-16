@@ -34,7 +34,7 @@ namespace Synthetics {
           switch (inputEvent->keyCode()) {
             case KEY_DELETE:
               if (m_curUnit->getPlugging()->getNoChilds() == 1 && m_curUnit != m_mother) {
-                Unit *selectedUnit = NULL;
+                PolycodeUnit *selectedUnit = NULL;
                 for (int i = 0; i < m_curUnit->getPlugging()->getNoFaces(); i++) {
                   if (m_curUnit->getPlugging()->getUnit(i)) {
                     selectedUnit = m_curUnit->getPlugging()->getUnit(i); 
@@ -49,7 +49,7 @@ namespace Synthetics {
               }
               break;
             case KEY_a:
-              Unit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
+              PolycodeUnit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
               if (!m_curUnit->getPlugging()->addUnit(newUnit)) {
                 delete newUnit;
               }
@@ -62,7 +62,7 @@ namespace Synthetics {
               Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
               RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 100.0);
               if(res.entity) {
-                Unit *selectedUnit = (Unit *)res.entity->getUserData();
+                PolycodeUnit *selectedUnit = (PolycodeUnit *)res.entity->getUserData();
                 if (selectedUnit) {
                   m_curUnit->setActive(false);
                   selectedUnit->setActive(true);

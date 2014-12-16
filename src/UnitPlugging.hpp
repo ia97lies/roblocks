@@ -8,13 +8,13 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 
-#include "Unit.hpp"
+#include "PolycodeUnit.hpp"
 
 namespace Synthetics {
 
   class UnitPlugging {
     public:
-          UnitPlugging(Polycode::CollisionScene *scene, Unit *unit, int noFaces);
+          UnitPlugging(Polycode::CollisionScene *scene, PolycodeUnit *unit, int noFaces);
           ~UnitPlugging();
 
           int getNoFaces();
@@ -28,17 +28,17 @@ namespace Synthetics {
           int getActiveFace();
           int getNoChilds();
 
-          bool addUnit(Unit *unit);
-          void linkUnit(Unit *unit);
-          void removeUnit(Unit *unit);
-          Unit *getUnit(int face);
+          bool addUnit(PolycodeUnit *unit);
+          void linkUnit(PolycodeUnit *unit);
+          void removeUnit(PolycodeUnit *unit);
+          PolycodeUnit *getUnit(int face);
 
     private:
           std::vector<Polycode::Vector3> m_orientations;
-          std::vector<Unit *> m_childs;
+          std::vector<PolycodeUnit *> m_childs;
           std::vector<Polycode::ScenePrimitive *> m_connectors;
           Polycode::CollisionScene *m_scene;
-          Unit *m_unit; 
+          PolycodeUnit *m_unit; 
           int m_noFaces;
           Polycode::Color m_connectorColor;
           Polycode::Color m_markerColor;

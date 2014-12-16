@@ -7,13 +7,13 @@
 
 #include <Polycode.h>
 #include "PolycodeView.h"
-#include "Unit.hpp"
+#include "PolycodeUnit.hpp"
 
 namespace Synthetics {
   namespace Units {
     namespace Passive {
 
-      class Block : public Unit {
+      class Block : public PolycodeUnit {
         public:
           Block(Polycode::Core *core, Polycode::CollisionScene *scene);
           virtual ~Block();
@@ -22,7 +22,7 @@ namespace Synthetics {
           virtual UnitPlugging *getPlugging();
           virtual void setActive(bool on);
           virtual Polycode::ScenePrimitive * getPolycodeObject(); 
-          virtual void handleEvent(Polycode::Event *event);
+          virtual void handleEvent(Unit::Event *event);
           
         private:
           Polycode::Core *m_core;

@@ -8,7 +8,7 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 
-#include "Unit.hpp"
+#include "PolycodeUnit.hpp"
 
 namespace Synthetics {
 
@@ -17,7 +17,7 @@ namespace Synthetics {
       ~UnitFactory();
       
       void addCreator(const std::string name, UnitCreateFn creator);
-      Unit *createUnit(const std::string name, ::Polycode::Core *core, ::Polycode::CollisionScene *scene);
+      PolycodeUnit *createUnit(const std::string name, ::Polycode::Core *core, ::Polycode::CollisionScene *scene);
 
       static UnitFactory *get() {
         static UnitFactory instance;

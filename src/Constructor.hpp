@@ -9,7 +9,7 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "Unit.hpp"
+#include "PolycodeUnit.hpp"
 #include "MovingCamera.hpp"
 #include "UnitFactory.hpp"
 
@@ -25,8 +25,8 @@ namespace Synthetics {
       Polycode::CollisionScene *m_scene;
       MovingCamera *m_camera;
       UnitFactory *m_factory;
-      Unit *m_mother;
-      Unit *m_curUnit;
+      PolycodeUnit *m_mother;
+      PolycodeUnit *m_curUnit;
 
       void addMarker();
       void removeMarker();

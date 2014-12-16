@@ -63,7 +63,7 @@ namespace Synthetics {
       }
 
 
-      void Block::handleEvent(Event *event) {
+      void Block::handleEvent(Unit::Event *event) {
       }
 
       Polycode::ScenePrimitive * Block::getPolycodeObject() {
@@ -73,8 +73,8 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Unit factory
       //----------------------------------------------------------------------
-      Unit *BlockCreator(Polycode::Core *core, Polycode::CollisionScene *scene) {
-        Unit *unit = new Block(core, scene);
+      PolycodeUnit *BlockCreator(Polycode::Core *core, Polycode::CollisionScene *scene) {
+        PolycodeUnit *unit = new Block(core, scene);
         unit->init();
         return unit;
       }

@@ -5,24 +5,26 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 
-#include "UnitEvent.hpp"
+#include "Event.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
-  UnitEvent::UnitEvent(int eventCode, Vector3 value) : Event(eventCode) {
-    m_value = value;
-  }
+  namespace Unit {
+    Event::Event(int eventCode, Vector3 value) {
+      m_value = value;
+    }
 
-  UnitEvent::~UnitEvent() {
-  }
+    Event::~Event() {
+    }
 
-  void UnitEvent::setValue(Vector3 value) {
-    m_value = value;
-  }
-  
-  Vector3 UnitEvent::getValue() {
-    return m_value;
+    void Event::setValue(Vector3 value) {
+      m_value = value;
+    }
+
+    Vector3 Event::getValue() {
+      return m_value;
+    }
   }
 }
 

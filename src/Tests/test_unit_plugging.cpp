@@ -5,7 +5,7 @@
 using namespace Polycode;
 using namespace Synthetics;
 
-class UnitMock : public Unit {
+class UnitMock : public PolycodeUnit {
   public:
     UnitMock() {};
     virtual ~UnitMock() {};

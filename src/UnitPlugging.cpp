@@ -5,14 +5,13 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 
-#include "Unit.hpp"
 #include "UnitPlugging.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
 
-  UnitPlugging::UnitPlugging(CollisionScene *scene, Unit *unit, int noFaces) {
+  UnitPlugging::UnitPlugging(CollisionScene *scene, PolycodeUnit *unit, int noFaces) {
     m_scene = scene;
     m_unit = unit;
     m_noFaces = noFaces;
@@ -112,7 +111,7 @@ namespace Synthetics {
     return no;
   }
 
-  bool UnitPlugging::addUnit(Unit *unit) {
+  bool UnitPlugging::addUnit(PolycodeUnit *unit) {
     bool ok = true;
     if (m_childs[m_activeFace] == NULL) {
       this->linkUnit(unit);
@@ -148,11 +147,11 @@ namespace Synthetics {
     return ok;
   }
 
-  void UnitPlugging::linkUnit(Unit *unit) {
+  void UnitPlugging::linkUnit(PolycodeUnit *unit) {
     m_childs[m_activeFace] = unit;
   }
 
-  void UnitPlugging::removeUnit(Unit *unit) {
+  void UnitPlugging::removeUnit(PolycodeUnit *unit) {
     for (int face = 0; face < m_noFaces; face++) {
       if (m_childs[face] == unit) {
         ScenePrimitive *shape = m_unit->getPolycodeObject();
@@ -162,7 +161,7 @@ namespace Synthetics {
     }
   }
 
-  Unit *UnitPlugging::getUnit(int face) {
+  PolycodeUnit *UnitPlugging::getUnit(int face) {
     return m_childs.at(face);
   }
 }
