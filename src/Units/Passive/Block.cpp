@@ -15,8 +15,7 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       // Unit interface
       //--------------------------------------------------------------------------
-      Block::Block(Core *core, Polycode::CollisionScene *scene) {
-        m_core = core;
+      Block::Block(Polycode::CollisionScene *scene) {
         m_scene = scene;
         m_color = Color(0.3, 0.9, 0.3, 1.0);
 
@@ -73,8 +72,8 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Unit factory
       //----------------------------------------------------------------------
-      PolycodeUnit *BlockCreator(Polycode::Core *core, Polycode::CollisionScene *scene) {
-        PolycodeUnit *unit = new Block(core, scene);
+      PolycodeUnit *BlockCreator(Polycode::CollisionScene *scene) {
+        PolycodeUnit *unit = new Block(scene);
         unit->init();
         return unit;
       }

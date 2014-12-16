@@ -15,7 +15,7 @@ namespace Synthetics {
 
       class Block : public PolycodeUnit {
         public:
-          Block(Polycode::Core *core, Polycode::CollisionScene *scene);
+          Block(Polycode::CollisionScene *scene);
           virtual ~Block();
 
           virtual void init();
@@ -25,7 +25,6 @@ namespace Synthetics {
           virtual void handleEvent(Unit::Event *event);
           
         private:
-          Polycode::Core *m_core;
           Polycode::CollisionScene *m_scene;
           UnitPlugging *m_plugging;
           Polycode::Color m_color;

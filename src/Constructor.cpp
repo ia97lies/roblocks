@@ -16,7 +16,7 @@ namespace Synthetics {
     m_factory = factory;
 
     // todo mother block should be exchangable
-    m_mother = m_curUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
+    m_mother = m_curUnit = m_factory->createUnit("Passive.Block", m_scene);
     ScenePrimitive *shape = m_curUnit->getPolycodeObject();
     m_curUnit->setActive(true);
     m_scene->addCollisionChild(shape);
@@ -49,7 +49,7 @@ namespace Synthetics {
               }
               break;
             case KEY_a:
-              PolycodeUnit *newUnit = m_factory->createUnit("Passive.Block", m_core, m_scene);
+              PolycodeUnit *newUnit = m_factory->createUnit("Passive.Block", m_scene);
               if (!m_curUnit->getPlugging()->addUnit(newUnit)) {
                 delete newUnit;
               }
