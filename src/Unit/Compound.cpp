@@ -2,25 +2,30 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#include "Component.hpp"
+#include "Compound.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
   namespace Unit {
-    Component::Component(int noFaces) : Entity(noFaces) {
+    Compound::Compound(int noFaces) : Entity(noFaces) {
       m_orientations.resize(noFaces, Vector3(0, 0, 0));
     }
 
-    Component::~Component() {
+    Compound::~Compound() {
     }
 
-    void Component::addPlug(int face, Orientation orientation, void *plug) {
+    void Compound::addPlug(int face, Orientation orientation, void *plug) {
       m_orientations.at(face) = orientation;
+      m_plugToFace[plug] = face;
     }
 
-    Orientation Component::getOrientation(int face) {
+    Orientation Compound::getOrientation(int face) {
       return m_orientations.at(face);
+    }
+
+    int Compound::getFace(void *plug) {
+      return m_plugToFace[plug];
     }
   }
 }

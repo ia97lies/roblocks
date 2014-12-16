@@ -18,5 +18,5 @@ Testing
 CTestTestfile.cmake
 src/test_unit_plugging
 src/Unit/test_unit_entity
-src/Unit/test_unit_component
+src/Unit/test_unit_compound
 src/Unit/test_unit_orientation

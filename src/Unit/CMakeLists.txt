@@ -6,14 +6,14 @@ cmake_minimum_required(VERSION 2.8)
 set(Unit_SRCS
   Event.cpp
   Entity.cpp
-  Component.cpp
+  Compound.cpp
   Orientation.cpp
 )
 
 set(Unit_HDRS
   Event.hpp
   Entity.hpp
-  Component.hpp
+  Compound.hpp
   Orientation.hpp
 )
 
@@ -57,8 +57,8 @@ target_link_libraries(test_unit_orientation
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
-add_executable(test_unit_component Tests/test_unit_component.cpp)
-target_link_libraries(test_unit_component
+add_executable(test_unit_compound Tests/test_unit_compound.cpp)
+target_link_libraries(test_unit_compound
   unit
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -67,6 +67,6 @@ target_link_libraries(test_unit_component
 )
 
 add_test(test_unit_entity test_unit_entity)
-add_test(test_unit_component test_unit_component)
+add_test(test_unit_compound test_unit_compound)
 add_test(test_unit_orientation test_unit_orientation)
 
