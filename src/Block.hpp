@@ -9,8 +9,6 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "Unit/Event.hpp"
-
 namespace Synthetics {
 
   class BlockPlugging;
@@ -21,8 +19,7 @@ namespace Synthetics {
 
       virtual void init() = 0;
       virtual BlockPlugging *getPlugging() = 0;
-      virtual Polycode::ScenePrimitive * getPolycodeObject() = 0;
-      virtual void handleEvent(Unit::Event *event) = 0;
+      virtual Polycode::ScenePrimitive * getShape() = 0;
   };
 
   typedef Block *(*BlockCreateFn)(Polycode::CollisionScene *scene);

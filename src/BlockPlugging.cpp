@@ -30,7 +30,7 @@ namespace Synthetics {
   }
 
   BlockPlugging::~BlockPlugging() {
-    m_scene->removeEntity(m_block->getPolycodeObject());
+    m_scene->removeEntity(m_block->getShape());
     for (int i = 0; i < m_noFaces; i++) {
       if (m_childs[i] != NULL) {
         m_childs[i]->getPlugging()->removeBlock(m_block);
@@ -50,7 +50,7 @@ namespace Synthetics {
 
   void BlockPlugging::addOrientation(int face, Vector3 orientation) {
     m_orientations[face]= orientation;
-    ScenePrimitive *shape = m_block->getPolycodeObject();
+    ScenePrimitive *shape = m_block->getShape();
     m_connectors[face] = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.5,0.5,0.5);
     shape->addChild(m_connectors[face]);
     m_connectors[face]->setColor(m_connectorColor.r, m_connectorColor.g, m_connectorColor.b, 0.6);
@@ -63,7 +63,7 @@ namespace Synthetics {
   }
 
   void BlockPlugging::setActive(bool on) {
-    ScenePrimitive *shape = m_block->getPolycodeObject();
+    ScenePrimitive *shape = m_block->getShape();
     Color color = shape->getCombinedColor();
     if (!on) {
       shape->setColor(color.r, color.g, color.b, 0.4);
@@ -122,8 +122,8 @@ namespace Synthetics {
     if (m_childs[m_activeFace] == NULL) {
       this->linkBlock(block);
       block->getPlugging()->linkBlock(m_block);
-      ScenePrimitive *shape = block->getPolycodeObject();
-      ScenePrimitive *selectedShape = m_block->getPolycodeObject();
+      ScenePrimitive *shape = block->getShape();
+      ScenePrimitive *selectedShape = m_block->getShape();
       selectedShape->addChild(shape);
       m_scene->trackCollision(shape);
       shape->setPosition(this->getOrientation(m_activeFace));
@@ -156,8 +156,8 @@ namespace Synthetics {
   void BlockPlugging::removeBlock(Block *block) {
     for (int face = 0; face < m_noFaces; face++) {
       if (m_childs[face] == block) {
-        ScenePrimitive *shape = m_block->getPolycodeObject();
-        shape->removeChild(block->getPolycodeObject());
+        ScenePrimitive *shape = m_block->getShape();
+        shape->removeChild(block->getShape());
         m_childs[face] = NULL;
       }
     }

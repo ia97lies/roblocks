@@ -17,7 +17,7 @@ namespace Synthetics {
 
     // todo mother block should be exchangable
     m_mother = m_curBlock = m_factory->createBlock("Passive.Hub", m_scene);
-    ScenePrimitive *shape = m_curBlock->getPolycodeObject();
+    ScenePrimitive *shape = m_curBlock->getShape();
     m_curBlock->getPlugging()->setActive(true);
     m_scene->addCollisionChild(shape);
   }
@@ -42,7 +42,7 @@ namespace Synthetics {
                     break;
                   }
                 }
-                ScenePrimitive *shape = m_curBlock->getPolycodeObject();
+                ScenePrimitive *shape = m_curBlock->getShape();
                 delete m_curBlock;
                 m_curBlock = selectedBlock;
                 m_curBlock->getPlugging()->setActiveFace(0);
@@ -76,7 +76,7 @@ namespace Synthetics {
               break;
           }
       }
-      //m_camera->updateTarget(m_curBlock->getPolycodeObject()->getCombinedPosition());
+      //m_camera->updateTarget(m_curBlock->getShape()->getCombinedPosition());
       //m_camera->update();
     }
   }

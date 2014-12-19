@@ -11,12 +11,12 @@
 
 namespace Synthetics {
   namespace Blocks {
-    namespace Passive {
+    namespace Actor {
 
-      class Hub : public Block {
+      class Servo : public Block {
         public:
-          Hub(Polycode::CollisionScene *scene);
-          virtual ~Hub();
+          Servo(Polycode::CollisionScene *scene);
+          virtual ~Servo();
 
           virtual void init();
           virtual BlockPlugging *getPlugging();

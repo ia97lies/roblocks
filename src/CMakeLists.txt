@@ -69,7 +69,6 @@ set(Synthetics_SRCS
   HeadUpDisplay.cpp
   BlockFactory.cpp
   BlockPlugging.cpp
-  BlockCompound.cpp
 )
 
 set(Synthetics_HDRS
@@ -82,7 +81,6 @@ set(Synthetics_HDRS
   Block.hpp
   BlockFactory.hpp
   BlockPlugging.hpp
-  BlockCompound.hpp
 )
 
 set(Polycode_LIBS
@@ -119,7 +117,6 @@ add_library(
 )
 target_link_libraries(
   Synthetics 
-  unit
   synthetics
   ${Polycode_LIBS}
 )
@@ -151,6 +148,8 @@ include_directories(${Boost_INCLUDE_DIR})
 
 add_definitions(-DBOOST_TEST_DYN_LINK)
 
-add_subdirectory(Unit)
+##############################################################################
+# SUBDIRS
+##############################################################################
 add_subdirectory(Blocks)
 

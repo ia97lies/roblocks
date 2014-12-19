@@ -5,17 +5,17 @@
 #include "lua.hpp"
 #include "BlockFactory.hpp"
 #include "BlockPlugging.hpp"
-#include "Blocks/Passive/Hub.hpp"
+#include "Blocks/Actor/Servo.hpp"
 
 using namespace Polycode;
 namespace Synthetics {
   namespace Blocks {
-    namespace Passive {
+    namespace Actor {
 
       //--------------------------------------------------------------------------
       // Block interface
       //--------------------------------------------------------------------------
-      Hub::Hub(Polycode::CollisionScene *scene) {
+      Servo::Servo(Polycode::CollisionScene *scene) {
         m_scene = scene;
         m_color = Color(0.3, 0.9, 0.3, 1.0);
 
@@ -29,7 +29,7 @@ namespace Synthetics {
         m_plugging = NULL;
       }
 
-      Hub::~Hub() {
+      Servo::~Servo() {
         m_scene->removeEntity(m_shape);
         delete m_shape;
         if (m_plugging) {
@@ -37,7 +37,7 @@ namespace Synthetics {
         }
       }
 
-      void Hub::init() {
+      void Servo::init() {
         m_plugging = new BlockPlugging(m_scene, this, 6);
         m_plugging->addOrientation(0, Vector3(0, 0, -1));
         m_plugging->addOrientation(1, Vector3(-1, 0, 0));
@@ -47,33 +47,33 @@ namespace Synthetics {
         m_plugging->addOrientation(5, Vector3(0, -1, 0));
       }
 
-      BlockPlugging *Hub::getPlugging() {
+      BlockPlugging *Servo::getPlugging() {
         return m_plugging;
       }
 
-      Polycode::ScenePrimitive * Hub::getShape() {
+      Polycode::ScenePrimitive * Servo::getShape() {
         return m_shape;
       }
 
       //----------------------------------------------------------------------
       // Block factory
       //----------------------------------------------------------------------
-      Block *HubCreator(Polycode::CollisionScene *scene) {
-        Hub *hub = new Hub(scene);
+      Block *ServoCreator(Polycode::CollisionScene *scene) {
+        Servo *hub = new Servo(scene);
         hub->init();
         return hub;
       }
 
-      static int HubRegister(lua_State *L) {
+      static int ServoRegister(lua_State *L) {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         BlockFactory *factory = (BlockFactory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Passive.Hub", &HubCreator);
+        factory->addCreator("Actor.Servo", &ServoCreator);
         return 0;
       }
 
-      static const struct luaL_Reg HubFuncs[] = {
-        { "register", HubRegister },
+      static const struct luaL_Reg ServoFuncs[] = {
+        { "register", ServoRegister },
         { NULL, NULL }
       };
     }
@@ -84,8 +84,8 @@ namespace Synthetics {
 // Shared library hook
 //----------------------------------------------------------------------------
 extern "C" {
-  int luaopen_libPassiveHub(lua_State *L) {
-    luaL_register(L, "Passive.Hub", Synthetics::Blocks::Passive::HubFuncs);
+  int luaopen_libActorServo(lua_State *L) {
+    luaL_register(L, "Actor.Servo", Synthetics::Blocks::Passive::ServoFuncs);
     return 1;
   }
 }
