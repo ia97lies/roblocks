@@ -69,6 +69,7 @@ set(Synthetics_SRCS
   HeadUpDisplay.cpp
   BlockFactory.cpp
   BlockPlugging.cpp
+  BlockCompound.cpp
 )
 
 set(Synthetics_HDRS
@@ -81,6 +82,7 @@ set(Synthetics_HDRS
   Block.hpp
   BlockFactory.hpp
   BlockPlugging.hpp
+  BlockCompound.hpp
 )
 
 set(Polycode_LIBS

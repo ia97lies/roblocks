@@ -12,7 +12,7 @@
 namespace Synthetics {
   namespace Unit {
 
-    class Compound : Entity {
+    class Compound : public Entity {
       public:
         Compound(int noFaces);
         ~Compound();
