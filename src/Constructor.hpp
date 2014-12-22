@@ -24,6 +24,7 @@ namespace Synthetics {
       Polycode::CollisionScene *m_scene;
       MovingCamera *m_camera;
       Compounds::Factory *m_factory;
+      Compound *m_mother;
   };
 }
 #endif

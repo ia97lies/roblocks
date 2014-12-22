@@ -13,6 +13,7 @@ namespace Synthetics {
     m_scene = scene;
     m_camera = camera;
     m_factory = factory;
+    m_mother = NULL;
   }
 
   Constructor::~Constructor() {
@@ -27,17 +28,19 @@ namespace Synthetics {
           switch (inputEvent->keyCode()) {
             case KEY_DELETE:
               // delete active compound
-              // mother->remove()
+              if (m_mother) {
+                m_mother->remove();
+              }
               break;
             case KEY_a:
               // add current selected compound to current active compound
-              // if mother == NULL {
-              //   mother = factory->createCompound("<selected-compound-name>")
-              // }
-              // else {
-              //   new = factory->createCompound(selected compound)
-              //   mother->add(new)
-              // }
+              if (!m_mother) {
+                 m_mother = m_factory->createCompound("Passive::Hub");
+              }
+              else {
+                 Compound *compound = m_factory->createCompound("Passive::Hub");
+                 m_mother->add(compound);
+              }
               break;
             case KEY_r:
               // rotate active compound around plug right side
