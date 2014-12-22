@@ -3,10 +3,22 @@ cmake_minimum_required(VERSION 2.8)
 ##############################################################################
 # DEFINE 
 ##############################################################################
+set(Compounds_SRCS
+  Factory.cpp
+)
+
+set(Compounds_HDRS
+  Factory.hpp
+)
 
 ##############################################################################
 # BUILD 
 ##############################################################################
+add_library(
+  compounds STATIC
+  ${Compounds_SRCS} ${Compounds_HDRS}
+)
+
 add_library(
   PassiveHub SHARED
   Passive/Hub.cpp

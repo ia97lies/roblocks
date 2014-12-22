@@ -67,8 +67,6 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   Constructor.cpp
   HeadUpDisplay.cpp
-  BlockFactory.cpp
-  BlockPlugging.cpp
 )
 
 set(Synthetics_HDRS
@@ -78,9 +76,7 @@ set(Synthetics_HDRS
   OrbitCamera.hpp
   Constructor.hpp
   HeadUpDisplay.hpp
-  Block.hpp
-  BlockFactory.hpp
-  BlockPlugging.hpp
+  Compound.hpp
 )
 
 set(Polycode_LIBS
@@ -118,6 +114,7 @@ add_library(
 target_link_libraries(
   Synthetics 
   synthetics
+  compounds
   ${Polycode_LIBS}
 )
 
@@ -151,5 +148,6 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 ##############################################################################
 # SUBDIRS
 ##############################################################################
-add_subdirectory(Blocks)
+add_subdirectory(Compounds)
+#add_subdirectory(Components)
 

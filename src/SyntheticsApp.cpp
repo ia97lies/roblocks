@@ -8,13 +8,13 @@
 #include "OrbitCamera.hpp"
 #include "Constructor.hpp"
 #include "HeadUpDisplay.hpp"
-#include "BlockFactory.hpp"
+#include "Compounds/Factory.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
   SyntheticsApp::SyntheticsApp(PolycodeView *view) {
-    BlockFactory *factory = BlockFactory::get();
+    Compounds::Factory *factory = Compounds::Factory::get();
 
     m_conf = new Configurator(factory);
 

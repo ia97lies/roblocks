@@ -6,14 +6,13 @@
 #define SYNTHETICS_CONFIGURATOR_H
 
 #include "lua.hpp"
-#include "Block.hpp"
-#include "BlockFactory.hpp"
+#include "Compounds/Factory.hpp"
 
 namespace Synthetics {
 
   class Configurator {
     public:
-      Configurator(BlockFactory *factory);
+      Configurator(Compounds::Factory *factory);
       virtual ~Configurator();
       int getWidth();
       int getHeight();
@@ -22,7 +21,6 @@ namespace Synthetics {
       lua_State *m_L;
       int m_width;
       int m_height;
-      typedef std::vector<Block *> *m_units;
 
       void error(const char *fmt, ...);
       void readWidth(); 
