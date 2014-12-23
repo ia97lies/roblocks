@@ -10,6 +10,7 @@
 #include "Polycode3DPhysics.h"
 
 #include "MovingCamera.hpp"
+#include "Robot.hpp"
 #include "Compounds/Factory.hpp"
 
 namespace Synthetics {
@@ -24,7 +25,7 @@ namespace Synthetics {
       Polycode::CollisionScene *m_scene;
       MovingCamera *m_camera;
       Compounds::Factory *m_factory;
-      Compound *m_mother;
+      Robot *m_mother;
   };
 }
 #endif

@@ -15,10 +15,6 @@ namespace Synthetics {
         public:
           Hub();
           virtual ~Hub();
-
-          virtual void add(Compound *compound);
-          virtual void remove();
-          virtual void activate(void *plug);
       };
 
     }

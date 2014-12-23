@@ -13,7 +13,7 @@ namespace Synthetics {
     m_scene = scene;
     m_camera = camera;
     m_factory = factory;
-    m_mother = NULL;
+    m_mother = new Robot();
   }
 
   Constructor::~Constructor() {
@@ -34,17 +34,8 @@ namespace Synthetics {
               break;
             case KEY_a:
               // add current selected compound to current active compound
-              if (!m_mother) {
-                 m_mother = m_factory->createCompound("Passive::Hub");
-              }
-              else {
-                 Compound *compound = m_factory->createCompound("Passive::Hub");
-                 m_mother->add(compound);
-              }
-              break;
-            case KEY_r:
-              // rotate active compound around plug right side
-              // mother->rotate(90);
+              Compound *compound = m_factory->createCompound("Passive.Hub");
+              m_mother->add(compound);
               break;
           }
           break;

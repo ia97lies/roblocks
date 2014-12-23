@@ -15,18 +15,11 @@ namespace Synthetics {
       // Compounds interface
       //--------------------------------------------------------------------------
       Hub::Hub() {
+        fprintf(stderr, "Create Hub\n");
       }
 
       Hub::~Hub() {
-      }
-
-      void Hub::add(Compound *compound) {
-      }
-
-      void Hub::remove() {
-      }
-
-      void Hub::activate(void *plug) {
+        fprintf(stderr, "Destroy Hub\n");
       }
 
       //----------------------------------------------------------------------

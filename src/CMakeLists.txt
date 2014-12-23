@@ -67,6 +67,8 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   Constructor.cpp
   HeadUpDisplay.cpp
+  Compound.cpp
+  Robot.cpp
 )
 
 set(Synthetics_HDRS
@@ -77,6 +79,7 @@ set(Synthetics_HDRS
   Constructor.hpp
   HeadUpDisplay.hpp
   Compound.hpp
+  Robot.hpp
 )
 
 set(Polycode_LIBS
@@ -144,6 +147,17 @@ find_package(Boost
 include_directories(${Boost_INCLUDE_DIR})
 
 add_definitions(-DBOOST_TEST_DYN_LINK)
+
+add_executable(test_compound Tests/test_compound.cpp)
+target_link_libraries(test_compound
+  synthetics
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_test(test_compound test_compound)
 
 ##############################################################################
 # SUBDIRS

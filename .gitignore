@@ -16,4 +16,5 @@ install_manifest.txt
 .exrc
 Testing
 CTestTestfile.cmake
+src/test_compound
 src/Compounds/test_load_compounds
