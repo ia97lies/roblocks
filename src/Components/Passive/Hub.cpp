@@ -16,6 +16,11 @@ namespace Synthetics {
         public:
           Body() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+            m_color = Color(0.3, 0.9, 0.3, 1.0);
+            m_entity->colorAffectsChildren = false;
+            m_entity->setColor(m_color);
+            m_entity->setPosition(0.0, 0.0, 0.0);
+
           }
           virtual ~Body() {}
 
@@ -25,6 +30,7 @@ namespace Synthetics {
 
         private:
           Polycode::Entity *m_entity;
+          Polycode::Color m_color;
       };
 
       //--------------------------------------------------------------------------

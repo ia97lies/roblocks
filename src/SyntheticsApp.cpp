@@ -25,6 +25,12 @@ namespace Synthetics {
 
     m_scene = new CollisionScene();
 
+    SceneLight *light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 3);
+    light->setPosition(3,10,0);
+    light->setLightColor(1,0,0);
+    light->enableShadows(true, 64);
+    m_scene->addLight(light);
+
     m_camera = new OrbitCamera(m_core, m_scene);
     m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEDOWN);
