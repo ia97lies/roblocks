@@ -17,4 +17,7 @@ install_manifest.txt
 Testing
 CTestTestfile.cmake
 src/test_compound
-src/Compounds/test_load_compounds
+src/Components/test_load_components
+src/OldStuff/
+src/test_plug
+
