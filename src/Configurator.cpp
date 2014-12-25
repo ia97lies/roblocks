@@ -2,7 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#include "Compounds/Factory.hpp"
+#include "Components/Factory.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
@@ -10,7 +10,7 @@ namespace Synthetics {
   //--------------------------------------------------------------------------
   // public:
   //--------------------------------------------------------------------------
-  Configurator::Configurator(Compounds::Factory *factory) {
+  Configurator::Configurator(Components::Factory *factory) {
     m_width = 640;
     m_height = 480;
     m_L = luaL_newstate();

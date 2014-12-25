@@ -2,24 +2,24 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_COMPOUNDS_FACTORY_H
-#define SYNTHETICS_COMPOUNDS_FACTORY_H
+#ifndef SYNTHETICS_COMPONENTS_FACTORY_H
+#define SYNTHETICS_COMPONENTS_FACTORY_H
 
 #include <string>
 #include <map>
-#include "Compound.hpp"
+#include "Component.hpp"
 
 namespace Synthetics {
-  namespace Compounds {
+  namespace Components {
 
-    typedef Compound *(*CompoundCreateFn)();
+    typedef Component *(*ComponentCreateFn)();
 
     class Factory {
       public:
         ~Factory();
 
-        void addCreator(const std::string name, CompoundCreateFn creator);
-        Compound *createCompound(const std::string name);
+        void addCreator(const std::string name, ComponentCreateFn creator);
+        Component *createComponent(const std::string name);
 
         static Factory *get() {
           static Factory instance;
@@ -27,7 +27,7 @@ namespace Synthetics {
         }
 
       private:
-        std::map<std::string, CompoundCreateFn> m_map;
+        std::map<std::string, ComponentCreateFn> m_map;
 
         Factory();
     };

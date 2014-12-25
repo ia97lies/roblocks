@@ -3,36 +3,64 @@
 //----------------------------------------------------------------------------
 
 #include "lua.hpp"
-#include "Compounds/Factory.hpp"
-#include "Compounds/Passive/Hub.hpp"
+#include "PolyScenePrimitive.h"
+#include "Components/Factory.hpp"
+#include "Components/Passive/Hub.hpp"
 
 using namespace Polycode;
 namespace Synthetics {
-  namespace Compounds {
+  namespace Components {
     namespace Passive {
 
+      class Body : public Part {
+        public:
+          Body() {
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+          }
+          virtual ~Body() {}
+
+          Polycode::Entity *getShape() {
+            return m_entity;
+          }
+
+        private:
+          Polycode::Entity *m_entity;
+      };
+
       //--------------------------------------------------------------------------
-      // Compounds interface
+      // Components interface
       //--------------------------------------------------------------------------
       Hub::Hub() {
         fprintf(stderr, "Create Hub\n");
+        m_body = new Body();
       }
 
       Hub::~Hub() {
         fprintf(stderr, "Destroy Hub\n");
       }
 
+      int Hub::getNoParts() {
+        return 1;
+      }
+
+      Part *Hub::getPart(int i) {
+        if (i == 0) {
+          return m_body;
+        }
+        return NULL;
+      }
+
       //----------------------------------------------------------------------
-      // Compounds factory
+      // Components factory
       //----------------------------------------------------------------------
-      Compound *HubCreator() {
+      Component *HubCreator() {
         Hub *hub = new Hub();
         return hub;
       }
 
       static int HubRegister(lua_State *L) {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
-        Compounds::Factory *factory = (Compounds::Factory *)lua_touserdata(L, 1);
+        Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
         factory->addCreator("Passive.Hub", &HubCreator);
         return 0;
@@ -51,7 +79,7 @@ namespace Synthetics {
 //----------------------------------------------------------------------------
 extern "C" {
   int luaopen_libPassiveHub(lua_State *L) {
-    luaL_register(L, "Passive.Hub", Synthetics::Compounds::Passive::HubFuncs);
+    luaL_register(L, "Passive.Hub", Synthetics::Components::Passive::HubFuncs);
     return 1;
   }
 }

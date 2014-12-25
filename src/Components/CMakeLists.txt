@@ -3,11 +3,11 @@ cmake_minimum_required(VERSION 2.8)
 ##############################################################################
 # DEFINE 
 ##############################################################################
-set(Compounds_SRCS
+set(Components_SRCS
   Factory.cpp
 )
 
-set(Compounds_HDRS
+set(Components_HDRS
   Factory.hpp
 )
 
@@ -15,8 +15,8 @@ set(Compounds_HDRS
 # BUILD 
 ##############################################################################
 add_library(
-  compounds STATIC
-  ${Compounds_SRCS} ${Compounds_HDRS}
+  components STATIC
+  ${Components_SRCS} ${Components_HDRS}
 )
 
 add_library(
@@ -37,14 +37,14 @@ install(TARGETS PassiveHub
 ##############################################################################
 enable_testing()
 
-add_executable(test_load_compounds Tests/test_load_compounds.cpp)
-target_link_libraries(test_load_compounds
-  compounds
+add_executable(test_load_components Tests/test_load_components.cpp)
+target_link_libraries(test_load_components
+  components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
-add_test(test_load_compounds test_load_compounds)
+add_test(test_load_components test_load_components)
 

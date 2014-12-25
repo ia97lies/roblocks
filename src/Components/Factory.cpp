@@ -5,7 +5,7 @@
 #include "Factory.hpp"
 
 namespace Synthetics {
-  namespace Compounds {
+  namespace Components {
 
     Factory::Factory() {
     }
@@ -14,12 +14,12 @@ namespace Synthetics {
       m_map.clear();
     } 
 
-    void Factory::addCreator(const std::string name, CompoundCreateFn creator) {
+    void Factory::addCreator(const std::string name, ComponentCreateFn creator) {
       m_map[name] = creator;
     }
 
-    Compound *Factory::createCompound(const std::string name) {
-      std::map<std::string, CompoundCreateFn>::iterator it = m_map.find(name);
+    Component *Factory::createComponent(const std::string name) {
+      std::map<std::string, ComponentCreateFn>::iterator it = m_map.find(name);
       if (it != m_map.end()) {
         return it->second();
       }

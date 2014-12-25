@@ -6,13 +6,13 @@
 #define SYNTHETICS_CONFIGURATOR_H
 
 #include "lua.hpp"
-#include "Compounds/Factory.hpp"
+#include "Components/Factory.hpp"
 
 namespace Synthetics {
 
   class Configurator {
     public:
-      Configurator(Compounds::Factory *factory);
+      Configurator(Components::Factory *factory);
       virtual ~Configurator();
       int getWidth();
       int getHeight();

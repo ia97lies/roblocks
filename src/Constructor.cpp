@@ -7,13 +7,13 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  Constructor::Constructor(Core *core, CollisionScene *scene, MovingCamera *camera, Compounds::Factory *factory) : EventHandler() {
+  Constructor::Constructor(Core *core, CollisionScene *scene, MovingCamera *camera, Components::Factory *factory) : EventHandler() {
 
     m_core = core;
     m_scene = scene;
     m_camera = camera;
     m_factory = factory;
-    m_mother = new Robot();
+    m_mother = new Robot(core, scene);
   }
 
   Constructor::~Constructor() {
@@ -34,7 +34,7 @@ namespace Synthetics {
               break;
             case KEY_a:
               // add current selected compound to current active compound
-              Compound *compound = m_factory->createCompound("Passive.Hub");
+              Component *compound = m_factory->createComponent("Passive.Hub");
               m_mother->add(compound);
               break;
           }

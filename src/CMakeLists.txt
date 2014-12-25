@@ -69,6 +69,7 @@ set(Synthetics_SRCS
   HeadUpDisplay.cpp
   Compound.cpp
   Robot.cpp
+  Plug.cpp
 )
 
 set(Synthetics_HDRS
@@ -80,6 +81,7 @@ set(Synthetics_HDRS
   HeadUpDisplay.hpp
   Compound.hpp
   Robot.hpp
+  Plug.hpp
 )
 
 set(Polycode_LIBS
@@ -117,7 +119,7 @@ add_library(
 target_link_libraries(
   Synthetics 
   synthetics
-  compounds
+  components
   ${Polycode_LIBS}
 )
 
@@ -157,11 +159,20 @@ target_link_libraries(test_compound
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_plug Tests/test_plug.cpp)
+target_link_libraries(test_plug
+  synthetics
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_test(test_compound test_compound)
+add_test(test_plug test_plug)
 
 ##############################################################################
 # SUBDIRS
 ##############################################################################
-add_subdirectory(Compounds)
-#add_subdirectory(Components)
+add_subdirectory(Components)
 

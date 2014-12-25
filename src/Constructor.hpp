@@ -11,12 +11,12 @@
 
 #include "MovingCamera.hpp"
 #include "Robot.hpp"
-#include "Compounds/Factory.hpp"
+#include "Components/Factory.hpp"
 
 namespace Synthetics {
   class Constructor : public Polycode::EventHandler {
     public:
-      Constructor(Polycode::Core *core, Polycode::CollisionScene *scene, MovingCamera *camera, Compounds::Factory *factory);
+      Constructor(Polycode::Core *core, Polycode::CollisionScene *scene, MovingCamera *camera, Components::Factory *factory);
       ~Constructor();
       void handleEvent(Polycode::Event *e);
 
@@ -24,7 +24,7 @@ namespace Synthetics {
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
       MovingCamera *m_camera;
-      Compounds::Factory *m_factory;
+      Components::Factory *m_factory;
       Robot *m_mother;
   };
 }
