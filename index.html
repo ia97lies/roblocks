@@ -1,36 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Synthetics by ia97lies</title>
+    <meta name="description" content="Synthetics : robot blocks for easy assemble robots">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <title>Synthetics</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Synthetics</h1>
-        <p>robot blocks for easy assemble robots</p>
-        <p class="view"><a href="https://github.com/ia97lies/synthetics">View the Project on GitHub <small>ia97lies/synthetics</small></a></p>
-        <ul>
-          <li><a href="https://github.com/ia97lies/synthetics/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/ia97lies/synthetics/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/ia97lies/synthetics">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ia97lies/synthetics">View on GitHub</a>
+
+          <h1 id="project_title">Synthetics</h1>
+          <h2 id="project_tagline">robot blocks for easy assemble robots</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ia97lies/synthetics/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ia97lies/synthetics/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a id="synthetics" class="anchor" href="#synthetics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Synthetics</h1>
 
-<p>Lego like frameworke for easily assamble robots out of blocks and triagnles and run them in a synthetic enviroment.</p>
+<p>A robotics frameworke for easily assamble robots out of blocks and triagnles and run them in synthetic enviroment.</p>
 
 <h2>
 <a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h2>
@@ -38,7 +42,7 @@
 <p>A component specifies its connect faces, event handler and shape.</p>
 
 <h3>
-<a id="predefined-blocks" class="anchor" href="#predefined-blocks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Blocks</h3>
+<a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h3>
 
 <ul>
 <li>Passive.Hub</li>
@@ -51,16 +55,21 @@
 </ul>
 
 <h3>
-<a id="custom-blocks" class="anchor" href="#custom-blocks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Blocks</h3>
+<a id="custom-components" class="anchor" href="#custom-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Components</h3>
 
-<p>All blocks are shared libs which must be specified in the Resource/synthetics.conf therefor it is possible to implement custom blocks.</p>
+<p>It is possible to implement own components as a shared C++ library as all existing components are as well shared libraries. The used components must be specified in the Resource/synthetics.conf. </p>
       </section>
     </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/ia97lies">ia97lies</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Synthetics maintained by <a href="https://github.com/ia97lies">ia97lies</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
     
+
   </body>
 </html>
