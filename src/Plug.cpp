@@ -2,6 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "PolyScenePrimitive.h"
 #include "Plug.hpp"
 
 using namespace Polycode;
@@ -10,18 +11,10 @@ namespace Synthetics {
   Plug::Plug(Polycode::Vector3 position, Polycode::Vector3 rotation) {
     m_position = position;
     m_rotation = rotation;
-    m_data = NULL;
+    m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8, 0.8, 0.8);
   }
 
   Plug::~Plug() {};
-
-  void Plug::setUserData(void *data) {
-    m_data = data;
-  }
-
-  void *Plug::getUserData() {
-    return m_data;
-  }
 
   Vector3 Plug::getPosition() {
     return m_position; 
@@ -50,6 +43,10 @@ namespace Synthetics {
     } 
     Vector3 rotation = axis * round(angle * (-1) * 180 / PI);
     return rotation;
+  }
+
+  Polycode::Entity *Plug::getShape() {
+    return NULL;
   }
 
 }

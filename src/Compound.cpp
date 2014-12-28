@@ -6,7 +6,7 @@
 #include "Compound.hpp"
 
 namespace Synthetics {
-  Compound::Compound() {m_elements = 0;};
+  Compound::Compound() { m_elements = 0; };
   Compound::~Compound() {};
 
   int Compound::size() {

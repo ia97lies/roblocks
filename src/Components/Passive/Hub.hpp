@@ -5,6 +5,7 @@
 #ifndef SYNTHETICS_COMPOUNDS_PASSIVE_HUB_H
 #define SYNTHETICS_COMPOUNDS_PASSIVE_HUB_H
 
+#include "Part.hpp"
 #include "Component.hpp"
 
 namespace Synthetics {

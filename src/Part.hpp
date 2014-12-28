@@ -6,14 +6,24 @@
 #define SYNTHETICS_PART_H
 
 #include "PolyEntity.h"
+#include "Plug.hpp"
 #include "Compound.hpp"
 
 namespace Synthetics {
-  class Part : public Compound {
+  class __attribute__((visibility("default"))) Part : public Compound {
     public:
-      virtual ~Part() {};
-      
+      Part();
+      virtual ~Part();
+
       virtual Polycode::Entity *getShape() = 0;
+      
+      int getNoPlugs();
+      void addPlug(Plug *plug);
+      Plug *getPlug(int i);
+      Plug *getPlug(Polycode::Entity *plugShape);
+
+    private:
+      std::vector<Plug *> m_plugs;
   };
 }
 

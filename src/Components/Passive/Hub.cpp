@@ -4,6 +4,7 @@
 
 #include "lua.hpp"
 #include "PolyScenePrimitive.h"
+#include "Plug.hpp"
 #include "Components/Factory.hpp"
 #include "Components/Passive/Hub.hpp"
 
@@ -12,7 +13,7 @@ namespace Synthetics {
   namespace Components {
     namespace Passive {
 
-      class Body : public Part {
+      class Body : public ::Synthetics::Part {
         public:
           Body() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
@@ -20,7 +21,6 @@ namespace Synthetics {
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
-
           }
           virtual ~Body() {}
 
@@ -39,6 +39,18 @@ namespace Synthetics {
       Hub::Hub() {
         fprintf(stderr, "Create Hub\n");
         m_body = new Body();
+        Plug *plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(0,0,-1), Vector3(0,0,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(0,0,1), Vector3(0,0,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(0,1,0), Vector3(0,0,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(0,-1,0), Vector3(0,0,0));
+        m_body->addPlug(plug);
       }
 
       Hub::~Hub() {

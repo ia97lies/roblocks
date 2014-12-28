@@ -67,9 +67,10 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   Constructor.cpp
   HeadUpDisplay.cpp
+  Plug.cpp
+  Part.cpp
   Compound.cpp
   Robot.cpp
-  Plug.cpp
 )
 
 set(Synthetics_HDRS
@@ -79,9 +80,10 @@ set(Synthetics_HDRS
   OrbitCamera.hpp
   Constructor.hpp
   HeadUpDisplay.hpp
+  Plug.hpp
+  Part.hpp
   Compound.hpp
   Robot.hpp
-  Plug.hpp
 )
 
 set(Polycode_LIBS
@@ -113,9 +115,10 @@ add_executable(
 )
 
 add_library(
-  synthetics STATIC
+  synthetics SHARED
   ${Synthetics_SRCS} ${Synthetics_HDRS}
 )
+
 target_link_libraries(
   Synthetics 
   synthetics
@@ -127,6 +130,11 @@ target_link_libraries(
 # INSTALL 
 ##############################################################################
 install(TARGETS Synthetics
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS synthetics
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )
@@ -153,6 +161,7 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 add_executable(test_compound Tests/test_compound.cpp)
 target_link_libraries(test_compound
   synthetics
+  components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
@@ -162,6 +171,17 @@ target_link_libraries(test_compound
 add_executable(test_plug Tests/test_plug.cpp)
 target_link_libraries(test_plug
   synthetics
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_executable(test_part Tests/test_part.cpp)
+target_link_libraries(test_part
+  synthetics
+  components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
@@ -169,6 +189,7 @@ target_link_libraries(test_plug
 )
 
 add_test(test_compound test_compound)
+add_test(test_part test_part)
 add_test(test_plug test_plug)
 
 ##############################################################################

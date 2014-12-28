@@ -22,6 +22,7 @@ namespace Synthetics {
 
     CoreServices::getInstance()->getResourceManager()->addArchive("Resources/default.pak");
     CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
+    CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
     m_scene = new CollisionScene();
 

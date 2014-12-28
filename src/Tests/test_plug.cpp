@@ -12,7 +12,6 @@ using namespace Synthetics;
 BOOST_AUTO_TEST_CASE(test_plug_getter) {
   Plug plug(Vector3(0,0,0), Vector3(0,0,0));
   
-  BOOST_CHECK(plug.getUserData() == NULL);
   BOOST_CHECK(plug.getPosition() == Vector3(0,0,0));
   BOOST_CHECK(plug.getRotation() == Vector3(0,0,0));
 }
@@ -22,14 +21,6 @@ BOOST_AUTO_TEST_CASE(test_plug_getter_2) {
   
   BOOST_CHECK(plug.getPosition() == Vector3(1,2,3));
   BOOST_CHECK(plug.getRotation() == Vector3(4,5,6));
-}
-
-BOOST_AUTO_TEST_CASE(test_plug_set_userdata) {
-  Plug plug(Vector3(1,2,3), Vector3(4,5,6));
-  void *userdata = malloc(1);
-  plug.setUserData(userdata);
-  
-  BOOST_CHECK(plug.getUserData() == userdata);
 }
 
 BOOST_AUTO_TEST_CASE(test_plug_face_to_face_rotation) {
