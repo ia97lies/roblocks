@@ -19,9 +19,16 @@ namespace Synthetics {
   }
 
   void Robot::add(Component *component) {
+    Part *parent = NULL;
     for (int i = 0; i < component->getNoParts(); i++) {
       Part *curPart = component->getPart(i);
-      m_scene->addEntity(curPart->getShape());
+      if (parent == NULL) {
+        m_scene->addEntity(curPart->getShape());
+      }
+      else {
+        parent->getShape()->addChild(curPart->getShape());
+      }
+      parent = curPart;
       for (int j = 0; j < curPart->getNoPlugs(); j++) {
         Plug *curPlug = curPart->getPlug(j);
         curPart->getShape()->addChild(curPlug->getShape());

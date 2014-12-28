@@ -24,10 +24,20 @@ add_library(
   Passive/Hub.cpp
 )
 
+add_library(
+  ActorServo SHARED
+  Actor/Servo.cpp
+)
+
 ##############################################################################
 # INSTALL 
 ##############################################################################
 install(TARGETS PassiveHub
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS ActorServo
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

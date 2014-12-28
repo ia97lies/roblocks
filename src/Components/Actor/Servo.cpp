@@ -3,70 +3,95 @@
 //----------------------------------------------------------------------------
 
 #include "lua.hpp"
-#include "BlockFactory.hpp"
-#include "BlockPlugging.hpp"
-#include "Blocks/Actor/Servo.hpp"
+#include "PolyScenePrimitive.h"
+#include "Plug.hpp"
+#include "Components/Factory.hpp"
+#include "Components/Actor/Servo.hpp"
 
 using namespace Polycode;
 namespace Synthetics {
-  namespace Blocks {
+  namespace Components {
     namespace Actor {
 
-      //--------------------------------------------------------------------------
-      // Block interface
-      //--------------------------------------------------------------------------
-      Servo::Servo(Polycode::CollisionScene *scene) {
-        m_scene = scene;
-        m_color = Color(0.3, 0.9, 0.3, 1.0);
+      class Body : public ::Synthetics::Part {
+        public:
+          Body() {
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+            m_color = Color(1.0, 0.4, 0.4, 1.0);
+            m_entity->colorAffectsChildren = false;
+            m_entity->setColor(m_color);
+            m_entity->setPosition(0.0, 0.0, 0.0);
+          }
+          virtual ~Body() {}
 
-        m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-        m_shape->colorAffectsChildren = false;
-        m_shape->setColor(m_color.r, m_color.g, m_color.b, 0.4);
-        m_shape->setPosition(0.0, 0.0, 0.0);
-        m_shape->setUserData(this);
-        m_shape->alphaTest = true;
+          Polycode::Entity *getShape() {
+            return m_entity;
+          }
 
-        m_plugging = NULL;
+        private:
+          Polycode::Entity *m_entity;
+          Polycode::Color m_color;
+      };
+
+      //--------------------------------------------------------------------------
+      // Components interface
+      //--------------------------------------------------------------------------
+      Servo::Servo() {
+        fprintf(stderr, "Create Servo\n");
+        m_body[0] = new Body();
+        Plug *plug = new Plug(Vector3(0,0,-0.5), Vector3(0,-90,0));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(-0.5,0,0), Vector3(0,0,0));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(0,0,0.5), Vector3(0,-270,0));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(0,0.5,0), Vector3(0,0,90));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(0,-0.5,0), Vector3(0,0,270));
+        m_body[0]->addPlug(plug);
+
+        m_body[1] = new Body();
+        m_body[1]->getShape()->setPosition(1.5,0,0);
+        m_body[1]->getShape()->setRotationEuler(Vector3(0,90,0));
+        plug = new Plug(Vector3(0.5,0,0), Vector3(0,0,0));
+        m_body[1]->addPlug(plug);
+        plug = new Plug(Vector3(0,0,-0.5), Vector3(0,-90,0));
+        m_body[1]->addPlug(plug);
+        plug = new Plug(Vector3(0,0,0.5), Vector3(0,-270,0));
+        m_body[1]->addPlug(plug);
+        plug = new Plug(Vector3(0,0.5,0), Vector3(0,0,90));
+        m_body[1]->addPlug(plug);
+        plug = new Plug(Vector3(0,-0.5,0), Vector3(0,0,270));
+        m_body[1]->addPlug(plug);
+
       }
 
       Servo::~Servo() {
-        m_scene->removeEntity(m_shape);
-        delete m_shape;
-        if (m_plugging) {
-          delete m_plugging;
+        fprintf(stderr, "Destroy Servo\n");
+      }
+
+      int Servo::getNoParts() {
+        return 2;
+      }
+
+      Part *Servo::getPart(int i) {
+        if (i >= 0 || i < 2) {
+          return m_body[i];
         }
-      }
-
-      void Servo::init() {
-        m_plugging = new BlockPlugging(m_scene, this, 6);
-        m_plugging->addOrientation(0, Vector3(0, 0, -1));
-        m_plugging->addOrientation(1, Vector3(-1, 0, 0));
-        m_plugging->addOrientation(2, Vector3(0, 0, 1));
-        m_plugging->addOrientation(3, Vector3(1, 0, 0));
-        m_plugging->addOrientation(4, Vector3(0, 1, 0));
-        m_plugging->addOrientation(5, Vector3(0, -1, 0));
-      }
-
-      BlockPlugging *Servo::getPlugging() {
-        return m_plugging;
-      }
-
-      Polycode::ScenePrimitive * Servo::getShape() {
-        return m_shape;
+        return NULL;
       }
 
       //----------------------------------------------------------------------
-      // Block factory
+      // Components factory
       //----------------------------------------------------------------------
-      Block *ServoCreator(Polycode::CollisionScene *scene) {
-        Servo *hub = new Servo(scene);
-        hub->init();
+      Component *ServoCreator() {
+        Servo *hub = new Servo();
         return hub;
       }
 
       static int ServoRegister(lua_State *L) {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
-        BlockFactory *factory = (BlockFactory *)lua_touserdata(L, 1);
+        Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
         factory->addCreator("Actor.Servo", &ServoCreator);
         return 0;
@@ -85,7 +110,7 @@ namespace Synthetics {
 //----------------------------------------------------------------------------
 extern "C" {
   int luaopen_libActorServo(lua_State *L) {
-    luaL_register(L, "Actor.Servo", Synthetics::Blocks::Passive::ServoFuncs);
+    luaL_register(L, "Actor.Servo", Synthetics::Components::Actor::ServoFuncs);
     return 1;
   }
 }

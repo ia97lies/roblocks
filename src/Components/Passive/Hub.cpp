@@ -17,7 +17,7 @@ namespace Synthetics {
         public:
           Body() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-            m_color = Color(0.3, 0.9, 0.3, 1.0);
+            m_color = Color(0.4, 0.4, 1.0, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
@@ -42,8 +42,6 @@ namespace Synthetics {
         Plug *plug = new Plug(Vector3(0.5,0,0), Vector3(0,0,0));
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,0,-0.5), Vector3(0,-90,0));
-        m_body->addPlug(plug);
-        plug = new Plug(Vector3(-0.5,0,0), Vector3(0,-180,0));
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,0,0.5), Vector3(0,-270,0));
         m_body->addPlug(plug);

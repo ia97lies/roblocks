@@ -35,7 +35,7 @@ namespace Synthetics {
               break;
             case KEY_a:
               // add current selected compound to current active compound
-              Component *compound = m_factory->createComponent("Passive.Hub");
+              Component *compound = m_factory->createComponent("Actor.Servo");
               m_mother->add(compound);
               break;
           }

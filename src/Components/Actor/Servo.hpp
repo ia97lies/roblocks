@@ -2,31 +2,26 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_PASSIVE_HUB_H
-#define SYNTHETICS_PASSIVE_HUB_H
+#ifndef SYNTHETICS_COMPONENTS_ACTOR_SERVO_H
+#define SYNTHETICS_COMPONENTS_ACTOR_SERVO_H
 
-#include <Polycode.h>
-#include "PolycodeView.h"
-#include "Block.hpp"
+#include "Part.hpp"
+#include "Component.hpp"
 
 namespace Synthetics {
-  namespace Blocks {
+  namespace Components {
     namespace Actor {
 
-      class Servo : public Block {
+      class Servo : public Component {
         public:
-          Servo(Polycode::CollisionScene *scene);
+          Servo();
           virtual ~Servo();
 
-          virtual void init();
-          virtual BlockPlugging *getPlugging();
-          virtual Polycode::ScenePrimitive * getShape(); 
-          
+          virtual int getNoParts();
+          virtual Part *getPart(int i);
+
         private:
-          Polycode::CollisionScene *m_scene;
-          BlockPlugging *m_plugging;
-          Polycode::Color m_color;
-          Polycode::ScenePrimitive * m_shape;
+          Part *m_body[2];
       };
 
     }
