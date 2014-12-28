@@ -22,6 +22,7 @@ namespace Synthetics {
     private:
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
+      Polycode::Entity *m_mother;
   };
 }
 

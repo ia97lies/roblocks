@@ -39,17 +39,17 @@ namespace Synthetics {
       Hub::Hub() {
         fprintf(stderr, "Create Hub\n");
         m_body = new Body();
-        Plug *plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
+        Plug *plug = new Plug(Vector3(0.5,0,0), Vector3(0,0,0));
         m_body->addPlug(plug);
-        plug = new Plug(Vector3(0,0,-1), Vector3(0,0,0));
+        plug = new Plug(Vector3(0,0,-0.5), Vector3(0,-90,0));
         m_body->addPlug(plug);
-        plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
+        plug = new Plug(Vector3(-0.5,0,0), Vector3(0,-180,0));
         m_body->addPlug(plug);
-        plug = new Plug(Vector3(0,0,1), Vector3(0,0,0));
+        plug = new Plug(Vector3(0,0,0.5), Vector3(0,-270,0));
         m_body->addPlug(plug);
-        plug = new Plug(Vector3(0,1,0), Vector3(0,0,0));
+        plug = new Plug(Vector3(0,0.5,0), Vector3(0,0,90));
         m_body->addPlug(plug);
-        plug = new Plug(Vector3(0,-1,0), Vector3(0,0,0));
+        plug = new Plug(Vector3(0,-0.5,0), Vector3(0,0,270));
         m_body->addPlug(plug);
       }
 

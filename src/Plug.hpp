@@ -16,6 +16,7 @@ namespace Synthetics {
 
       Polycode::Vector3 getPosition();
       Polycode::Vector3 getRotation();
+      float getWidth();
       Polycode::Vector3 getFaceToFaceRotation(Plug *plug); 
       Polycode::Entity *getShape();
 

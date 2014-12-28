@@ -11,13 +11,18 @@ namespace Synthetics {
   Plug::Plug(Polycode::Vector3 position, Polycode::Vector3 rotation) {
     m_position = position;
     m_rotation = rotation;
-    m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8, 0.8, 0.8);
+    m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, getWidth(), 0.8, 0.8);
+    m_shape->setColor(1, 0, 0, 1);
   }
 
   Plug::~Plug() {};
 
   Vector3 Plug::getPosition() {
     return m_position; 
+  }
+
+  float Plug::getWidth() {
+    return 0.2;
   }
 
   Vector3 Plug::getRotation() {
@@ -46,7 +51,7 @@ namespace Synthetics {
   }
 
   Polycode::Entity *Plug::getShape() {
-    return NULL;
+    return m_shape;
   }
 
 }
