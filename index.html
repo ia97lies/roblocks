@@ -37,12 +37,17 @@
 <p>A robotics framework for easily assemble robots out of robotic components and run them in synthetic enviroment.</p>
 
 <h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>The configuration is a simple Lua script. Currently only the initial resolution can be set and the needed components can be loaded.</p>
+
+<h2>
 <a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h2>
 
-<p>A component specifies its connect faces, event handler and shape.</p>
+<p>Every component specifies its connect faces, event handler and shape.</p>
 
-<h3>
-<a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h3>
+<h2>
+<a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h2>
 
 <ul>
 <li>Passive.Hub</li>
@@ -54,10 +59,10 @@
 <li>Morph.Average</li>
 </ul>
 
-<h3>
-<a id="custom-components" class="anchor" href="#custom-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Components</h3>
+<h2>
+<a id="custom-components" class="anchor" href="#custom-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Components</h2>
 
-<p>It is possible to implement own components as a shared C++ library as all existing components are as well shared libraries. The used components must be specified in the Resource/synthetics.conf. </p>
+<p>It is possible to implement own components as a shared C++ library as all existing components are as well shared libraries. All used components must be specified in the Resource/synthetics.conf. </p>
       </section>
     </div>
 
