@@ -1,10 +1,13 @@
-# Synthetics
-A simulator to easily build and run robots. No programming is needed but possible. There are a set of components to plug your robots together. Every component do have a couple of faces to plug other components. There are router and hubs as well as morphing components to manipulate the signals of sensors.
+#Synthetics
+A robotics framework for easily assemble robots out of robotic components and run them in synthetic enviroment.
 
-## Components
-A component specifies its connect faces, event handler and shape.
+##Configuration
+The configuration is a simple Lua script. Currently only the initial resolution can be set and the needed components can be loaded.
 
-### Predefined Blocks
+##Components
+Every component specifies its connect faces, event handler and shape.
+
+##Predefined Components
 * Passive.Hub
 * Actor.Motor
 * Actor.Servo
@@ -13,5 +16,5 @@ A component specifies its connect faces, event handler and shape.
 * Morph.Negator
 * Morph.Average
 
-### Custom Blocks
-All blocks are shared libs which must be specified in the Resource/synthetics.conf therefor it is possible to implement custom blocks.
+##Custom Components
+It is possible to implement own components as a shared C++ library as all existing components are as well shared libraries. All used components must be specified in the Resource/synthetics.conf. 
