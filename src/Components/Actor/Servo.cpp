@@ -33,36 +33,51 @@ namespace Synthetics {
           Polycode::Color m_color;
       };
 
+      class Link : public ::Synthetics::Part {
+        public:
+          Link() {
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.6,20);
+            m_color = Color(1.0, 0.4, 0.4, 1.0);
+            m_entity->colorAffectsChildren = false;
+            m_entity->setColor(m_color);
+            m_entity->setPosition(0.0, 0.0, 0.0);
+          }
+          virtual ~Link() {}
+
+          Polycode::Entity *getShape() {
+            return m_entity;
+          }
+
+        private:
+          Polycode::Entity *m_entity;
+          Polycode::Color m_color;
+      };
+
       //--------------------------------------------------------------------------
       // Components interface
       //--------------------------------------------------------------------------
       Servo::Servo() {
         fprintf(stderr, "Create Servo\n");
         m_body[0] = new Body();
-        Plug *plug = new Plug(Vector3(0,0,-0.5), Vector3(0,-90,0));
-        m_body[0]->addPlug(plug);
-        plug = new Plug(Vector3(-0.5,0,0), Vector3(0,0,0));
-        m_body[0]->addPlug(plug);
-        plug = new Plug(Vector3(0,0,0.5), Vector3(0,-270,0));
+        Plug *plug = new Plug(Vector3(-0.5,0,0), Vector3(0,0,0));
         m_body[0]->addPlug(plug);
         plug = new Plug(Vector3(0,0.5,0), Vector3(0,0,90));
         m_body[0]->addPlug(plug);
         plug = new Plug(Vector3(0,-0.5,0), Vector3(0,0,270));
         m_body[0]->addPlug(plug);
 
-        m_body[1] = new Body();
-        m_body[1]->getShape()->setPosition(1.5,0,0);
-        m_body[1]->getShape()->setRotationEuler(Vector3(0,90,0));
+        m_body[1] = new Link();
+        m_body[1]->getShape()->setPosition(1,0,0);
+
+        m_body[2] = new Body();
+        m_body[2]->getShape()->setPosition(0,0,-1);
+        m_body[2]->getShape()->setRotationEuler(Vector3(0,90,0));
         plug = new Plug(Vector3(0.5,0,0), Vector3(0,0,0));
-        m_body[1]->addPlug(plug);
-        plug = new Plug(Vector3(0,0,-0.5), Vector3(0,-90,0));
-        m_body[1]->addPlug(plug);
-        plug = new Plug(Vector3(0,0,0.5), Vector3(0,-270,0));
-        m_body[1]->addPlug(plug);
+        m_body[2]->addPlug(plug);
         plug = new Plug(Vector3(0,0.5,0), Vector3(0,0,90));
-        m_body[1]->addPlug(plug);
+        m_body[2]->addPlug(plug);
         plug = new Plug(Vector3(0,-0.5,0), Vector3(0,0,270));
-        m_body[1]->addPlug(plug);
+        m_body[2]->addPlug(plug);
 
       }
 
@@ -71,11 +86,11 @@ namespace Synthetics {
       }
 
       int Servo::getNoParts() {
-        return 2;
+        return 3;
       }
 
       Part *Servo::getPart(int i) {
-        if (i >= 0 || i < 2) {
+        if (i >= 0 || i < 3) {
           return m_body[i];
         }
         return NULL;

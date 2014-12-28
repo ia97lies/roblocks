@@ -21,7 +21,7 @@ namespace Synthetics {
           virtual Part *getPart(int i);
 
         private:
-          Part *m_body[2];
+          Part *m_body[3];
       };
 
     }
