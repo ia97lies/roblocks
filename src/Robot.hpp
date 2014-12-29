@@ -7,13 +7,14 @@
 
 #include "Polycode.h"
 #include "Polycode3DPhysics.h"
+#include "PolycodeFacade.hpp"
 #include "Compound.hpp"
 #include "Component.hpp"
 
 namespace Synthetics {
   class Robot: public Compound {
     public:
-      Robot(Polycode::CollisionScene *scene); 
+      Robot(PolycodeFacade *facade); 
       virtual ~Robot();
 
       void add(Component *component);
@@ -21,7 +22,7 @@ namespace Synthetics {
       void activate(Polycode::Entity *plug); 
 
     private:
-      Polycode::CollisionScene *m_scene;
+      PolycodeFacade *m_polycodeFacade;
       Component *m_mother;
       Component *m_active;
   };

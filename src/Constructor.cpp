@@ -2,6 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "PolycodeFacade.hpp"
 #include "Part.hpp"
 #include "Constructor.hpp"
 
@@ -14,7 +15,7 @@ namespace Synthetics {
     m_scene = scene;
     m_camera = camera;
     m_factory = factory;
-    m_mother = new Robot(scene);
+    m_mother = new Robot(new PolycodeFacade(core, scene));
   }
 
   Constructor::~Constructor() {
