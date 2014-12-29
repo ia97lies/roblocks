@@ -42,6 +42,8 @@ namespace Synthetics {
       m_mother = component;
     }
     else if (m_active != NULL) {
+      // TODO: set correct position and rotation of the added component
+      // TODO: store as well the active plug for calculation of position and rotation
       m_active->add(component);
     }
   }
@@ -49,11 +51,19 @@ namespace Synthetics {
   void Robot::remove() {
   }
 
-  void Robot::activate(void *plug) {
+  void Robot::activate(Polycode::Entity *plugShape) {
     Component *curComponent = m_mother;
     while (curComponent && !m_active) {
       for (int i = 0; i < curComponent->getNoParts(); i++) {
+        Part *curPart = curComponent->getPart(i);
+        Plug *plug = curPart->getPlug(plugShape);
+        if (plug) {
+          // TODO: activate plug and component
+          m_active = curComponent;
+        }
       }
+      // TODO: iterate over components
+      curComponent = NULL;
     }
   }
 }

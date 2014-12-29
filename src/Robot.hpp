@@ -18,7 +18,8 @@ namespace Synthetics {
 
       void add(Component *component);
       void remove();
-      void activate(void *plug);
+      void activate(Polycode::Entity *plug); 
+
     private:
       Polycode::CollisionScene *m_scene;
       Component *m_mother;
