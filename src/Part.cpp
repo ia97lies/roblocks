@@ -23,7 +23,13 @@ namespace Synthetics {
   }
 
   Plug *Part::getPlug(Polycode::Entity *plugShape) {
-    return NULL;
+    Plug *found = NULL;
+    for (int i = 0; !found && i < m_plugs.size(); i++) {
+      if (plugShape == m_plugs.at(i)->getShape()) {
+        found = m_plugs.at(i);
+      }
+    }
+    return found;
   }
 
   Polycode::Entity *getShape() {

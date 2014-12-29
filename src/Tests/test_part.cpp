@@ -59,7 +59,31 @@ BOOST_AUTO_TEST_CASE(test_part_add_plug_get_by_shape) {
   Plug *plug = new Plug(Vector3(0,0,0), Vector3(0,0,0));
 
   part->addPlug(plug);
-  BOOST_CHECK(part->getNoPlugs() == 1);
   BOOST_CHECK(part->getPlug(plug->getShape()) == plug);
+}
+
+BOOST_AUTO_TEST_CASE(test_part_add_plug_get_plug_found) {
+  MyPart *part = new MyPart();
+  Plug *plug = new Plug(Vector3(0,0,0), Vector3(0,0,0));
+  Plug *plug2 = new Plug(Vector3(0,0,0), Vector3(0,0,0));
+
+  part->addPlug(plug);
+  BOOST_CHECK(part->getPlug(plug2->getShape()) == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_part_add_many_plug_get_many_and_get_one_not_found) {
+  MyPart *part = new MyPart();
+  Plug *plug1 = new Plug(Vector3(0,0,0), Vector3(0,0,0));
+  Plug *plug2 = new Plug(Vector3(0,0,0), Vector3(0,0,0));
+  Plug *plug3 = new Plug(Vector3(0,0,0), Vector3(0,0,0));
+  Plug *plugNotAdded = new Plug(Vector3(0,0,0), Vector3(0,0,0));
+
+  part->addPlug(plug1);
+  part->addPlug(plug2);
+  part->addPlug(plug3);
+  BOOST_CHECK(part->getPlug(plug1->getShape()) == plug1);
+  BOOST_CHECK(part->getPlug(plug2->getShape()) == plug2);
+  BOOST_CHECK(part->getPlug(plug3->getShape()) == plug3);
+  BOOST_CHECK(part->getPlug(plugNotAdded->getShape()) == NULL);
 }
 
