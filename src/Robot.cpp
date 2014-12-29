@@ -14,13 +14,53 @@ namespace Synthetics {
     m_polycodeFacade = facade;
     m_mother = NULL;
     m_active = NULL;
+    m_activePlug = NULL;
   }
 
   Robot::~Robot() {
   }
 
   void Robot::add(Component *component) {
-    Part *parent = NULL;
+    if (m_mother == NULL) {
+      m_mother = component;
+      constructGraphic(NULL, component);
+    }
+    else if (m_active != NULL) {
+      // TODO: set correct position and rotation of the added component
+      // TODO: store as well the active plug for calculation of position and rotation
+      m_active->add(component);
+      constructGraphic(NULL, component);
+    }
+    else {
+      delete component;
+    }
+  }
+
+  void Robot::remove() {
+  }
+
+  void Robot::activate(Polycode::Entity *plugShape) {
+    Component *curComponent = m_mother;
+    Component *active = NULL;
+    while (curComponent && !active) {
+      for (int i = 0; i < curComponent->getNoParts(); i++) {
+        Part *curPart = curComponent->getPart(i);
+        Plug *plug = curPart->getPlug(plugShape);
+        if (plug) {
+          plug->activate(true);
+          if (m_activePlug) {
+            m_activePlug->activate(false);
+          }
+          m_activePlug = plug;
+          m_active = active = curComponent;
+        }
+      }
+      // TODO: iterate over components
+      curComponent = NULL;
+    }
+  }
+
+  void Robot::constructGraphic(Part *parent, Component *component) {
     for (int i = 0; i < component->getNoParts(); i++) {
       Part *curPart = component->getPart(i);
       if (parent == NULL) {
@@ -38,33 +78,6 @@ namespace Synthetics {
         curPlug->getShape()->setPosition(curPlug->getPosition());
 
       }
-    }
-    if (m_mother == NULL) {
-      m_mother = component;
-    }
-    else if (m_active != NULL) {
-      // TODO: set correct position and rotation of the added component
-      // TODO: store as well the active plug for calculation of position and rotation
-      m_active->add(component);
-    }
-  }
-
-  void Robot::remove() {
-  }
-
-  void Robot::activate(Polycode::Entity *plugShape) {
-    Component *curComponent = m_mother;
-    while (curComponent && !m_active) {
-      for (int i = 0; i < curComponent->getNoParts(); i++) {
-        Part *curPart = curComponent->getPart(i);
-        Plug *plug = curPart->getPlug(plugShape);
-        if (plug) {
-          // TODO: activate plug and component
-          m_active = curComponent;
-        }
-      }
-      // TODO: iterate over components
-      curComponent = NULL;
     }
   }
 }

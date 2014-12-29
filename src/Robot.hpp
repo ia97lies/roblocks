@@ -24,7 +24,10 @@ namespace Synthetics {
     private:
       PolycodeFacade *m_polycodeFacade;
       Component *m_mother;
+      Plug *m_activePlug;
       Component *m_active;
+
+      void constructGraphic(Part *parent, Component *component);
   };
 }
 

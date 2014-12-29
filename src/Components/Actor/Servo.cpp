@@ -17,7 +17,7 @@ namespace Synthetics {
         public:
           Body() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
-            m_color = Color(1.0, 0.4, 0.4, 1.0);
+            m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
@@ -37,7 +37,7 @@ namespace Synthetics {
         public:
           Link() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.6,20);
-            m_color = Color(1.0, 0.4, 0.4, 1.0);
+            m_color = Color(0.8, 0.8, 0.8, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);

@@ -19,11 +19,13 @@ namespace Synthetics {
       float getWidth();
       Polycode::Vector3 getFaceToFaceRotation(Plug *plug); 
       Polycode::Entity *getShape();
+      void activate(bool on);
 
     private:
       Polycode::Vector3 m_position;
       Polycode::Vector3 m_rotation;
       Polycode::Entity *m_shape;
+      bool m_on;
   };
 }
 

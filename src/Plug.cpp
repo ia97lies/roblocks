@@ -12,7 +12,7 @@ namespace Synthetics {
     m_position = position;
     m_rotation = rotation;
     m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, getWidth(), 0.8, 0.8);
-    m_shape->setColor(1, 0, 0, 1);
+    m_shape->setColor(1, 0, 0, 0.5);
   }
 
   Plug::~Plug() {};
@@ -54,5 +54,14 @@ namespace Synthetics {
     return m_shape;
   }
 
+  void Plug::activate(bool on) {
+    m_on = on;
+    if (m_on) {
+      m_shape->setColor(1, 0, 0, 1);
+    }
+    else {
+      m_shape->setColor(1, 0, 0, 0.5);
+    }
+  }
 }
 
