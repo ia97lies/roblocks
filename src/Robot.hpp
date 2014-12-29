@@ -13,16 +13,16 @@
 namespace Synthetics {
   class Robot: public Compound {
     public:
-      Robot(Polycode::Core *core, Polycode::CollisionScene *scene); 
+      Robot(Polycode::CollisionScene *scene); 
       virtual ~Robot();
 
       void add(Component *component);
       void remove();
       void activate(void *plug);
     private:
-      Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
-      Polycode::Entity *m_mother;
+      Component *m_mother;
+      Component *m_active;
   };
 }
 

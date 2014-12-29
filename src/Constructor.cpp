@@ -14,7 +14,7 @@ namespace Synthetics {
     m_scene = scene;
     m_camera = camera;
     m_factory = factory;
-    m_mother = new Robot(core, scene);
+    m_mother = new Robot(scene);
   }
 
   Constructor::~Constructor() {
@@ -43,11 +43,11 @@ namespace Synthetics {
         case InputEvent::EVENT_MOUSEDOWN:
           switch(inputEvent->getMouseButton()) {
             case CoreInput::MOUSE_BUTTON1:
-              // select compound and compound face
-              // object = raycast()
-              // if object {
-              //   mother->activate(object)
-              // }
+              Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
+              RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 300.0);
+              if(res.entity) {
+                m_mother->activate(res.entity);
+              }
               break;
           }
       }

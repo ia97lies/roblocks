@@ -9,10 +9,10 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  Robot::Robot(Core *core, CollisionScene *scene) {
-    m_core = core;
+  Robot::Robot(CollisionScene *scene) {
     m_scene = scene;
-    m_mother = new Entity();
+    m_mother = NULL;
+    m_active = NULL;
   }
 
   Robot::~Robot() {
@@ -38,12 +38,23 @@ namespace Synthetics {
 
       }
     }
+    if (m_mother == NULL) {
+      m_mother = component;
+    }
+    else if (m_active != NULL) {
+      m_active->add(component);
+    }
   }
 
   void Robot::remove() {
   }
 
   void Robot::activate(void *plug) {
+    Component *curComponent = m_mother;
+    while (curComponent && !m_active) {
+      for (int i = 0; i < curComponent->getNoParts(); i++) {
+      }
+    }
   }
 }
 
