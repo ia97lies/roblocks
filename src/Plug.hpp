@@ -14,12 +14,12 @@ namespace Synthetics {
       Plug(Polycode::Vector3 position, Polycode::Vector3 rotation);
       ~Plug();
 
-      Polycode::Vector3 getPosition();
-      Polycode::Vector3 getRotation();
-      float getWidth();
-      Polycode::Vector3 getFaceToFaceRotation(Plug *plug); 
-      Polycode::Entity *getShape();
-      void activate(bool on);
+      virtual Polycode::Vector3 getPosition();
+      virtual Polycode::Vector3 getRotation();
+      virtual float getWidth();
+      virtual Polycode::Vector3 getFaceToFaceRotation(Plug *plug); 
+      virtual Polycode::Entity *getShape();
+      virtual void activate(bool on);
 
     private:
       Polycode::Vector3 m_position;
