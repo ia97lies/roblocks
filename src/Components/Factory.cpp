@@ -26,6 +26,10 @@ namespace Synthetics {
       return NULL;
     }
 
+    std::vector<std::string> Factory::getNames() {
+      std::vector<std::string> names;
+      return names;
+    }
   }
 }
 

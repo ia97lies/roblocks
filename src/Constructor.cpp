@@ -16,6 +16,7 @@ namespace Synthetics {
     m_camera = camera;
     m_factory = factory;
     m_mother = new Robot(new PolycodeFacade(core, scene));
+    m_selectedComponent = "Passive.Hub";
   }
 
   Constructor::~Constructor() {
@@ -36,7 +37,7 @@ namespace Synthetics {
               break;
             case KEY_a:
               // add current selected compound to current active compound
-              Component *compound = m_factory->createComponent("Actor.Servo");
+              Component *compound = m_factory->createComponent(m_selectedComponent);
               m_mother->add(compound);
               break;
           }

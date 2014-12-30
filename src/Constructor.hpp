@@ -24,6 +24,7 @@ namespace Synthetics {
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
       MovingCamera *m_camera;
+      std::string m_selectedComponent; 
       Components::Factory *m_factory;
       Robot *m_mother;
   };

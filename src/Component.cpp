@@ -8,8 +8,15 @@ namespace Synthetics {
   Component::Component() {}
   Component::~Component() {}
 
-  Part *Component::getPart(Polycode::Entity *plugShape) {
-    return NULL;
+  Part *Component::getPartByPlug(Polycode::Entity *plugShape) {
+    Part *found = NULL;
+    for (int i = 0; !found && i < getNoParts(); i++) {
+      Part *part = getPart(i);
+      if (part->getPlug(plugShape)) {
+        found = part;
+      }
+    }
+    return found;
   }
 }
 

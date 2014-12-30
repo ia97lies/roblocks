@@ -20,6 +20,7 @@ namespace Synthetics {
 
         void addCreator(const std::string name, ComponentCreateFn creator);
         Component *createComponent(const std::string name);
+        std::vector<std::string> getNames(); 
 
         static Factory *get() {
           static Factory instance;
