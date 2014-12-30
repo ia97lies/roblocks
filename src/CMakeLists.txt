@@ -71,6 +71,7 @@ set(Synthetics_SRCS
   Plug.cpp
   Part.cpp
   Compound.cpp
+  Component.cpp
   Robot.cpp
 )
 
@@ -85,6 +86,7 @@ set(Synthetics_HDRS
   Plug.hpp
   Part.hpp
   Compound.hpp
+  Component.hpp
   Robot.hpp
 )
 
@@ -190,6 +192,16 @@ target_link_libraries(test_part
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_component Tests/test_component.cpp)
+target_link_libraries(test_component
+  synthetics
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_executable(test_robot Tests/test_robot.cpp)
 target_link_libraries(test_robot
   synthetics
@@ -203,6 +215,7 @@ target_link_libraries(test_robot
 add_test(test_compound test_compound)
 add_test(test_part test_part)
 add_test(test_plug test_plug)
+add_test(test_component test_component)
 add_test(test_robot test_robot)
 
 ##############################################################################

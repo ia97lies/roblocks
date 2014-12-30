@@ -28,12 +28,12 @@ class PolycodeMock : public PolycodeFacade {
 class PlugMock : public Plug {
   public:
     PlugMock(Vector3 position, Vector3 rotation) : Plug(position, rotation) { 
-      isOn = false; 
+      isActivated = false; 
     }
     virtual void activate(bool on) {
-      isOn = on;
+      isActivated = on;
     }
-    bool isOn;
+    bool isActivated;
 };
 
 class PartMock : public Part {
@@ -52,18 +52,20 @@ class ComponentMock : public Component {
     ComponentMock(bool *deleted) { 
       m_deleted = deleted; 
       m_part = new PartMock();
-      m_plug = new PlugMock(Vector3(0, 0, 0), Vector3(0, 0, 0));
-      m_part->addPlug(m_plug);
+      m_plug[0] = new PlugMock(Vector3(0, 0, 0), Vector3(0, 0, 0));
+      m_part->addPlug(m_plug[0]);
+      m_plug[1] = new PlugMock(Vector3(0, 0, 0), Vector3(0, 0, 0));
+      m_part->addPlug(m_plug[1]);
     }
     ~ComponentMock() { *m_deleted = true; }
 
     int getNoParts() { return 1; }
     Part *getPart(int i) { return m_part; }
-    PlugMock *getMyPlug() { return m_plug; }
+    PlugMock *getMyPlug(int i) { return m_plug[i]; }
   private:
     bool *m_deleted;
     Part *m_part;
-    PlugMock *m_plug;
+    PlugMock *m_plug[2];
 };
 
 BOOST_AUTO_TEST_CASE(test_robot_instantiate) {
@@ -81,9 +83,6 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component) {
 
   robot->add(componentMock);
   BOOST_CHECK(deleted == false);
-
-  delete robot;
-  delete polycodeMock;
 }
 
 BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_no_activated_plug) {
@@ -99,9 +98,6 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_no_activated_plug) 
   componentMock = new ComponentMock(&deleted);
   robot->add(componentMock);
   BOOST_CHECK(deleted == true);
-
-  delete robot;
-  delete polycodeMock;
 }
 
 BOOST_AUTO_TEST_CASE(test_robot_activate_plug) {
@@ -109,11 +105,33 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug) {
   PolycodeMock *polycodeMock = new PolycodeMock();
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
-  PlugMock *plugMock = componentMock->getMyPlug();
 
-  BOOST_CHECK(plugMock != NULL);
+  BOOST_CHECK(componentMock->getMyPlug(0) != NULL);
 
   robot->add(componentMock);
-  robot->activate(plugMock->getShape());
+  robot->activate(componentMock->getMyPlug(0)->getShape());
+
+  BOOST_CHECK(componentMock->getMyPlug(0)->isActivated);
+  BOOST_CHECK(!componentMock->getMyPlug(1)->isActivated);
+
+  robot->activate(componentMock->getMyPlug(1)->getShape());
+
+  BOOST_CHECK(!componentMock->getMyPlug(0)->isActivated);
+  BOOST_CHECK(componentMock->getMyPlug(1)->isActivated);
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_to_activated_plug) {
+  bool deleted = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *componentMock = new ComponentMock(&deleted);
+  Robot *robot = new Robot(polycodeMock);
+
+  robot->add(componentMock);
+  BOOST_CHECK(deleted == false);
+
+  robot->activate(componentMock->getMyPlug(0)->getShape());
+  componentMock = new ComponentMock(&deleted);
+  robot->add(componentMock);
+  BOOST_CHECK(deleted == false);
 }
 

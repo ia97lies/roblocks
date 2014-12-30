@@ -27,7 +27,6 @@ namespace Synthetics {
     }
     else if (m_active != NULL) {
       // TODO: set correct position and rotation of the added component
-      // TODO: store as well the active plug for calculation of position and rotation
       m_active->add(component);
       constructGraphic(NULL, component);
     }
@@ -76,7 +75,6 @@ namespace Synthetics {
         m_polycodeFacade->trackEntity(curPlug->getShape());
         curPlug->getShape()->setRotationEuler(curPlug->getRotation());
         curPlug->getShape()->setPosition(curPlug->getPosition());
-
       }
     }
   }
