@@ -47,6 +47,17 @@ install(TARGETS ActorServo
 ##############################################################################
 enable_testing()
 
+add_executable(test_factory Tests/test_factory.cpp)
+target_link_libraries(test_factory
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_test(test_factory test_factory)
+
 add_executable(test_load_components Tests/test_load_components.cpp)
 target_link_libraries(test_load_components
   components

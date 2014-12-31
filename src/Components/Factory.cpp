@@ -15,6 +15,9 @@ namespace Synthetics {
     } 
 
     void Factory::addCreator(const std::string name, ComponentCreateFn creator) {
+      if (m_map[name] == NULL) {
+        m_names.push_back(name);
+      }
       m_map[name] = creator;
     }
 
@@ -27,8 +30,7 @@ namespace Synthetics {
     }
 
     std::vector<std::string> Factory::getNames() {
-      std::vector<std::string> names;
-      return names;
+      return m_names;
     }
   }
 }

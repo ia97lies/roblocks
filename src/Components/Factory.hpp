@@ -29,6 +29,7 @@ namespace Synthetics {
 
       private:
         std::map<std::string, ComponentCreateFn> m_map;
+        std::vector<std::string> m_names;
 
         Factory();
     };

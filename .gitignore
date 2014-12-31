@@ -18,6 +18,7 @@ Testing
 CTestTestfile.cmake
 src/test_compound
 src/Components/test_load_components
+src/Components/test_factory
 src/OldStuff/
 src/test_plug
 src/test_part
