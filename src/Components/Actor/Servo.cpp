@@ -22,7 +22,9 @@ namespace Synthetics {
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
           }
-          virtual ~Body() {}
+          virtual ~Body() {
+            delete m_entity;
+          }
 
           Polycode::Entity *getShape() {
             return m_entity;
@@ -37,7 +39,7 @@ namespace Synthetics {
         public:
           Link() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.6,20);
-            m_color = Color(0.8, 0.8, 0.8, 1.0);
+            m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
@@ -83,6 +85,9 @@ namespace Synthetics {
 
       Servo::~Servo() {
         fprintf(stderr, "Destroy Servo\n");
+        for (int i = 0; i < 3; i++) {
+          delete m_body[i];
+        }
       }
 
       int Servo::getNoParts() {
@@ -94,6 +99,12 @@ namespace Synthetics {
           return m_body[i];
         }
         return NULL;
+      }
+
+      void Servo::enable(bool on) {
+        for (int i = 0; i < 3; i++) {
+          m_body[i]->getShape()->enabled = on;
+        }
       }
 
       //----------------------------------------------------------------------

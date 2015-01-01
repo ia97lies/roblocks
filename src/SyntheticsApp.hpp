@@ -10,7 +10,6 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "MovingCamera.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
@@ -24,7 +23,6 @@ namespace Synthetics {
     private:
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
-      MovingCamera *m_camera;
       Configurator *m_conf;
   };
 }

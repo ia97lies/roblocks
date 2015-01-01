@@ -17,6 +17,7 @@ namespace Synthetics {
 
       virtual int getNoParts() = 0;
       virtual Part *getPart(int i) = 0;
+      virtual void enable(bool on) = 0;
       virtual Part *getPartByPlug(Polycode::Entity *plugShape);
   };
 }

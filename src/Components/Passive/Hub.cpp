@@ -22,7 +22,9 @@ namespace Synthetics {
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
           }
-          virtual ~Body() {}
+          virtual ~Body() {
+            delete m_entity;
+          }
 
           Polycode::Entity *getShape() {
             return m_entity;
@@ -53,6 +55,7 @@ namespace Synthetics {
 
       Hub::~Hub() {
         fprintf(stderr, "Destroy Hub\n");
+        delete m_body;
       }
 
       int Hub::getNoParts() {
@@ -64,6 +67,10 @@ namespace Synthetics {
           return m_body;
         }
         return NULL;
+      }
+
+      void Hub::enable(bool on) {
+        m_body->getShape()->enabled = on;
       }
 
       //----------------------------------------------------------------------

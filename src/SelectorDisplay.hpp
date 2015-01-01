@@ -2,35 +2,36 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_CONSTRUCTOR_H
-#define SYNTHETICS_CONSTRUCTOR_H
+#ifndef SYNTHETICS_SELECTOR_DISPLAY_H
+#define SYNTHETICS_SELECTOR_DISPLAY_H
 
 #include <Polycode.h>
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "MovingCamera.hpp"
-#include "Robot.hpp"
-#include "Configurator.hpp"
-#include "SelectorDisplay.hpp"
 #include "Components/Factory.hpp"
+#include "Configurator.hpp"
 
 namespace Synthetics {
-  class Constructor : public Polycode::EventHandler {
+  class SelectorDisplay : public Polycode::EventHandler {
     public:
-      Constructor(Polycode::Core *core, Configurator *conf, Components::Factory *factory);
-      ~Constructor();
+      SelectorDisplay(Polycode::Core *core, Configurator *conf, Components::Factory *factory);
+      ~SelectorDisplay();
       void handleEvent(Polycode::Event *e);
+      void turnOn(bool on); 
+      std::string getText();
 
     private:
+      Configurator *m_conf;
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
+      PolycodeFacade *m_polycodeFacade;
       Polycode::Scene *m_hudScene;
-      MovingCamera *m_camera;
+      Polycode::SceneLabel *m_label;
       Components::Factory *m_factory;
-      Robot *m_mother;
-      Configurator *m_conf;
-      SelectorDisplay *m_selectorDisplay;
+      int m_index;
+      std::string m_text; 
+      std::vector<Component *> m_components;
   };
 }
 #endif

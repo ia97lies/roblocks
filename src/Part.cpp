@@ -8,7 +8,13 @@
 namespace Synthetics {
   Part::Part() {};
 
-  Part::~Part() {};
+  Part::~Part() {
+    for (int i = 0; i < m_plugs.size(); i++) {
+      if (m_plugs.at(i)) {
+        delete m_plugs.at(i);
+      }
+    }
+  };
 
   int Part::getNoPlugs() {
     return m_plugs.size();

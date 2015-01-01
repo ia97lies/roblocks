@@ -19,6 +19,7 @@ namespace Synthetics {
 
           virtual int getNoParts();
           virtual Part *getPart(int i);
+          virtual void enable(bool on); 
 
         private:
           Part *m_body[3];

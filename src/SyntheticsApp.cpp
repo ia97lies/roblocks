@@ -5,9 +5,7 @@
 
 #include "SyntheticsApp.hpp"
 #include "Configurator.hpp"
-#include "OrbitCamera.hpp"
 #include "Constructor.hpp"
-#include "HeadUpDisplay.hpp"
 #include "Components/Factory.hpp"
 
 using namespace Polycode;
@@ -24,28 +22,9 @@ namespace Synthetics {
     CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
-    m_scene = new CollisionScene();
-
-    SceneLight *light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 3);
-    light->setPosition(3,10,0);
-    light->setLightColor(1,0,0);
-    light->enableShadows(true, 64);
-    m_scene->addLight(light);
-
-    m_camera = new OrbitCamera(m_core, m_scene);
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEDOWN);
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEUP);
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEMOVE);
-
-    // HeadUpDisplay *hud = new HeadUpDisplay(m_core, m_conf, factory);
-    // m_core->getInput()->addEventListener(hud, InputEvent::EVENT_KEYDOWN);
-
-    Constructor *constructor = new Constructor(m_core, m_scene, m_camera, factory);
+    Constructor *constructor = new Constructor(m_core, m_conf, factory);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_MOUSEDOWN);
-
-    m_camera->update();
   }
 
   SyntheticsApp::~SyntheticsApp() {

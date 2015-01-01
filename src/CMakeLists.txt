@@ -66,6 +66,7 @@ set(Synthetics_SRCS
   Configurator.cpp
   OrbitCamera.cpp
   Constructor.cpp
+  SelectorDisplay.cpp
   HeadUpDisplay.cpp
   PolycodeFacade.cpp
   Plug.cpp
@@ -81,6 +82,7 @@ set(Synthetics_HDRS
   MovingCamera.hpp
   OrbitCamera.hpp
   Constructor.hpp
+  SelectorDisplay.hpp
   HeadUpDisplay.hpp
   PolycodeFacade.hpp
   Plug.hpp

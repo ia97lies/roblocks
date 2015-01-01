@@ -15,7 +15,9 @@ namespace Synthetics {
     m_shape->setColor(1, 0, 0, 0.5);
   }
 
-  Plug::~Plug() {};
+  Plug::~Plug() {
+    delete m_shape;
+  };
 
   Vector3 Plug::getPosition() {
     return m_position; 

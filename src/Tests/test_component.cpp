@@ -41,6 +41,7 @@ class ComponentMock : public Component {
 
     virtual int getNoParts() { return 2; }
     virtual Part *getPart(int i) { return m_part[i]; }
+    virtual void enable(bool on) {};
     Plug *getMyPlug(int i) { return m_plug[i]; }
 
   private:

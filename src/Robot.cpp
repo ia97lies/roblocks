@@ -23,12 +23,12 @@ namespace Synthetics {
   void Robot::add(Component *component) {
     if (m_mother == NULL) {
       m_mother = component;
-      constructGraphic(NULL, component);
+      Robot::constructGraphic(m_polycodeFacade, NULL, component);
     }
     else if (m_active != NULL) {
       // TODO: set correct position and rotation of the added component
       m_active->add(component);
-      constructGraphic(NULL, component);
+      Robot::constructGraphic(m_polycodeFacade, NULL, component);
     }
     else {
       delete component;
@@ -59,11 +59,11 @@ namespace Synthetics {
     }
   }
 
-  void Robot::constructGraphic(Part *parent, Component *component) {
+  void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {
     for (int i = 0; i < component->getNoParts(); i++) {
       Part *curPart = component->getPart(i);
       if (parent == NULL) {
-        m_polycodeFacade->addEntity(curPart->getShape());
+        facade->addEntity(curPart->getShape());
       }
       else {
         parent->getShape()->addChild(curPart->getShape());
@@ -72,11 +72,30 @@ namespace Synthetics {
       for (int j = 0; j < curPart->getNoPlugs(); j++) {
         Plug *curPlug = curPart->getPlug(j);
         curPart->getShape()->addChild(curPlug->getShape());
-        m_polycodeFacade->trackEntity(curPlug->getShape());
+        facade->trackEntity(curPlug->getShape());
         curPlug->getShape()->setRotationEuler(curPlug->getRotation());
         curPlug->getShape()->setPosition(curPlug->getPosition());
       }
     }
   }
+
+  void Robot::destructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {
+    for (int i = 0; i < component->getNoParts(); i++) {
+      Part *curPart = component->getPart(i);
+      if (parent == NULL) {
+        facade->removeEntity(curPart->getShape());
+      }
+      else {
+        parent->getShape()->removeChild(curPart->getShape());
+      }
+      parent = curPart;
+      for (int j = 0; j < curPart->getNoPlugs(); j++) {
+        Plug *curPlug = curPart->getPlug(j);
+        curPart->getShape()->removeChild(curPlug->getShape());
+        facade->removeEntity(curPlug->getShape());
+      }
+    }
+  }
+
 }
 

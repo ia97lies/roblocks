@@ -21,13 +21,15 @@ namespace Synthetics {
       void remove();
       void activate(Polycode::Entity *plug); 
 
+      static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
+      static void destructGraphic(PolycodeFacade *facade, Part *parent, Component *component); 
+
     private:
       PolycodeFacade *m_polycodeFacade;
       Component *m_mother;
       Plug *m_activePlug;
       Component *m_active;
 
-      void constructGraphic(Part *parent, Component *component);
   };
 }
 

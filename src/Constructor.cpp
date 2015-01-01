@@ -4,19 +4,32 @@
 
 #include "PolycodeFacade.hpp"
 #include "Part.hpp"
+#include "OrbitCamera.hpp"
+#include "Robot.hpp"
 #include "Constructor.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
 
-  Constructor::Constructor(Core *core, CollisionScene *scene, MovingCamera *camera, Components::Factory *factory) : EventHandler() {
+  Constructor::Constructor(Core *core, Configurator *conf, Components::Factory *factory) : EventHandler() {
     m_core = core;
-    m_scene = scene;
-    m_camera = camera;
+    m_conf = conf;
     m_factory = factory;
-    m_mother = new Robot(new PolycodeFacade(core, scene));
-    m_selectedComponent = "Passive.Hub";
+    m_scene = new CollisionScene();
+    m_camera = new OrbitCamera(m_core, m_scene);
+
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEDOWN);
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEUP);
+    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEMOVE);
+
+    m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
+
+    m_camera->update();
+
+    m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory);
+    m_core->getInput()->addEventListener(m_selectorDisplay, InputEvent::EVENT_KEYDOWN);
   }
 
   Constructor::~Constructor() {
@@ -37,7 +50,7 @@ namespace Synthetics {
               break;
             case KEY_a:
               // add current selected compound to current active compound
-              Component *compound = m_factory->createComponent(m_selectedComponent);
+              Component *compound = m_factory->createComponent("Actor.Servo");
               m_mother->add(compound);
               break;
           }
