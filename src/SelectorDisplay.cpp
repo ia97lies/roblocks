@@ -22,11 +22,12 @@ namespace Synthetics {
     m_index = 0;
     m_text = factory->getNames().at(m_index);
     m_label = new SceneLabel("< "+ m_text + " >", 16);
-    m_hudScene->addChild(m_label);
+    //m_hudScene->addChild(m_label);
     m_label->setPosition(0, -40);
 
-    m_scene->getDefaultCamera()->setPosition(4,4,4);
+    m_scene->getDefaultCamera()->setPosition(6,6,6);
     m_scene->getDefaultCamera()->lookAt(Vector3(0, 0, 0));
+    m_scene->getDefaultCamera()->cameraShift = Vector2(0.25, 0.25);
 
     m_polycodeFacade = new PolycodeFacade(core, m_scene);
     for (int i = 0; i < m_factory->getNames().size(); i++) {
