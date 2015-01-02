@@ -67,7 +67,12 @@ namespace Synthetics {
     }
   }
 
+  std::string SelectorDisplay::getText() {
+    return m_text;
+  }
+
   void SelectorDisplay::turnOn(bool on) {
+    m_hudScene->setEnabled(on);
     m_scene->setEnabled(on);
   }
 }
