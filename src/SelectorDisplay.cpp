@@ -13,6 +13,8 @@ namespace Synthetics {
     m_core = core;
     m_factory = factory;
 
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
+
     m_scene = new CollisionScene();
     m_hudScene = new Scene(Scene::SCENE_2D);
     m_hudScene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
@@ -23,7 +25,7 @@ namespace Synthetics {
     m_hudScene->addChild(m_label);
     m_label->setPosition(0, -40);
 
-    m_scene->getDefaultCamera()->setPosition(7,7,7);
+    m_scene->getDefaultCamera()->setPosition(4,4,4);
     m_scene->getDefaultCamera()->lookAt(Vector3(0, 0, 0));
 
     m_polycodeFacade = new PolycodeFacade(core, m_scene);
@@ -31,7 +33,6 @@ namespace Synthetics {
       m_components.push_back(m_factory->createComponent(m_factory->getNames().at(i)));
       Robot::constructGraphic(m_polycodeFacade, NULL, m_components.at(i));
       m_components.at(i)->enable(false);
-      m_scene->addChild(m_components.at(i)->getPart(0)->getShape());
       m_components.at(i)->getPart(0)->getShape()->setPosition(0,0,0);
     }
     m_components.at(m_index)->enable(true);

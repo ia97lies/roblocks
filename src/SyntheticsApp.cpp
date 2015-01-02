@@ -23,8 +23,6 @@ namespace Synthetics {
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
     Constructor *constructor = new Constructor(m_core, m_conf, factory);
-    m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_KEYDOWN);
-    m_core->getInput()->addEventListener(constructor, InputEvent::EVENT_MOUSEDOWN);
   }
 
   SyntheticsApp::~SyntheticsApp() {

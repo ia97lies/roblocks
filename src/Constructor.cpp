@@ -19,17 +19,14 @@ namespace Synthetics {
     m_scene = new CollisionScene();
     m_camera = new OrbitCamera(m_core, m_scene);
 
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_KEYDOWN);
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEDOWN);
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEUP);
-    m_core->getInput()->addEventListener(m_camera, InputEvent::EVENT_MOUSEMOVE);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
 
     m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
 
     m_camera->update();
 
     m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory);
-    m_core->getInput()->addEventListener(m_selectorDisplay, InputEvent::EVENT_KEYDOWN);
     m_selectorDisplay->turnOn(false);
   }
 

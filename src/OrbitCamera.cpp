@@ -15,6 +15,11 @@ namespace Synthetics {
     m_core = core;
     m_scene = scene;
 
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+
     m_x = 20.0f;
     m_y = 0.0f;
     m_distance = 15.0f;
