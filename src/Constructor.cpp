@@ -27,7 +27,6 @@ namespace Synthetics {
     m_camera->update();
 
     m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory);
-    m_selectorDisplay->turnOn(false);
   }
 
   Constructor::~Constructor() {
@@ -47,13 +46,9 @@ namespace Synthetics {
               }
               break;
             case KEY_a:
-              m_selectorDisplay->turnOn(true);
-              break;
-            case KEY_RETURN:
               // add current selected compound to current active compound
               Component *compound = m_factory->createComponent(m_selectorDisplay->getText());
               m_mother->add(compound);
-              m_selectorDisplay->turnOn(false);
               break;
           }
           break;

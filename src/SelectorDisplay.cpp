@@ -15,19 +15,26 @@ namespace Synthetics {
 
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
 
-    m_scene = new CollisionScene();
+    float border = 10;
+    float height = 100;
+    float length = m_conf->getWidth();
+
     m_hudScene = new Scene(Scene::SCENE_2D);
+    m_scene = new CollisionScene();
     m_hudScene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
+    ScenePrimitive *shape = new ScenePrimitive(ScenePrimitive::TYPE_VPLANE, length, height);
+    m_hudScene->addChild(shape);
+    shape->setColor(0.5, 0.5, 0.5, 0.3);
+    shape->setPosition(0, -m_conf->getHeight()/2  + height/2 + border);
 
     m_index = 0;
     m_text = factory->getNames().at(m_index);
     m_label = new SceneLabel("< "+ m_text + " >", 16);
     //m_hudScene->addChild(m_label);
-    m_label->setPosition(0, -40);
 
-    m_scene->getDefaultCamera()->setPosition(6,6,6);
+    m_scene->getDefaultCamera()->setPosition(9,9,9);
     m_scene->getDefaultCamera()->lookAt(Vector3(0, 0, 0));
-    m_scene->getDefaultCamera()->cameraShift = Vector2(0.25, 0.25);
+    m_scene->getDefaultCamera()->cameraShift = Vector2(0.0, 1.0 - (1.0/m_conf->getHeight() * (m_conf->getHeight()/2 + height/2 + border)));
 
     m_polycodeFacade = new PolycodeFacade(core, m_scene);
     for (int i = 0; i < m_factory->getNames().size(); i++) {
@@ -76,5 +83,11 @@ namespace Synthetics {
   void SelectorDisplay::turnOn(bool on) {
     m_hudScene->setEnabled(on);
     m_scene->setEnabled(on);
+    if (on) {
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
+    }
+    else {
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
+    }
   }
 }

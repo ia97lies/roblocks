@@ -21,7 +21,7 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
 
     m_x = 20.0f;
-    m_y = 0.0f;
+    m_y = 20.0f;
     m_distance = 15.0f;
     m_position = Vector3(0.0f, 0.0f, -m_distance);
     m_target = Vector3(0.0f, 0.0f, 0.0f);
