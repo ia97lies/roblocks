@@ -65,5 +65,10 @@ namespace Synthetics {
       m_shape->setColor(1, 0, 0, 0.5);
     }
   }
+
+  bool Plug::isActivate() {
+    return m_on;
+  }
+
 }
 

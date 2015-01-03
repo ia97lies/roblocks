@@ -26,6 +26,7 @@ namespace Synthetics {
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
     }
     else if (m_active != NULL) {
+      // TODO: get active part/plug from added component
       // TODO: set correct position and rotation of the added component
       m_active->add(component);
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
@@ -51,12 +52,21 @@ namespace Synthetics {
             m_activePlug->activate(false);
           }
           m_activePlug = plug;
+          m_activePart = curPart;
           m_active = active = curComponent;
         }
       }
       // TODO: iterate over components
       curComponent = NULL;
     }
+  }
+
+  Plug *Robot::getActivePlug() {
+    return m_activePlug;
+  }
+
+  bool Robot::isEmpty() {
+    return m_mother == NULL;
   }
 
   void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {

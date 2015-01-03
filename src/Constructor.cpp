@@ -48,7 +48,13 @@ namespace Synthetics {
             case KEY_a:
               // add current selected compound to current active compound
               Component *compound = m_factory->createComponent(m_selectorDisplay->getText());
-              m_mother->add(compound);
+              if (m_mother->isEmpty()) {
+                m_mother->add(compound);
+              }
+              else {
+                // place component near the selected plug with the active face toward plug
+                // TODO: Decide if this should be done in robot or here
+              }
               break;
           }
           break;

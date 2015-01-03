@@ -86,6 +86,21 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component) {
   BOOST_CHECK(deleted == false);
 }
 
+BOOST_AUTO_TEST_CASE(test_robot_is_empty) {
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  BOOST_CHECK(robot->isEmpty());
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_is_not_empty) {
+  bool deleted = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *componentMock = new ComponentMock(&deleted);
+  Robot *robot = new Robot(polycodeMock);
+  robot->add(componentMock);
+  BOOST_CHECK(!robot->isEmpty());
+}
+
 BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_no_activated_plug) {
   bool deleted = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
@@ -119,6 +134,18 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug) {
 
   BOOST_CHECK(!componentMock->getMyPlug(0)->isActivated);
   BOOST_CHECK(componentMock->getMyPlug(1)->isActivated);
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_get_activate_plug) {
+  bool deleted = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *componentMock = new ComponentMock(&deleted);
+  Robot *robot = new Robot(polycodeMock);
+
+  robot->add(componentMock);
+  robot->activate(componentMock->getMyPlug(0)->getShape());
+
+  BOOST_CHECK(robot->getActivePlug() == componentMock->getMyPlug(0));
 }
 
 BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_to_activated_plug) {

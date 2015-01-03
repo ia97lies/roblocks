@@ -20,6 +20,7 @@ namespace Synthetics {
       virtual Polycode::Vector3 getFaceToFaceRotation(Plug *plug); 
       virtual Polycode::Entity *getShape();
       virtual void activate(bool on);
+      virtual bool isActivate(); 
 
     private:
       Polycode::Vector3 m_position;
