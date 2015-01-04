@@ -31,7 +31,7 @@ namespace Synthetics {
           }
 
         private:
-          Polycode::Entity *m_entity;
+          Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
 

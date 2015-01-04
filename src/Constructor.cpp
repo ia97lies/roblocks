@@ -19,6 +19,10 @@ namespace Synthetics {
     m_scene = new CollisionScene();
     m_camera = new OrbitCamera(m_core, m_scene);
 
+    CoreServices::getInstance()->getResourceManager()->addArchive("Resources/default.pak");
+    CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
+    CoreServices::getInstance()->getResourceManager()->addDirResource("Resources", false);
+
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
 
@@ -40,20 +44,25 @@ namespace Synthetics {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
             case KEY_DELETE:
-              // delete active compound
+              // delete active component
               if (m_mother) {
                 m_mother->remove();
               }
               break;
             case KEY_a:
-              // add current selected compound to current active compound
-              Component *compound = m_factory->createComponent(m_selectorDisplay->getText());
+              // add current selected component to current active component
+              Plug *plug;
+              Component *component = m_factory->createComponent(m_selectorDisplay->getText());
               if (m_mother->isEmpty()) {
-                m_mother->add(compound);
+                m_mother->add(component);
               }
-              else {
+              else if ((plug = m_mother->getActivePlug())) {
+
                 // place component near the selected plug with the active face toward plug
                 // TODO: Decide if this should be done in robot or here
+              }
+              else {
+                delete component;
               }
               break;
           }
