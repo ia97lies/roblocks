@@ -20,7 +20,7 @@ namespace Synthetics {
       bool isEmpty(); 
       void add(Component *component);
       void remove();
-      void activate(Polycode::Entity *plug); 
+      void activate(Polycode::Entity *plugShape); 
       Plug *getActivePlug(); 
 
       static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
@@ -33,6 +33,7 @@ namespace Synthetics {
       Part *m_activePart;
       Component *m_active;
 
+      void activate(Component *parent, Polycode::Entity *plugShape); 
   };
 }
 

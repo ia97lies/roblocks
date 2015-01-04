@@ -26,10 +26,20 @@ namespace Synthetics {
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
     }
     else if (m_active != NULL) {
-      // TODO: get active part/plug from added component
-      // TODO: set correct position and rotation of the added component
       m_active->add(component);
-      Robot::constructGraphic(m_polycodeFacade, NULL, component);
+
+      // TODO: get active part/plug from added component
+      Part *part = component->getPart(0);
+      Plug *plug = part->getPlug(0);
+      Vector3 rotation = m_activePlug->getFaceToFaceRotation(plug);
+      fprintf(stderr, "Rotation: %f, %f, %f\n", rotation.x, rotation.y, rotation.z);
+      // TODO: set correct position and rotation of the added component
+      part->getShape()->setRotationEuler(rotation);
+      part->getShape()->setPosition(m_activePlug->getPosition());
+
+      fprintf(stderr, "Position: %f, %f, %f\n", m_activePlug->getPosition().x, m_activePlug->getPosition().y, m_activePlug->getPosition().z);
+
+      Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
     }
     else {
       delete component;
@@ -40,24 +50,28 @@ namespace Synthetics {
   }
 
   void Robot::activate(Polycode::Entity *plugShape) {
-    Component *curComponent = m_mother;
+    activate(m_mother, plugShape);
+    fprintf(stderr, "XXX: %d\n", m_mother->getNoEntries());
+    for (int i = 0; i < m_mother->getNoEntries(); i++) {
+      fprintf(stderr, "XXX: %d\n", i);
+      activate(dynamic_cast<Component *>(m_mother->get(i)), plugShape);
+    }
+  }
+
+  void Robot::activate(Component *component, Polycode::Entity *plugShape) {
     Component *active = NULL;
-    while (curComponent && !active) {
-      for (int i = 0; i < curComponent->getNoParts(); i++) {
-        Part *curPart = curComponent->getPart(i);
-        Plug *plug = curPart->getPlug(plugShape);
-        if (plug) {
-          plug->activate(true);
-          if (m_activePlug) {
-            m_activePlug->activate(false);
-          }
-          m_activePlug = plug;
-          m_activePart = curPart;
-          m_active = active = curComponent;
+    for (int i = 0; i < component->getNoParts(); i++) {
+      Part *curPart = component->getPart(i);
+      Plug *plug = curPart->getPlug(plugShape);
+      if (plug) {
+        plug->activate(true);
+        if (m_activePlug) {
+          m_activePlug->activate(false);
         }
+        m_activePlug = plug;
+        m_activePart = curPart;
+        m_active = active = component;
       }
-      // TODO: iterate over components
-      curComponent = NULL;
     }
   }
 
@@ -81,10 +95,10 @@ namespace Synthetics {
       parent = curPart;
       for (int j = 0; j < curPart->getNoPlugs(); j++) {
         Plug *curPlug = curPart->getPlug(j);
-        curPart->getShape()->addChild(curPlug->getShape());
         facade->trackEntity(curPlug->getShape());
+        curPart->getShape()->addChild(curPlug->getShape());
         curPlug->getShape()->setRotationEuler(curPlug->getRotation());
-        curPlug->getShape()->setPosition(curPlug->getPosition());
+        curPlug->getShape()->setPosition(curPlug->getPosition() * 0.5);
       }
     }
   }

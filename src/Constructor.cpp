@@ -57,7 +57,7 @@ namespace Synthetics {
                 m_mother->add(component);
               }
               else if ((plug = m_mother->getActivePlug())) {
-
+                m_mother->add(component);
                 // place component near the selected plug with the active face toward plug
                 // TODO: Decide if this should be done in robot or here
               }
