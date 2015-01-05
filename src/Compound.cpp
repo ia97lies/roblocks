@@ -39,5 +39,17 @@ namespace Synthetics {
   Compound *Compound::get(int i) {
     return m_compounds.at(i);
   }
+
+  void Compound::iterate(IterateMethod *method) {
+    if (m_visited) {
+      return;
+    }
+    else for (int i = 0; i < getNoEntries(); i++) {
+      m_visited = true;
+      get(i)->iterate(method);
+      m_visited = false;
+    }
+    method->call(this);
+  }
 }
 
