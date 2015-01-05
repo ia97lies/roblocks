@@ -45,6 +45,8 @@ namespace Synthetics {
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,0,-1.0), Vector3(0,-90,0));
         m_body->addPlug(plug);
+        plug = new Plug(Vector3(-1.0,0,0), Vector3(0,0,0));
+        m_body->addPlug(plug);
         plug = new Plug(Vector3(0,0,1.0), Vector3(0,-270,0));
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,1.0,0), Vector3(0,0,90));
