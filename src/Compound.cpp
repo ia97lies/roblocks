@@ -6,8 +6,12 @@
 #include "Compound.hpp"
 
 namespace Synthetics {
-  Compound::Compound() { m_elements = 0; };
-  Compound::~Compound() {};
+  Compound::Compound() { 
+    m_elements = 0; 
+    m_visited = false;
+  }
+
+  Compound::~Compound() {}
 
   int Compound::size() {
     return m_compounds.size();

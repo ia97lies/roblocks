@@ -32,8 +32,6 @@ namespace Synthetics {
       Plug *m_activePlug;
       Part *m_activePart;
       Component *m_active;
-
-      void activate(Component *parent, Polycode::Entity *plugShape); 
   };
 }
 

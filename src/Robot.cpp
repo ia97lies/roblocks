@@ -10,6 +10,55 @@
 using namespace Polycode;
 
 namespace Synthetics {
+  class IterateRobot : public IterateMethod {
+    public:
+      IterateRobot(Component *active, Part *activePart, Plug *activePlug, Polycode::Entity *plugShape) { 
+        m_active = active;
+        m_activePart = activePart;
+        m_activePlug = activePlug;
+        m_plugShape = plugShape; 
+      }
+
+      virtual ~IterateRobot() {}
+
+      virtual void call(Compound *compound) {
+        Component *component = dynamic_cast<Component *>(compound);
+        if (component) {
+          for (int i = 0; i < component->getNoParts(); i++) {
+            Part *part = component->getPart(i);
+            Plug *plug = part->getPlug(m_plugShape);
+            if (plug) {
+              if (m_activePlug) {
+                m_activePlug->activate(false);
+              }
+              m_active = component;
+              m_activePart = part;
+              m_activePlug = plug;
+              plug->activate(true);
+            }
+          }
+        }
+      }
+
+      Component *getNewActiveComponent() {
+        return m_active;
+      }
+
+      Part *getNewActivePart() {
+        return m_activePart;
+      }
+
+      Plug *getNewActivePlug() {
+        return m_activePlug;
+      }
+
+    private:
+      Polycode::Entity *m_plugShape;
+      Component *m_active;
+      Part *m_activePart;
+      Plug *m_activePlug;
+  };
+
   Robot::Robot(PolycodeFacade *facade) {
     m_polycodeFacade = facade;
     m_mother = NULL;
@@ -28,16 +77,11 @@ namespace Synthetics {
     else if (m_active != NULL) {
       m_active->add(component);
 
-      // TODO: get active part/plug from added component
       Part *part = component->getPart(0);
       Plug *plug = part->getPlug(0);
       Vector3 rotation = m_activePlug->getFaceToFaceRotation(plug);
-      fprintf(stderr, "Rotation: %f, %f, %f\n", rotation.x, rotation.y, rotation.z);
-      // TODO: set correct position and rotation of the added component
       part->getShape()->setRotationEuler(rotation);
       part->getShape()->setPosition(m_activePlug->getPosition());
-
-      fprintf(stderr, "Position: %f, %f, %f\n", m_activePlug->getPosition().x, m_activePlug->getPosition().y, m_activePlug->getPosition().z);
 
       Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
     }
@@ -50,29 +94,12 @@ namespace Synthetics {
   }
 
   void Robot::activate(Polycode::Entity *plugShape) {
-    activate(m_mother, plugShape);
-    fprintf(stderr, "XXX: %d\n", m_mother->getNoEntries());
-    for (int i = 0; i < m_mother->getNoEntries(); i++) {
-      fprintf(stderr, "XXX: %d\n", i);
-      activate(dynamic_cast<Component *>(m_mother->get(i)), plugShape);
-    }
-  }
-
-  void Robot::activate(Component *component, Polycode::Entity *plugShape) {
-    Component *active = NULL;
-    for (int i = 0; i < component->getNoParts(); i++) {
-      Part *curPart = component->getPart(i);
-      Plug *plug = curPart->getPlug(plugShape);
-      if (plug) {
-        plug->activate(true);
-        if (m_activePlug) {
-          m_activePlug->activate(false);
-        }
-        m_activePlug = plug;
-        m_activePart = curPart;
-        m_active = active = component;
-      }
-    }
+    IterateRobot *method = new IterateRobot(m_active, m_activePart, m_activePlug, plugShape);
+    m_mother->iterate(method);
+    m_active = method->getNewActiveComponent();
+    m_activePart = method->getNewActivePart();
+    m_activePlug = method->getNewActivePlug();
+    delete method;
   }
 
   Plug *Robot::getActivePlug() {
