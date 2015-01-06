@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------------
 
 #include "PolyScenePrimitive.h"
+#include "PolySceneLabel.h"
 #include "Plug.hpp"
 
 using namespace Polycode;

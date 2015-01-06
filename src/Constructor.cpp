@@ -27,6 +27,7 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
 
     m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
+    m_park = new Robot(new PolycodeFacade(m_core, m_scene));
 
     m_camera->update();
 
@@ -49,20 +50,18 @@ namespace Synthetics {
                 m_mother->remove();
               }
               break;
-            case KEY_a:
+            case KEY_RETURN:
               // add current selected component to current active component
               Plug *plug;
               Component *component = m_factory->createComponent(m_selectorDisplay->getText());
               if (m_mother->isEmpty()) {
                 m_mother->add(component);
               }
-              else if ((plug = m_mother->getActivePlug())) {
+              else {
+                // TODO prepare add it on second enter
                 m_mother->add(component);
                 // place component near the selected plug with the active face toward plug
                 // TODO: Decide if this should be done in robot or here
-              }
-              else {
-                delete component;
               }
               break;
           }

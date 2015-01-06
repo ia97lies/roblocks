@@ -84,6 +84,11 @@ namespace Synthetics {
       part->getShape()->setPosition(m_activePlug->getPosition());
 
       Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
+
+      m_activePlug->activate(false);
+      m_active = NULL;
+      m_activePart = NULL;
+      m_activePlug = NULL;
     }
     else {
       delete component;
