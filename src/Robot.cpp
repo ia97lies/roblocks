@@ -91,6 +91,12 @@ namespace Synthetics {
   void Robot::place(Component *component) {
     if (m_active != NULL && m_inPlace == NULL) {
       m_inPlace = component;
+      Part *part = component->getPart(0);
+      Plug *plug = part->getPlug(0);
+      Vector3 rotation = m_activePlug->getFaceToFaceRotation(plug);
+      part->getShape()->setRotationEuler(rotation);
+      part->getShape()->setPosition(m_activePlug->getPosition()*2);
+      Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
     }
     else {
       delete component;
@@ -117,8 +123,6 @@ namespace Synthetics {
       Vector3 rotation = m_activePlug->getFaceToFaceRotation(plug);
       part->getShape()->setRotationEuler(rotation);
       part->getShape()->setPosition(m_activePlug->getPosition());
-
-      Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
 
       m_activePlug->activate(false);
       m_active = NULL;
