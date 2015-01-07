@@ -144,7 +144,8 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug_one_more_level) {
   robot->add(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
   componentMock = new ComponentMock(&deleted);
-  robot->add(componentMock);
+  robot->place(componentMock);
+  robot->add();
 
   robot->activate(componentMock->getMyPlug(0)->getShape());
   BOOST_CHECK(componentMock->getMyPlug(0)->isActivated);
@@ -158,10 +159,12 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug_more_level) {
   robot->add(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
   componentMock = new ComponentMock(&deleted);
-  robot->add(componentMock);
+  robot->place(componentMock);
+  robot->add();
   robot->activate(componentMock->getMyPlug(0)->getShape());
   componentMock = new ComponentMock(&deleted);
-  robot->add(componentMock);
+  robot->place(componentMock);
+  robot->add();
   robot->activate(componentMock->getMyPlug(0)->getShape());
 
   BOOST_CHECK(componentMock->getMyPlug(0)->isActivated);
@@ -190,7 +193,8 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_to_activated_plug) 
 
   robot->activate(componentMock->getMyPlug(0)->getShape());
   componentMock = new ComponentMock(&deleted);
-  robot->add(componentMock);
+  robot->place(componentMock);
+  robot->add();
   BOOST_CHECK(deleted == false);
 }
 

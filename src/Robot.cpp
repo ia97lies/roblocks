@@ -10,16 +10,16 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  class IterateRobot : public IterateMethod {
+  class FindActivePlug : public IterateMethod {
     public:
-      IterateRobot(Component *active, Part *activePart, Plug *activePlug, Polycode::Entity *plugShape) { 
+      FindActivePlug(Component *active, Part *activePart, Plug *activePlug, Polycode::Entity *plugShape) { 
         m_active = active;
         m_activePart = activePart;
         m_activePlug = activePlug;
         m_plugShape = plugShape; 
       }
 
-      virtual ~IterateRobot() {}
+      virtual ~FindActivePlug() {}
 
       virtual void call(Compound *compound) {
         Component *component = dynamic_cast<Component *>(compound);
@@ -59,14 +59,42 @@ namespace Synthetics {
       Plug *m_activePlug;
   };
 
+  class FindParents : public IterateMethod {
+    public:
+      FindParents(Component *active) { 
+        m_active = active;
+      }
+
+      virtual ~FindParents() {}
+
+      virtual void call(Compound *compound) {
+        Component *component = dynamic_cast<Component *>(compound);
+        if (component ) {
+        }
+      }
+
+    private:
+      Component *m_active;
+  };
+
   Robot::Robot(PolycodeFacade *facade) {
     m_polycodeFacade = facade;
     m_mother = NULL;
     m_active = NULL;
     m_activePlug = NULL;
+    m_inPlace = NULL;
   }
 
   Robot::~Robot() {
+  }
+
+  void Robot::place(Component *component) {
+    if (m_active != NULL && m_inPlace == NULL) {
+      m_inPlace = component;
+    }
+    else {
+      delete component;
+    }
   }
 
   void Robot::add(Component *component) {
@@ -74,7 +102,14 @@ namespace Synthetics {
       m_mother = component;
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
     }
-    else if (m_active != NULL) {
+    else {
+      delete component;
+    }
+  }
+
+  void Robot::add() {
+    if (m_active != NULL && m_inPlace != NULL) {
+      Component *component = m_inPlace;
       m_active->add(component);
 
       Part *part = component->getPart(0);
@@ -89,17 +124,16 @@ namespace Synthetics {
       m_active = NULL;
       m_activePart = NULL;
       m_activePlug = NULL;
-    }
-    else {
-      delete component;
+      m_inPlace = NULL;
     }
   }
 
   void Robot::remove() {
+
   }
 
   void Robot::activate(Polycode::Entity *plugShape) {
-    IterateRobot *method = new IterateRobot(m_active, m_activePart, m_activePlug, plugShape);
+    FindActivePlug *method = new FindActivePlug(m_active, m_activePart, m_activePlug, plugShape);
     m_mother->iterate(method);
     m_active = method->getNewActiveComponent();
     m_activePart = method->getNewActivePart();
@@ -113,6 +147,10 @@ namespace Synthetics {
 
   bool Robot::isEmpty() {
     return m_mother == NULL;
+  }
+
+  bool Robot::inPlace() {
+    return m_inPlace != NULL;
   }
 
   void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {

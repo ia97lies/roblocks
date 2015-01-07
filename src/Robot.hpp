@@ -18,7 +18,10 @@ namespace Synthetics {
       virtual ~Robot();
 
       bool isEmpty(); 
+      bool inPlace(); 
+      void place(Component *component);
       void add(Component *component);
+      void add();
       void remove();
       void activate(Polycode::Entity *plugShape); 
       Plug *getActivePlug(); 
@@ -32,6 +35,7 @@ namespace Synthetics {
       Plug *m_activePlug;
       Part *m_activePart;
       Component *m_active;
+      Component *m_inPlace;
   };
 }
 

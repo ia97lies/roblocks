@@ -29,7 +29,6 @@ namespace Synthetics {
       MovingCamera *m_camera;
       Components::Factory *m_factory;
       Robot *m_mother;
-      Robot *m_park;
       Configurator *m_conf;
       SelectorDisplay *m_selectorDisplay;
   };
