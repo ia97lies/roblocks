@@ -6,7 +6,9 @@
 #include "Part.hpp"
 
 namespace Synthetics {
-  Part::Part() {};
+  Part::Part() {
+    m_knob = NULL;
+  };
 
   Part::~Part() {
     for (int i = 0; i < m_plugs.size(); i++) {
@@ -38,8 +40,12 @@ namespace Synthetics {
     return found;
   }
 
-  Polycode::Entity *getShape() {
-    return NULL;
+  void Part::setKnob(Knob *knob) {
+    m_knob = knob;
+  }
+
+  Knob *Part::getKnob() {
+    return m_knob;
   }
 }
 

@@ -16,6 +16,14 @@ class MyPart : public Part {
     Polycode::Entity *getShape() { return NULL; }
 };
 
+class MyKnob : public Knob {
+  public:
+    MyKnob() {}
+    ~MyKnob() {}
+    Polycode::Entity *getShape() { return NULL; }
+    void handleInput(Polycode::Vector3 value) { }
+};
+
 BOOST_AUTO_TEST_CASE(test_part_instantiate) {
   MyPart part();
 }
@@ -87,3 +95,9 @@ BOOST_AUTO_TEST_CASE(test_part_add_many_plug_get_many_and_get_one_not_found) {
   BOOST_CHECK(part->getPlug(plugNotAdded->getShape()) == NULL);
 }
 
+BOOST_AUTO_TEST_CASE(test_part_set_get_knob) {
+  MyKnob *knob = new MyKnob();
+  MyPart *part = new MyPart();
+  part->setKnob(knob);
+  BOOST_CHECK(part->getKnob() == knob);
+}

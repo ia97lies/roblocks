@@ -27,7 +27,7 @@ include_directories(
   ${POLYCODE_RELEASE}/Modules/Dependencies/include/bullet
 )
 
-add_library(libPolycore STATIC IMPORTED)
+add_library(libPolycore_d STATIC IMPORTED)
 add_library(libfreetype STATIC IMPORTED)
 add_library(liblibvorbisfile STATIC IMPORTED)
 add_library(liblibvorbis STATIC IMPORTED)
@@ -44,7 +44,7 @@ add_library(libBulletDynamics STATIC IMPORTED)
 add_library(libBulletCollision STATIC IMPORTED)
 add_library(libLinearMath STATIC IMPORTED)
 
-set_property(TARGET libPolycore PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/lib/libPolycore.a)
+set_property(TARGET libPolycore_d PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/lib/libPolycore_d.a)
 set_property(TARGET libfreetype PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/libfreetype.a)
 set_property(TARGET liblibvorbisfile PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/liblibvorbisfile.a)
 set_property(TARGET liblibvorbis PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/liblibvorbis.a)
@@ -86,6 +86,7 @@ set(Synthetics_HDRS
   HeadUpDisplay.hpp
   PolycodeFacade.hpp
   Plug.hpp
+  Knob.hpp
   Part.hpp
   Compound.hpp
   Component.hpp
@@ -93,7 +94,7 @@ set(Synthetics_HDRS
 )
 
 set(Polycode_LIBS
-  libPolycore
+  libPolycore_d
   libfreetype
   liblibvorbisfile
   liblibvorbis

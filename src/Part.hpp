@@ -7,10 +7,11 @@
 
 #include "PolyEntity.h"
 #include "Plug.hpp"
+#include "Knob.hpp"
 #include "Compound.hpp"
 
 namespace Synthetics {
-  class __attribute__((visibility("default"))) Part : public Compound {
+  class Part : public Compound {
     public:
       Part();
       virtual ~Part();
@@ -22,8 +23,12 @@ namespace Synthetics {
       Plug *getPlug(int i);
       Plug *getPlug(Polycode::Entity *plugShape);
 
+      void setKnob(Knob *knob);
+      Knob *getKnob();
+
     private:
       std::vector<Plug *> m_plugs;
+      Knob *m_knob;
   };
 }
 
