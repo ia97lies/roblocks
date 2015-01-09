@@ -24,6 +24,7 @@ namespace Synthetics {
       virtual void remove(int i);
       virtual Compound *get(int i);
       virtual void iterate(IterateMethod *method);
+      virtual std::vector<Compound *> getParents(Compound *compound); 
 
     private:
       int m_elements;

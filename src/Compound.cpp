@@ -55,5 +55,29 @@ namespace Synthetics {
     }
     method->call(this);
   }
+
+  class CollectParents : public IterateMethod {
+    public:
+      CollectParents(Compound *compound) { 
+        m_compound = compound;
+      }
+
+      virtual ~CollectParents() {}
+
+      virtual void call(Compound *compound) {
+        for (int i = 0; i < compound->getNoEntires(); i++) {
+          if (m_compound == compound->get(i)) {
+            // TODO: collect
+          }
+        }
+      }
+
+    private:
+      Compound *m_Compound;
+  };
+
+  std::vector<Compound *> Compound::getParents(Compound *compound) {
+    std::vector<Compound *> parents;
+  }
 }
 

@@ -286,3 +286,14 @@ BOOST_AUTO_TEST_CASE(test_compound_do_for_all_twice_for_three_cycled_element) {
   }
 }
 
+BOOST_AUTO_TEST_CASE(test_compound_get_parents_of_a_given_compound) {
+  Compound *compound = new Compound();
+  Compound *compound2 = new Compound();
+  
+  compound->add(compound2);
+
+  std::vector<Compound *> parents = compound->getParents(compound2);
+  BOOST_CHECK(parents.size() == 1);
+  BOOST_CHECK(parents.at(0) == compound2);
+}
+
