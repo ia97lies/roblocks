@@ -294,6 +294,32 @@ BOOST_AUTO_TEST_CASE(test_compound_get_parents_of_a_given_compound) {
 
   std::vector<Compound *> parents = compound->getParents(compound2);
   BOOST_CHECK(parents.size() == 1);
-  BOOST_CHECK(parents.at(0) == compound2);
+  BOOST_CHECK(parents.at(0) == compound);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_get_parents_of_a_given_compound_cirrcular_reference) {
+  Compound *compound = new Compound();
+  
+  compound->add(compound);
+
+  std::vector<Compound *> parents = compound->getParents(compound);
+  BOOST_CHECK(parents.size() == 1);
+  BOOST_CHECK(parents.at(0) == compound);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_get_parents_of_a_given_compound_multiple_parents) {
+  Compound *compound = new Compound();
+  Compound *compound2 = new Compound();
+  Compound *compound3 = new Compound();
+  Compound *compound4 = new Compound();
+  
+  compound->add(compound2);
+  compound->add(compound3);
+  compound->add(compound4);
+  compound3->add(compound2);
+  compound4->add(compound2);
+
+  std::vector<Compound *> parents = compound->getParents(compound2);
+  BOOST_CHECK(parents.size() == 3);
 }
 

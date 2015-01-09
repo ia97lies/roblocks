@@ -2,6 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include <stdio.h>
 #include "PolyVector3.h"
 #include "Compound.hpp"
 
@@ -65,19 +66,30 @@ namespace Synthetics {
       virtual ~CollectParents() {}
 
       virtual void call(Compound *compound) {
-        for (int i = 0; i < compound->getNoEntires(); i++) {
+        for (int i = 0; i < compound->getNoEntries(); i++) {
           if (m_compound == compound->get(i)) {
-            // TODO: collect
+            m_parents.push_back(compound);
+            break;
           }
         }
       }
 
+      std::vector<Compound *> getParents() {
+        return m_parents;
+      }
+
     private:
-      Compound *m_Compound;
+      Compound *m_compound;
+      std::vector<Compound *> m_parents;
   };
 
   std::vector<Compound *> Compound::getParents(Compound *compound) {
     std::vector<Compound *> parents;
+    CollectParents *collector = new CollectParents(compound);
+    iterate(collector);
+    parents = collector->getParents();
+    delete collector;
+    return parents;
   }
 }
 
