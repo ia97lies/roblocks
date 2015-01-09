@@ -70,10 +70,10 @@ namespace Synthetics {
 
         m_body[1] = new Link();
         m_body[1]->getShape()->setPosition(1,0,0);
+        m_body[1]->getShape()->setRotationEuler(Vector3(0,90,0));
 
         m_body[2] = new Body();
-        m_body[2]->getShape()->setPosition(0,0,-1);
-        m_body[2]->getShape()->setRotationEuler(Vector3(0,90,0));
+        m_body[2]->getShape()->setPosition(1,0,0);
         plug = new Plug(Vector3(1.0,0,0), Vector3(0,0,0));
         m_body[2]->addPlug(plug);
         plug = new Plug(Vector3(0,1.0,0), Vector3(0,0,90));

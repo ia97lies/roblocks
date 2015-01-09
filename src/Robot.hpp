@@ -24,7 +24,8 @@ namespace Synthetics {
       void add();
       void remove();
       void activate(Polycode::Entity *plugShape); 
-      Plug *getActivePlug(); 
+      void rotateInPlace();
+      Plug *getActivePlug();
 
       static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
       static void destructGraphic(PolycodeFacade *facade, Part *parent, Component *component); 
@@ -32,10 +33,16 @@ namespace Synthetics {
     private:
       PolycodeFacade *m_polycodeFacade;
       Component *m_mother;
+      Component *m_inPlace;
+
+      Component *m_activeComponent;
       Plug *m_activePlug;
       Part *m_activePart;
-      Component *m_active;
-      Component *m_inPlace;
+
+      Plug *m_inPlacePlug;
+      Part *m_inPlacePart;
+
+      Polycode::Vector3 m_rotation;
   };
 }
 

@@ -63,6 +63,9 @@ namespace Synthetics {
                 m_mother->add();
               }
               break;
+            case KEY_UP:
+              m_mother->rotateInPlace();
+              break;
           }
           break;
         case InputEvent::EVENT_MOUSEDOWN:
