@@ -20,6 +20,7 @@ class MyKnob : public Knob {
   public:
     MyKnob() {}
     ~MyKnob() {}
+    void activate(bool on) {}
     Polycode::Entity *getShape() { return NULL; }
     void handleInput(Polycode::Vector3 value) { }
 };

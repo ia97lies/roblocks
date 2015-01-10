@@ -59,15 +59,17 @@ namespace Synthetics {
         public:
           ServoKnob(Link *link) {
             m_link = link;
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 0.2,0.6,20);
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.5,20);
             m_entity->setColor(0.0, 0.1, 0.0, 0.5);
             m_link->getShape()->addChild(m_entity);
-            m_link->getShape()->setPosition(m_entity->getPosition() * 0.5);
-            // XXX WE STOPPED HERE XXX
           }
 
           virtual ~ServoKnob() {}
           
+          virtual void activate(bool on) {
+            // XXX WE STOPPED HERE XXX
+          }
+
           virtual Polycode::Entity *getShape() {
             return m_entity;
           } 
@@ -103,9 +105,12 @@ namespace Synthetics {
         plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
         m_body[0]->addPlug(plug);
 
-        m_body[1] = new Link();
+        Link *link = new Link();
+        m_body[1] = link;
         m_body[1]->getShape()->setPosition(1,0,0);
         m_body[1]->getShape()->setRotationEuler(Vector3(0,90,0));
+        ServoKnob *servoKnob = new ServoKnob(link);
+        link->setKnob(servoKnob);
 
         m_body[2] = new Body();
         m_body[2]->getShape()->setPosition(1,0,0);

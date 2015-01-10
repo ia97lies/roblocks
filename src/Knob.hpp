@@ -13,6 +13,7 @@ namespace Synthetics {
     public:
       virtual ~Knob() {}
 
+      virtual void activate(bool on) = 0;
       virtual Polycode::Entity *getShape() = 0;
       virtual void handleInput(Polycode::Vector3 delta) = 0;
   };
