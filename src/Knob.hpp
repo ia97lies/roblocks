@@ -14,7 +14,7 @@ namespace Synthetics {
       virtual ~Knob() {}
 
       virtual Polycode::Entity *getShape() = 0;
-      virtual void handleInput(Polycode::Vector3 value) = 0;
+      virtual void handleInput(Polycode::Vector3 delta) = 0;
   };
 }
 

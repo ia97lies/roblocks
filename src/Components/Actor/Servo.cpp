@@ -55,6 +55,41 @@ namespace Synthetics {
           Polycode::Color m_color;
       };
 
+      class ServoKnob : public Knob {
+        public:
+          ServoKnob(Link *link) {
+            m_link = link;
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 0.2,0.6,20);
+            m_entity->setColor(0.0, 0.1, 0.0, 0.5);
+            m_link->getShape()->addChild(m_entity);
+            m_link->getShape()->setPosition(m_entity->getPosition() * 0.5);
+            // XXX WE STOPPED HERE XXX
+          }
+
+          virtual ~ServoKnob() {}
+          
+          virtual Polycode::Entity *getShape() {
+            return m_entity;
+          } 
+
+          virtual void handleInput(Polycode::Vector3 delta) {
+            // currently we only take x coordinate as value
+            // 0 is left most (90 degrees) and 1024 is right most (-90 degress)
+            m_curValue += delta;
+            if (m_curValue.x > 1024) m_curValue.x = 1024;
+            if (m_curValue.x < 0) m_curValue.x = 0;
+
+            Polycode::Vector3 rotate(0, ((180 / 1024) * m_curValue.x) - 90, 0);
+            // TODO move this to Link and implement a rotate method in Link
+            m_link->getShape()->setRotationEuler(rotate);
+          }
+
+        private:
+          Link *m_link;
+          Vector3 m_curValue;
+          Polycode::Entity *m_entity;
+      };
+
       //--------------------------------------------------------------------------
       // Components interface
       //--------------------------------------------------------------------------
