@@ -25,6 +25,7 @@ namespace Synthetics {
 
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
 
     m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
 
@@ -78,6 +79,20 @@ namespace Synthetics {
               }
               break;
           }
+          break;
+        case InputEvent::EVENT_MOUSEUP:
+          switch(inputEvent->getMouseButton()) {
+            case CoreInput::MOUSE_BUTTON1:
+              fprintf(stderr, "YYYY\n"); 
+              m_mother->deactivate();
+              break;
+          }
+          break;
+        case InputEvent::EVENT_MOUSEMOVE:
+          // TODO only if mouse left mouse button down
+          Vector3 delta(m_core->getInput()->getMouseDelta().x, m_core->getInput()->getMouseDelta().y, 0);
+          m_mother->mouseMove(delta);
+          break;
       }
     }
   }

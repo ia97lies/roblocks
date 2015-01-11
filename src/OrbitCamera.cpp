@@ -55,14 +55,14 @@ namespace Synthetics {
           break;
         case InputEvent::EVENT_MOUSEDOWN:
           switch(inputEvent->getMouseButton()) {
-            case CoreInput::MOUSE_BUTTON2:
+            case CoreInput::MOUSE_BUTTON1:
               m_mouseRightClick = true;
               break;
           }
           break;
         case InputEvent::EVENT_MOUSEUP:
           switch(inputEvent->getMouseButton()) {
-            case CoreInput::MOUSE_BUTTON2:
+            case CoreInput::MOUSE_BUTTON1:
               m_mouseRightClick = false;
               break;
           }

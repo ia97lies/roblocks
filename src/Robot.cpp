@@ -99,6 +99,38 @@ namespace Synthetics {
       Plug *m_activePlug;
   };
 
+  class FindActiveKnob : public IterateMethod {
+    public:
+      FindActiveKnob(Polycode::Entity *knobShape) { 
+        m_knobShape = knobShape; 
+      }
+
+      virtual ~FindActiveKnob() {}
+
+      virtual void call(Compound *compound) {
+        Component *component = dynamic_cast<Component *>(compound);
+        if (component) {
+          for (int i = 0; i < component->getNoParts(); i++) {
+            Part *part = component->getPart(i);
+            Knob *knob = part->getKnob();
+            fprintf(stderr, "XXX: %d, %p\n", i, knob?knob->getShape():NULL);
+            if (knob && knob->getShape() == m_knobShape) {
+              knob->activate(true);
+              m_activeKnob = knob;
+            }
+          }
+        }
+      }
+
+      Knob *getActiveKnob() {
+        return m_activeKnob;
+      }
+
+    private:
+      Polycode::Entity *m_knobShape;
+      Knob *m_activeKnob;
+  };
+
   class FindParents : public IterateMethod {
     public:
       FindParents(Component *active) { 
@@ -123,6 +155,7 @@ namespace Synthetics {
     m_activeComponent = NULL;
     m_activePart = NULL;
     m_activePlug = NULL;
+    m_activeKnob = NULL;
     m_inPlace = NULL;
     m_inPlacePart = NULL;
     m_inPlacePlug = NULL;
@@ -185,25 +218,43 @@ namespace Synthetics {
 
   void Robot::activate(Polycode::Entity *plugShape) {
     if (m_inPlace == NULL) {
-      FindActivePlug *method = new FindActivePlug(m_activeComponent, m_activePart, m_activePlug, plugShape);
-      m_mother->iterate(method);
-      m_activeComponent = method->getNewActiveComponent();
-      m_activePart = method->getNewActivePart();
-      m_activePlug = method->getNewActivePlug();
-      delete method;
+      {
+        FindActivePlug *method = new FindActivePlug(m_activeComponent, m_activePart, m_activePlug, plugShape);
+        m_mother->iterate(method);
+        m_activeComponent = method->getNewActiveComponent();
+        m_activePart = method->getNewActivePart();
+        m_activePlug = method->getNewActivePlug();
+        delete method;
+      }
+
+      {
+        FindActiveKnob *method = new FindActiveKnob(plugShape);
+        m_mother->iterate(method);
+        m_activeKnob = method->getActiveKnob();
+        delete method;
+      }
+
     }
     else {
-      FindActiveParkPlug *method = new FindActiveParkPlug(m_inPlacePart, m_inPlacePlug, plugShape);
-      m_inPlace->iterate(method);
-      m_inPlacePart = method->getNewActivePart();
-      m_inPlacePlug = method->getNewActivePlug();
+      {
+        FindActiveParkPlug *method = new FindActiveParkPlug(m_inPlacePart, m_inPlacePlug, plugShape);
+        m_inPlace->iterate(method);
+        m_inPlacePart = method->getNewActivePart();
+        m_inPlacePlug = method->getNewActivePlug();
 
-      m_rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
-      m_inPlacePart->getShape()->setRotationEuler(m_rotation);
-      m_inPlacePart->getShape()->setPosition(m_activePlug->getPosition()*2);
-
-      delete method;
+        m_rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
+        m_inPlacePart->getShape()->setRotationEuler(m_rotation);
+        m_inPlacePart->getShape()->setPosition(m_activePlug->getPosition()*2);
+        delete method;
+      }
     }
+  }
+
+  void Robot::deactivate() {
+    if (m_activeKnob) {
+      m_activeKnob->activate(false);
+    }
+    m_activeKnob = NULL;
   }
 
   void Robot::rotateInPlace() {
@@ -215,6 +266,10 @@ namespace Synthetics {
       if (m_rotation.z >= 360) m_rotation.z = 0;
       m_inPlacePart->getShape()->setRotationEuler(m_rotation);
     }
+  }
+
+  void Robot::mouseMove(Vector3 delta) {
+    //XXX I'm here XXX
   }
 
   bool Robot::isEmpty() {
@@ -246,6 +301,12 @@ namespace Synthetics {
         curPlug->getShape()->setRotationEuler(curPlug->getRotation());
         curPlug->getShape()->setPosition(curPlug->getPosition() * 0.5);
       }
+
+      Knob *knob = curPart->getKnob();
+      if (knob) {
+        fprintf(stderr, "XXX: %p\n", knob->getShape());
+        facade->trackEntity(knob->getShape());
+      }
     }
   }
 
@@ -263,6 +324,11 @@ namespace Synthetics {
         Plug *curPlug = curPart->getPlug(j);
         curPart->getShape()->removeChild(curPlug->getShape());
         facade->removeEntity(curPlug->getShape());
+
+        Knob *knob = curPart->getKnob();
+        if (knob) {
+          facade->removeEntity(knob->getShape());
+        }
       }
     }
   }

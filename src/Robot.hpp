@@ -24,7 +24,9 @@ namespace Synthetics {
       void add();
       void remove();
       void activate(Polycode::Entity *plugShape); 
+      void deactivate(); 
       void rotateInPlace();
+      void mouseMove(Polycode::Vector3 delta);
       Plug *getActivePlug();
 
       static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
@@ -38,6 +40,7 @@ namespace Synthetics {
       Component *m_activeComponent;
       Plug *m_activePlug;
       Part *m_activePart;
+      Knob *m_activeKnob;
 
       Plug *m_inPlacePlug;
       Part *m_inPlacePart;

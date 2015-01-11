@@ -60,14 +60,19 @@ namespace Synthetics {
           ServoKnob(Link *link) {
             m_link = link;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.5,20);
-            m_entity->setColor(0.0, 0.1, 0.0, 0.5);
+            m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             m_link->getShape()->addChild(m_entity);
           }
 
           virtual ~ServoKnob() {}
           
           virtual void activate(bool on) {
-            // XXX WE STOPPED HERE XXX
+            if (on) {
+              m_entity->setColor(0.0, 1.0, 0.0, 1.0);
+            }
+            else {
+              m_entity->setColor(0.0, 1.0, 0.0, 0.5);
+            }
           }
 
           virtual Polycode::Entity *getShape() {
