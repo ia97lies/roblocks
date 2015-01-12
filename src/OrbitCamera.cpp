@@ -6,6 +6,8 @@
 #include "OrbitCamera.hpp"
 #include <math.h>
 
+#define CAMERA_STEP_SIZE 1.0f
+
 using namespace Polycode;
 
 namespace Synthetics {
@@ -17,6 +19,8 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_UP);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
 
     m_on = true;
@@ -51,7 +55,12 @@ namespace Synthetics {
               m_distance += CAMERA_STEP_SIZE;
               break;
           }
-          update();
+          break;
+        case InputEvent::EVENT_MOUSEWHEEL_UP:
+            m_distance -= CAMERA_STEP_SIZE;
+          break;
+        case InputEvent::EVENT_MOUSEWHEEL_DOWN:
+            m_distance += CAMERA_STEP_SIZE;
           break;
         case InputEvent::EVENT_MOUSEDOWN:
           switch(inputEvent->getMouseButton()) {
@@ -72,10 +81,11 @@ namespace Synthetics {
             m_x += m_core->getInput()->getMouseDelta().x;
             m_y -= m_core->getInput()->getMouseDelta().y;
             clamp(m_y, -20, 80);
-            update();
             break;
           }
+          break;
       }
+      update();
     }
   }
 
