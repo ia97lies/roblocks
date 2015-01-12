@@ -11,7 +11,6 @@ using namespace Polycode;
 namespace Synthetics {
 
   OrbitCamera::OrbitCamera(Core *core, Scene *scene) : MovingCamera() {
-
     m_core = core;
     m_scene = scene;
 
@@ -20,12 +19,13 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
 
+    m_on = true;
     m_x = 20.0f;
     m_y = 20.0f;
     m_distance = 15.0f;
     m_position = Vector3(0.0f, 0.0f, -m_distance);
     m_target = Vector3(0.0f, 0.0f, 0.0f);
-    m_mouseRightClick = false;
+    m_mouseClick = false;
 
     update();
   }
@@ -56,19 +56,19 @@ namespace Synthetics {
         case InputEvent::EVENT_MOUSEDOWN:
           switch(inputEvent->getMouseButton()) {
             case CoreInput::MOUSE_BUTTON1:
-              m_mouseRightClick = true;
+              m_mouseClick = true;
               break;
           }
           break;
         case InputEvent::EVENT_MOUSEUP:
           switch(inputEvent->getMouseButton()) {
             case CoreInput::MOUSE_BUTTON1:
-              m_mouseRightClick = false;
+              m_mouseClick = false;
               break;
           }
           break;
         case InputEvent::EVENT_MOUSEMOVE:
-          if (m_mouseRightClick) {
+          if (m_mouseClick) {
             m_x += m_core->getInput()->getMouseDelta().x;
             m_y -= m_core->getInput()->getMouseDelta().y;
             clamp(m_y, -20, 80);
@@ -93,5 +93,21 @@ namespace Synthetics {
     m_scene->getDefaultCamera()->setPosition(position);
     m_scene->getDefaultCamera()->setRotationQuat(rotation->w, rotation->x, rotation->y, rotation->z);
     m_scene->getDefaultCamera()->lookAt(m_target);
+  }
+
+  void OrbitCamera::activate(bool on) {
+    if (on && !m_on) {
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+    }
+    else if (!on && m_on) {
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEUP);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+    }
+    m_on = on;
   }
 }

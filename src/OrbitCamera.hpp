@@ -20,8 +20,10 @@ namespace Synthetics {
       virtual void handleEvent(Polycode::Event *e);
       virtual void updateTarget(Polycode::Vector3 pos);
       virtual void update(); 
+      virtual void activate(bool on);
 
     private:
+      bool m_on;
       Polycode::Core *m_core;
       Polycode::Scene *m_scene;
       Polycode::Vector3 m_position;
@@ -29,7 +31,7 @@ namespace Synthetics {
       float m_x;
       float m_y;
       float m_distance;
-      bool m_mouseRightClick;
+      bool m_mouseClick;
 
       float clamp(float angle, float min, float max);
   };

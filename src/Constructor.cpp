@@ -18,6 +18,7 @@ namespace Synthetics {
     m_factory = factory;
     m_scene = new CollisionScene();
     m_camera = new OrbitCamera(m_core, m_scene);
+    m_camera->activate(true);
 
     CoreServices::getInstance()->getResourceManager()->addArchive("Resources/default.pak");
     CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
@@ -26,6 +27,7 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
+    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
 
     m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
 
@@ -77,14 +79,17 @@ namespace Synthetics {
               if(res.entity) {
                 m_mother->activate(res.entity);
               }
+              if (m_mother->getActiveKnob()) {
+                m_camera->activate(false);
+              }
               break;
           }
           break;
         case InputEvent::EVENT_MOUSEUP:
           switch(inputEvent->getMouseButton()) {
             case CoreInput::MOUSE_BUTTON1:
-              fprintf(stderr, "YYYY\n"); 
               m_mother->deactivate();
+              m_camera->activate(true);
               break;
           }
           break;

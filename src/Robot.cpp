@@ -103,6 +103,7 @@ namespace Synthetics {
     public:
       FindActiveKnob(Polycode::Entity *knobShape) { 
         m_knobShape = knobShape; 
+        m_activeKnob = NULL;
       }
 
       virtual ~FindActiveKnob() {}
@@ -113,7 +114,6 @@ namespace Synthetics {
           for (int i = 0; i < component->getNoParts(); i++) {
             Part *part = component->getPart(i);
             Knob *knob = part->getKnob();
-            fprintf(stderr, "XXX: %d, %p\n", i, knob?knob->getShape():NULL);
             if (knob && knob->getShape() == m_knobShape) {
               knob->activate(true);
               m_activeKnob = knob;
@@ -269,7 +269,9 @@ namespace Synthetics {
   }
 
   void Robot::mouseMove(Vector3 delta) {
-    //XXX I'm here XXX
+    if (m_activeKnob) {
+      m_activeKnob->handleInput(delta);
+    }
   }
 
   bool Robot::isEmpty() {
@@ -282,6 +284,10 @@ namespace Synthetics {
 
   Plug *Robot::getActivePlug() {
       return m_activePlug;
+  }
+
+  Knob *Robot::getActiveKnob() {
+      return m_activeKnob;
   }
 
   void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {
@@ -304,7 +310,6 @@ namespace Synthetics {
 
       Knob *knob = curPart->getKnob();
       if (knob) {
-        fprintf(stderr, "XXX: %p\n", knob->getShape());
         facade->trackEntity(knob->getShape());
       }
     }

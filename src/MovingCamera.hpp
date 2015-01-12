@@ -22,6 +22,7 @@ namespace Synthetics {
       virtual ~MovingCamera() {};
       virtual void updateTarget(Polycode::Vector3 pos) = 0;
       virtual void update() = 0;
+      virtual void activate(bool on) = 0;
   };
 
 }

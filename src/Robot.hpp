@@ -28,6 +28,7 @@ namespace Synthetics {
       void rotateInPlace();
       void mouseMove(Polycode::Vector3 delta);
       Plug *getActivePlug();
+      Knob *getActiveKnob();
 
       static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
       static void destructGraphic(PolycodeFacade *facade, Part *parent, Component *component); 
