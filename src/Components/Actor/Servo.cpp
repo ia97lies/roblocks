@@ -46,6 +46,10 @@ namespace Synthetics {
           }
           virtual ~Link() {}
 
+          void rotate(Polycode::Vector3 rotate) {
+            m_entity->setRotationEuler(rotate);
+          }
+
           Polycode::Entity *getShape() {
             return m_entity;
           }
@@ -62,7 +66,7 @@ namespace Synthetics {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.5,20);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             m_link->getShape()->addChild(m_entity);
-            m_curValue = Vector3(0,0,0);
+            m_curValue = Vector3(0,90,0);
           }
 
           virtual ~ServoKnob() {}
@@ -84,14 +88,11 @@ namespace Synthetics {
             // currently we only take x coordinate as value
             // 0 is left most (90 degrees) and 1024 is right most (-90 degress)
             m_curValue += delta;
-            // XXX I AM HERE XXX
-            fprintf(stderr, "XXX: x:%f, y:%f, z:%f\n", delta.x, delta.y, delta.z);
-            if (m_curValue.x > 1024) m_curValue.x = 1024;
-            if (m_curValue.x < 0) m_curValue.x = 0;
+            if (m_curValue.x > 90) m_curValue.x = 90;
+            if (m_curValue.x < -90) m_curValue.x = -90;
 
-            Polycode::Vector3 rotate(0, ((180 / 1024) * m_curValue.x) - 90, 0);
-            // TODO move this to Link and implement a rotate method in Link
-            m_link->getShape()->setRotationEuler(rotate);
+            Polycode::Vector3 rotation(0, m_curValue.x, 0);
+            m_link->rotate(rotation);
           }
 
         private:
