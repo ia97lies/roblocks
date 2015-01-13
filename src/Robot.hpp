@@ -45,8 +45,6 @@ namespace Synthetics {
 
       Plug *m_inPlacePlug;
       Part *m_inPlacePart;
-
-      Polycode::Vector3 m_rotation;
   };
 }
 

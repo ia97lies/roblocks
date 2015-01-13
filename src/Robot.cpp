@@ -59,15 +59,15 @@ namespace Synthetics {
       Plug *m_activePlug;
   };
 
-  class FindActiveParkPlug : public IterateMethod {
+  class FindActiveInPlacePlug : public IterateMethod {
     public:
-      FindActiveParkPlug(Part *activePart, Plug *activePlug, Polycode::Entity *plugShape) { 
+      FindActiveInPlacePlug(Part *activePart, Plug *activePlug, Polycode::Entity *plugShape) { 
         m_activePart = activePart;
         m_activePlug = activePlug;
         m_plugShape = plugShape; 
       }
 
-      virtual ~FindActiveParkPlug() {}
+      virtual ~FindActiveInPlacePlug() {}
 
       virtual void call(Compound *compound) {
         Component *component = dynamic_cast<Component *>(compound);
@@ -159,7 +159,6 @@ namespace Synthetics {
     m_inPlace = NULL;
     m_inPlacePart = NULL;
     m_inPlacePlug = NULL;
-    m_rotation = Vector3(0,0,0);
   }
 
   Robot::~Robot() {
@@ -171,8 +170,8 @@ namespace Synthetics {
       m_inPlacePart = component->getPart(0);
       m_inPlacePlug = m_inPlacePart->getPlug(0);
       m_inPlacePlug->activate(true);
-      m_rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
-      m_inPlacePart->getShape()->setRotationEuler(m_rotation);
+      Vector3 rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
+      m_inPlacePart->getShape()->setRotationEuler(rotation);
       m_inPlacePart->getShape()->setPosition(m_activePlug->getPosition()*2);
       Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
     }
@@ -198,7 +197,6 @@ namespace Synthetics {
 
       Part *part = component->getPart(0);
       Plug *plug = part->getPlug(0);
-      part->getShape()->setRotationEuler(m_rotation);
       part->getShape()->setPosition(m_activePlug->getPosition());
 
       m_activePlug->activate(false);
@@ -213,7 +211,27 @@ namespace Synthetics {
   }
 
   void Robot::remove() {
-
+    if (m_inPlace != NULL) {
+      Robot::destructGraphic(m_polycodeFacade, m_activePart, m_inPlace);
+      delete m_inPlace;
+      m_inPlace = NULL;
+      m_inPlacePart = NULL;
+      m_inPlacePlug = NULL;
+    }
+    else {
+      // TODO an algorithme to detect wether it is possible to remove or not
+      // * First shot whould be remove only elements with no childs. But if we 
+      //   also support thigt connection it is most likely that there are no 
+      //   removable elements with this approache. But as a first solution this
+      //   is feasable.
+      // * For more advanced removal, we need a island detection. If there are
+      //   no parents which point directly or indirectly to the childs of the
+      //   "removal" object, excluding the path over the "removal" object of
+      //   course, then you MUST not remove the "removal" object.
+      //
+      // Implement first bullet point, then think about the second one.
+      // XXX I AM HERE XXX
+    }
   }
 
   void Robot::activate(Polycode::Entity *plugShape) {
@@ -237,13 +255,13 @@ namespace Synthetics {
     }
     else {
       {
-        FindActiveParkPlug *method = new FindActiveParkPlug(m_inPlacePart, m_inPlacePlug, plugShape);
+        FindActiveInPlacePlug *method = new FindActiveInPlacePlug(m_inPlacePart, m_inPlacePlug, plugShape);
         m_inPlace->iterate(method);
         m_inPlacePart = method->getNewActivePart();
         m_inPlacePlug = method->getNewActivePlug();
 
-        m_rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
-        m_inPlacePart->getShape()->setRotationEuler(m_rotation);
+        Vector3 rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
+        m_inPlacePart->getShape()->setRotationEuler(rotation);
         m_inPlacePart->getShape()->setPosition(m_activePlug->getPosition()*2);
         delete method;
       }
@@ -260,11 +278,12 @@ namespace Synthetics {
   void Robot::rotateInPlace() {
     if (m_inPlace != NULL) {
       Vector3 rotate = m_inPlacePlug->getPosition() * 90;
-      m_rotation += rotate;
-      if (m_rotation.x >= 360) m_rotation.x = 0;
-      if (m_rotation.y >= 360) m_rotation.y = 0;
-      if (m_rotation.z >= 360) m_rotation.z = 0;
-      m_inPlacePart->getShape()->setRotationEuler(m_rotation);
+      Vector3 rotation = m_inPlacePart->getShape()->getRotationEuler();
+      rotation += rotate;
+      fprintf(stderr, "MY  PLUG x:%f y:%f z:%f\n", m_inPlacePlug->getPosition().x, m_inPlacePlug->getPosition().y, m_inPlacePlug->getPosition().z);
+      fprintf(stderr, "OPEONENT x:%f y:%f z:%f\n", m_activePlug->getPosition().x, m_activePlug->getPosition().y, m_activePlug->getPosition().z);
+      fprintf(stderr, "MY ROTAT x:%f y:%f z:%f\n\n", rotation.x, rotation.y, rotation.z);
+      m_inPlacePart->getShape()->setRotationEuler(rotation);
     }
   }
 
