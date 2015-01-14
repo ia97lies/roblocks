@@ -31,7 +31,7 @@ namespace Synthetics {
       Knob *getActiveKnob();
 
       static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
-      static void destructGraphic(PolycodeFacade *facade, Part *parent, Component *component); 
+      static void destructGraphic(PolycodeFacade *facade, Component *component); 
 
     private:
       PolycodeFacade *m_polycodeFacade;

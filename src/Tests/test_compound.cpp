@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(test_compound_add_one_remove_one) {
   BOOST_CHECK(compound->get(0) == mock);
   compound->remove(0);
   BOOST_CHECK(compound->getNoEntries() == 0);
-  BOOST_CHECK(compound->get(0) == NULL);
+  BOOST_CHECK_THROW(compound->get(0), std::out_of_range);
 }
 
 BOOST_AUTO_TEST_CASE(test_compound_add_many_remove_one_add_one) {
@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE(test_compound_add_many_remove_one_add_one) {
   compound->remove(1);
   BOOST_CHECK(compound->getNoEntries() == 2);
   BOOST_CHECK(compound->get(0) == mock);
-  BOOST_CHECK(compound->get(1) == NULL);
-  BOOST_CHECK(compound->get(2) == mock);
+  BOOST_CHECK(compound->get(1) == mock);
+  BOOST_CHECK_THROW(compound->get(2), std::out_of_range);
 }
 
 BOOST_AUTO_TEST_CASE(test_compound_add_many_replace_one) {
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(test_compound_add_many_replace_one) {
   BOOST_CHECK(compound->get(2) == mock);
 }
 
-BOOST_AUTO_TEST_CASE(test_compound_add_many_remove_two_size_remain) {
+BOOST_AUTO_TEST_CASE(test_compound_add_many_remove_two_size_change) {
   Mock *mock = new Mock();
   Compound *compound = new Compound();
   
@@ -118,9 +118,9 @@ BOOST_AUTO_TEST_CASE(test_compound_add_many_remove_two_size_remain) {
   compound->add(mock);
   BOOST_CHECK(compound->size() == 3);
   compound->remove(0);
-  BOOST_CHECK(compound->size() == 3);
-  compound->remove(2);
-  BOOST_CHECK(compound->size() == 3);
+  BOOST_CHECK(compound->size() == 2);
+  compound->remove(1);
+  BOOST_CHECK(compound->size() == 1);
 }
 
 BOOST_AUTO_TEST_CASE(test_compound_do_for_all_one_element) {
@@ -321,5 +321,17 @@ BOOST_AUTO_TEST_CASE(test_compound_get_parents_of_a_given_compound_multiple_pare
 
   std::vector<Compound *> parents = compound->getParents(compound2);
   BOOST_CHECK(parents.size() == 3);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_add_one_remove_one_by_reference) {
+  Mock *mock = new Mock();
+  Compound *compound = new Compound();
+  
+  compound->add(mock);
+  BOOST_CHECK(compound->getNoEntries() == 1);
+  BOOST_CHECK(compound->get(0) == mock);
+  compound->remove(mock);
+  BOOST_CHECK(compound->getNoEntries() == 0);
+  BOOST_CHECK_THROW(compound->get(0), std::out_of_range);
 }
 

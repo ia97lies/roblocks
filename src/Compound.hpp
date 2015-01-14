@@ -22,6 +22,7 @@ namespace Synthetics {
       virtual void add(Compound *compound);
       virtual void add(int i, Compound *compound); 
       virtual void remove(int i);
+      virtual void remove(Compound *compound);
       virtual Compound *get(int i);
       virtual void iterate(IterateMethod *method);
       virtual std::vector<Compound *> getParents(Compound *compound); 

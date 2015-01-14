@@ -212,13 +212,13 @@ namespace Synthetics {
 
   void Robot::remove() {
     if (m_inPlace != NULL) {
-      Robot::destructGraphic(m_polycodeFacade, m_activePart, m_inPlace);
+      Robot::destructGraphic(m_polycodeFacade, m_inPlace);
       delete m_inPlace;
       m_inPlace = NULL;
       m_inPlacePart = NULL;
       m_inPlacePlug = NULL;
     }
-    else {
+    else if (m_activeComponent) {
       // TODO an algorithme to detect wether it is possible to remove or not
       // * First shot whould be remove only elements with no childs. But if we 
       //   also support thigt connection it is most likely that there are no 
@@ -230,7 +230,13 @@ namespace Synthetics {
       //   course, then you MUST not remove the "removal" object.
       //
       // Implement first bullet point, then think about the second one.
-      // XXX I AM HERE XXX
+      if (m_activeComponent->getNoEntries() == 0) {
+        std::vector<Compound *> parents =  m_mother->getParents(m_activeComponent);
+        for (int i = 0; i < parents.size(); i++) {
+          parents.at(i)->remove(m_activeComponent);
+        }
+        Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
+      }
     }
   }
 
@@ -279,11 +285,9 @@ namespace Synthetics {
     if (m_inPlace != NULL) {
       Vector3 rotate = m_inPlacePlug->getPosition() * 90;
       Vector3 rotation = m_inPlacePart->getShape()->getRotationEuler();
-      rotation += rotate;
-      fprintf(stderr, "MY  PLUG x:%f y:%f z:%f\n", m_inPlacePlug->getPosition().x, m_inPlacePlug->getPosition().y, m_inPlacePlug->getPosition().z);
-      fprintf(stderr, "OPEONENT x:%f y:%f z:%f\n", m_activePlug->getPosition().x, m_activePlug->getPosition().y, m_activePlug->getPosition().z);
-      fprintf(stderr, "MY ROTAT x:%f y:%f z:%f\n\n", rotation.x, rotation.y, rotation.z);
-      m_inPlacePart->getShape()->setRotationEuler(rotation);
+      m_inPlacePart->getShape()->Pitch(rotate.x);
+      m_inPlacePart->getShape()->Yaw(rotate.y);
+      m_inPlacePart->getShape()->Roll(rotate.z);
     }
   }
 
@@ -334,11 +338,18 @@ namespace Synthetics {
     }
   }
 
-  void Robot::destructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {
+  void Robot::destructGraphic(PolycodeFacade *facade, Component *component) {
+    Part *parent = NULL;
     for (int i = 0; i < component->getNoParts(); i++) {
       Part *curPart = component->getPart(i);
       if (parent == NULL) {
-        facade->removeEntity(curPart->getShape());
+        Polycode::Entity *parentEntity = curPart->getShape()->getParentEntity();
+        if (parentEntity) {
+          parentEntity->removeChild(curPart->getShape());
+        }
+        else {
+          facade->removeEntity(curPart->getShape());
+        }
       }
       else {
         parent->getShape()->removeChild(curPart->getShape());
