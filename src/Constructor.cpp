@@ -67,7 +67,10 @@ namespace Synthetics {
               }
               break;
             case KEY_UP:
-              m_mother->rotateInPlace();
+              m_mother->rotateInPlace(1);
+              break;
+            case KEY_DOWN:
+              m_mother->rotateInPlace(-1);
               break;
           }
           break;

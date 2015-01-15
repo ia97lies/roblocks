@@ -174,6 +174,7 @@ namespace Synthetics {
       m_inPlacePart->getShape()->setRotationEuler(rotation);
       m_inPlacePart->getShape()->setPosition(m_activePlug->getPosition()*2);
       Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
+      Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(0));
     }
     else {
       delete component;
@@ -184,6 +185,9 @@ namespace Synthetics {
     if (m_mother == NULL) {
       m_mother = component;
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
+      for (int i = 0; i < component->getNoParts(); i++) {
+        Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
+      }
     }
     else {
       delete component;
@@ -194,6 +198,10 @@ namespace Synthetics {
     if (m_activeComponent != NULL && m_inPlace != NULL) {
       Component *component = m_inPlace;
       m_activeComponent->add(component);
+
+      for (int i = 1; i < component->getNoParts(); i++) {
+        Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
+      }
 
       Part *part = component->getPart(0);
       Plug *plug = part->getPlug(0);
@@ -227,7 +235,7 @@ namespace Synthetics {
       // * For more advanced removal, we need a island detection. If there are
       //   no parents which point directly or indirectly to the childs of the
       //   "removal" object, excluding the path over the "removal" object of
-      //   course, then you MUST not remove the "removal" object.
+      //   course, then you MUST not remove the "removal" object else you can.
       //
       // Implement first bullet point, then think about the second one.
       if (m_activeComponent->getNoEntries() == 0) {
@@ -281,9 +289,10 @@ namespace Synthetics {
     m_activeKnob = NULL;
   }
 
-  void Robot::rotateInPlace() {
+  void Robot::rotateInPlace(int direction) {
+    int one = direction/direction;
     if (m_inPlace != NULL) {
-      Vector3 rotate = m_inPlacePlug->getPosition() * 90;
+      Vector3 rotate = m_inPlacePlug->getPosition() * 90 * direction;
       Vector3 rotation = m_inPlacePart->getShape()->getRotationEuler();
       m_inPlacePart->getShape()->Pitch(rotate.x);
       m_inPlacePart->getShape()->Yaw(rotate.y);
@@ -323,18 +332,24 @@ namespace Synthetics {
         parent->getShape()->addChild(curPart->getShape());
       }
       parent = curPart;
-      for (int j = 0; j < curPart->getNoPlugs(); j++) {
-        Plug *curPlug = curPart->getPlug(j);
-        facade->trackEntity(curPlug->getShape());
-        curPart->getShape()->addChild(curPlug->getShape());
-        curPlug->getShape()->setRotationEuler(curPlug->getRotation());
-        curPlug->getShape()->setPosition(curPlug->getPosition() * 0.5);
-      }
+      Robot::constructKnobGraphic(facade, curPart);
+    }
+  }
 
-      Knob *knob = curPart->getKnob();
-      if (knob) {
-        facade->trackEntity(knob->getShape());
-      }
+  void Robot::constructPlugsGraphic(PolycodeFacade *facade, Part *curPart) {
+    for (int j = 0; j < curPart->getNoPlugs(); j++) {
+      Plug *curPlug = curPart->getPlug(j);
+      facade->trackEntity(curPlug->getShape());
+      curPart->getShape()->addChild(curPlug->getShape());
+      curPlug->getShape()->setRotationEuler(curPlug->getRotation());
+      curPlug->getShape()->setPosition(curPlug->getPosition() * 0.5);
+    }
+  }
+
+  void Robot::constructKnobGraphic(PolycodeFacade *facade, Part *curPart) {
+    Knob *knob = curPart->getKnob();
+    if (knob) {
+      facade->trackEntity(knob->getShape());
     }
   }
 

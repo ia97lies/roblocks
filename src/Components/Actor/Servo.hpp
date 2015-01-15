@@ -20,6 +20,7 @@ namespace Synthetics {
           virtual int getNoParts();
           virtual Part *getPart(int i);
           virtual void enable(bool on); 
+          // virtual Joint *getJoint(); 
 
         private:
           Part *m_body[3];

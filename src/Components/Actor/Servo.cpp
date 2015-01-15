@@ -130,6 +130,8 @@ namespace Synthetics {
         plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
         m_body[2]->addPlug(plug);
 
+        // TODO: add a hinge joint 
+        // m_hingeJoint(m_body[1], m_body[2], Vector3(0,0,0), Vector3(-1,0,0), Vector3(0,1,0), Vector3(0,1,0))
       }
 
       Servo::~Servo() {
@@ -138,6 +140,11 @@ namespace Synthetics {
           delete m_body[i];
         }
       }
+
+      // TODO:
+      // Joint *Servo::getJoint() {
+      //   return m_hingeJoint;
+      // }
 
       int Servo::getNoParts() {
         return 3;
