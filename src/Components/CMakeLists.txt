@@ -25,8 +25,8 @@ add_library(
 )
 
 add_library(
-  ActorServo SHARED
-  Actor/Servo.cpp
+  ActiveServo SHARED
+  Active/Servo.cpp
 )
 
 ##############################################################################
@@ -37,7 +37,7 @@ install(TARGETS PassiveHub
   LIBRARY DESTINATION lib
 )
 
-install(TARGETS ActorServo
+install(TARGETS ActiveServo
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

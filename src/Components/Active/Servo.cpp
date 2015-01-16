@@ -6,12 +6,12 @@
 #include "PolyScenePrimitive.h"
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
-#include "Components/Actor/Servo.hpp"
+#include "Components/Active/Servo.hpp"
 
 using namespace Polycode;
 namespace Synthetics {
   namespace Components {
-    namespace Actor {
+    namespace Active {
 
       class Body : public ::Synthetics::Part {
         public:
@@ -167,7 +167,7 @@ namespace Synthetics {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Actor.Servo", &ServoCreator);
+        factory->addCreator("Active.Servo", &ServoCreator);
         return 0;
       }
 
@@ -183,8 +183,8 @@ namespace Synthetics {
 // Shared library hook
 //----------------------------------------------------------------------------
 extern "C" {
-  int luaopen_libActorServo(lua_State *L) {
-    luaL_register(L, "Actor.Servo", Synthetics::Components::Actor::ServoFuncs);
+  int luaopen_libActiveServo(lua_State *L) {
+    luaL_register(L, "Active.Servo", Synthetics::Components::Active::ServoFuncs);
     return 1;
   }
 }

@@ -10,7 +10,7 @@
 
 namespace Synthetics {
   namespace Components {
-    namespace Actor {
+    namespace Active {
 
       class Servo : public Component {
         public:
