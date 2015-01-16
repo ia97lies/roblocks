@@ -4,7 +4,7 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Synthetics : robot components for easy assemble robots">
+    <meta name="description" content="Synthetics : robot simulation for easy assemble robots">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -19,7 +19,7 @@
           <a id="forkme_banner" href="https://github.com/ia97lies/synthetics">View on GitHub</a>
 
           <h1 id="project_title">Synthetics</h1>
-          <h2 id="project_tagline">robot components for easy assemble robots</h2>
+          <h2 id="project_tagline">robot simulation for easy assemble robots</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/ia97lies/synthetics/zipball/master">Download this project as a .zip file</a>
@@ -42,22 +42,38 @@
 <p>The configuration is a simple Lua script. Currently only the initial resolution can be set and the needed components can be loaded.</p>
 
 <h2>
-<a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h2>
-
-<p>Every component specifies its connect faces, event handler and shape.</p>
-
-<h2>
 <a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h2>
+
+<p>There will be a set of predefined components</p>
 
 <ul>
 <li>Passive.Hub</li>
-<li>Actor.Motor</li>
-<li>Actor.Servo</li>
+<li>Active.Servo</li>
+<li>Active.Motor</li>
+<li>Active.Linear</li>
+<li>Active.Light</li>
 <li>Sensor.Light</li>
 <li>Sensor.Distance</li>
 <li>Morph.Negator</li>
 <li>Morph.Average</li>
+<li>Morph.Trigger</li>
 </ul>
+
+<h2>
+<a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h2>
+
+<p>Every component specifies its connect faces, event handler and shape. A component consist of parts and every part do have plugs (connecting faces).</p>
+
+<h3>
+<a id="part" class="anchor" href="#part" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part</h3>
+
+<p>A part do have plugs, which define the connectiong faces for the component. The first part is the parent of the others. only the first part can be used to plug into an existing robot.
+Parts can be connected fix or with a joint. You can apply force and velocity to a joint or just set a given position which the join should hold.</p>
+
+<h3>
+<a id="plug" class="anchor" href="#plug" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plug</h3>
+
+<p>A plug defines the coordinate of the pluggable faces of a component.</p>
 
 <h2>
 <a id="custom-components" class="anchor" href="#custom-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Components</h2>
