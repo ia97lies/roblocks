@@ -40,6 +40,9 @@ namespace Synthetics {
     for (int i = 0; i < m_factory->getNames().size(); i++) {
       m_components.push_back(m_factory->createComponent(m_factory->getNames().at(i)));
       Robot::constructGraphic(m_polycodeFacade, NULL, m_components.at(i));
+      for (int j = 0; j < m_components.at(i)->getNoParts(); j++) {
+        Robot::constructPlugsGraphic(m_polycodeFacade, m_components.at(i)->getPart(j));
+      }
       m_components.at(i)->enable(false);
       m_components.at(i)->getPart(0)->getShape()->setPosition(0,0,0);
     }
