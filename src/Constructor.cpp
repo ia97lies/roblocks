@@ -20,10 +20,6 @@ namespace Synthetics {
     m_camera = new OrbitCamera(m_core, m_scene);
     m_camera->activate(true);
 
-    CoreServices::getInstance()->getResourceManager()->addArchive("Resources/default.pak");
-    CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
-    CoreServices::getInstance()->getResourceManager()->addDirResource("Resources", false);
-
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
