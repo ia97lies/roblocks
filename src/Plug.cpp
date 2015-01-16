@@ -34,7 +34,9 @@ namespace Synthetics {
 
   Vector3 Plug::getFaceToFaceRotation(Plug *plug) { 
     Vector3 o1 = getPosition();
+    o1.Normalize();
     Vector3 o2 = plug->getPosition();
+    o2.Normalize();
     float angle = acos(o1.dot(o2)) + PI;
     angle = angle < 2*PI ? angle : 0;
     Vector3 axis = o1.crossProduct(o2);

@@ -22,6 +22,7 @@ namespace Synthetics {
       void addPlug(Plug *plug);
       Plug *getPlug(int i);
       Plug *getPlug(Polycode::Entity *plugShape);
+      void plug(Plug *plug1, Plug *plug2, float factor);
 
       void setKnob(Knob *knob);
       Knob *getKnob();

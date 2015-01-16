@@ -172,7 +172,7 @@ namespace Synthetics {
       m_inPlacePlug->activate(true);
       Vector3 rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
       m_inPlacePart->getShape()->setRotationEuler(rotation);
-      m_inPlacePart->getShape()->setPosition(m_activePlug->getPosition()*2);
+      m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 2);
       Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
       Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(0));
     }
@@ -203,9 +203,7 @@ namespace Synthetics {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
       }
 
-      Part *part = component->getPart(0);
-      Plug *plug = part->getPlug(0);
-      part->getShape()->setPosition(m_activePlug->getPosition());
+      m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 0.5);
 
       m_activePlug->activate(false);
       m_inPlacePlug->activate(false);
@@ -276,7 +274,8 @@ namespace Synthetics {
 
         Vector3 rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
         m_inPlacePart->getShape()->setRotationEuler(rotation);
-        m_inPlacePart->getShape()->setPosition(m_activePlug->getPosition()*2);
+
+        m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 2);
         delete method;
       }
     }
@@ -292,7 +291,9 @@ namespace Synthetics {
   void Robot::rotateInPlace(int direction) {
     int one = direction/direction;
     if (m_inPlace != NULL) {
-      Vector3 rotate = m_inPlacePlug->getPosition() * 90 * direction;
+      Vector3 position = m_inPlacePlug->getPosition();
+      position.Normalize();
+      Vector3 rotate = position * 90 * direction;
       Vector3 rotation = m_inPlacePart->getShape()->getRotationEuler();
       m_inPlacePart->getShape()->Pitch(rotate.x);
       m_inPlacePart->getShape()->Yaw(rotate.y);

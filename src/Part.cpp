@@ -2,8 +2,11 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "PolyVector3.h"
 #include "PolyEntity.h"
 #include "Part.hpp"
+
+using namespace Polycode;
 
 namespace Synthetics {
   Part::Part() {
@@ -38,6 +41,16 @@ namespace Synthetics {
       }
     }
     return found;
+  }
+
+  // TODO: Part::plug(Part *part, float factor)
+  //       Need to get my active plug, do nothing when no active plug
+  void Part::plug(Plug *plug1, Plug *plug2, float factor) {
+      Vector3 pos1 = plug1->getPosition();
+      Vector3 pos2 = plug2->getPosition();
+      float len = pos1.length() + pos2.length();
+      pos1.Normalize();
+      getShape()->setPosition(pos1 * len * factor);
   }
 
   void Part::setKnob(Knob *knob) {

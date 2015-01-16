@@ -16,7 +16,7 @@ namespace Synthetics {
       class Body : public ::Synthetics::Part {
         public:
           Body() {
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.2,1,1);
             m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
@@ -38,7 +38,7 @@ namespace Synthetics {
       class Link : public ::Synthetics::Part {
         public:
           Link() {
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.6,20);
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.5,20);
             m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
@@ -63,7 +63,7 @@ namespace Synthetics {
         public:
           ServoKnob(Link *link) {
             m_link = link;
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.5,20);
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.4,20);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             m_link->getShape()->addChild(m_entity);
             m_curValue = Vector3(0,90,0);
@@ -107,27 +107,19 @@ namespace Synthetics {
       Servo::Servo() {
         fprintf(stderr, "Create Servo\n");
         m_body[0] = new Body();
-        Plug *plug = new Plug(Vector3(-1.0,0,0), Vector3(0,0,0));
-        m_body[0]->addPlug(plug);
-        plug = new Plug(Vector3(0,1.0,0), Vector3(0,0,90));
-        m_body[0]->addPlug(plug);
-        plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
+        Plug *plug = new Plug(Vector3(-0.2,0,0), Vector3(0,0,0));
         m_body[0]->addPlug(plug);
 
         Link *link = new Link();
         m_body[1] = link;
-        m_body[1]->getShape()->setPosition(1,0,0);
+        m_body[1]->getShape()->setPosition(0.6,0,0);
         m_body[1]->getShape()->setRotationEuler(Vector3(0,90,0));
         ServoKnob *servoKnob = new ServoKnob(link);
         link->setKnob(servoKnob);
 
         m_body[2] = new Body();
-        m_body[2]->getShape()->setPosition(1,0,0);
-        plug = new Plug(Vector3(1.0,0,0), Vector3(0,0,0));
-        m_body[2]->addPlug(plug);
-        plug = new Plug(Vector3(0,1.0,0), Vector3(0,0,90));
-        m_body[2]->addPlug(plug);
-        plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
+        m_body[2]->getShape()->setPosition(0.6,0,0);
+        plug = new Plug(Vector3(0.2,0,0), Vector3(0,0,0));
         m_body[2]->addPlug(plug);
 
         // TODO: add a hinge joint 
