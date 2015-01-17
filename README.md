@@ -1,5 +1,6 @@
 #Synthetics
 A robotics framework for easily assemble robots out of robotic components and run them in synthetic enviroment.
+The simulation is based on Polycode (see http://polycode.org).
 
 ##Configuration
 The configuration is a simple Lua script. Currently only the initial resolution can be set and the needed components can be loaded.
@@ -30,3 +31,10 @@ A plug defines the coordinate of the pluggable faces of a component.
 ##Custom Components
 It is possible to implement own components as a shared C++ library as all existing components are as well shared libraries. All used components must be specified in the Resource/synthetics.conf. 
 
+## Acknowledgements
+I'd like to acknowledge the work of the following people or group:
+
+* The Polycode framework from Ivan Safrin
+
+## License
+Synthetics is available under the MIT license.
