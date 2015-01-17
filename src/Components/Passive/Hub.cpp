@@ -17,6 +17,7 @@ namespace Synthetics {
         public:
           Body() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+            m_entity->setMaterialByName("ComponentMaterial");
             m_color = Color(0.4, 0.4, 1.0, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);

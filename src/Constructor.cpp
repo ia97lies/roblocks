@@ -27,6 +27,53 @@ namespace Synthetics {
 
     m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
 
+  /*
+	light = new SceneLight(SceneLight::POINT_LIGHT, scene, 5);
+	light->setPosition(-3,2,3);
+	//light->setLightColor(0,1,0);
+	light->setLightColor(1,1,1);
+	scene->addLight(light);
+
+	light = new SceneLight(SceneLight::POINT_LIGHT, scene, 5);
+	light->setPosition(-3,2,-3);
+	//light->setLightColor(0,0,1);
+	light->setLightColor(1,1,1);
+	scene->addLight(light);
+
+	light = new SceneLight(SceneLight::POINT_LIGHT, scene, 5);
+	light->setPosition(3,2,-3);
+	//light->setLightColor(1,0,1);
+	light->setLightColor(1,1,1);
+	scene->addLight(light);
+  */
+    
+  /*
+  Entity  *lights = new Entity();
+    scene->addChild(lights);
+    
+	light = new SceneLight(SceneLight::SPOT_LIGHT, scene, 4);
+	light->setPosition(0,4,1);
+	light->setLightColor(1,1,0);
+	scene->addLight(light);
+	lights->addChild(light);
+	light->lookAt(Vector3(0,0,0));
+	light->enableShadows(true);
+    light->getSpotlightCamera()->frustumCulling = false;
+
+	light = new SceneLight(SceneLight::SPOT_LIGHT, scene, 4);
+	light->setPosition(0,4,-1);
+	light->setLightColor(0,1,1);
+	scene->addLight(light);
+	lights->addChild(light);
+	light->lookAt(Vector3(0,0,0));
+	light->enableShadows(true);
+    light->getSpotlightCamera()->frustumCulling = false;
+    */
+
+    // -------------------------------------------------------
+    
+
+
     m_camera->update();
 
     m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory);

@@ -17,6 +17,7 @@ namespace Synthetics {
         public:
           Body() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+            m_entity->setMaterialByName("ComponentMaterial");
             m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
@@ -31,7 +32,7 @@ namespace Synthetics {
           }
 
         private:
-          Polycode::Entity *m_entity;
+          Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
 
@@ -39,6 +40,7 @@ namespace Synthetics {
         public:
           Rod() {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.2,1,1);
+            m_entity->setMaterialByName("ComponentMaterial");
             m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
@@ -53,7 +55,7 @@ namespace Synthetics {
           }
 
         private:
-          Polycode::Entity *m_entity;
+          Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
 

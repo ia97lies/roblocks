@@ -16,10 +16,11 @@ namespace Synthetics {
 
     m_conf = new Configurator(factory);
 
-    m_core = new POLYCODE_CORE(view, m_conf->getWidth(), m_conf->getHeight(), false, true, 0, 0, 90, 0, true);
+    m_core = new POLYCODE_CORE(view, m_conf->getWidth(), m_conf->getHeight(), false, true, 6, 16, 90, 0, true);
 
     CoreServices::getInstance()->getResourceManager()->addArchive("Resources/default.pak");
     CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
+    CoreServices::getInstance()->getResourceManager()->addDirResource("Resources", false);
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
     Constructor *constructor = new Constructor(m_core, m_conf, factory);

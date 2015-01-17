@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<polycode>  
+  <materials>
+    <material name="ComponentMaterial">
+      <shader name="DefaultShaderShadows">
+        <textures>
+          <texture name="diffuse">Resources/pink_texture.png</texture>
+        </textures>
+      </shader>
+    </material>     
+  </materials>
+</polycode>
+

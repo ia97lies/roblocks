@@ -23,6 +23,12 @@ namespace Synthetics {
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
 
+    m_light = new SceneLight(SceneLight::POINT_LIGHT, scene, 100);
+    Vector3 pos = m_scene->getDefaultCamera()->getPosition();
+    m_light->setPosition(pos);
+    m_light->setLightColor(1,1,1);
+    m_scene->addLight(m_light);
+
     m_on = true;
     m_x = 20.0f;
     m_y = 20.0f;
@@ -103,6 +109,9 @@ namespace Synthetics {
     m_scene->getDefaultCamera()->setPosition(position);
     m_scene->getDefaultCamera()->setRotationQuat(rotation->w, rotation->x, rotation->y, rotation->z);
     m_scene->getDefaultCamera()->lookAt(m_target);
+
+    Vector3 pos = m_scene->getDefaultCamera()->getPosition();
+    m_light->setPosition(pos);
   }
 
   void OrbitCamera::activate(bool on) {
