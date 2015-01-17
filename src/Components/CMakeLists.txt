@@ -29,6 +29,11 @@ add_library(
   Active/Servo.cpp
 )
 
+add_library(
+  ActiveLinear SHARED
+  Active/Linear.cpp
+)
+
 ##############################################################################
 # INSTALL 
 ##############################################################################
@@ -38,6 +43,11 @@ install(TARGETS PassiveHub
 )
 
 install(TARGETS ActiveServo
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS ActiveLinear
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )
