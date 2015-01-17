@@ -4,7 +4,7 @@
     <material name="ComponentMaterial">
       <shader name="DefaultShaderShadows">
         <textures>
-          <texture name="diffuse">Resources/pink_texture.png</texture>
+          <texture name="diffuse">Resources/white_texture.png</texture>
         </textures>
       </shader>
     </material>     

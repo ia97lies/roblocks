@@ -42,7 +42,7 @@ namespace Synthetics {
   }
 
   void Compound::remove(Compound *compound) {
-    for (int i = 0; getNoEntries(); i++) {
+    for (int i = 0; i < getNoEntries(); i++) {
       if (m_compounds.at(i) == compound) {
         remove(i);
       }

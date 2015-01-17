@@ -27,6 +27,12 @@ namespace Synthetics {
     shape->setColor(0.5, 0.5, 0.5, 0.3);
     shape->setPosition(0, -m_conf->getHeight()/2  + height/2 + border);
 
+    Polycode::SceneLight *light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 40);
+    light->setPosition(3,2,3);
+    light->setLightColor(1,1,1);
+    m_scene->addLight(light);
+
+
     m_index = 0;
     m_text = factory->getNames().at(m_index);
     m_label = new SceneLabel("< "+ m_text + " >", 16);
