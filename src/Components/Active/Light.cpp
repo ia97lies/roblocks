@@ -3,10 +3,12 @@
 //----------------------------------------------------------------------------
 
 #include "lua.hpp"
+#include "PolyCamera.h"
+#include "PolySceneLight.h"
 #include "PolyScenePrimitive.h"
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
-#include "Components/Active/Linear.hpp"
+#include "Components/Active/Light.hpp"
 
 using namespace Polycode;
 namespace Synthetics {
@@ -36,32 +38,9 @@ namespace Synthetics {
           Polycode::Color m_color;
       };
 
-      class Rod : public ::Synthetics::Part {
+      class LightKnob : public Knob {
         public:
-          Rod() {
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.2,1,1);
-            m_entity->setMaterialByName("ComponentMaterial");
-            m_color = Color(0.7, 0.7, 0.7, 1.0);
-            m_entity->colorAffectsChildren = false;
-            m_entity->setColor(m_color);
-            m_entity->setPosition(0.0, 0.0, 0.0);
-          }
-          virtual ~Rod() {
-            delete m_entity;
-          }
-
-          Polycode::Entity *getShape() {
-            return m_entity;
-          }
-
-        private:
-          Polycode::ScenePrimitive *m_entity;
-          Polycode::Color m_color;
-      };
-
-      class LinearKnob : public Knob {
-        public:
-          LinearKnob(Part *body, Part *rod) {
+          LightKnob(Part *body, Part *rod) {
             m_rod = rod;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8,1.2,0.8);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
@@ -69,7 +48,7 @@ namespace Synthetics {
             m_curValue = Vector3(0.5,0,0);
           }
 
-          virtual ~LinearKnob() {}
+          virtual ~LightKnob() {}
           
           virtual void activate(bool on) {
             if (on) {
@@ -85,12 +64,11 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            m_curValue += delta/100;
-            if (m_curValue.x > 1) m_curValue.x = 1;
+            m_curValue += delta;
+            if (m_curValue.x > 100) m_curValue.x = 100;
             if (m_curValue.x < 0) m_curValue.x = 0;
             Vector3 pos = Vector3(0.6, 0, 0);
             pos.x += m_curValue.x;
-            m_rod->getShape()->setPosition(pos);
           }
 
         private:
@@ -102,71 +80,68 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       // Components interface
       //--------------------------------------------------------------------------
-      Linear::Linear() {
-        fprintf(stderr, "Create Linear\n");
-        m_body[0] = new Body();
-        Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
-        m_body[0]->addPlug(plug);
+      Light::Light(Polycode::Scene *scene) {
+        fprintf(stderr, "Create Light\n");
+        m_body = new Body();
+        Plug *plug = new Plug(Vector3(0,0,-1.0), Vector3(0,-90,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(-1.0,0,0), Vector3(0,0,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(0,0,1.0), Vector3(0,-270,0));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(0,1.0,0), Vector3(0,0,90));
+        m_body->addPlug(plug);
+        plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
+        m_body->addPlug(plug);
 
-        m_body[1] = new Rod();
-        m_body[1]->getShape()->setPosition(0.6,0,0);
-        plug = new Plug(Vector3(0.2,0,0), Vector3(0,0,0));
-        m_body[1]->addPlug(plug);
-
-        LinearKnob *linearKnob = new LinearKnob(m_body[0], m_body[1]);
-        m_body[0]->setKnob(linearKnob);
-
-        // TODO: add a slider joint 
-        // m_sliderJoint(m_body[1], m_body[2], Vector3(0,0,0), Vector3(-1,0,0), Vector3(0,1,0), Vector3(0,1,0))
+        SceneLight *light = new SceneLight(SceneLight::SPOT_LIGHT, scene, 5);
+        light->setPosition(1.2,0,0);
+        light->setLightColor(1,1,1);
+        scene->addLight(light);
+        m_body->getShape()->addChild(light);
+        light->lookAt(Vector3(1,0,0));
+        light->enableShadows(true);
+        light->getSpotlightCamera()->frustumCulling = false;
       }
 
-      Linear::~Linear() {
-        fprintf(stderr, "Destroy Linear\n");
-        for (int i = 0; i < 2; i++) {
-          delete m_body[i];
-        }
+      Light::~Light() {
+        fprintf(stderr, "Destroy Light\n");
+        delete m_body;
       }
 
-      // TODO:
-      // Joint *Linear::getJoint() {
-      //   return m_sliderJoint;
-      // }
-
-      int Linear::getNoParts() {
-        return 2;
+      int Light::getNoParts() {
+        return 1;
       }
 
-      Part *Linear::getPart(int i) {
-        if (i >= 0 || i < 2) {
-          return m_body[i];
+      Part *Light::getPart(int i) {
+        if (i == 0) {
+          return m_body;
         }
         return NULL;
       }
 
-      void Linear::enable(bool on) {
-        for (int i = 0; i < 2; i++) {
-          m_body[i]->getShape()->enabled = on;
-        }
+      void Light::enable(bool on) {
+          m_body->getShape()->enabled = on;
       }
 
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *LinearCreator(Polycode::Scene *scene) {
-        Linear *hub = new Linear();
-        return hub;
+      Component *LightCreator(Polycode::Scene *scene) {
+        Light *light = new Light(scene);
+        return light;
       }
 
-      static int LinearRegister(lua_State *L) {
+      static int LightRegister(lua_State *L) {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Active.Linear", &LinearCreator);
+        factory->addCreator("Active.Light", &LightCreator);
         return 0;
       }
 
-      static const struct luaL_Reg LinearFuncs[] = {
-        { "register", LinearRegister },
+      static const struct luaL_Reg LightFuncs[] = {
+        { "register", LightRegister },
         { NULL, NULL }
       };
     }
@@ -177,8 +152,8 @@ namespace Synthetics {
 // Shared library hook
 //----------------------------------------------------------------------------
 extern "C" {
-  int luaopen_libActiveLinear(lua_State *L) {
-    luaL_register(L, "Active.Linear", Synthetics::Components::Active::LinearFuncs);
+  int luaopen_libActiveLight(lua_State *L) {
+    luaL_register(L, "Active.Light", Synthetics::Components::Active::LightFuncs);
     return 1;
   }
 }

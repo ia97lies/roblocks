@@ -34,6 +34,11 @@ add_library(
   Active/Linear.cpp
 )
 
+add_library(
+  ActiveLight SHARED
+  Active/Light.cpp
+)
+
 ##############################################################################
 # INSTALL 
 ##############################################################################
@@ -48,6 +53,11 @@ install(TARGETS ActiveServo
 )
 
 install(TARGETS ActiveLinear
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS ActiveLight
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

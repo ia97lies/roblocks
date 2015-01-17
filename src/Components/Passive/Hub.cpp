@@ -79,7 +79,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *HubCreator() {
+      Component *HubCreator(Polycode::Scene *scene) {
         Hub *hub = new Hub();
         return hub;
       }

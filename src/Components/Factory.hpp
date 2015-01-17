@@ -7,19 +7,20 @@
 
 #include <string>
 #include <map>
+#include "PolyScene.h"
 #include "Component.hpp"
 
 namespace Synthetics {
   namespace Components {
 
-    typedef Component *(*ComponentCreateFn)();
+    typedef Component *(*ComponentCreateFn)(Polycode::Scene *scene);
 
     class Factory {
       public:
         ~Factory();
 
         void addCreator(const std::string name, ComponentCreateFn creator);
-        Component *createComponent(const std::string name);
+        Component *createComponent(const std::string name, Polycode::Scene *scene);
         std::vector<std::string> getNames(); 
 
         static Factory *get() {
