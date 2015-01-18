@@ -22,7 +22,10 @@ namespace Synthetics {
           virtual void enable(bool on); 
 
         private:
+          Polycode::Scene *m_scene;
           Part *m_body;
+          Knob *m_knob;
+          Polycode::SceneLight *m_light;
       };
 
     }

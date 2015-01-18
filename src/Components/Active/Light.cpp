@@ -18,14 +18,37 @@ namespace Synthetics {
       class Body : public ::Synthetics::Part {
         public:
           Body() {
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8,0.8,0.8);
             m_entity->setMaterialByName("ComponentMaterial");
             m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
-            m_entity->setPosition(0.0, 0.0, 0.0);
+            m_entity->setPosition(0, 0, 0);
+            Vector3 pos[5];
+            Vector3 form[5];
+            pos[0] = Vector3(0.0, 0.0, 0.4);
+            form[0] = Vector3(1,1,0.2);
+            pos[1] = Vector3(0.0, 0.0, -0.4);
+            form[1] = Vector3(1,1,0.2);
+            pos[2] = Vector3(0.0, 0.4, 0.0);
+            form[2] = Vector3(1,0.2,1);
+            pos[3] = Vector3(0.0, -0.4, 0.0);
+            form[3] = Vector3(1,0.2,1);
+            pos[4] = Vector3(-0.4, 0.0, 0.0);
+            form[4] = Vector3(0.2,1,1);
+            for (int i = 0; i < 5; i++) {
+              wall[i] = new ScenePrimitive(ScenePrimitive::TYPE_BOX, form[i].x, form[i].y, form[i].z);
+              wall[i]->setPosition(pos[i]);
+              wall[i]->setMaterialByName("ComponentMaterial");
+              wall[i]->colorAffectsChildren = false;
+              wall[i]->setColor(m_color);
+              m_entity->addChild(wall[i]);
+            }
           }
           virtual ~Body() {
+            for (int i = 0; i < 5; i++) {
+              delete wall[i];
+            }
             delete m_entity;
           }
 
@@ -36,19 +59,22 @@ namespace Synthetics {
         private:
           Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
+          ScenePrimitive *wall[5];
       };
 
       class LightKnob : public Knob {
         public:
-          LightKnob(Part *body, Part *rod) {
-            m_rod = rod;
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8,1.2,0.8);
+          LightKnob(Part *body, SceneLight *light) {
+            m_light = light;
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.4,1.25,0.4);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             body->getShape()->addChild(m_entity);
-            m_curValue = Vector3(0.5,0,0);
+            m_entity->setPosition(0, 0, 0);
+            m_curValue = Vector3(2,0,0);
           }
 
-          virtual ~LightKnob() {}
+          virtual ~LightKnob() {
+          }
           
           virtual void activate(bool on) {
             if (on) {
@@ -64,15 +90,15 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            m_curValue += delta;
-            if (m_curValue.x > 100) m_curValue.x = 100;
+            m_curValue += delta/30;
+            if (m_curValue.x > 30) m_curValue.x = 30;
             if (m_curValue.x < 0) m_curValue.x = 0;
-            Vector3 pos = Vector3(0.6, 0, 0);
-            pos.x += m_curValue.x;
+            m_light->setIntensity(m_curValue.x);
+
           }
 
         private:
-          Part *m_rod;
+          SceneLight *m_light;
           Vector3 m_curValue;
           Polycode::Entity *m_entity;
       };
@@ -82,6 +108,7 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Light::Light(Polycode::Scene *scene) {
         fprintf(stderr, "Create Light\n");
+        m_scene = scene;
         m_body = new Body();
         Plug *plug = new Plug(Vector3(0,0,-1.0), Vector3(0,-90,0));
         m_body->addPlug(plug);
@@ -94,18 +121,21 @@ namespace Synthetics {
         plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
         m_body->addPlug(plug);
 
-        SceneLight *light = new SceneLight(SceneLight::SPOT_LIGHT, scene, 5);
-        light->setPosition(1.2,0,0);
-        light->setLightColor(1,1,1);
-        scene->addLight(light);
-        m_body->getShape()->addChild(light);
-        light->lookAt(Vector3(1,0,0));
-        light->enableShadows(true);
-        light->getSpotlightCamera()->frustumCulling = false;
+        m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 2);
+        m_light->setPosition(0.8,0,0);
+        m_light->setLightColor(1,1,1);
+        m_scene->addLight(m_light);
+        m_body->getShape()->addChild(m_light);
+
+        m_knob = new LightKnob(m_body, m_light);
+        m_body->setKnob(m_knob);
       }
 
       Light::~Light() {
         fprintf(stderr, "Destroy Light\n");
+        m_scene->removeLight(m_light);
+        delete m_knob;
+        delete m_light;
         delete m_body;
       }
 
