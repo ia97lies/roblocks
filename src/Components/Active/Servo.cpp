@@ -4,6 +4,7 @@
 
 #include "lua.hpp"
 #include "PolyScenePrimitive.h"
+#include "ValueRangeMapping.hpp"
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
 #include "Components/Active/Servo.hpp"
@@ -68,7 +69,7 @@ namespace Synthetics {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.4,20);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             m_link->getShape()->addChild(m_entity);
-            m_curValue = Vector3(0,90,0);
+            m_curValue = (100,100,100);
           }
 
           virtual ~ServoKnob() {}
@@ -87,13 +88,9 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            // currently we only take x coordinate as value
-            // 0 is left most (90 degrees) and 1024 is right most (-90 degress)
-            m_curValue += delta;
-            if (m_curValue.x > 90) m_curValue.x = 90;
-            if (m_curValue.x < -90) m_curValue.x = -90;
-
-            Polycode::Vector3 rotation(0, m_curValue.x, 0);
+            ValueRangeMapping mapping(-90, 90, m_curValue + delta);
+            m_curValue = mapping.value();
+            Polycode::Vector3 rotation(0, mapping.map().x, 0);
             m_link->rotate(rotation);
           }
 

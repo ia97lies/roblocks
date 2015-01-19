@@ -24,4 +24,5 @@ src/test_plug
 src/test_part
 src/test_component
 src/test_robot
+src/test_value_range_mapping
 

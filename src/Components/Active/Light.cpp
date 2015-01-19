@@ -6,6 +6,7 @@
 #include "PolyCamera.h"
 #include "PolySceneLight.h"
 #include "PolyScenePrimitive.h"
+#include "ValueRangeMapping.hpp"
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
 #include "Components/Active/Light.hpp"
@@ -90,11 +91,9 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            m_curValue += delta/30;
-            if (m_curValue.x > 30) m_curValue.x = 30;
-            if (m_curValue.x < 0) m_curValue.x = 0;
-            m_light->setIntensity(m_curValue.x);
-
+            ValueRangeMapping mapping(0, 30, m_curValue + delta);
+            m_curValue = mapping.value();
+            m_light->setIntensity(mapping.map().x);
           }
 
         private:

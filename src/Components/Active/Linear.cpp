@@ -4,6 +4,7 @@
 
 #include "lua.hpp"
 #include "PolyScenePrimitive.h"
+#include "ValueRangeMapping.hpp"
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
 #include "Components/Active/Linear.hpp"
@@ -85,12 +86,10 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            m_curValue += delta/100;
-            if (m_curValue.x > 1) m_curValue.x = 1;
-            if (m_curValue.x < 0) m_curValue.x = 0;
-            Vector3 pos = Vector3(0.6, 0, 0);
-            pos.x += m_curValue.x;
-            m_rod->getShape()->setPosition(pos);
+            ValueRangeMapping mapping(Vector3(0, 0, 0), Vector3(1, 0, 0), m_curValue + delta);
+            m_curValue = mapping.value();
+            Vector3 pos(0.6, 0, 0);
+            m_rod->getShape()->setPosition(mapping.map() + pos);
           }
 
         private:
