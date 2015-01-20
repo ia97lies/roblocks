@@ -198,6 +198,7 @@ namespace Synthetics {
     if (m_activeComponent != NULL && m_inPlace != NULL) {
       Component *component = m_inPlace;
       m_activeComponent->add(component);
+      m_activePlug->setCompound(component);
 
       for (int i = 1; i < component->getNoParts(); i++) {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
@@ -240,6 +241,9 @@ namespace Synthetics {
         std::vector<Compound *> parents =  m_mother->getParents(m_activeComponent);
         for (int i = 0; i < parents.size(); i++) {
           parents.at(i)->remove(m_activeComponent);
+          // TODO: all parts
+          //     TODO: all plugs
+          //         TODO: remove m_activeComponent if a plug points to it
         }
         Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
       }
