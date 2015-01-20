@@ -69,5 +69,16 @@ namespace Synthetics {
     return m_on;
   }
 
+  void Plug::setCompound(Compound *compound) {
+    m_compound = compound;
+  }
+
+  void Plug::unsetCompound() {
+    m_compound = NULL;
+  }
+
+  Compound *Plug::getCompound() {
+    return m_compound;
+  }
 }
 

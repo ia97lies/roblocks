@@ -44,3 +44,14 @@ BOOST_AUTO_TEST_CASE(test_plug_face_to_face_rotation_3) {
   BOOST_CHECK(plug1.getFaceToFaceRotation(&plug2) == Vector3(0, 0, -270));
 }
 
+BOOST_AUTO_TEST_CASE(test_plug_set_get_remove_compound) {
+  Plug plug1(Vector3(1,0,0), Vector3(0,0,0));
+  Compound *compound = new Compound();
+  plug1.setCompound(compound);
+  
+  BOOST_CHECK(plug1.getCompound() == compound);
+
+  plug1.unsetCompound();
+  BOOST_CHECK(plug1.getCompound() == NULL);
+}
+

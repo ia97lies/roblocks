@@ -198,3 +198,22 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_to_activated_plug) 
   BOOST_CHECK(deleted == false);
 }
 
+BOOST_AUTO_TEST_CASE(test_robot_remove_selected_component) {
+  bool deleted = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *componentMock = new ComponentMock(&deleted);
+  Robot *robot = new Robot(polycodeMock);
+
+  robot->add(componentMock);
+  robot->activate(componentMock->getMyPlug(0)->getShape());
+  componentMock = new ComponentMock(&deleted);
+  robot->place(componentMock);
+  robot->add();
+
+  robot->activate(componentMock->getMyPlug(0)->getShape());
+  robot->remove();
+  // TODO: check delete of component
+  // TODO: write tests for destruct component (all parts get destructed?)
+  // TODO: write tests for destruct part (all plugs get destructed?)
+}
+

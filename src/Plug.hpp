@@ -7,6 +7,7 @@
 
 #include "PolyEntity.h"
 #include "PolyVector3.h"
+#include "Compound.hpp"
 
 namespace Synthetics {
   class Plug {
@@ -20,12 +21,16 @@ namespace Synthetics {
       virtual Polycode::Entity *getShape();
       virtual void activate(bool on);
       virtual bool isActivate(); 
+      virtual void setCompound(Compound *compound);
+      virtual void unsetCompound();
+      virtual Compound *getCompound();
 
     private:
       Polycode::Vector3 m_position;
       Polycode::Vector3 m_rotation;
       Polycode::Entity *m_shape;
       bool m_on;
+      Compound *m_compound;
   };
 }
 
