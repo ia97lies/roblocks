@@ -243,7 +243,13 @@ namespace Synthetics {
         }
         Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
       }
-      // TODO: Delete is missing
+      if (m_activeComponent == m_mother) {
+        m_mother = NULL;
+      }
+      delete m_activeComponent;
+      m_activeComponent = NULL;
+      m_activePart = NULL;
+      m_activePlug = NULL;
     }
   }
 

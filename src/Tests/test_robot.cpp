@@ -212,6 +212,7 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_selected_component) {
 
   robot->activate(componentMock->getMyPlug(0)->getShape());
   robot->remove();
+  BOOST_CHECK(deleted == true);
   // TODO: check delete of component
   // TODO: write tests for destruct component (all parts get destructed?)
   // TODO: write tests for destruct part (all plugs get destructed?)

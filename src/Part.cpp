@@ -19,6 +19,9 @@ namespace Synthetics {
         delete m_plugs.at(i);
       }
     }
+    if (m_knob) {
+      delete m_knob;
+    }
   };
 
   int Part::getNoPlugs() {

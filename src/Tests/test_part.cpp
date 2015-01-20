@@ -18,11 +18,21 @@ class MyPart : public Part {
 
 class MyKnob : public Knob {
   public:
-    MyKnob() {}
-    ~MyKnob() {}
+    MyKnob(bool *deleted) { m_deleted = deleted; }
+    ~MyKnob() { *m_deleted = true; }
     void activate(bool on) {}
     Polycode::Entity *getShape() { return NULL; }
     void handleInput(Polycode::Vector3 value) { }
+
+    bool *m_deleted;
+};
+
+class MyPlug : public Plug {
+  public:
+    MyPlug(bool *delted) : Plug(Vector3(0,0,0), Vector3(0,0,0)) { m_deleted = delted; }
+    ~MyPlug() { *m_deleted = true; }
+
+    bool *m_deleted;
 };
 
 BOOST_AUTO_TEST_CASE(test_part_instantiate) {
@@ -97,8 +107,32 @@ BOOST_AUTO_TEST_CASE(test_part_add_many_plug_get_many_and_get_one_not_found) {
 }
 
 BOOST_AUTO_TEST_CASE(test_part_set_get_knob) {
-  MyKnob *knob = new MyKnob();
+  bool deleted = false;
+  MyKnob *knob = new MyKnob(&deleted);
   MyPart *part = new MyPart();
   part->setKnob(knob);
   BOOST_CHECK(part->getKnob() == knob);
 }
+
+BOOST_AUTO_TEST_CASE(test_part_destroy) {
+  bool deleted = false;
+  MyKnob *knob = new MyKnob(&deleted);
+  MyPart *part = new MyPart();
+  part->setKnob(knob);
+  bool deleted1 = false;
+  MyPlug *plug1 = new MyPlug(&deleted1);
+  bool deleted2 = false;
+  MyPlug *plug2 = new MyPlug(&deleted2);
+  bool deleted3 = false;
+  MyPlug *plug3 = new MyPlug(&deleted3);
+  part->addPlug(plug1);
+  part->addPlug(plug2);
+  part->addPlug(plug3);
+
+  delete part;
+  BOOST_CHECK(deleted == true);
+  BOOST_CHECK(deleted1 == true);
+  BOOST_CHECK(deleted2 == true);
+  BOOST_CHECK(deleted3 == true);
+}
+

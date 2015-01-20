@@ -13,7 +13,7 @@ namespace Synthetics {
   class Plug {
     public:
       Plug(Polycode::Vector3 position, Polycode::Vector3 rotation);
-      ~Plug();
+      virtual ~Plug();
 
       virtual Polycode::Vector3 getPosition();
       virtual Polycode::Vector3 getRotation();
