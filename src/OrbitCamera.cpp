@@ -30,7 +30,7 @@ namespace Synthetics {
     m_scene->addLight(m_light);
 
     m_on = true;
-    m_x = 20.0f;
+    m_x = -20.0f;
     m_y = 20.0f;
     m_distance = 15.0f;
     m_position = Vector3(0.0f, 0.0f, -m_distance);
