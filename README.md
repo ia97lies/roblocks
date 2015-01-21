@@ -12,17 +12,18 @@ There will be a set of predefined components
 * Active.Motor
 * Active.Linear
 * Active.Light
-* Sensor.Light
-* Sensor.Distance
-* Morph.Negator
-* Morph.Average
-* Morph.Trigger
+* Active.Loudspeaker (not yet done)
+* Sensor.Light (not yet done)
+* Sensor.Distance (not yet done)
+* Morph.Negator (not yet done)
+* Morph.Average (not yet done)
+* Morph.Trigger (not yet done)
 
 ##Components
 Every component specifies its connect faces, event handler and shape. A component consist of parts and every part do have plugs (connecting faces).
 
 ### Part
-A part do have plugs, which define the connectiong faces for the component. The first part is the parent of the others. only the first part can be used to plug into an existing robot.
+A part do have plugs, which define the connectiong faces for the component. The first part is the parent of the others. Only the first part can be used to plug into an existing robot.
 Parts can be connected fix or with a joint. You can apply force and velocity to a joint or just set a given position which the join should hold.
 
 ### Plug
@@ -38,3 +39,4 @@ I'd like to acknowledge the work of the following people or group:
 
 ## License
 Synthetics is available under the MIT license.
+
