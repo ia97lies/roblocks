@@ -11,6 +11,8 @@
 #include "Components/Factory.hpp"
 #include "Components/Active/Light.hpp"
 
+#define __MY_NAME "Active.Light"
+
 using namespace Polycode;
 namespace Synthetics {
   namespace Components {

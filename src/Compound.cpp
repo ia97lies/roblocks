@@ -14,6 +14,10 @@ namespace Synthetics {
 
   Compound::~Compound() {}
 
+  std::string Compound::getName() {
+    return "<none>";
+  }
+
   int Compound::size() {
     return m_compounds.size();
   }

@@ -131,22 +131,18 @@ namespace Synthetics {
       Knob *m_activeKnob;
   };
 
-  class FindParents : public IterateMethod {
+  class PrintComponent : public IterateMethod {
     public:
-      FindParents(Component *active) { 
-        m_activeComponent = active;
-      }
+      PrintComponent() {}
 
-      virtual ~FindParents() {}
+      virtual ~PrintComponent() {}
 
       virtual void call(Compound *compound) {
         Component *component = dynamic_cast<Component *>(compound);
         if (component ) {
+
         }
       }
-
-    private:
-      Component *m_activeComponent;
   };
 
   Robot::Robot(PolycodeFacade *facade) {
@@ -162,6 +158,14 @@ namespace Synthetics {
   }
 
   Robot::~Robot() {
+  }
+
+  void Robot::save(std::string file) {
+    PrintComponent *method = new PrintComponent();
+    m_mother->iterate(method);
+  }
+
+  void Robot::load(std::string file) {
   }
 
   void Robot::place(Component *component) {

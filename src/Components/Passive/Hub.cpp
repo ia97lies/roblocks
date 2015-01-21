@@ -8,6 +8,8 @@
 #include "Components/Factory.hpp"
 #include "Components/Passive/Hub.hpp"
 
+#define __MY_NAME "Passive.Hub"
+
 using namespace Polycode;
 namespace Synthetics {
   namespace Components {
@@ -61,6 +63,10 @@ namespace Synthetics {
         delete m_body;
       }
 
+      std::string getName() {
+        return __MY_NAME;
+      }
+
       int Hub::getNoParts() {
         return 1;
       }
@@ -88,7 +94,7 @@ namespace Synthetics {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Passive.Hub", &HubCreator);
+        factory->addCreator(__MY_NAME, &HubCreator);
         return 0;
       }
 
@@ -105,7 +111,7 @@ namespace Synthetics {
 //----------------------------------------------------------------------------
 extern "C" {
   int luaopen_libPassiveHub(lua_State *L) {
-    luaL_register(L, "Passive.Hub", Synthetics::Components::Passive::HubFuncs);
+    luaL_register(L, __MY_NAME, Synthetics::Components::Passive::HubFuncs);
     return 1;
   }
 }

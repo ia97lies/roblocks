@@ -17,6 +17,9 @@ namespace Synthetics {
       Robot(PolycodeFacade *facade); 
       virtual ~Robot();
 
+      void save(std::string file);
+      void load(std::string file);
+
       bool isEmpty(); 
       bool inPlace(); 
       void place(Component *component);

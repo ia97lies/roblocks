@@ -14,7 +14,11 @@ class Mock : public Compound {
       m_visit = false; 
     }
     
-    ~Mock() {}
+    virtual ~Mock() {}
+
+    virtual std::string getName() {
+      return "Compound::Mock";
+    }
 
     void visit() {
       m_visit = true;
@@ -43,6 +47,16 @@ class DoForAll : public IterateMethod {
       }
     }
 };
+
+BOOST_AUTO_TEST_CASE(test_compound_get_default_name) {
+  Compound *compound = new Compound();
+  BOOST_CHECK(compound->getName() == "<none>");
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_get_name) {
+  Compound *compound = new Mock();
+  BOOST_CHECK(compound->getName() == "Compound::Mock");
+}
 
 BOOST_AUTO_TEST_CASE(test_compound_add_one) {
   Mock *mock = new Mock();

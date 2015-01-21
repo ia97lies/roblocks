@@ -6,6 +6,7 @@
 #define SYNTHETICS_COMPOUND_H
 
 #include <vector>
+#include <string>
 #include "PolyVector3.h"
 
 namespace Synthetics {
@@ -17,6 +18,7 @@ namespace Synthetics {
       Compound();
       virtual ~Compound();
 
+      virtual std::string getName();
       virtual int size();
       virtual int getNoEntries();
       virtual void add(Compound *compound);
