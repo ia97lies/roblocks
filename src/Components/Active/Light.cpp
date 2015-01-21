@@ -139,6 +139,10 @@ namespace Synthetics {
         delete m_light;
         delete m_body;
       }
+      
+      std::string Light::getName() {
+        return __MY_NAME;
+      }
 
       int Light::getNoParts() {
         return 1;
@@ -167,7 +171,7 @@ namespace Synthetics {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Active.Light", &LightCreator);
+        factory->addCreator(__MY_NAME, &LightCreator);
         return 0;
       }
 
@@ -184,7 +188,7 @@ namespace Synthetics {
 //----------------------------------------------------------------------------
 extern "C" {
   int luaopen_libActiveLight(lua_State *L) {
-    luaL_register(L, "Active.Light", Synthetics::Components::Active::LightFuncs);
+    luaL_register(L, __MY_NAME, Synthetics::Components::Active::LightFuncs);
     return 1;
   }
 }

@@ -17,6 +17,7 @@ namespace Synthetics {
           Light (Polycode::Scene *scene);
           virtual ~Light();
 
+          virtual std::string getName(); 
           virtual int getNoParts();
           virtual Part *getPart(int i);
           virtual void enable(bool on); 

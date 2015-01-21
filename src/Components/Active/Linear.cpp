@@ -9,6 +9,8 @@
 #include "Components/Factory.hpp"
 #include "Components/Active/Linear.hpp"
 
+#define __MY_NAME "Active.Linear"
+
 using namespace Polycode;
 namespace Synthetics {
   namespace Components {
@@ -126,6 +128,10 @@ namespace Synthetics {
         }
       }
 
+      std::string Linear::getName() {
+        return __MY_NAME;
+      }
+
       // TODO:
       // Joint *Linear::getJoint() {
       //   return m_sliderJoint;
@@ -160,7 +166,7 @@ namespace Synthetics {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Active.Linear", &LinearCreator);
+        factory->addCreator(__MY_NAME, &LinearCreator);
         return 0;
       }
 
@@ -177,7 +183,7 @@ namespace Synthetics {
 //----------------------------------------------------------------------------
 extern "C" {
   int luaopen_libActiveLinear(lua_State *L) {
-    luaL_register(L, "Active.Linear", Synthetics::Components::Active::LinearFuncs);
+    luaL_register(L, __MY_NAME, Synthetics::Components::Active::LinearFuncs);
     return 1;
   }
 }

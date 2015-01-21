@@ -63,7 +63,7 @@ namespace Synthetics {
         delete m_body;
       }
 
-      std::string getName() {
+      std::string Hub::getName() {
         return __MY_NAME;
       }
 

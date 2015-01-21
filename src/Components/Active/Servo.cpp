@@ -9,6 +9,8 @@
 #include "Components/Factory.hpp"
 #include "Components/Active/Servo.hpp"
 
+#define __MY_NAME "Active.Servo"
+
 using namespace Polycode;
 namespace Synthetics {
   namespace Components {
@@ -132,6 +134,10 @@ namespace Synthetics {
         }
       }
 
+      std::string Servo::getName() {
+        return __MY_NAME;
+      }
+
       // TODO:
       // Joint *Servo::getJoint() {
       //   return m_hingeJoint;
@@ -166,7 +172,7 @@ namespace Synthetics {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator("Active.Servo", &ServoCreator);
+        factory->addCreator(__MY_NAME, &ServoCreator);
         return 0;
       }
 
@@ -183,7 +189,7 @@ namespace Synthetics {
 //----------------------------------------------------------------------------
 extern "C" {
   int luaopen_libActiveServo(lua_State *L) {
-    luaL_register(L, "Active.Servo", Synthetics::Components::Active::ServoFuncs);
+    luaL_register(L, __MY_NAME, Synthetics::Components::Active::ServoFuncs);
     return 1;
   }
 }
