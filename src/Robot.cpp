@@ -204,6 +204,9 @@ namespace Synthetics {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
       }
 
+      // TODO: Wire upr: find all component/plugs which collide with our plugs
+      //       and connect them, found component add us, found plugs point to us
+
       m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 0.5);
 
       m_activePlug->activate(false);
@@ -241,9 +244,17 @@ namespace Synthetics {
         std::vector<Compound *> parents =  m_mother->getParents(m_activeComponent);
         for (int i = 0; i < parents.size(); i++) {
           parents.at(i)->remove(m_activeComponent);
-          // TODO: all parts
-          //     TODO: all plugs
-          //         TODO: remove m_activeComponent if a plug points to it
+          Component *component = dynamic_cast<Component *>(parents.at(i));
+          if (component) {
+            for (int j = 0; j < component->getNoParts(); j++) {
+              Part *part = component->getPart(j);
+              for (int k = 0; k < part->getNoPlugs(); k++) {
+                if (part->getPlug(k)->getCompound() == m_activeComponent) {
+                  part->getPlug(k)->setCompound(NULL);
+                }
+              }
+            }
+          }
         }
         Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
       }

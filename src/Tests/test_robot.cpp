@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_to_activated_plug) 
   BOOST_CHECK(deleted == false);
 }
 
-BOOST_AUTO_TEST_CASE(test_robot_remove_selected_component) {
+BOOST_AUTO_TEST_CASE(test_robot_remove_component) {
   bool deleted = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
   ComponentMock *componentMock = new ComponentMock(&deleted);
@@ -215,6 +215,70 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_selected_component) {
   robot->remove();
   BOOST_CHECK(deleted == true);
   BOOST_CHECK(componentMock->getMyPlug(0)->getCompound() == NULL);
+  // TODO: write tests for destruct component (all parts get destructed?)
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *mother= new ComponentMock(&dummy);
+  Robot *robot = new Robot(polycodeMock);
+
+  robot->add(mother);
+  robot->activate(mother->getMyPlug(0)->getShape());
+  ComponentMock *componentMock1 = new ComponentMock(&dummy);
+  robot->place(componentMock1);
+  robot->add();
+  robot->activate(mother->getMyPlug(1)->getShape());
+  ComponentMock *componentMock2 = new ComponentMock(&dummy);
+  robot->place(componentMock2);
+  robot->add();
+
+  bool deleted = false;
+  robot->activate(componentMock1->getMyPlug(0)->getShape());
+  ComponentMock *componentMock3 = new ComponentMock(&deleted);
+  robot->place(componentMock3);
+  robot->add();
+  componentMock2->add(componentMock3);
+  componentMock2->getMyPlug(0)->setCompound(componentMock3);
+
+  robot->activate(componentMock3->getMyPlug(0)->getShape());
+  robot->remove();
+  BOOST_CHECK(deleted == true);
+  BOOST_CHECK(componentMock1->getMyPlug(0)->getCompound() == NULL);
+  BOOST_CHECK(componentMock2->getMyPlug(0)->getCompound() == NULL);
+  // TODO: write tests for destruct component (all parts get destructed?)
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents_2) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *mother= new ComponentMock(&dummy);
+  Robot *robot = new Robot(polycodeMock);
+
+  robot->add(mother);
+  robot->activate(mother->getMyPlug(0)->getShape());
+  ComponentMock *componentMock1 = new ComponentMock(&dummy);
+  robot->place(componentMock1);
+  robot->add();
+  robot->activate(mother->getMyPlug(1)->getShape());
+  ComponentMock *componentMock2 = new ComponentMock(&dummy);
+  robot->place(componentMock2);
+  robot->add();
+
+  bool deleted = false;
+  robot->activate(componentMock1->getMyPlug(0)->getShape());
+  ComponentMock *componentMock3 = new ComponentMock(&deleted);
+  robot->place(componentMock3);
+  robot->add();
+  componentMock2->add(componentMock3);
+  componentMock2->getMyPlug(1)->setCompound(componentMock3);
+
+  robot->activate(componentMock3->getMyPlug(0)->getShape());
+  robot->remove();
+  BOOST_CHECK(deleted == true);
+  BOOST_CHECK(componentMock1->getMyPlug(0)->getCompound() == NULL);
+  BOOST_CHECK(componentMock2->getMyPlug(1)->getCompound() == NULL);
   // TODO: write tests for destruct component (all parts get destructed?)
 }
 
