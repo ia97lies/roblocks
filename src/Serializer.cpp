@@ -15,9 +15,8 @@ namespace Synthetics {
       virtual ~PrintComponent() {}
 
       virtual void call(Compound *compound) {
-        Component *component = dynamic_cast<Component *>(compound);
-        if (component ) {
-          m_writer->write(component->getName() + "\n");
+        if (m_writer) {
+          m_writer->write(compound);
         }
       }
 
@@ -26,8 +25,10 @@ namespace Synthetics {
   };
 
   Serializer::Serializer(Compound *compound, Writer *writer) {
-    PrintComponent *method = new PrintComponent(writer);
-    compound->iterate(method);
+    if (compound) {
+      PrintComponent *method = new PrintComponent(writer);
+      compound->iterate(method);
+    }
   }
 
   Serializer::~Serializer() {

@@ -5,6 +5,8 @@
 #define BOOST_TEST_MODULE TestSerializer
 #include <boost/test/unit_test.hpp>
 #include "Polycode.h"
+#include "Writer.hpp"
+#include "Serializer.hpp"
 #include "Component.hpp"
 
 using namespace Synthetics;
@@ -39,6 +41,10 @@ class ComponentMock : public Component {
     }
     virtual ~ComponentMock() {}
 
+    virtual std::string getName() {
+      return "Test.Mock";
+    }
+
     virtual int getNoParts() { return 2; }
     virtual Part *getPart(int i) { return m_part[i]; }
     virtual void enable(bool on) {};
@@ -49,6 +55,33 @@ class ComponentMock : public Component {
     Plug *m_plug[4];
 };
 
+class WriterMock : public Writer {
+  public:
+    WriterMock() {}
+    virtual ~WriterMock() {};
+    virtual void write(Compound *compound) { 
+      Component *component = dynamic_cast<Component *>(compound);
+      if (component) {
+        result += component->getName(); 
+      }
+    }
+
+    std::string result;
+};
+
 BOOST_AUTO_TEST_CASE(test_serializer_instantiate) {
+  Serializer serializer(NULL, NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_serializer_serialize_NULL_writer) {
+  ComponentMock comp;
+  Serializer serializer(&comp, NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_serializer_serialize_one_element) {
+  ComponentMock comp;
+  WriterMock writer;
+  Serializer serializer(&comp, &writer);
+  BOOST_CHECK(writer.result == "Test.Mock");
 }
 
