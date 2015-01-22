@@ -131,20 +131,6 @@ namespace Synthetics {
       Knob *m_activeKnob;
   };
 
-  class PrintComponent : public IterateMethod {
-    public:
-      PrintComponent() {}
-
-      virtual ~PrintComponent() {}
-
-      virtual void call(Compound *compound) {
-        Component *component = dynamic_cast<Component *>(compound);
-        if (component ) {
-
-        }
-      }
-  };
-
   Robot::Robot(PolycodeFacade *facade) {
     m_polycodeFacade = facade;
     m_mother = NULL;
@@ -161,8 +147,6 @@ namespace Synthetics {
   }
 
   void Robot::save(std::string file) {
-    PrintComponent *method = new PrintComponent();
-    m_mother->iterate(method);
   }
 
   void Robot::load(std::string file) {

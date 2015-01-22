@@ -70,6 +70,7 @@ set(Synthetics_SRCS
   HeadUpDisplay.cpp
   PolycodeFacade.cpp
   ValueRangeMapping.cpp
+  Serializer.cpp
   Plug.cpp
   Part.cpp
   Compound.cpp
@@ -87,6 +88,8 @@ set(Synthetics_HDRS
   HeadUpDisplay.hpp
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
+  Writer.hpp
+  Serializer.hpp
   Plug.hpp
   Knob.hpp
   Part.hpp
@@ -227,12 +230,23 @@ target_link_libraries(test_value_range_mapping
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_serializer Tests/test_serializer.cpp)
+target_link_libraries(test_serializer
+  synthetics
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_test(test_compound test_compound)
 add_test(test_part test_part)
 add_test(test_plug test_plug)
 add_test(test_component test_component)
 add_test(test_robot test_robot)
 add_test(test_value_range_mapping test_value_range_mapping)
+add_test(test_serializer test_serializer)
 
 ##############################################################################
 # SUBDIRS
