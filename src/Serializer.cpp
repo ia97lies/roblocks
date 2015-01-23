@@ -8,25 +8,25 @@
 namespace Synthetics {
     class PrintComponent : public IterateMethod {
     public:
-      PrintComponent(Writer *writer) {
-        m_writer = writer;
+      PrintComponent(Printer *printer) {
+        m_printer = printer;
       }
 
       virtual ~PrintComponent() {}
 
       virtual void call(Compound *compound) {
-        if (m_writer) {
-          m_writer->write(compound);
+        if (m_printer) {
+          m_printer->write(compound);
         }
       }
 
     private:
-      Writer *m_writer;
+      Printer *m_printer;
   };
 
-  Serializer::Serializer(Compound *compound, Writer *writer) {
+  Serializer::Serializer(Compound *compound, Printer *printer) {
     if (compound) {
-      PrintComponent *method = new PrintComponent(writer);
+      PrintComponent *method = new PrintComponent(printer);
       compound->iterate(method);
     }
   }

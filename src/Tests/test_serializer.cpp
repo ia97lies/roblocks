@@ -5,64 +5,37 @@
 #define BOOST_TEST_MODULE TestSerializer
 #include <boost/test/unit_test.hpp>
 #include "Polycode.h"
-#include "Writer.hpp"
+#include "Printer.hpp"
 #include "Serializer.hpp"
 #include "Component.hpp"
 
 using namespace Synthetics;
 using namespace Polycode;
 
-class PartMock : public Part {
-  public:
-    PartMock() {
-      m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1, 1, 1);
-    }
-    ~PartMock() {}
-    Polycode::Entity *getShape() { return m_shape; }
-  private:
-    Polycode::Entity *m_shape;
-};
-
 class ComponentMock : public Component {
   public:
-    ComponentMock() { 
-      m_part[0] = new PartMock();
-      m_plug[0] = new Plug(Vector3(0, 0, 0), Vector3(0, 0, 0));
-      m_part[0]->addPlug(m_plug[0]);
-      m_plug[3] = new Plug(Vector3(0, 0, 0), Vector3(0, 0, 0));
-      m_part[0]->addPlug(m_plug[3]);
-
-      m_part[1] = new PartMock();
-      m_plug[1] = new Plug(Vector3(0, 0, 0), Vector3(0, 0, 0));
-      m_part[1]->addPlug(m_plug[1]);
-      m_plug[2] = new Plug(Vector3(0, 0, 0), Vector3(0, 0, 0));
-      m_part[1]->addPlug(m_plug[2]);
-
-    }
+    ComponentMock(std::string name) { m_name = name; }
     virtual ~ComponentMock() {}
 
     virtual std::string getName() {
-      return "Test.Mock";
+      return m_name;
     }
-
-    virtual int getNoParts() { return 2; }
-    virtual Part *getPart(int i) { return m_part[i]; }
+    virtual int getNoParts() { return 0; }
+    virtual Part *getPart(int i) { return NULL; }
     virtual void enable(bool on) {};
-    Plug *getMyPlug(int i) { return m_plug[i]; }
-
+    Plug *getMyPlug(int i) { return NULL; }
   private:
-    Part *m_part[2];
-    Plug *m_plug[4];
+    std::string m_name;
 };
 
-class WriterMock : public Writer {
+class PrinterMock : public Printer {
   public:
-    WriterMock() {}
-    virtual ~WriterMock() {};
+    PrinterMock() { result = "Root"; }
+    virtual ~PrinterMock() {};
     virtual void write(Compound *compound) { 
       Component *component = dynamic_cast<Component *>(compound);
       if (component) {
-        result += component->getName(); 
+        result += ","+component->getName(); 
       }
     }
 
@@ -73,15 +46,32 @@ BOOST_AUTO_TEST_CASE(test_serializer_instantiate) {
   Serializer serializer(NULL, NULL);
 }
 
-BOOST_AUTO_TEST_CASE(test_serializer_serialize_NULL_writer) {
-  ComponentMock comp;
+BOOST_AUTO_TEST_CASE(test_serializer_serialize_NULL_printer) {
+  ComponentMock comp("Foo");
   Serializer serializer(&comp, NULL);
 }
 
 BOOST_AUTO_TEST_CASE(test_serializer_serialize_one_element) {
-  ComponentMock comp;
-  WriterMock writer;
-  Serializer serializer(&comp, &writer);
-  BOOST_CHECK(writer.result == "Test.Mock");
+  ComponentMock comp("Test.Mock");
+  PrinterMock printer;
+  Serializer serializer(&comp, &printer);
+  BOOST_CHECK(printer.result == "Root,Test.Mock");
+}
+
+BOOST_AUTO_TEST_CASE(test_serializer_serialize_more_element) {
+  ComponentMock mother("Test.Mother");
+  ComponentMock comp1("Test.Foo1");
+  ComponentMock comp2("Test.Foo2");
+  mother.add(&comp1);
+  mother.add(&comp2);
+  ComponentMock comp3("Test.Bar1");
+  ComponentMock comp4("Test.Bar2");
+  comp1.add(&comp3);
+  comp2.add(&comp3);
+  comp2.add(&comp4);
+  PrinterMock printer;
+  Serializer serializer(&mother, &printer);
+  fprintf(stderr, "RESULT: %s\n", printer.result.c_str());
+  BOOST_CHECK(printer.result == "Root,Test.Bla,Test.Foo,Test.Bar,Test.Mock");
 }
 

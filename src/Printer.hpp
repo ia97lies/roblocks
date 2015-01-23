@@ -8,9 +8,9 @@
 #include "Compound.hpp"
 
 namespace Synthetics {
-  class Writer {
+  class Printer {
     public:
-      virtual ~Writer() {};
+      virtual ~Printer() {};
       virtual void write(Compound *compound) = 0;
   };
 }

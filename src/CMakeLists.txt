@@ -88,7 +88,7 @@ set(Synthetics_HDRS
   HeadUpDisplay.hpp
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
-  Writer.hpp
+  Printer.hpp
   Serializer.hpp
   Plug.hpp
   Knob.hpp

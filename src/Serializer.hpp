@@ -6,12 +6,12 @@
 #define SYNTHETICS_SERIALIZER_H
 
 #include "Compound.hpp"
-#include "Writer.hpp"
+#include "Printer.hpp"
 
 namespace Synthetics {
   class Serializer {
     public:
-      Serializer(Compound *compound, Writer *writer);
+      Serializer(Compound *compound, Printer *printer);
       virtual ~Serializer();
   };
 }

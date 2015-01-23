@@ -61,12 +61,14 @@ namespace Synthetics {
     if (m_visited) {
       return;
     }
-    else for (int i = 0; i < getNoEntries(); i++) {
+    else {
+      method->call(this);
       m_visited = true;
-      get(i)->iterate(method);
+      for (int i = 0; i < getNoEntries(); i++) {
+        get(i)->iterate(method);
+      }
       m_visited = false;
     }
-    method->call(this);
   }
 
   class CollectParents : public IterateMethod {
