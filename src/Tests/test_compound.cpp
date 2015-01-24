@@ -2,7 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 //
-#define BOOST_TEST_MODULE LoadCompounds
+#define BOOST_TEST_MODULE TestCompounds
 #include <boost/test/unit_test.hpp>
 #include "Compound.hpp"
 
@@ -347,5 +347,19 @@ BOOST_AUTO_TEST_CASE(test_compound_add_one_remove_one_by_reference) {
   compound->remove(mock);
   BOOST_CHECK(compound->getNoEntries() == 0);
   BOOST_CHECK_THROW(compound->get(0), std::out_of_range);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_get_tag_without_initial_set_tag) {
+  Compound compound;
+
+  BOOST_CHECK(compound.getTag() == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_set_get_tag) {
+  Tag tag;
+  Compound compound;
+
+  compound.setTag(&tag);
+  BOOST_CHECK(compound.getTag() == &tag);
 }
 

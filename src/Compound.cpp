@@ -10,6 +10,7 @@ namespace Synthetics {
   Compound::Compound() { 
     m_elements = 0; 
     m_visited = false;
+    m_tag = NULL;
   }
 
   Compound::~Compound() {}
@@ -55,6 +56,14 @@ namespace Synthetics {
 
   Compound *Compound::get(int i) {
     return m_compounds.at(i);
+  }
+
+  void Compound::setTag(Tag *tag) {
+    m_tag = tag;
+  }
+
+  Tag *Compound::getTag() {
+    return m_tag;
   }
 
   void Compound::iterateRecursive(Compound *parent, IterateMethod *method) {

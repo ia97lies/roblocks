@@ -26,4 +26,5 @@ src/test_component
 src/test_robot
 src/test_value_range_mapping
 src/test_serializer
+src/test_tag
 
