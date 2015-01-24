@@ -18,3 +18,9 @@
 * Loudspeaker would be cool, expecialy with the positional sound feature in polycode. *DONE*
 * If it is possible to implement a microfon as a sensor? *OPEN*
 * Add elastic blocks.
+* Store robot as a lua script
+** add a Lua interface for Robot.hpp
+** Also complex generated robots are possible (genetical algorithmen for example)
+** The format of a stored robot is human readable and therefor easily extentable
+** As well grouping of macro robot parts are that way possible.
+
