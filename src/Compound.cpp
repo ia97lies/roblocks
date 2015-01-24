@@ -57,18 +57,22 @@ namespace Synthetics {
     return m_compounds.at(i);
   }
 
-  void Compound::iterate(IterateMethod *method) {
+  void Compound::iterateRecursive(Compound *parent, IterateMethod *method) {
     if (m_visited) {
       return;
     }
     else {
-      method->call(this);
+      method->call(parent, this);
       m_visited = true;
       for (int i = 0; i < getNoEntries(); i++) {
-        get(i)->iterate(method);
+        get(i)->iterateRecursive(this, method);
       }
       m_visited = false;
     }
+  }
+
+  void Compound::iterate(IterateMethod *method) {
+    iterateRecursive(NULL, method);
   }
 
   class CollectParents : public IterateMethod {
@@ -79,7 +83,7 @@ namespace Synthetics {
 
       virtual ~CollectParents() {}
 
-      virtual void call(Compound *compound) {
+      virtual void call(Compound *parent, Compound *compound) {
         for (int i = 0; i < compound->getNoEntries(); i++) {
           if (m_compound == compound->get(i)) {
             m_parents.push_back(compound);

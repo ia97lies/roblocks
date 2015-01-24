@@ -122,7 +122,7 @@ namespace Synthetics {
         plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
         m_body->addPlug(plug);
 
-        m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 2);
+        m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 1);
         m_light->setPosition(0.8,0,0);
         m_light->setLightColor(1,1,1);
         m_scene->addLight(m_light);

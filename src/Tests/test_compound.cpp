@@ -40,7 +40,7 @@ class DoForAll : public IterateMethod {
   public:
     DoForAll() {}
     ~DoForAll() {}
-    virtual void call(Compound *compound) {
+    virtual void call(Compound *parent, Compound *compound) {
       Mock *mock = dynamic_cast<Mock *>(compound);
       if (mock) {
         mock->visit();

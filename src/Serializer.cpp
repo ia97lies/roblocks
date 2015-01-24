@@ -14,7 +14,7 @@ namespace Synthetics {
 
       virtual ~PrintComponent() {}
 
-      virtual void call(Compound *compound) {
+      virtual void call(Compound *parent, Compound *compound) {
         if (m_printer) {
           m_printer->write(compound);
         }

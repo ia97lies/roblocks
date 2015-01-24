@@ -21,7 +21,7 @@ namespace Synthetics {
 
       virtual ~FindActivePlug() {}
 
-      virtual void call(Compound *compound) {
+      virtual void call(Compound *parent, Compound *compound) {
         Component *component = dynamic_cast<Component *>(compound);
         if (component) {
           for (int i = 0; i < component->getNoParts(); i++) {
@@ -69,7 +69,7 @@ namespace Synthetics {
 
       virtual ~FindActiveInPlacePlug() {}
 
-      virtual void call(Compound *compound) {
+      virtual void call(Compound *parent, Compound *compound) {
         Component *component = dynamic_cast<Component *>(compound);
         if (component) {
           Part *part = component->getPart(0);
@@ -108,7 +108,7 @@ namespace Synthetics {
 
       virtual ~FindActiveKnob() {}
 
-      virtual void call(Compound *compound) {
+      virtual void call(Compound *parent, Compound *compound) {
         Component *component = dynamic_cast<Component *>(compound);
         if (component) {
           for (int i = 0; i < component->getNoParts(); i++) {

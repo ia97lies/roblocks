@@ -33,12 +33,13 @@ namespace Synthetics {
       int m_elements;
       std::vector<Compound *> m_compounds;
       bool m_visited;
+      virtual void iterateRecursive(Compound *parent, IterateMethod *method);
   };
 
   class IterateMethod {
     public:
       virtual ~IterateMethod() {}
-      virtual void call(Compound *compound) = 0;
+      virtual void call(Compound *parent, Compound *compound) = 0;
   };
  
 }
