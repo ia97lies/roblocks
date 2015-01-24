@@ -29,6 +29,10 @@ namespace Synthetics {
     m_light->setLightColor(1,1,1);
     m_scene->addLight(m_light);
 
+    m_soundListener = new SceneSoundListener();
+    m_scene->addEntity(m_soundListener);
+    m_scene->getDefaultCamera()->addChild(m_soundListener);
+
     m_on = true;
     m_x = -20.0f;
     m_y = 20.0f;
@@ -41,10 +45,15 @@ namespace Synthetics {
   }
 
   OrbitCamera::~OrbitCamera() {
+    m_scene->removeLight(m_light);
+    m_scene->removeEntity(m_soundListener);
+    delete m_light;
+    delete m_soundListener;
   }
 
   void OrbitCamera::updateTarget(Vector3 target) {
     m_target = target;
+    m_soundListener->Update();
   }
 
   void OrbitCamera::handleEvent(Event *e) {

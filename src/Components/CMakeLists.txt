@@ -39,6 +39,11 @@ add_library(
   Active/Light.cpp
 )
 
+add_library(
+  ActiveLoudspeaker SHARED
+  Active/Loudspeaker.cpp
+)
+
 ##############################################################################
 # INSTALL 
 ##############################################################################
@@ -58,6 +63,11 @@ install(TARGETS ActiveLinear
 )
 
 install(TARGETS ActiveLight
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS ActiveLoudspeaker
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

@@ -8,6 +8,13 @@
         </textures>
       </shader>
     </material>     
+    <material name="LoudspeakerMaterial">
+      <shader name="DefaultShaderShadows">
+        <textures>
+          <texture name="diffuse">Resources/cloth_texture.png</texture>
+        </textures>
+      </shader>
+    </material>     
   </materials>
 </polycode>
 

@@ -33,6 +33,7 @@ namespace Synthetics {
       float m_distance;
       bool m_mouseClick;
       Polycode::SceneLight *m_light;
+      Polycode::SceneSoundListener *m_soundListener;
 
       float clamp(float angle, float min, float max);
   };
