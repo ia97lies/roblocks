@@ -30,12 +30,13 @@ class ComponentMock : public Component {
 
 class PrinterMock : public Printer {
   public:
-    PrinterMock() {}
+    PrinterMock() { result = ":"; }
     virtual ~PrinterMock() {};
-    virtual void write(Compound *compound) { 
+    virtual void write(Compound *parent, Compound *compound) { 
       Component *component = dynamic_cast<Component *>(compound);
+      Component *mother = dynamic_cast<Component *>(parent);
       if (component) {
-        result += component->getName() + ":"; 
+        result += (mother ? mother->getName() + "->" : "") + component->getName() + ":"; 
       }
     }
 
@@ -55,7 +56,7 @@ BOOST_AUTO_TEST_CASE(test_serializer_serialize_one_element) {
   ComponentMock comp("Test.Mock");
   PrinterMock printer;
   Serializer serializer(&comp, &printer);
-  BOOST_CHECK(printer.result == "Test.Mock:");
+  BOOST_CHECK(printer.result == ":Test.Mock:");
 }
 
 BOOST_AUTO_TEST_CASE(test_serializer_serialize_more_element) {
@@ -72,6 +73,6 @@ BOOST_AUTO_TEST_CASE(test_serializer_serialize_more_element) {
   PrinterMock printer;
   Serializer serializer(&mother, &printer);
   fprintf(stderr, "RESULT: %s\n", printer.result.c_str());
-  BOOST_CHECK(printer.result == "Test.Mother:Test.1_1:Test.2_1:Test.1_2:Test.2_1:Test.2_2:");
+  BOOST_CHECK(printer.result == ":Test.Mother:Test.Mother->Test.1_1:Test.1_1->Test.2_1:Test.Mother->Test.1_2:Test.1_2->Test.2_1:Test.1_2->Test.2_2:");
 }
 

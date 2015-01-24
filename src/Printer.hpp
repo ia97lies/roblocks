@@ -11,7 +11,7 @@ namespace Synthetics {
   class Printer {
     public:
       virtual ~Printer() {};
-      virtual void write(Compound *compound) = 0;
+      virtual void write(Compound *parent, Compound *compound) = 0;
   };
 }
 

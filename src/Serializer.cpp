@@ -16,7 +16,7 @@ namespace Synthetics {
 
       virtual void call(Compound *parent, Compound *compound) {
         if (m_printer) {
-          m_printer->write(compound);
+          m_printer->write(parent, compound);
         }
       }
 
