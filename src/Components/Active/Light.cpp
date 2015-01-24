@@ -135,7 +135,10 @@ namespace Synthetics {
       Light::~Light() {
         fprintf(stderr, "Destroy Light\n");
         m_scene->removeLight(m_light);
-        delete m_knob;
+        m_body->getShape()->removeChild(m_light);
+        // This is done by Part, not sure if that is a good idea
+        // but Part as well delete all Plugs
+        //delete m_knob;
         delete m_light;
         delete m_body;
       }
