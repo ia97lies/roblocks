@@ -47,20 +47,46 @@ The simulation is based on Polycode (see <a href="http://polycode.org">http://po
 <h2>
 <a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h2>
 
-<p>There will be a set of predefined components</p>
+<p>There are a set of predefined components.
+I plan to make every component scriptable with Lua in some later versions.</p>
 
-<ul>
-<li>Passive.Hub</li>
-<li>Active.Servo</li>
-<li>Active.Motor</li>
-<li>Active.Linear</li>
-<li>Active.Light</li>
-<li>Sensor.Light</li>
-<li>Sensor.Distance</li>
-<li>Morph.Negator</li>
-<li>Morph.Average</li>
-<li>Morph.Trigger</li>
-</ul>
+<h3>Passive.Hub</h3>
+<p><img src="images/PassiveHub.png" width=12%></p>
+<p>A passive hub forwards every signal to its successors. Defautl no signal manipulation is done.</p>
+
+<h3>Active.Servo</h3>
+<p><img src="images/ActiveServo.png" width="12%"/></p>
+<p>A servo reacting on input [0..100] with rotation from -90 degree to 90 degree.</p>
+
+<h3>Active.Linear</h3>
+<p><img src="images/ActiveLinear.png" width="12%"/></p>
+<p>A linear actuator reacting on input [0..100] with stretching from 0 to 1 unit.</p>
+
+<h3>Active.Light</h3>
+<p><img src="images/ActiveLight.png" width="12%"/></p>
+<p>A light reacting on input [0..100] with light intens change. Makes your robot more interessting.</p>
+
+<h3>Active.Loudspeaker</h3>
+<p><img src="images/ActiveLoudspeaker.png" width="12%"/></p>
+<p>A loudspeaker reacting on input [0..100] with changing the volume. Currently only a beeb beeb sound. Actually just for fun becaus I wanted to try out positional sound system :)</p>
+
+<h3>Active.Motor</h3>
+<p>Not yet done.</p>
+
+<h3>Sensor.Light</h3>
+<p>Not yet done.</p>
+
+<h3>Sensor.Distance</h3>
+<p>Not yet done.</p>
+
+<h3>Morph.Negator</h3>
+<p>Not yet done.</p>
+
+<h3>Morph.Average</h3>
+<p>Not yet done.</p>
+
+<h3>Morph.Trigger</h3>
+<p>Not yet done.</p>
 
 <h2>
 <a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h2>
@@ -108,7 +134,6 @@ Parts can be connected fix or with a joint. You can apply force and velocity to 
     <div id="footer_wrap" class="outer">
       <footer class="inner">
         <p class="copyright">Synthetics maintained by <a href="https://github.com/ia97lies">ia97lies</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
 
