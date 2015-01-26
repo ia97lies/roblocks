@@ -6,13 +6,18 @@
 #define SYNTHETICS_COMPONENTPRINTER_H
 
 #include "Printer.hpp"
+#include "Writer.hpp"
+#include "Components/Factory.hpp"
 
 namespace Synthetics {
   class ComponentPrinter : public Printer {
     public:
-      ComponentPrinter();
+      ComponentPrinter(Writer *writer);
       virtual ~ComponentPrinter();
       virtual void write(Compound *parent, Compound *compound);
+
+    private:
+      bool isMotherCreated;
   };
 }
 

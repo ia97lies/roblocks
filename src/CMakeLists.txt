@@ -70,6 +70,7 @@ set(Synthetics_SRCS
   HeadUpDisplay.cpp
   PolycodeFacade.cpp
   ValueRangeMapping.cpp
+  ComponentPrinter.cpp
   Serializer.cpp
   Plug.cpp
   Part.cpp
@@ -88,7 +89,9 @@ set(Synthetics_HDRS
   HeadUpDisplay.hpp
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
+  ComponentPrinter.hpp
   Printer.hpp
+  Writer.hpp
   Serializer.hpp
   Plug.hpp
   Knob.hpp
@@ -250,6 +253,16 @@ target_link_libraries(test_tag
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_component_printer Tests/test_component_printer.cpp)
+target_link_libraries(test_component_printer
+  synthetics
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_test(test_compound test_compound)
 add_test(test_part test_part)
 add_test(test_plug test_plug)
@@ -258,6 +271,7 @@ add_test(test_robot test_robot)
 add_test(test_value_range_mapping test_value_range_mapping)
 add_test(test_serializer test_serializer)
 add_test(test_tag test_tag)
+add_test(test_component_printer test_component_printer)
 
 ##############################################################################
 # SUBDIRS
