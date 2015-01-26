@@ -2,8 +2,8 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_WRITER_H
-#define SYNTHETICS_WRITER_H
+#ifndef SYNTHETICS_PRINTER_H
+#define SYNTHETICS_PRINTER_H
 
 #include "Compound.hpp"
 
