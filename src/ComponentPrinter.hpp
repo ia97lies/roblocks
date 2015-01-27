@@ -18,6 +18,7 @@ namespace Synthetics {
 
     private:
       bool isMotherCreated;
+      Writer *m_writer;
   };
 }
 
