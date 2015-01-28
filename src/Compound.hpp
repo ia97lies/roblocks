@@ -9,8 +9,6 @@
 #include <string>
 #include "PolyVector3.h"
 
-#include "Tag.hpp"
-
 namespace Synthetics {
 
   class IterateMethod;
@@ -21,6 +19,8 @@ namespace Synthetics {
       virtual ~Compound();
 
       virtual std::string getName();
+      virtual void setId(long id);
+      virtual long getId();
       virtual int size();
       virtual int getNoEntries();
       virtual void add(Compound *compound);
@@ -30,14 +30,12 @@ namespace Synthetics {
       virtual Compound *get(int i);
       virtual void iterate(IterateMethod *method);
       virtual std::vector<Compound *> getParents(Compound *compound); 
-      virtual void setTag(Tag *tag);
-      virtual Tag *getTag();
 
     private:
+      long m_id;
       int m_elements;
       std::vector<Compound *> m_compounds;
       bool m_visited;
-      Tag *m_tag;
 
       void iterateRecursive(Compound *parent, IterateMethod *method);
   };

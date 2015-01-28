@@ -349,17 +349,14 @@ BOOST_AUTO_TEST_CASE(test_compound_add_one_remove_one_by_reference) {
   BOOST_CHECK_THROW(compound->get(0), std::out_of_range);
 }
 
-BOOST_AUTO_TEST_CASE(test_compound_get_tag_without_initial_set_tag) {
+BOOST_AUTO_TEST_CASE(test_compound_get_default_id) {
   Compound compound;
-
-  BOOST_CHECK(compound.getTag() == NULL);
+  BOOST_CHECK(compound.getId() == 0);
 }
 
-BOOST_AUTO_TEST_CASE(test_compound_set_get_tag) {
-  Tag tag;
+BOOST_AUTO_TEST_CASE(test_compound_set_get_id) {
   Compound compound;
-
-  compound.setTag(&tag);
-  BOOST_CHECK(compound.getTag() == &tag);
+  compound.setId(98123490);
+  BOOST_CHECK(compound.getId() == 98123490);
 }
 
