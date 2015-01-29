@@ -14,9 +14,7 @@ namespace Synthetics {
   }
 
   void CompoundStore::insert(Compound *compound) {
-    compound->setId(m_curId);
-    store[compound->getId()] = compound;
-    ++m_curId;
+    insert(compound->getId(), compound);
   }
 
   void CompoundStore::insert(long id, Compound *compound) {
@@ -27,6 +25,10 @@ namespace Synthetics {
     else {
       throw AlreadyExistException();
     }
+  }
+
+  void CompoundStore::remove(long id) {
+    store.erase(id);
   }
 
   Compound *CompoundStore::get(long id) {

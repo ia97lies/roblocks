@@ -34,12 +34,13 @@ BOOST_AUTO_TEST_CASE(test_compound_store_more_compound) {
   Compound compound2;
   Compound compound3;
 
+  compound1.setId(0);
+  compound2.setId(1);
+  compound3.setId(2);
+
   store.insert(&compound1);
   store.insert(&compound2);
   store.insert(&compound3);
-  BOOST_CHECK(compound1.getId() == 0);
-  BOOST_CHECK(compound2.getId() == 1);
-  BOOST_CHECK(compound3.getId() == 2);
   BOOST_CHECK(store.get(0) == &compound1);
   BOOST_CHECK(store.get(1) == &compound2);
   BOOST_CHECK(store.get(2) == &compound3);
@@ -52,5 +53,36 @@ BOOST_AUTO_TEST_CASE(test_compound_store_insert_component_with_existing_id) {
 
   store.insert(&compound);
   BOOST_CHECK_THROW(store.insert(0, &compound), AlreadyExistException);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_store_insert_component_with_existing_id_2) {
+  CompoundStore store;
+  Compound compound1;
+  Compound compound2;
+
+  compound1.setId(9999);
+  compound2.setId(9999);
+
+  store.insert(&compound1);
+  BOOST_CHECK_THROW(store.insert(&compound2), AlreadyExistException);
+}
+
+BOOST_AUTO_TEST_CASE(test_compound_store_insert_remove_component) {
+  CompoundStore store;
+  Compound compound1;
+  Compound compound2;
+  Compound compound3;
+
+  compound1.setId(0);
+  compound2.setId(1);
+  compound3.setId(2);
+
+  store.insert(&compound1);
+  store.insert(&compound2);
+  store.insert(&compound3);
+  store.remove(1);
+  BOOST_CHECK(store.get(0) == &compound1);
+  BOOST_CHECK(store.get(1) == NULL);
+  BOOST_CHECK(store.get(2) == &compound3);
 }
 

@@ -17,6 +17,7 @@ namespace Synthetics {
 
       virtual void insert(Compound *compound);
       virtual void insert(long id, Compound *compound);
+      virtual void remove(long id);
       virtual Compound *get(long id);
 
     private:
