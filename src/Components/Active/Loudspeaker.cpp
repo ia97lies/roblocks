@@ -135,6 +135,9 @@ namespace Synthetics {
           m_body->getShape()->enabled = on;
       }
 
+      void Loudspeaker::update() {
+      }
+
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------

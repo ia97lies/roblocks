@@ -17,7 +17,6 @@ namespace Synthetics {
         m_activePart = activePart;
         m_activePlug = activePlug;
         m_plugShape = plugShape; 
-        m_curId = 1;
       }
 
       virtual ~FindActivePlug() {}
@@ -142,6 +141,7 @@ namespace Synthetics {
     m_inPlace = NULL;
     m_inPlacePart = NULL;
     m_inPlacePlug = NULL;
+    m_curId = 1;
   }
 
   Robot::~Robot() {
@@ -194,7 +194,7 @@ namespace Synthetics {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
       }
 
-      // TODO: Wire upr: find all component/plugs which collide with our plugs
+      // TODO: Wire: find all component/plugs which collide with our plugs
       //       and connect them, found component add us, found plugs point to us
 
       m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 0.5);
@@ -333,6 +333,10 @@ namespace Synthetics {
 
   Knob *Robot::getActiveKnob() {
       return m_activeKnob;
+  }
+
+  void Robot::update() {
+    // iterate all components
   }
 
   void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {

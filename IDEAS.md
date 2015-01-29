@@ -28,3 +28,16 @@
 ** The format of a stored robot is human readable and therefor easily extentable
 ** As well grouping of macro robot parts are that way possible.
 ** LED (light in all direction) with connect faces in all direction
+
+## Simulation
+* Simulate signal propagation as follow:
+  - Every component have to register (in/out)
+  - Iterate through all components
+    - Every component hands the value in register "out" to its neighbours
+      - transform the out signal depends on its implementation
+    - Every component stores and cumulate the values from his neighbours in "in"
+      - how to cumulate depends on its implementation
+  - Do this on every update (hopefully we are this way fast enough)
+    - if simulation runs with 60 Hz a signal will propagate 60 elements per second
+  - Sensors are value sources
+  - Actors are value sinks (and depending of its implementation as well sources or propagators)

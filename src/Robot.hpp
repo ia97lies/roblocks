@@ -33,6 +33,8 @@ namespace Synthetics {
       Plug *getActivePlug();
       Knob *getActiveKnob();
 
+      void update();
+
       static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
       static void constructPlugsGraphic(PolycodeFacade *facade, Part *curPart); 
       static void constructKnobGraphic(PolycodeFacade *facade, Part *curPart); 

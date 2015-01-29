@@ -20,11 +20,12 @@ namespace Synthetics {
       virtual void remove(long id);
       virtual Compound *get(long id);
 
+      virtual std::map<long, Compound*>::iterator getIterator();
+
     private:
       long m_curId;
       std::map<long, Compound*> store;
   };
- 
 }
 
 #endif

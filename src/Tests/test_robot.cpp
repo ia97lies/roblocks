@@ -62,7 +62,9 @@ class ComponentMock : public Component {
     int getNoParts() { return 1; }
     Part *getPart(int i) { return m_part; }
     void enable(bool on) {}
+    void update() {}
     PlugMock *getMyPlug(int i) { return m_plug[i]; }
+
   private:
     bool *m_deleted;
     Part *m_part;

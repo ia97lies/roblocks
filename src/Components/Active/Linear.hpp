@@ -23,6 +23,8 @@ namespace Synthetics {
           virtual void enable(bool on); 
           // virtual Joint *getJoint(); 
 
+          virtual void update();
+
         private:
           Part *m_body[2];
       };

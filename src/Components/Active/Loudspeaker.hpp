@@ -22,6 +22,8 @@ namespace Synthetics {
           virtual Part *getPart(int i);
           virtual void enable(bool on); 
 
+          virtual void update(); 
+
         private:
           Polycode::Scene *m_scene;
           Part *m_body;

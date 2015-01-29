@@ -86,3 +86,18 @@ BOOST_AUTO_TEST_CASE(test_compound_store_insert_remove_component) {
   BOOST_CHECK(store.get(2) == &compound3);
 }
 
+BOOST_AUTO_TEST_CASE(test_compound_store_iterator) {
+  CompoundStore store;
+  Compound compound1;
+  Compound compound2;
+  Compound compound3;
+
+  compound1.setId(0);
+  compound2.setId(1);
+  compound3.setId(2);
+
+  store.insert(&compound1);
+  store.insert(&compound2);
+  store.insert(&compound3);
+
+}
