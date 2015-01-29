@@ -79,6 +79,7 @@ set(Synthetics_SRCS
 )
 
 set(Synthetics_HDRS
+  Exceptions.hpp
   SyntheticsApp.hpp
   Configurator.hpp
   MovingCamera.hpp

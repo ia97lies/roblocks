@@ -25,6 +25,4 @@ src/test_part
 src/test_component
 src/test_robot
 src/test_value_range_mapping
-src/test_serializer
-src/test_tag
-src/test_component_printer
+src/test_compound_store

@@ -16,6 +16,7 @@ namespace Synthetics {
       virtual ~CompoundStore();
 
       virtual void insert(Compound *compound);
+      virtual void insert(long id, Compound *compound);
       virtual Compound *get(long id);
 
     private:

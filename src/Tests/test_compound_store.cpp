@@ -4,6 +4,7 @@
 //
 #define BOOST_TEST_MODULE TestCompoundStore
 #include <boost/test/unit_test.hpp>
+#include "Exceptions.hpp"
 #include "Compound.hpp"
 #include "CompoundStore.hpp"
 
@@ -44,3 +45,12 @@ BOOST_AUTO_TEST_CASE(test_compound_store_more_compound) {
   BOOST_CHECK(store.get(2) == &compound3);
   BOOST_CHECK(store.get(3) == NULL);
 }
+
+BOOST_AUTO_TEST_CASE(test_compound_store_insert_component_with_existing_id) {
+  CompoundStore store;
+  Compound compound;
+
+  store.insert(&compound);
+  BOOST_CHECK_THROW(store.insert(0, &compound), AlreadyExistException);
+}
+
