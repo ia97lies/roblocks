@@ -39,6 +39,7 @@ namespace Synthetics {
       static void destructGraphic(PolycodeFacade *facade, Component *component); 
 
     private:
+      long m_curId;
       PolycodeFacade *m_polycodeFacade;
       Component *m_mother;
       Component *m_inPlace;

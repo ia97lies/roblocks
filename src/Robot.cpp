@@ -17,6 +17,7 @@ namespace Synthetics {
         m_activePart = activePart;
         m_activePlug = activePlug;
         m_plugShape = plugShape; 
+        m_curId = 1;
       }
 
       virtual ~FindActivePlug() {}
@@ -172,6 +173,7 @@ namespace Synthetics {
   void Robot::add(Component *component) {
     if (m_mother == NULL) {
       m_mother = component;
+      m_mother->setId(0);
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
       for (int i = 0; i < component->getNoParts(); i++) {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
