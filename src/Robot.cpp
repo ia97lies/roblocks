@@ -131,19 +131,6 @@ namespace Synthetics {
       Knob *m_activeKnob;
   };
 
-  class CallUpdate : public IterateMethod {
-    public:
-      CallUpdate() {} 
-      virtual ~CallUpdate() {}
-
-      virtual void call(Compound *parent, Compound *compound) {
-        Component *component = dynamic_cast<Component *>(compound);
-        if (component) {
-          component->send();
-        }
-      }
-  };
-
   Robot::Robot(PolycodeFacade *facade) {
     m_polycodeFacade = facade;
     m_mother = NULL;
@@ -155,6 +142,7 @@ namespace Synthetics {
     m_inPlacePart = NULL;
     m_inPlacePlug = NULL;
     m_curId = 1;
+    m_components = new CompoundStore();
   }
 
   Robot::~Robot() {
@@ -187,6 +175,7 @@ namespace Synthetics {
     if (m_mother == NULL) {
       m_mother = component;
       m_mother->setId(0);
+      m_components->insert(m_mother);
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
       for (int i = 0; i < component->getNoParts(); i++) {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
@@ -201,6 +190,7 @@ namespace Synthetics {
     if (m_activeComponent != NULL && m_inPlace != NULL) {
       Component *component = m_inPlace;
       m_activeComponent->setId(m_curId++);
+      m_components->insert(m_activeComponent);
       m_activeComponent->add(component);
       m_activePlug->setCompound(component);
 
@@ -262,6 +252,7 @@ namespace Synthetics {
         }
         Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
       }
+      m_components->remove(m_activeComponent->getId());
       if (m_activeComponent == m_mother) {
         m_mother = NULL;
       }
@@ -350,9 +341,14 @@ namespace Synthetics {
   }
 
   void Robot::update() {
-    CallUpdate *method = new CallUpdate();
-
-    m_mother->iterate(method);
+    std::map<long, Compound*> map = m_components->getMap();
+    std::map<long, Compound*>::iterator i;
+    for (i = map.begin(); i != map.end(); i++) {
+       Component *component = dynamic_cast<Component*>(i->second);
+       if (component) {
+         component->send();
+       }
+    }
   }
 
   void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {

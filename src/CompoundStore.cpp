@@ -35,8 +35,8 @@ namespace Synthetics {
     return store[id];
   }
 
-  std::map<long, Compound*>::iterator CompoundStore::getIterator() {
-    return store.begin();
+  std::map<long, Compound*> CompoundStore::getMap() {
+    return store;
   }
 }
 

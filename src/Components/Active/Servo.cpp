@@ -107,6 +107,8 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Servo::Servo() {
         fprintf(stderr, "Create Servo\n");
+        m_input = Vector3(0,0,0);
+        m_output = Vector3(0,0,0);
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-0.2,0,0), Vector3(0,0,0));
         m_body[0]->addPlug(plug);
@@ -161,9 +163,19 @@ namespace Synthetics {
       }
 
       void Servo::send() {
+        // maybe slightly lesser, lets see how it behaves
+        Vector3 delta = m_input - m_output;
+        for (int i = 0; i < getNoEntries(); i++) {
+          Component *component = dynamic_cast<Component *>(get(i));
+          component->update(delta);
+        }
+        m_output = m_input;
       }
 
       void Servo::update(Polycode::Vector3 delta) {
+        ValueRangeMapping mapping(0, 100, m_input + delta);
+        m_input = mapping.value();
+        // TODO: adjust servo depending of the m_input
       }
 
       //----------------------------------------------------------------------
