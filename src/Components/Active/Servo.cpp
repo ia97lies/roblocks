@@ -160,7 +160,7 @@ namespace Synthetics {
         }
       }
 
-      void Servo::update() {
+      void Servo::update(Polycode::Vector3 delta) {
       }
 
       //----------------------------------------------------------------------

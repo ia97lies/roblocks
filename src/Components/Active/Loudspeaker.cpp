@@ -135,7 +135,7 @@ namespace Synthetics {
           m_body->getShape()->enabled = on;
       }
 
-      void Loudspeaker::update() {
+      void Loudspeaker::update(Polycode::Vector3 delta) {
       }
 
       //----------------------------------------------------------------------

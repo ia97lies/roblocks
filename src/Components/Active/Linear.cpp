@@ -154,7 +154,7 @@ namespace Synthetics {
         }
       }
 
-      void Linear::update() {
+      void Linear::update(Polycode::Vector3 delta) {
       }
 
       //----------------------------------------------------------------------

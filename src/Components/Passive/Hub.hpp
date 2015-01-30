@@ -22,7 +22,7 @@ namespace Synthetics {
           virtual Part *getPart(int i);
           virtual void enable(bool on); 
 
-          virtual void update();
+          virtual void update(Polycode::Vector3 delta);
 
         private:
           Part *m_body;

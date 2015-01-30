@@ -20,7 +20,7 @@ namespace Synthetics {
       virtual void enable(bool on) = 0;
       virtual Part *getPartByPlug(Polycode::Entity *plugShape);
 
-      virtual void update() = 0;
+      virtual void update(Polycode::Vector3 delta) = 0;
   };
 }
 
