@@ -163,7 +163,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *LinearCreator(Polycode::Scene *scene) {
+      Component *LinearCreator(Polycode::Core *core, Polycode::Scene *scene) {
         Linear *hub = new Linear();
         return hub;
       }

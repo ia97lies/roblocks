@@ -23,7 +23,7 @@ namespace Synthetics {
     CoreServices::getInstance()->getResourceManager()->addDirResource("Resources", false);
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
-    Constructor *constructor = new Constructor(m_core, m_conf, factory);
+    m_constructor = new Constructor(m_core, m_conf, factory);
   }
 
   SyntheticsApp::~SyntheticsApp() {
@@ -44,6 +44,7 @@ namespace Synthetics {
   }
 
   bool SyntheticsApp::Update() {
+    m_constructor->update();
     return m_core->updateAndRender();
   }
 }

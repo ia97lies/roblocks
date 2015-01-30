@@ -171,7 +171,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *LightCreator(Polycode::Scene *scene) {
+      Component *LightCreator(Polycode::Core *core, Polycode::Scene *scene) {
         Light *light = new Light(scene);
         return light;
       }

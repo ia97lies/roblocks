@@ -10,6 +10,7 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
+#include "Constructor.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
@@ -24,6 +25,7 @@ namespace Synthetics {
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
       Configurator *m_conf;
+      Constructor *m_constructor;
   };
 }
 #endif

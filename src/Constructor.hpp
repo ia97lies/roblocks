@@ -21,6 +21,7 @@ namespace Synthetics {
       Constructor(Polycode::Core *core, Configurator *conf, Components::Factory *factory);
       ~Constructor();
       void handleEvent(Polycode::Event *e);
+      void update();
 
     private:
       Polycode::Core *m_core;

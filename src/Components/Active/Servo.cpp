@@ -169,7 +169,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *ServoCreator(Polycode::Scene *scene) {
+      Component *ServoCreator(Polycode::Core *core, Polycode::Scene *scene) {
         Servo *hub = new Servo();
         return hub;
       }

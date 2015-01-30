@@ -131,6 +131,19 @@ namespace Synthetics {
       Knob *m_activeKnob;
   };
 
+  class CallUpdate : public IterateMethod {
+    public:
+      CallUpdate() {} 
+      virtual ~CallUpdate() {}
+
+      virtual void call(Compound *parent, Compound *compound) {
+        Component *component = dynamic_cast<Component *>(compound);
+        if (component) {
+          component->send();
+        }
+      }
+  };
+
   Robot::Robot(PolycodeFacade *facade) {
     m_polycodeFacade = facade;
     m_mother = NULL;
@@ -337,8 +350,9 @@ namespace Synthetics {
   }
 
   void Robot::update() {
-//    CallUpdate method = CallUpdate();
+    CallUpdate *method = new CallUpdate();
 
+    m_mother->iterate(method);
   }
 
   void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {

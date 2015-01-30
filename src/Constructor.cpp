@@ -51,11 +51,11 @@ namespace Synthetics {
             case KEY_RETURN:
               // add current selected component to current active component
               if (m_mother->isEmpty()) {
-                Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_scene);
+                Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
                 m_mother->add(component);
               }
               else if (!m_mother->inPlace()) {
-                Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_scene);
+                Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
                 m_mother->place(component);
               }
               else {
@@ -99,6 +99,10 @@ namespace Synthetics {
           break;
       }
     }
+  }
+
+  void Constructor::update() {
+    m_mother->update();
   }
 }
 

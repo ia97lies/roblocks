@@ -13,14 +13,15 @@
 namespace Synthetics {
   namespace Components {
 
-    typedef Component *(*ComponentCreateFn)(Polycode::Scene *scene);
+    // NOTE: We need the core for getting time elapsed on send/update cycle
+    typedef Component *(*ComponentCreateFn)(Polycode::Core *core, Polycode::Scene *scene);
 
     class Factory {
       public:
         ~Factory();
 
         void addCreator(const std::string name, ComponentCreateFn creator);
-        Component *createComponent(const std::string name, Polycode::Scene *scene);
+        Component *createComponent(const std::string name, Polycode::Core *core, Polycode::Scene *scene);
         std::vector<std::string> getNames(); 
 
         static Factory *get() {
