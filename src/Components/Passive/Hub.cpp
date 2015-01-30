@@ -4,6 +4,7 @@
 
 #include "lua.hpp"
 #include "PolyScenePrimitive.h"
+#include "ValueRangeMapping.hpp"
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
 #include "Components/Passive/Hub.hpp"
@@ -43,6 +44,8 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Hub::Hub() {
         fprintf(stderr, "Create Hub\n");
+        m_input = Vector3(0,0,0);
+        m_output = Vector3(0,0,0);
         m_body = new Body();
         Plug *plug = new Plug(Vector3(1.0,0,0), Vector3(0,0,0));
         m_body->addPlug(plug);
@@ -83,9 +86,14 @@ namespace Synthetics {
       }
 
       void Hub::send() {
+        // send delta from this call and last call to all your neighbours
+        Vector3 delta = m_input - m_output;
+
       }
 
       void Hub::update(Polycode::Vector3 delta) {
+        ValueRangeMapping mapping(0, 100, m_input + delta);
+        m_input = mapping.value();
       }
 
       //----------------------------------------------------------------------

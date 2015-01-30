@@ -9,6 +9,7 @@
 #include "Polycode3DPhysics.h"
 #include "PolycodeFacade.hpp"
 #include "Compound.hpp"
+#include "CompoundStore.hpp"
 #include "Component.hpp"
 
 namespace Synthetics {
@@ -45,6 +46,8 @@ namespace Synthetics {
       PolycodeFacade *m_polycodeFacade;
       Component *m_mother;
       Component *m_inPlace;
+
+      CompoundStore *m_components;
 
       Component *m_activeComponent;
       Plug *m_activePlug;
