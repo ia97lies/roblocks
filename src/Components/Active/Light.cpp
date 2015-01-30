@@ -162,6 +162,9 @@ namespace Synthetics {
           m_body->getShape()->enabled = on;
       }
 
+      void Light::send() {
+      }
+
       void Light::update(Polycode::Vector3 delta) {
       }
 

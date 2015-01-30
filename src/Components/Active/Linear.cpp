@@ -154,6 +154,9 @@ namespace Synthetics {
         }
       }
 
+      void Linear::send() {
+      }
+
       void Linear::update(Polycode::Vector3 delta) {
       }
 

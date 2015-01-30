@@ -62,6 +62,7 @@ class ComponentMock : public Component {
     int getNoParts() { return 1; }
     Part *getPart(int i) { return m_part; }
     void enable(bool on) {}
+    void send() {}
     void update(Polycode::Vector3 delta) {}
     PlugMock *getMyPlug(int i) { return m_plug[i]; }
 

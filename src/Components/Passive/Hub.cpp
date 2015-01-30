@@ -82,6 +82,9 @@ namespace Synthetics {
         m_body->getShape()->enabled = on;
       }
 
+      void Hub::send() {
+      }
+
       void Hub::update(Polycode::Vector3 delta) {
       }
 

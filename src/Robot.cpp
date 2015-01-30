@@ -187,6 +187,7 @@ namespace Synthetics {
   void Robot::add() {
     if (m_activeComponent != NULL && m_inPlace != NULL) {
       Component *component = m_inPlace;
+      m_activeComponent->setId(m_curId++);
       m_activeComponent->add(component);
       m_activePlug->setCompound(component);
 
@@ -336,7 +337,8 @@ namespace Synthetics {
   }
 
   void Robot::update() {
-    // iterate all components
+//    CallUpdate method = CallUpdate();
+
   }
 
   void Robot::constructGraphic(PolycodeFacade *facade, Part *parent, Component *component) {
