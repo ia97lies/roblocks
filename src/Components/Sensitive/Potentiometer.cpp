@@ -8,20 +8,24 @@
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
 #include "Components/Active/Servo.hpp"
+#include "Components/Sensitive/Potentiometer.hpp"
 
-#define __MY_NAME "Active.Servo"
+#define __MY_NAME "Sensitive.Potentiometer"
 
 using namespace Polycode;
 namespace Synthetics {
   namespace Components {
-    namespace Active {
+    namespace Sensitive {
 
+      //--------------------------------------------------------------------------
+      // Custom shape definition
+      //--------------------------------------------------------------------------
       class Body : public ::Synthetics::Part {
         public:
           Body() {
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.2,1,1);
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
             m_entity->setMaterialByName("ComponentMaterial");
-            m_color = Color(0.7, 0.7, 0.7, 1.0);
+            m_color = Color(0.4, 1.0, 0.4, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
@@ -39,29 +43,17 @@ namespace Synthetics {
           Polycode::Color m_color;
       };
 
-      class Link : public ::Synthetics::Part {
+      class Shaft : public ::Synthetics::Part {
         public:
-          Link() {
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.5,20);
-            m_entity->setMaterialByName("ComponentMaterial");
-            m_color = Color(0.7, 0.7, 0.7, 1.0);
+          Shaft() {
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 0.5,0.5,20);
+            m_entity->setMaterialByName("PotentiometerMaterial");
+            m_color = Color(0.3, 0.3, 0.3, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
-            m_entity->setPosition(0.0, 0.0, 0.0);
             m_curValue = (0,0,0);
           }
-          virtual ~Link() {}
-
-          void rotate(Polycode::Vector3 rotate) {
-            m_entity->setRotationEuler(rotate);
-          }
-
-          void update(Polycode::Vector3 delta) {
-            ValueRangeMapping mapping(90, -90, m_curValue + delta);
-            m_curValue = mapping.value();
-            Polycode::Vector3 rotation(0, mapping.map().x, 0);
-            rotate(rotation);
-          }
+          virtual ~Shaft() {}
 
           Vector3 getValue() {
             return m_curValue;
@@ -71,22 +63,34 @@ namespace Synthetics {
             return m_entity;
           }
 
+          void rotate(Polycode::Vector3 rotate) {
+            m_entity->setRotationEuler(rotate);
+          }
+
+          void update(Polycode::Vector3 delta) {
+            ValueRangeMapping mapping(0, 360, m_curValue + delta);
+            m_curValue = mapping.value();
+            Polycode::Vector3 rotation(0, mapping.map().x, 0);
+            rotate(rotation);
+          }
+
         private:
           Vector3 m_curValue;
           Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
 
-      class ServoKnob : public Knob {
+      class ShaftKnob : public Knob {
         public:
-          ServoKnob(Link *link) {
-            m_link = link;
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.4,20);
+          ShaftKnob(Shaft *shaft) {
+            m_shaft = shaft;
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 0.2, 0.4,20);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
-            m_link->getShape()->addChild(m_entity);
+            m_entity->setPosition(0.0, 0.2, 0.0);
+            m_shaft->getShape()->addChild(m_entity);
           }
 
-          virtual ~ServoKnob() {}
+          virtual ~ShaftKnob() {}
           
           virtual void activate(bool on) {
             if (on) {
@@ -102,107 +106,95 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            m_link->update(delta);
+            m_shaft->update(delta);
           }
 
         private:
-          Link *m_link;
+          Shaft *m_shaft;
           Polycode::Entity *m_entity;
       };
 
       //--------------------------------------------------------------------------
       // Components interface
       //--------------------------------------------------------------------------
-      Servo::Servo() {
-        fprintf(stderr, "Create Servo\n");
+      Potentiometer::Potentiometer() {
+        fprintf(stderr, "Create Potentiometer\n");
         m_output = Vector3(0,0,0);
         m_body[0] = new Body();
-        Plug *plug = new Plug(Vector3(-0.2,0,0), Vector3(0,0,0));
+        Plug *plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(0,0,-1), Vector3(0,-90,0));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(0,0,1), Vector3(0,-270,0));
+        m_body[0]->addPlug(plug);
+        plug = new Plug(Vector3(0,-1,0), Vector3(0,0,270));
         m_body[0]->addPlug(plug);
 
-        Link *link = new Link();
-        m_body[1] = link;
-        m_body[1]->getShape()->setPosition(0.6,0,0);
-        m_body[1]->getShape()->setRotationEuler(Vector3(0,90,0));
-        ServoKnob *servoKnob = new ServoKnob(link);
-        link->setKnob(servoKnob);
-
-        m_body[2] = new Body();
-        m_body[2]->getShape()->setPosition(0.6,0,0);
-        plug = new Plug(Vector3(0.2,0,0), Vector3(0,0,0));
-        m_body[2]->addPlug(plug);
-
-        // TODO: add a hinge joint 
-        // m_hingeJoint(m_body[1], m_body[2], Vector3(0,0,0), Vector3(-1,0,0), Vector3(0,1,0), Vector3(0,1,0))
+        Shaft *shaft = new Shaft();
+        m_body[1] = shaft;
+        m_body[1]->getShape()->setPosition(0,0.75,0);
+        ShaftKnob *knob = new ShaftKnob(shaft);
+        m_body[1]->setKnob(knob);
       }
 
-      Servo::~Servo() {
-        fprintf(stderr, "Destroy Servo\n");
-        for (int i = 0; i < 3; i++) {
-          delete m_body[i];
-        }
+      Potentiometer::~Potentiometer() {
       }
 
-      std::string Servo::getName() {
+      std::string Potentiometer::getName() {
         return __MY_NAME;
       }
 
-      // TODO:
-      // Joint *Servo::getJoint() {
-      //   return m_hingeJoint;
-      // }
-
-      int Servo::getNoParts() {
-        return 3;
+      int Potentiometer::getNoParts() {
+        return 2;
       }
 
-      Part *Servo::getPart(int i) {
-        if (i >= 0 || i < 3) {
+      Part *Potentiometer::getPart(int i) {
+        if (i >= 0 || i < 2) {
           return m_body[i];
         }
         return NULL;
       }
 
-      void Servo::enable(bool on) {
-        for (int i = 0; i < 3; i++) {
+      void Potentiometer::enable(bool on) {
+        for (int i = 0; i < 2; i++) {
           m_body[i]->getShape()->enabled = on;
         }
       }
 
-      void Servo::send() {
-        // maybe slightly lesser, lets see how it behaves
-        Link *link = dynamic_cast<Link *>(m_body[1]);
-        Vector3 delta = link->getValue() - m_output;
+      void Potentiometer::send() {
+        Shaft *shaft = dynamic_cast<Shaft *>(m_body[1]);
+        Vector3 delta = shaft->getValue() - m_output;
         for (int i = 0; i < getNoEntries(); i++) {
           Component *component = dynamic_cast<Component *>(get(i));
           component->update(delta);
         }
-        m_output = link->getValue();
+        m_output = shaft->getValue();
       }
 
-      void Servo::update(Polycode::Vector3 delta) {
-        Link *link = dynamic_cast<Link *>(m_body[1]);
-        link->update(delta);
+      void Potentiometer::update(Polycode::Vector3 delta) {
+        // nothing to do we are ourself a signal source
       }
 
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *ServoCreator(Polycode::Core *core, Polycode::Scene *scene) {
-        Servo *hub = new Servo();
-        return hub;
+      Component *PotentiometerCreator(Polycode::Core *core, Polycode::Scene *scene) {
+        Potentiometer *potentiometer = new Potentiometer();
+        return potentiometer;
       }
 
-      static int ServoRegister(lua_State *L) {
+      static int PotentiometerRegister(lua_State *L) {
         lua_getfield(L, LUA_REGISTRYINDEX, "factory");
         Components::Factory *factory = (Components::Factory *)lua_touserdata(L, 1);
         lua_pop(L, 1);
-        factory->addCreator(__MY_NAME, &ServoCreator);
+        factory->addCreator(__MY_NAME, &PotentiometerCreator);
         return 0;
       }
 
-      static const struct luaL_Reg ServoFuncs[] = {
-        { "register", ServoRegister },
+      static const struct luaL_Reg PotentiometerFuncs[] = {
+        { "register", PotentiometerRegister },
         { NULL, NULL }
       };
     }
@@ -213,8 +205,9 @@ namespace Synthetics {
 // Shared library hook
 //----------------------------------------------------------------------------
 extern "C" {
-  int luaopen_libActiveServo(lua_State *L) {
-    luaL_register(L, __MY_NAME, Synthetics::Components::Active::ServoFuncs);
+  int luaopen_libSensitivePotentiometer(lua_State *L) {
+    luaL_register(L, __MY_NAME, Synthetics::Components::Sensitive::PotentiometerFuncs);
     return 1;
   }
 }
+

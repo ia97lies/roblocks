@@ -2,20 +2,20 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_COMPONENTS_ACTOR_LIGHT_H
-#define SYNTHETICS_COMPONENTS_ACTOR_LIGHT_H
+#ifndef SYNTHETICS_COMPONENTS_SENSITIVIVE_POTENTIOMETER_H
+#define SYNTHETICS_COMPONENTS_SENSITIVIVE_POTENTIOMETER_H
 
 #include "Part.hpp"
 #include "Component.hpp"
 
 namespace Synthetics {
   namespace Components {
-    namespace Active {
+    namespace Sensitive {
 
-      class Light : public Component {
+      class Potentiometer : public Component {
         public:
-          Light (Polycode::Scene *scene);
-          virtual ~Light();
+          Potentiometer();
+          virtual ~Potentiometer();
 
           virtual std::string getName(); 
           virtual int getNoParts();
@@ -26,10 +26,7 @@ namespace Synthetics {
           virtual void update(Polycode::Vector3 delta);
 
         private:
-          Polycode::Scene *m_scene;
-          Part *m_body;
-          Knob *m_knob;
-          Polycode::SceneLight *m_light;
+          Part *m_body[2];
           Polycode::Vector3 m_output;
       };
 

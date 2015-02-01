@@ -44,6 +44,11 @@ add_library(
   Active/Loudspeaker.cpp
 )
 
+add_library(
+  SensitivePotentiometer SHARED
+  Sensitive/Potentiometer.cpp
+)
+
 ##############################################################################
 # INSTALL 
 ##############################################################################
@@ -68,6 +73,11 @@ install(TARGETS ActiveLight
 )
 
 install(TARGETS ActiveLoudspeaker
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS SensitivePotentiometer
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

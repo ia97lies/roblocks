@@ -283,7 +283,7 @@ namespace Synthetics {
         delete method;
       }
 
-      if (!m_powerOn) {
+      {
         FindActiveKnob *method = new FindActiveKnob(plugShape);
         m_mother->iterate(method);
         m_activeKnob = method->getActiveKnob();

@@ -20,7 +20,9 @@ namespace Synthetics {
 
       class Body : public ::Synthetics::Part {
         public:
-          Body() {
+          Body(SceneLight *light) {
+            m_light = light;
+            m_curValue = Vector3(0,0,0);
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8,0.8,0.8);
             m_entity->setMaterialByName("ComponentMaterial");
             m_color = Color(0.7, 0.7, 0.7, 1.0);
@@ -59,21 +61,32 @@ namespace Synthetics {
             return m_entity;
           }
 
+          void update(Polycode::Vector3 delta) {
+            ValueRangeMapping mapping(0, 30, m_curValue + delta);
+            m_curValue = mapping.value();
+            m_light->setIntensity(mapping.map().x);
+          }
+
+          Vector3 getValue() {
+            return m_curValue;
+          }
+
         private:
           Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
           ScenePrimitive *wall[5];
+          Vector3 m_curValue;
+          SceneLight *m_light;
       };
 
       class LightKnob : public Knob {
         public:
-          LightKnob(Part *body, SceneLight *light) {
-            m_light = light;
+          LightKnob(Body *body) {
+            m_body = body;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.4,1.25,0.4);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
-            body->getShape()->addChild(m_entity);
+            m_body->getShape()->addChild(m_entity);
             m_entity->setPosition(0, 0, 0);
-            m_curValue = Vector3(2,0,0);
           }
 
           virtual ~LightKnob() {
@@ -93,14 +106,11 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            ValueRangeMapping mapping(0, 30, m_curValue + delta);
-            m_curValue = mapping.value();
-            m_light->setIntensity(mapping.map().x);
+            m_body->update(delta);
           }
 
         private:
-          SceneLight *m_light;
-          Vector3 m_curValue;
+          Body *m_body;
           Polycode::Entity *m_entity;
       };
 
@@ -110,7 +120,15 @@ namespace Synthetics {
       Light::Light(Polycode::Scene *scene) {
         fprintf(stderr, "Create Light\n");
         m_scene = scene;
-        m_body = new Body();
+
+        m_output = Vector3(0,0,0);
+
+        m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 1);
+        m_light->setPosition(0.8,0,0);
+        m_light->setLightColor(1,1,1);
+        m_scene->addLight(m_light);
+
+        m_body = new Body(m_light);
         Plug *plug = new Plug(Vector3(0,0,-1.0), Vector3(0,-90,0));
         m_body->addPlug(plug);
         plug = new Plug(Vector3(-1.0,0,0), Vector3(0,0,0));
@@ -121,14 +139,9 @@ namespace Synthetics {
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
         m_body->addPlug(plug);
-
-        m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 1);
-        m_light->setPosition(0.8,0,0);
-        m_light->setLightColor(1,1,1);
-        m_scene->addLight(m_light);
         m_body->getShape()->addChild(m_light);
 
-        m_knob = new LightKnob(m_body, m_light);
+        m_knob = new LightKnob(dynamic_cast<Body *>(m_body));
         m_body->setKnob(m_knob);
       }
 
@@ -163,9 +176,19 @@ namespace Synthetics {
       }
 
       void Light::send() {
+        // maybe slightly lesser, lets see how it behaves
+        Body *body = dynamic_cast<Body *>(m_body);
+        Vector3 delta = body->getValue() - m_output;
+        for (int i = 0; i < getNoEntries(); i++) {
+          Component *component = dynamic_cast<Component *>(get(i));
+          component->update(delta);
+        }
+        m_output = body->getValue();
       }
 
       void Light::update(Polycode::Vector3 delta) {
+        Body *body = dynamic_cast<Body *>(m_body);
+        body->update(delta);
       }
 
       //----------------------------------------------------------------------

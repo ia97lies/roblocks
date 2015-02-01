@@ -15,6 +15,13 @@
         </textures>
       </shader>
     </material>     
+    <material name="PotentiometerMaterial">
+      <shader name="DefaultShaderShadows">
+        <textures>
+          <texture name="diffuse">Resources/cloth_texture.png</texture>
+        </textures>
+      </shader>
+    </material>     
   </materials>
 </polycode>
 
