@@ -132,6 +132,7 @@ namespace Synthetics {
   };
 
   Robot::Robot(PolycodeFacade *facade) {
+    m_powerOn = false;
     m_polycodeFacade = facade;
     m_mother = NULL;
     m_activeComponent = NULL;
@@ -146,6 +147,14 @@ namespace Synthetics {
   }
 
   Robot::~Robot() {
+  }
+
+  void Robot::powerOn(bool on) {
+    m_powerOn = on;
+  }
+
+  bool Robot::isPowerOn() {
+     return m_powerOn;
   }
 
   void Robot::save(std::string file) {
@@ -274,7 +283,7 @@ namespace Synthetics {
         delete method;
       }
 
-      {
+      if (!m_powerOn) {
         FindActiveKnob *method = new FindActiveKnob(plugShape);
         m_mother->iterate(method);
         m_activeKnob = method->getActiveKnob();
@@ -341,13 +350,15 @@ namespace Synthetics {
   }
 
   void Robot::update() {
-    std::map<long, Compound*> map = m_components->getMap();
-    std::map<long, Compound*>::iterator i;
-    for (i = map.begin(); i != map.end(); i++) {
-       Component *component = dynamic_cast<Component*>(i->second);
-       if (component) {
-         component->send();
-       }
+    if (m_powerOn) {
+      std::map<long, Compound*> map = m_components->getMap();
+      std::map<long, Compound*>::iterator i;
+      for (i = map.begin(); i != map.end(); i++) {
+        Component *component = dynamic_cast<Component*>(i->second);
+        if (component) {
+          component->send();
+        }
+      }
     }
   }
 

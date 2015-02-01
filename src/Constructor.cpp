@@ -42,6 +42,9 @@ namespace Synthetics {
       switch(e->getEventCode()) {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
+            case KEY_o:
+              m_mother->powerOn(!m_mother->isPowerOn());
+              break;
             case KEY_DELETE:
               // delete active component
               if (m_mother) {

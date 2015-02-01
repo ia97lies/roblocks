@@ -71,7 +71,7 @@ namespace Synthetics {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.4,20);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             m_link->getShape()->addChild(m_entity);
-            m_curValue = (100,100,100);
+            m_curValue = (0,0,0);
           }
 
           virtual ~ServoKnob() {}
@@ -90,7 +90,7 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            ValueRangeMapping mapping(-90, 90, m_curValue + delta);
+            ValueRangeMapping mapping(90, -90, m_curValue + delta);
             m_curValue = mapping.value();
             Polycode::Vector3 rotation(0, mapping.map().x, 0);
             m_link->rotate(rotation);
@@ -173,9 +173,11 @@ namespace Synthetics {
       }
 
       void Servo::update(Polycode::Vector3 delta) {
-        ValueRangeMapping mapping(0, 100, m_input + delta);
+        ValueRangeMapping mapping(90, -90, m_input + delta);
         m_input = mapping.value();
-        // TODO: adjust servo depending of the m_input
+        Link *link = dynamic_cast<Link *>(m_body[1]);
+        Polycode::Vector3 rotation(0, mapping.map().x, 0);
+        link->rotate(rotation);
       }
 
       //----------------------------------------------------------------------
