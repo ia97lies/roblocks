@@ -16,7 +16,7 @@
 #include "Components/Factory.hpp"
 
 namespace Synthetics {
-  class Constructor : public Polycode::EventHandler {
+  class Constructor : public Polycode::EventHandler, public Lua {
     public:
       Constructor(Polycode::Core *core, Configurator *conf, Components::Factory *factory);
       ~Constructor();

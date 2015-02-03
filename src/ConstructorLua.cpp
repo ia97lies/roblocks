@@ -4,17 +4,10 @@
 
 #include "lua.hpp"
 #include "Polycode.h"
-#include "ConstructorLua.hpp"
 
 #define __MY_NAME "Constructor"
 
 namespace Synthetics {
-  ConstructorLua::ConstructorLua() {
-  }
-
-  ConstructorLua::~ConstructorLua() {
-  }
-
   //----------------------------------------------------------------------
   // Lua Register
   //----------------------------------------------------------------------

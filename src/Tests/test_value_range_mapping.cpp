@@ -2,7 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 //
-#define BOOST_TEST_MODULE ValueRangeMapping
+#define BOOST_TEST_MODULE TestValueRangeMapping
 #include <boost/test/unit_test.hpp>
 #include "ValueRangeMapping.hpp"
 

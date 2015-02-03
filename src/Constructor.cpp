@@ -2,6 +2,8 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "PolyString.h"
+#include "PolyUIFileDialog.h"
 #include "PolycodeFacade.hpp"
 #include "Part.hpp"
 #include "OrbitCamera.hpp"
@@ -42,9 +44,6 @@ namespace Synthetics {
       switch(e->getEventCode()) {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
-            case KEY_o:
-              m_mother->powerOn(!m_mother->isPowerOn());
-              break;
             case KEY_DELETE:
               // delete active component
               if (m_mother) {
@@ -70,6 +69,25 @@ namespace Synthetics {
               break;
             case KEY_DOWN:
               m_mother->rotateInPlace(-1);
+              break;
+            case KEY_o:
+              m_mother->powerOn(!m_mother->isPowerOn());
+              break;
+            case KEY_l:
+              // start file selection menu
+              //std::vector<String> extensions;
+              //extensions.push_back("lua");
+              //UIFileDialog *dialog = new UIFileDialog(String("."), false, extensions, false);
+              open();
+              setCPath("./lib/?.so");
+              lua_pushlightuserdata(m_L, m_factory);
+              lua_setfield(m_L, LUA_REGISTRYINDEX, "factory");
+
+              if (luaL_loadfile(m_L, ".snapshot.lua") || lua_pcall(m_L, 0, 0, 0)) {
+                error("cannot load .snapshot.lua: %s\n", lua_tostring(m_L, -1));
+              }
+              close();
+
               break;
           }
           break;

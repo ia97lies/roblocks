@@ -27,7 +27,7 @@ include_directories(
   ${POLYCODE_RELEASE}/Modules/Dependencies/include/bullet
 )
 
-add_library(libPolycore_d STATIC IMPORTED)
+add_library(libPolycore STATIC IMPORTED)
 add_library(libfreetype STATIC IMPORTED)
 add_library(liblibvorbisfile STATIC IMPORTED)
 add_library(liblibvorbis STATIC IMPORTED)
@@ -40,11 +40,12 @@ add_library(liblua STATIC IMPORTED)
 add_library(libPolycode2DPhysics STATIC IMPORTED)
 add_library(libBox2D STATIC IMPORTED)
 add_library(libPolycode3DPhysics STATIC IMPORTED)
+add_library(libPolycodeUI STATIC IMPORTED)
 add_library(libBulletDynamics STATIC IMPORTED)
 add_library(libBulletCollision STATIC IMPORTED)
 add_library(libLinearMath STATIC IMPORTED)
 
-set_property(TARGET libPolycore_d PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/lib/libPolycore_d.a)
+set_property(TARGET libPolycore PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/lib/libPolycore.a)
 set_property(TARGET libfreetype PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/libfreetype.a)
 set_property(TARGET liblibvorbisfile PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/liblibvorbisfile.a)
 set_property(TARGET liblibvorbis PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core/Dependencies/lib/liblibvorbis.a)
@@ -57,16 +58,17 @@ set_property(TARGET liblua PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Core
 set_property(TARGET libPolycode2DPhysics PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/lib/libPolycode2DPhysics.a)
 set_property(TARGET libBox2D PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libBox2D.a)
 set_property(TARGET libPolycode3DPhysics PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/lib/libPolycode3DPhysics.a)
+set_property(TARGET libPolycodeUI PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/lib/libPolycodeUI.a)
 set_property(TARGET libBulletDynamics PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libBulletDynamics.a)
 set_property(TARGET libBulletCollision PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libBulletCollision.a)
 set_property(TARGET libLinearMath PROPERTY IMPORTED_LOCATION   ${POLYCODE_RELEASE}/Modules/Dependencies/lib/libLinearMath.a)
 
 set(Synthetics_SRCS
+  Lua.cpp
   SyntheticsApp.cpp
   Configurator.cpp
   OrbitCamera.cpp
   Constructor.cpp
-  ConstructorLua.cpp
   SelectorDisplay.cpp
   HeadUpDisplay.cpp
   PolycodeFacade.cpp
@@ -81,12 +83,12 @@ set(Synthetics_SRCS
 
 set(Synthetics_HDRS
   Exceptions.hpp
+  Lua.hpp
   SyntheticsApp.hpp
   Configurator.hpp
   MovingCamera.hpp
   OrbitCamera.hpp
   Constructor.hpp
-  ConstructorLua.hpp
   SelectorDisplay.hpp
   HeadUpDisplay.hpp
   PolycodeFacade.hpp
@@ -103,7 +105,7 @@ set(Synthetics_HDRS
 )
 
 set(Polycode_LIBS
-  libPolycore_d
+  libPolycore
   libfreetype
   liblibvorbisfile
   liblibvorbis
@@ -116,6 +118,7 @@ set(Polycode_LIBS
   libPolycode2DPhysics
   libBox2D
   libPolycode3DPhysics
+  libPolycodeUI 
   libBulletDynamics
   libBulletCollision
   libLinearMath
@@ -135,6 +138,11 @@ add_library(
   ${Synthetics_SRCS} ${Synthetics_HDRS}
 )
 
+add_library(
+  ConstructorLua SHARED
+  ConstructorLua.cpp
+)
+
 target_link_libraries(
   Synthetics 
   synthetics
@@ -146,6 +154,11 @@ target_link_libraries(
 # INSTALL 
 ##############################################################################
 install(TARGETS Synthetics
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS ConstructorLua
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

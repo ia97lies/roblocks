@@ -2,7 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 //
-#define BOOST_TEST_MODULE Robot
+#define BOOST_TEST_MODULE TestRobot
 #include <boost/test/unit_test.hpp>
 #include "PolycodeFacade.hpp"
 #include "Plug.hpp"

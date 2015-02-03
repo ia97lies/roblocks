@@ -2,7 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 //
-#define BOOST_TEST_MODULE LoadCompounds
+#define BOOST_TEST_MODULE TestComponent
 #include <boost/test/unit_test.hpp>
 #include "Polycode.h"
 #include "Component.hpp"
