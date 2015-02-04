@@ -10,7 +10,7 @@
 
 namespace Synthetics {
 
-  class Configurator : public Lua {
+  class Configurator {
     public:
       Configurator(Components::Factory *factory);
       virtual ~Configurator();
@@ -20,6 +20,7 @@ namespace Synthetics {
     private:
       int m_width;
       int m_height;
+      Lua *m_lua;
 
       void readWidth(); 
       void readHeight(); 

@@ -17,8 +17,9 @@ namespace Synthetics {
       void close();
       void error(const char *fmt, ...);
       void setCPath(const char* path);
+      lua_State *L(); 
 
-    protected:
+    private:
       lua_State *m_L;
   };
 }

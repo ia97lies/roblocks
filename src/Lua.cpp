@@ -44,5 +44,9 @@ namespace Synthetics {
     lua_setfield(m_L, -2, "cpath");
     lua_pop(m_L, 1);
   }
+
+  lua_State *Lua::L() {
+    return m_L;
+  }
 }
 

@@ -147,6 +147,18 @@ namespace Synthetics {
   }
 
   Robot::~Robot() {
+    std::vector<Compound*>deletables;
+    std::map<long, Compound*> map = m_components->getMap();
+    std::map<long, Compound*>::iterator i;
+    for (i = map.begin(); i != map.end(); i++) {
+      Compound *compound = i->second;
+      Component *component = dynamic_cast<Component *>(i->second);
+      if (component) {
+        Robot::destructGraphic(m_polycodeFacade, component);
+      }
+      delete compound;
+      map.erase(i);
+    }
   }
 
   void Robot::powerOn(bool on) {
@@ -198,8 +210,8 @@ namespace Synthetics {
   void Robot::add() {
     if (m_activeComponent != NULL && m_inPlace != NULL) {
       Component *component = m_inPlace;
-      m_activeComponent->setId(m_curId++);
-      m_components->insert(m_activeComponent);
+      component->setId(m_curId++);
+      m_components->insert(component);
       m_activeComponent->add(component);
       m_activePlug->setCompound(component);
 

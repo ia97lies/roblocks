@@ -4,6 +4,8 @@
 
 #include "PolyString.h"
 #include "PolyUIFileDialog.h"
+
+#include "Lua.hpp"
 #include "PolycodeFacade.hpp"
 #include "Part.hpp"
 #include "OrbitCamera.hpp"
@@ -78,15 +80,17 @@ namespace Synthetics {
               //std::vector<String> extensions;
               //extensions.push_back("lua");
               //UIFileDialog *dialog = new UIFileDialog(String("."), false, extensions, false);
-              open();
-              setCPath("./lib/?.so");
-              lua_pushlightuserdata(m_L, m_factory);
-              lua_setfield(m_L, LUA_REGISTRYINDEX, "factory");
+              Lua *lua = new Lua();
+              lua->open();
+              lua->setCPath("./lib/?.so");
+              lua_State *L = lua->L();
+              lua_pushlightuserdata(L, m_factory);
+              lua_setfield(L, LUA_REGISTRYINDEX, "factory");
 
-              if (luaL_loadfile(m_L, ".snapshot.lua") || lua_pcall(m_L, 0, 0, 0)) {
-                error("cannot load .snapshot.lua: %s\n", lua_tostring(m_L, -1));
+              if (luaL_loadfile(L, ".snapshot.lua") || lua_pcall(L, 0, 0, 0)) {
+                lua->error("cannot load .snapshot.lua: %s\n", lua_tostring(L, -1));
               }
-              close();
+              delete lua;
 
               break;
           }

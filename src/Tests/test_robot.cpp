@@ -285,3 +285,40 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents_2) {
   // TODO: write tests for destruct component (all parts get destructed?)
 }
 
+BOOST_AUTO_TEST_CASE(test_robot_destruction_null_mother) {
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  delete robot;
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_destruction_only_mother) {
+  bool deleted = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *mother= new ComponentMock(&deleted);
+  Robot *robot = new Robot(polycodeMock);
+
+  robot->add(mother);
+  delete robot;
+  BOOST_CHECK(deleted == true);
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_destruction_mother_and_child) {
+  bool deleted[2] = { false, false };
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+
+  ComponentMock *mother= new ComponentMock(&deleted[0]);
+  fprintf(stderr, "YYYY: %p\n", mother);
+  robot->add(mother);
+  robot->activate(mother->getMyPlug(0)->getShape());
+  ComponentMock *componentMock1 = new ComponentMock(&deleted[1]);
+  fprintf(stderr, "YYYY: %p\n", componentMock1);
+  robot->place(componentMock1);
+  robot->add();
+
+  delete robot;
+  for (int i = 0; i < 2; i++) {
+    BOOST_CHECK(deleted[i] == true);
+  }
+}
+
