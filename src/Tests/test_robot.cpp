@@ -308,16 +308,44 @@ BOOST_AUTO_TEST_CASE(test_robot_destruction_mother_and_child) {
   Robot *robot = new Robot(polycodeMock);
 
   ComponentMock *mother= new ComponentMock(&deleted[0]);
-  fprintf(stderr, "YYYY: %p\n", mother);
   robot->add(mother);
   robot->activate(mother->getMyPlug(0)->getShape());
   ComponentMock *componentMock1 = new ComponentMock(&deleted[1]);
-  fprintf(stderr, "YYYY: %p\n", componentMock1);
   robot->place(componentMock1);
   robot->add();
 
   delete robot;
   for (int i = 0; i < 2; i++) {
+    BOOST_CHECK(deleted[i] == true);
+  }
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_destruction_mother_and_many_children) {
+  bool deleted[5] = { false, false, false, false, false };
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+
+  ComponentMock *mother= new ComponentMock(&deleted[0]);
+  robot->add(mother);
+  robot->activate(mother->getMyPlug(0)->getShape());
+  ComponentMock *componentMock1 = new ComponentMock(&deleted[1]);
+  robot->place(componentMock1);
+  robot->add();
+  robot->activate(mother->getMyPlug(1)->getShape());
+  ComponentMock *componentMock2 = new ComponentMock(&deleted[2]);
+  robot->place(componentMock2);
+  robot->add();
+  robot->activate(componentMock1->getMyPlug(0)->getShape());
+  ComponentMock *componentMock3 = new ComponentMock(&deleted[3]);
+  robot->place(componentMock3);
+  robot->add();
+  robot->activate(componentMock3->getMyPlug(0)->getShape());
+  ComponentMock *componentMock4 = new ComponentMock(&deleted[4]);
+  robot->place(componentMock4);
+  robot->add();
+
+  delete robot;
+  for (int i = 0; i < 5; i++) {
     BOOST_CHECK(deleted[i] == true);
   }
 }
