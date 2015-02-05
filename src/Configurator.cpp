@@ -14,7 +14,7 @@ namespace Synthetics {
     m_width = 640;
     m_height = 480;
 
-    Lua *m_lua = new Lua();
+    m_lua = new Lua();
     m_lua->open();
     m_lua->setCPath("./lib/?.so");
 

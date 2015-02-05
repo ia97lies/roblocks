@@ -409,6 +409,12 @@ namespace Synthetics {
     Part *parent = NULL;
     for (int i = 0; i < component->getNoParts(); i++) {
       Part *curPart = component->getPart(i);
+      /* remove all childs of the shape */
+      Entity *cur;
+      while ((cur = curPart->getShape()->getChildAtIndex(0)) != NULL) {
+        curPart->getShape()->removeChild(cur);
+      }
+
       if (parent == NULL) {
         Polycode::Entity *parentEntity = curPart->getShape()->getParentEntity();
         if (parentEntity) {

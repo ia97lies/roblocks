@@ -3,7 +3,6 @@
 //----------------------------------------------------------------------------
 
 #include "PolyString.h"
-#include "PolyUIFileDialog.h"
 
 #include "Lua.hpp"
 #include "PolycodeFacade.hpp"
@@ -34,6 +33,17 @@ namespace Synthetics {
     m_camera->update();
 
     m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory);
+
+    /*
+    Scene *scene = new Scene(Scene::SCENE_2D);
+    scene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
+    std::vector<String> extensions;
+    extensions.push_back("*.lua");
+    m_fileDialog = new UIFileDialog(String("/home/cli"), false, extensions, false);
+    m_fileDialog->setPosition(-100, -100);
+    scene->addEntity(m_fileDialog);
+    m_fileDialog->hideWindow();
+    */
   }
 
   Constructor::~Constructor() {
@@ -77,9 +87,12 @@ namespace Synthetics {
               break;
             case KEY_l:
               // start file selection menu
-              //std::vector<String> extensions;
-              //extensions.push_back("lua");
-              //UIFileDialog *dialog = new UIFileDialog(String("."), false, extensions, false);
+              /*
+              m_fileDialog->showWindow();
+              */
+              delete m_mother;
+              m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
+
               Lua *lua = new Lua();
               lua->open();
               lua->setCPath("./lib/?.so");
@@ -127,6 +140,9 @@ namespace Synthetics {
   }
 
   void Constructor::update() {
+    /*
+    m_fileDialog->Update();
+    */
     m_mother->update();
   }
 }
