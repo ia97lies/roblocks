@@ -97,6 +97,10 @@ namespace Synthetics {
               lua->open();
               lua->setCPath("./lib/?.so");
               lua_State *L = lua->L();
+              lua_pushlightuserdata(L, m_core);
+              lua_setfield(L, LUA_REGISTRYINDEX, "core");
+              lua_pushlightuserdata(L, m_scene);
+              lua_setfield(L, LUA_REGISTRYINDEX, "scene");
               lua_pushlightuserdata(L, m_factory);
               lua_setfield(L, LUA_REGISTRYINDEX, "factory");
 
