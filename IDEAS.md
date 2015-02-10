@@ -44,3 +44,8 @@
   - Actors are value sinks (and depending of its implementation as well sources or propagators)
     - Have at least on input and may have outputs
   - An output only can send signals to an input (actually the receiving plug should drop a signal if he is an output)
+
+## Known Issues
+### Rotate an object in "place" mode
+  - Not working if I will rotate over a childs plug orthogonal, it rotates then over parent.
+  - Move to rotation axis to child tha may solve that problem

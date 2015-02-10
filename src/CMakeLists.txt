@@ -139,8 +139,8 @@ add_library(
 )
 
 add_library(
-  ConstructorLua SHARED
-  ConstructorLua.cpp
+  RobotLua SHARED
+  RobotLua.cpp
 )
 
 target_link_libraries(
@@ -158,7 +158,7 @@ install(TARGETS Synthetics
   LIBRARY DESTINATION lib
 )
 
-install(TARGETS ConstructorLua
+install(TARGETS RobotLua
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

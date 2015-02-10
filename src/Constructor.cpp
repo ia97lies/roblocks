@@ -103,6 +103,8 @@ namespace Synthetics {
               lua_setfield(L, LUA_REGISTRYINDEX, "scene");
               lua_pushlightuserdata(L, m_factory);
               lua_setfield(L, LUA_REGISTRYINDEX, "factory");
+              lua_pushlightuserdata(L, m_mother);
+              lua_setfield(L, LUA_REGISTRYINDEX, "robot");
 
               if (luaL_loadfile(L, ".snapshot.lua") || lua_pcall(L, 0, 0, 0)) {
                 lua->error("cannot load .snapshot.lua: %s\n", lua_tostring(L, -1));
