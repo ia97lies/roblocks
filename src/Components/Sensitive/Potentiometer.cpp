@@ -51,12 +51,12 @@ namespace Synthetics {
             m_color = Color(0.3, 0.3, 0.3, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
-            m_curValue = (0,0,0);
+            m_output = Vector3(0, 0, 0);
           }
           virtual ~Shaft() {}
 
           Vector3 getValue() {
-            return m_curValue;
+            return m_output;
           }
 
           Polycode::Entity *getShape() {
@@ -67,15 +67,15 @@ namespace Synthetics {
             m_entity->setRotationEuler(rotate);
           }
 
-          void update(Polycode::Vector3 delta) {
-            ValueRangeMapping mapping(0, 360, m_curValue + delta);
-            m_curValue = mapping.value();
+          void update(Polycode::Vector3 input) {
+            ValueRangeMapping mapping(0, 360, input);
             Polycode::Vector3 rotation(0, mapping.map().x, 0);
+            m_output = mapping.value();
             rotate(rotation);
           }
 
         private:
-          Vector3 m_curValue;
+          Polycode::Vector3 m_output;
           Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
@@ -88,6 +88,7 @@ namespace Synthetics {
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             m_entity->setPosition(0.0, 0.2, 0.0);
             m_shaft->getShape()->addChild(m_entity);
+            m_curValue = (0,0,0);
           }
 
           virtual ~ShaftKnob() {}
@@ -106,10 +107,13 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            m_shaft->update(delta);
+            ValueRangeMapping mapping(0, 1, m_curValue + delta);
+            m_curValue = mapping.value();
+            m_shaft->update(m_curValue);
           }
 
         private:
+          Vector3 m_curValue;
           Shaft *m_shaft;
           Polycode::Entity *m_entity;
       };
@@ -165,15 +169,14 @@ namespace Synthetics {
 
       void Potentiometer::send() {
         Shaft *shaft = dynamic_cast<Shaft *>(m_body[1]);
-        Vector3 delta = shaft->getValue() - m_output;
         for (int i = 0; i < getNoEntries(); i++) {
           Component *component = dynamic_cast<Component *>(get(i));
-          component->update(delta);
+          component->update(shaft->getValue());
         }
-        m_output = shaft->getValue();
+        m_output = m_input;
       }
 
-      void Potentiometer::update(Polycode::Vector3 delta) {
+      void Potentiometer::update(Polycode::Vector3 input) {
         // nothing to do we are ourself a signal source
       }
 

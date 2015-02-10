@@ -48,7 +48,6 @@ namespace Synthetics {
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
-            m_curValue = (0,0,0);
           }
           virtual ~Link() {}
 
@@ -56,15 +55,10 @@ namespace Synthetics {
             m_entity->setRotationEuler(rotate);
           }
 
-          void update(Polycode::Vector3 delta) {
-            ValueRangeMapping mapping(90, -90, m_curValue + delta);
-            m_curValue = mapping.value();
+          void update(Polycode::Vector3 input) {
+            ValueRangeMapping mapping(90, -90, input);
             Polycode::Vector3 rotation(0, mapping.map().x, 0);
             rotate(rotation);
-          }
-
-          Vector3 getValue() {
-            return m_curValue;
           }
 
           Polycode::Entity *getShape() {
@@ -72,7 +66,6 @@ namespace Synthetics {
           }
 
         private:
-          Vector3 m_curValue;
           Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
@@ -84,6 +77,7 @@ namespace Synthetics {
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1.2,0.4,20);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
             m_link->getShape()->addChild(m_entity);
+            m_curValue = Vector3(0, 0, 0);
           }
 
           virtual ~ServoKnob() {}
@@ -102,10 +96,13 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            m_link->update(delta);
+            ValueRangeMapping mapping(0, 1, m_curValue + delta);
+            m_curValue = mapping.value();
+            m_link->update(m_curValue);
           }
 
         private:
+          Vector3 m_curValue;
           Link *m_link;
           Polycode::Entity *m_entity;
       };
@@ -171,18 +168,17 @@ namespace Synthetics {
 
       void Servo::send() {
         // maybe slightly lesser, lets see how it behaves
-        Link *link = dynamic_cast<Link *>(m_body[1]);
-        Vector3 delta = link->getValue() - m_output;
         for (int i = 0; i < getNoEntries(); i++) {
           Component *component = dynamic_cast<Component *>(get(i));
-          component->update(delta);
+          component->update(m_output);
         }
-        m_output = link->getValue();
+        m_output = m_input;
       }
 
-      void Servo::update(Polycode::Vector3 delta) {
+      void Servo::update(Polycode::Vector3 input) {
         Link *link = dynamic_cast<Link *>(m_body[1]);
-        link->update(delta);
+        link->update(input);
+        m_input = input;
       }
 
       //----------------------------------------------------------------------

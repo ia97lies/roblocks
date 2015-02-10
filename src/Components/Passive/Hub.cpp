@@ -86,16 +86,15 @@ namespace Synthetics {
       }
 
       void Hub::send() {
-        Vector3 delta = m_input - m_output;
         for (int i = 0; i < getNoEntries(); i++) {
           Component *component = dynamic_cast<Component *>(get(i));
-          component->update(delta);
+          component->update(m_output);
         }
         m_output = m_input;
       }
 
-      void Hub::update(Polycode::Vector3 delta) {
-        ValueRangeMapping mapping(0, 100, m_input + delta);
+      void Hub::update(Polycode::Vector3 input) {
+        ValueRangeMapping mapping(0, 100, input);
         m_input = mapping.value();
       }
 

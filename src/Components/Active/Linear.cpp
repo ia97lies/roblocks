@@ -48,6 +48,7 @@ namespace Synthetics {
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
+            m_curValue = Vector3(0, 0, 0);
           }
           virtual ~Rod() {
             delete m_entity;
@@ -57,14 +58,22 @@ namespace Synthetics {
             return m_entity;
           }
 
+          virtual void update(Vector3 input) {
+            ValueRangeMapping mapping(Vector3(0, 0, 0), Vector3(1, 0, 0), input);
+            m_curValue = mapping.value();
+            Vector3 pos(0.6, 0, 0);
+            m_entity->setPosition(mapping.map() + pos);
+          }
+
         private:
+          Vector3 m_curValue;
           Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
 
       class LinearKnob : public Knob {
         public:
-          LinearKnob(Part *body, Part *rod) {
+          LinearKnob(Part *body, Rod *rod) {
             m_rod = rod;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8,1.2,0.8);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
@@ -88,14 +97,13 @@ namespace Synthetics {
           } 
 
           virtual void handleInput(Polycode::Vector3 delta) {
-            ValueRangeMapping mapping(Vector3(0, 0, 0), Vector3(1, 0, 0), m_curValue + delta);
+            ValueRangeMapping mapping(0, 1, m_curValue + delta);
             m_curValue = mapping.value();
-            Vector3 pos(0.6, 0, 0);
-            m_rod->getShape()->setPosition(mapping.map() + pos);
+            m_rod->update(m_curValue);
           }
 
         private:
-          Part *m_rod;
+          Rod *m_rod;
           Vector3 m_curValue;
           Polycode::Entity *m_entity;
       };
@@ -109,12 +117,13 @@ namespace Synthetics {
         Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
         m_body[0]->addPlug(plug);
 
-        m_body[1] = new Rod();
+        Rod *rod = new Rod();
+        m_body[1] = rod;
         m_body[1]->getShape()->setPosition(0.6,0,0);
         plug = new Plug(Vector3(0.2,0,0), Vector3(0,0,0));
         m_body[1]->addPlug(plug);
 
-        LinearKnob *linearKnob = new LinearKnob(m_body[0], m_body[1]);
+        LinearKnob *linearKnob = new LinearKnob(m_body[0], rod);
         m_body[0]->setKnob(linearKnob);
 
         // TODO: add a slider joint 
@@ -155,9 +164,18 @@ namespace Synthetics {
       }
 
       void Linear::send() {
+        // maybe slightly lesser, lets see how it behaves
+        for (int i = 0; i < getNoEntries(); i++) {
+          Component *component = dynamic_cast<Component *>(get(i));
+          component->update(m_output);
+        }
+        m_output = m_input;
       }
 
-      void Linear::update(Polycode::Vector3 delta) {
+      void Linear::update(Polycode::Vector3 input) {
+        Rod *rod = dynamic_cast<Rod *>(m_body[1]);
+        rod->update(input);
+        m_input = input;
       }
 
       //----------------------------------------------------------------------

@@ -27,6 +27,7 @@ namespace Synthetics {
 
         private:
           Part *m_body[2];
+          Polycode::Vector3 m_input;
           Polycode::Vector3 m_output;
       };
 

@@ -30,6 +30,7 @@ namespace Synthetics {
           Part *m_body;
           Knob *m_knob;
           Polycode::SceneLight *m_light;
+          Polycode::Vector3 m_input;
           Polycode::Vector3 m_output;
       };
 
