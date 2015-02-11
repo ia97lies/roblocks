@@ -9,6 +9,7 @@
 
 #define __FACTORY_NAME "Synthetics.Components.Factory"
 #define __ROBOT_NAME "Synthetics.Components.Robot"
+#define __PLUG_NAME "Synthetics.Plug"
 #define __COMPONENT_NAME "Synthetics.Component"
 
 using namespace Polycode;
@@ -72,43 +73,66 @@ namespace Synthetics {
     };
 
     //------------------------------------------------------------------------
+    typedef struct plug_s { 
+      Plug *plug;
+    } plug_t;
+
+    static plug_t *checkPlug(lua_State *L, int pos) {
+      void *ud = luaL_checkudata(L, pos, __PLUG_NAME);
+      luaL_argcheck(L, ud != NULL, pos, "`plug' expected");
+      return (plug_t *)ud;
+    }
+
+    static const struct luaL_Reg plugMethods[] = {
+      { NULL, NULL }
+    };
+
+    //------------------------------------------------------------------------
     typedef struct component_s { 
       Polycode::Core *core;
       Polycode::Scene *scene;
       Component *component;
-      Part *part;
-      Plug *plug;
     } component_t;
 
-    static component_t *checkComponent (lua_State *L, int pos) {
+    static component_t *checkComponent(lua_State *L, int pos) {
       void *ud = luaL_checkudata(L, pos, __COMPONENT_NAME);
       luaL_argcheck(L, ud != NULL, pos, "`component' expected");
       return (component_t *)ud;
     }
 
-    static int componentActivate(lua_State *L) {
+    static int componentGetPlug(lua_State *L) {
       component_t *component = checkComponent(L, 1);
       int plugIndex = luaL_checkinteger(L, 2);
+      Plug *plug  = NULL;
       for (int i = 0; i < component->component->getNoParts(); i++) {
         Part *part = component->component->getPart(i);
         if (plugIndex > part->getNoPlugs()) {
           plugIndex -= part->getNoPlugs();
         }
         else {
-          component->part = part;
-          component->plug = part->getPlug(plugIndex);
+          plug = part->getPlug(plugIndex);
         }
-      } 
-      return 0;
+      }
+      lua_pop(L, 1);
+      lua_pop(L, 1);
+      if (plug) {
+        plug_t *newPlug = (plug_t *)lua_newuserdata(L, sizeof(plug_t));
+        luaL_getmetatable(L, __PLUG_NAME);
+        lua_setmetatable(L, -2);
+        newPlug->plug = plug;
+      }
+      else {
+        luaL_error(L, "Plug not found");
+      }
+      return 1;
     }
 
     static const struct luaL_Reg componentMethods[] = {
-      { "activate", componentActivate },
+      { "getPlug", componentGetPlug },
       { NULL, NULL }
     };
 
     //------------------------------------------------------------------------
-
     static factory_t *checkFactory(lua_State *L) {
       void *ud = luaL_checkudata(L, 1, __FACTORY_NAME);
       luaL_argcheck(L, ud != NULL, 1, "`factory' expected");
@@ -129,7 +153,6 @@ namespace Synthetics {
       newComponent->component = component;
       newComponent->core = factory->core;
       newComponent->scene = factory->scene;
-      newComponent->plug = NULL;
 
       return 1;
     }
@@ -140,7 +163,6 @@ namespace Synthetics {
     };
 
     //------------------------------------------------------------------------
-
     static robot_t *checkRobot(lua_State *L, int pos) {
       void *ud = luaL_checkudata(L, pos, __ROBOT_NAME);
       luaL_argcheck(L, ud != NULL, pos, "`robot' expected");
@@ -155,8 +177,34 @@ namespace Synthetics {
       return 0;
     }
 
+    static int robotActivate(lua_State *L) {
+      robot_t *roboter = checkRobot(L, 1);
+      plug_t *plug = checkPlug (L, 2);
+      roboter->mother->activate(plug->plug->getShape());
+
+      return 0;
+    }
+
+    static int robotPlace(lua_State *L) {
+      robot_t *roboter = checkRobot(L, 1);
+      component_t *component = checkComponent (L, 2);
+      roboter->mother->place(component->component);
+
+      return 0;
+    }
+
+    static int robotAdd(lua_State *L) {
+      robot_t *roboter = checkRobot(L, 1);
+      roboter->mother->add();
+
+      return 0;
+    }
+
     static const struct luaL_Reg robotMethods[] = {
       { "init", robotInit },
+      { "activate", robotActivate },
+      { "place", robotPlace },
+      { "add", robotAdd },
       { NULL, NULL }
     };
 
@@ -179,6 +227,12 @@ extern "C" {
     lua_pushvalue(L, -2);
     lua_settable(L, -3);
     luaL_openlib(L, NULL, Synthetics::Constructor::componentMethods, 0);
+
+    luaL_newmetatable(L, __PLUG_NAME);
+    lua_pushstring(L, "__index");
+    lua_pushvalue(L, -2);
+    lua_settable(L, -3);
+    luaL_openlib(L, NULL, Synthetics::Constructor::plugMethods, 0);
 
     luaL_newmetatable(L, __ROBOT_NAME);
     lua_pushstring(L, "__index");
