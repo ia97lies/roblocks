@@ -25,6 +25,11 @@ add_library(
 )
 
 add_library(
+  PassiveWedge SHARED
+  Passive/Wedge.cpp
+)
+
+add_library(
   ActiveServo SHARED
   Active/Servo.cpp
 )
@@ -53,6 +58,11 @@ add_library(
 # INSTALL 
 ##############################################################################
 install(TARGETS PassiveHub
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+install(TARGETS PassiveWedge
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )
