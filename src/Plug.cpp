@@ -16,6 +16,7 @@ namespace Synthetics {
     m_shape->setColor(1, 0, 0, 0.5);
     m_connectedPlug = NULL;
     m_parent = NULL;
+    m_input = false;
   }
 
   Plug::~Plug() {
@@ -59,12 +60,16 @@ namespace Synthetics {
 
   void Plug::activate(bool on) {
     m_on = on;
-    if (m_on) {
-      m_shape->setColor(1, 0, 0, 1);
-    }
-    else {
-      m_shape->setColor(1, 0, 0, 0.5);
-    }
+    m_shape->setColor(1, (m_input ? 1 : 0), 0, (m_on ? 1 : 0.5));
+  }
+
+  void Plug::setInput(bool on) {
+    m_input = on;
+    m_shape->setColor(1, (m_input ? 1 : 0), 0, (m_on ? 1 : 0.5));
+  }
+
+  bool Plug::isInput() {
+    return m_input;
   }
 
   bool Plug::isActivate() {

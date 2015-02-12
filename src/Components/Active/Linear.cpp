@@ -115,6 +115,7 @@ namespace Synthetics {
         fprintf(stderr, "Create Linear\n");
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
+        plug->setInput(true);
         plug->setParent(this);
         m_body[0]->addPlug(plug);
 
