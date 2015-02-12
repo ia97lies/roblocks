@@ -21,13 +21,15 @@ namespace Synthetics {
 
       class Body : public ::Synthetics::Part {
         public:
-          Body() {
+          Body(SceneSound *sound) {
+            m_sound = sound;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1,1,1);
             m_entity->setMaterialByName("LoudspeakerMaterial");
             m_color = Color(0.7, 0.7, 0.7, 1.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0, 0, 0);
+            m_entity->addChild(m_sound);
           }
           virtual ~Body() {
             delete m_entity;
@@ -37,23 +39,30 @@ namespace Synthetics {
             return m_entity;
           }
 
+          void update(Polycode::Vector3 input) {
+            ValueRangeMapping mapping(0, 1, input);
+            m_sound->getSound()->setVolume(mapping.map().x);
+          }
+
         private:
+          SceneSound *m_sound;
           Polycode::ScenePrimitive *m_entity;
           Polycode::Color m_color;
       };
 
       class SoundKnob : public Knob {
         public:
-          SoundKnob(Part *body, SceneSound *sound) {
-            m_sound = sound;
+          SoundKnob(Body *body) {
+            m_body = body;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.4,1.25,0.4);
             m_entity->setColor(0.0, 1.0, 0.0, 0.5);
-            body->getShape()->addChild(m_entity);
+            m_body->getShape()->addChild(m_entity);
             m_entity->setPosition(0, 0, 0);
             m_curValue = Vector3(2,0,0);
           }
 
           virtual ~SoundKnob() {
+            delete m_entity;
           }
           
           virtual void activate(bool on) {
@@ -72,11 +81,11 @@ namespace Synthetics {
           virtual void handleInput(Polycode::Vector3 delta) {
             ValueRangeMapping mapping(0, 1, m_curValue + delta);
             m_curValue = mapping.value();
-            m_sound->getSound()->setVolume(mapping.map().x);
+            m_body->update(m_curValue);
           }
 
         private:
-          SceneSound *m_sound;
+          Body *m_body;
           Vector3 m_curValue;
           Polycode::Entity *m_entity;
       };
@@ -87,7 +96,16 @@ namespace Synthetics {
       Loudspeaker::Loudspeaker(Polycode::Scene *scene) {
         fprintf(stderr, "Create Loudspeaker\n");
         m_scene = scene;
-        m_body = new Body();
+        m_input = Vector3(0, 0, 0);
+        m_output = Vector3(0, 0, 0);
+
+        m_sound = new SceneSound("Resources/test.wav", 20, 50, false);
+        m_sound->getSound()->Play(true);
+        m_sound->getSound()->setVolume(0);
+        m_sound->getSound()->setSoundDirection(Vector3(1,0,0));
+
+        Body *body = new Body(m_sound);
+        m_body = body;
         Plug *plug = new Plug(Vector3(0,0,-1.0), Vector3(0,-90,0));
         plug->setInput(true);
         plug->setParent(this);
@@ -104,20 +122,14 @@ namespace Synthetics {
         plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
         plug->setParent(this);
         m_body->addPlug(plug);
-
-        m_sound = new SceneSound("Resources/test.wav", 20, 50, false);
-        m_sound->getSound()->Play(true);
-        m_sound->getSound()->setVolume(0);
-        m_sound->getSound()->setSoundDirection(Vector3(1,0,0));
         m_body->getShape()->addChild(m_sound);
 
-        m_knob = new SoundKnob(m_body, m_sound);
+        m_knob = new SoundKnob(body);
         m_body->setKnob(m_knob);
       }
 
       Loudspeaker::~Loudspeaker() {
         fprintf(stderr, "Destroy Loudspeaker\n");
-        delete m_knob;
         delete m_sound;
         delete m_body;
       }
@@ -142,9 +154,18 @@ namespace Synthetics {
       }
 
       void Loudspeaker::send() {
+        // maybe slightly lesser, lets see how it behaves
+        for (int i = 0; i < getNoEntries(); i++) {
+          Component *component = dynamic_cast<Component *>(get(i));
+          component->update(m_output);
+        }
+        m_output = m_input;
       }
 
-      void Loudspeaker::update(Polycode::Vector3 delta) {
+      void Loudspeaker::update(Polycode::Vector3 input) {
+        Body *body = dynamic_cast<Body *>(m_body);
+        body->update(input);
+        m_input = input;
       }
 
       //----------------------------------------------------------------------

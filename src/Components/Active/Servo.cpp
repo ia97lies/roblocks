@@ -5,7 +5,7 @@
 #include "lua.hpp"
 #include "PolyScenePrimitive.h"
 #include "ValueRangeMapping.hpp"
-#include "InputPlug.hpp"
+#include "Plug.hpp"
 #include "Components/Factory.hpp"
 #include "Components/Active/Servo.hpp"
 
@@ -114,7 +114,7 @@ namespace Synthetics {
         fprintf(stderr, "Create Servo\n");
         m_output = Vector3(0,0,0);
         m_body[0] = new Body();
-        Plug *plug = new InputPlug(Vector3(-0.2,0,0), Vector3(0,0,0));
+        Plug *plug = new Plug(Vector3(-0.2,0,0), Vector3(0,0,0));
         plug->setInput(true);
         plug->setParent(this);
         m_body[0]->addPlug(plug);

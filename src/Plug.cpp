@@ -17,6 +17,7 @@ namespace Synthetics {
     m_connectedPlug = NULL;
     m_parent = NULL;
     m_input = false;
+    m_on = false;
   }
 
   Plug::~Plug() {

@@ -13,6 +13,8 @@ BOOST_AUTO_TEST_CASE(test_proper_initialization) {
   Plug plug(Vector3(0,0,0), Vector3(0,0,0));
   BOOST_CHECK(plug.getParent() == NULL);
   BOOST_CHECK(plug.getConnectedPlug() == NULL);
+  BOOST_CHECK(plug.isInput() == false);
+  BOOST_CHECK(plug.isActivate() == false);
 }
 
 BOOST_AUTO_TEST_CASE(test_plug_getter) {
