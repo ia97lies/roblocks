@@ -115,12 +115,14 @@ namespace Synthetics {
         fprintf(stderr, "Create Linear\n");
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
+        plug->setParent(this);
         m_body[0]->addPlug(plug);
 
         Rod *rod = new Rod();
         m_body[1] = rod;
         m_body[1]->getShape()->setPosition(0.6,0,0);
         plug = new Plug(Vector3(0.2,0,0), Vector3(0,0,0));
+        plug->setParent(this);
         m_body[1]->addPlug(plug);
 
         LinearKnob *linearKnob = new LinearKnob(m_body[0], rod);

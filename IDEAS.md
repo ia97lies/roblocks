@@ -42,7 +42,10 @@
   - Sensors are value sources
     - Have only outputs (Plug can be output input or both)
   - Actors are value sinks (and depending of its implementation as well sources or propagators)
-    - Have at least on input and may have outputs
+    - Have only one input and may have many outputs
+  - Hub are propagators
+    - Do have special behavour, if it receives something it propagates again to all neighbour
+    - Receiver in general decides if it can receive (input) or not (output).
   - An output only can send signals to an input (actually the receiving plug should drop a signal if he is an output)
 
 ## Known Issues

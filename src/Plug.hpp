@@ -21,9 +21,9 @@ namespace Synthetics {
       virtual Polycode::Entity *getShape();
       virtual void activate(bool on);
       virtual bool isActivate(); 
-      virtual void setCompound(Compound *compound);
-      virtual void unsetCompound();
-      virtual Compound *getCompound();
+      virtual void setConnectedPlug(Plug *plug);
+      virtual void unsetConnectedPlug();
+      virtual Plug *getConnectedPlug();
       virtual void setParent(Compound *component); 
       virtual Compound *getParent(); 
 
@@ -32,7 +32,7 @@ namespace Synthetics {
       Polycode::Vector3 m_rotation;
       Polycode::Entity *m_shape;
       bool m_on;
-      Compound *m_compound;
+      Plug *m_connectedPlug;
       Compound *m_parent;
   };
 }

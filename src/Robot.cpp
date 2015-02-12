@@ -213,7 +213,8 @@ namespace Synthetics {
       component->setId(m_curId++);
       m_components->insert(component);
       m_activeComponent->add(component);
-      m_activePlug->setCompound(component);
+      m_activePlug->setConnectedPlug(m_inPlacePlug);
+      m_inPlacePlug->setConnectedPlug(m_activePlug);
 
       for (int i = 1; i < component->getNoParts(); i++) {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
@@ -264,8 +265,10 @@ namespace Synthetics {
             for (int j = 0; j < component->getNoParts(); j++) {
               Part *part = component->getPart(j);
               for (int k = 0; k < part->getNoPlugs(); k++) {
-                if (part->getPlug(k)->getCompound() == m_activeComponent) {
-                  part->getPlug(k)->setCompound(NULL);
+                Plug *plug = part->getPlug(k);
+                if (plug->getConnectedPlug() && 
+                    plug->getConnectedPlug()->getParent() == m_activeComponent) {
+                  part->getPlug(k)->unsetConnectedPlug();
                 }
               }
             }

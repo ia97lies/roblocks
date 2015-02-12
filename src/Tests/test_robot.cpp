@@ -53,8 +53,10 @@ class ComponentMock : public Component {
       m_deleted = deleted; 
       m_part = new PartMock();
       m_plug[0] = new PlugMock(Vector3(0, 0, 0), Vector3(0, 0, 0));
+      m_plug[0]->setParent(this);
       m_part->addPlug(m_plug[0]);
       m_plug[1] = new PlugMock(Vector3(0, 0, 0), Vector3(0, 0, 0));
+      m_plug[1]->setParent(this);
       m_part->addPlug(m_plug[1]);
     }
     ~ComponentMock() { *m_deleted = true; }
@@ -204,8 +206,8 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_to_activated_plug) 
 BOOST_AUTO_TEST_CASE(test_robot_remove_component) {
   bool deleted = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
-  ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
+  ComponentMock *componentMock = new ComponentMock(&deleted);
 
   robot->add(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
@@ -217,7 +219,7 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component) {
   robot->activate(componentMock2->getMyPlug(0)->getShape());
   robot->remove();
   BOOST_CHECK(deleted == true);
-  BOOST_CHECK(componentMock->getMyPlug(0)->getCompound() == NULL);
+  BOOST_CHECK(componentMock->getMyPlug(0)->getConnectedPlug() == NULL);
   // TODO: write tests for destruct component (all parts get destructed?)
 }
 
@@ -243,13 +245,13 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents) {
   robot->place(componentMock3);
   robot->add();
   componentMock2->add(componentMock3);
-  componentMock2->getMyPlug(0)->setCompound(componentMock3);
+  componentMock2->getMyPlug(0)->setConnectedPlug(componentMock3->getMyPlug(1));
 
   robot->activate(componentMock3->getMyPlug(0)->getShape());
   robot->remove();
   BOOST_CHECK(deleted == true);
-  BOOST_CHECK(componentMock1->getMyPlug(0)->getCompound() == NULL);
-  BOOST_CHECK(componentMock2->getMyPlug(0)->getCompound() == NULL);
+  BOOST_CHECK(componentMock1->getMyPlug(0)->getConnectedPlug() == NULL);
+  BOOST_CHECK(componentMock2->getMyPlug(0)->getConnectedPlug() == NULL);
   // TODO: write tests for destruct component (all parts get destructed?)
 }
 
@@ -275,13 +277,13 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents_2) {
   robot->place(componentMock3);
   robot->add();
   componentMock2->add(componentMock3);
-  componentMock2->getMyPlug(1)->setCompound(componentMock3);
+  componentMock2->getMyPlug(1)->setConnectedPlug(componentMock3->getMyPlug(1));
 
   robot->activate(componentMock3->getMyPlug(0)->getShape());
   robot->remove();
   BOOST_CHECK(deleted == true);
-  BOOST_CHECK(componentMock1->getMyPlug(0)->getCompound() == NULL);
-  BOOST_CHECK(componentMock2->getMyPlug(1)->getCompound() == NULL);
+  BOOST_CHECK(componentMock1->getMyPlug(0)->getConnectedPlug() == NULL);
+  BOOST_CHECK(componentMock2->getMyPlug(1)->getConnectedPlug() == NULL);
   // TODO: write tests for destruct component (all parts get destructed?)
 }
 

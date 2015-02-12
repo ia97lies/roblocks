@@ -128,14 +128,19 @@ namespace Synthetics {
 
         m_body = new Body(m_light);
         Plug *plug = new Plug(Vector3(0,0,-1.0), Vector3(0,-90,0));
+        plug->setParent(this);
         m_body->addPlug(plug);
         plug = new Plug(Vector3(-1.0,0,0), Vector3(0,0,0));
+        plug->setParent(this);
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,0,1.0), Vector3(0,-270,0));
+        plug->setParent(this);
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,1.0,0), Vector3(0,0,90));
+        plug->setParent(this);
         m_body->addPlug(plug);
         plug = new Plug(Vector3(0,-1.0,0), Vector3(0,0,270));
+        plug->setParent(this);
         m_body->addPlug(plug);
         m_body->getShape()->addChild(m_light);
 

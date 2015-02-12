@@ -126,14 +126,19 @@ namespace Synthetics {
         m_output = Vector3(0,0,0);
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
+        plug->setParent(this);
         m_body[0]->addPlug(plug);
         plug = new Plug(Vector3(0,0,-1), Vector3(0,-90,0));
+        plug->setParent(this);
         m_body[0]->addPlug(plug);
         plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
+        plug->setParent(this);
         m_body[0]->addPlug(plug);
         plug = new Plug(Vector3(0,0,1), Vector3(0,-270,0));
+        plug->setParent(this);
         m_body[0]->addPlug(plug);
         plug = new Plug(Vector3(0,-1,0), Vector3(0,0,270));
+        plug->setParent(this);
         m_body[0]->addPlug(plug);
 
         Shaft *shaft = new Shaft();
@@ -168,6 +173,8 @@ namespace Synthetics {
       }
 
       void Potentiometer::send() {
+        // TODO: actually we should iterate over all plugs and
+        // send to there attached plug->compound
         Shaft *shaft = dynamic_cast<Shaft *>(m_body[1]);
         for (int i = 0; i < getNoEntries(); i++) {
           Component *component = dynamic_cast<Component *>(get(i));
@@ -176,6 +183,7 @@ namespace Synthetics {
         m_output = m_input;
       }
 
+      // TODO: we should also handover the receiving plug
       void Potentiometer::update(Polycode::Vector3 input) {
         // nothing to do we are ourself a signal source
       }

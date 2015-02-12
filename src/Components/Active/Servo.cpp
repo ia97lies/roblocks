@@ -115,6 +115,7 @@ namespace Synthetics {
         m_output = Vector3(0,0,0);
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-0.2,0,0), Vector3(0,0,0));
+        plug->setParent(this);
         m_body[0]->addPlug(plug);
 
         Link *link = new Link();
@@ -127,6 +128,7 @@ namespace Synthetics {
         m_body[2] = new Body();
         m_body[2]->getShape()->setPosition(0.6,0,0);
         plug = new Plug(Vector3(0.2,0,0), Vector3(0,0,0));
+        plug->setParent(this);
         m_body[2]->addPlug(plug);
 
         // TODO: add a hinge joint 

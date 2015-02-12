@@ -14,6 +14,8 @@ namespace Synthetics {
     m_rotation = rotation;
     m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.2, 0.8, 0.8);
     m_shape->setColor(1, 0, 0, 0.5);
+    m_connectedPlug = NULL;
+    m_parent = NULL;
   }
 
   Plug::~Plug() {
@@ -69,16 +71,16 @@ namespace Synthetics {
     return m_on;
   }
 
-  void Plug::setCompound(Compound *compound) {
-    m_compound = compound;
+  void Plug::setConnectedPlug(Plug *plug) {
+    m_connectedPlug = plug;
   }
 
-  void Plug::unsetCompound() {
-    m_compound = NULL;
+  void Plug::unsetConnectedPlug() {
+    m_connectedPlug = NULL;
   }
 
-  Compound *Plug::getCompound() {
-    return m_compound;
+  Plug *Plug::getConnectedPlug() {
+    return m_connectedPlug;
   }
 
   void Plug::setParent(Compound *compound) {
