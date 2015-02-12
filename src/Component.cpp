@@ -18,5 +18,11 @@ namespace Synthetics {
     }
     return found;
   }
+
+  Part *Component::getPart(int i) {
+  }
+
+  void Component::enable(bool on) {
+  }
 }
 

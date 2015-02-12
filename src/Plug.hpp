@@ -24,6 +24,8 @@ namespace Synthetics {
       virtual void setCompound(Compound *compound);
       virtual void unsetCompound();
       virtual Compound *getCompound();
+      virtual void setParent(Compound *component); 
+      virtual Compound *getParent(); 
 
     private:
       Polycode::Vector3 m_position;
@@ -31,6 +33,7 @@ namespace Synthetics {
       Polycode::Entity *m_shape;
       bool m_on;
       Compound *m_compound;
+      Compound *m_parent;
   };
 }
 

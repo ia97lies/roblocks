@@ -40,7 +40,7 @@
   - Do this on every update (hopefully we are this way fast enough)
     - if simulation runs with 60 Hz a signal will propagate 60 elements per second
   - Sensors are value sources
-    - Have only outputs (Plug is can be output input or both)
+    - Have only outputs (Plug can be output input or both)
   - Actors are value sinks (and depending of its implementation as well sources or propagators)
     - Have at least on input and may have outputs
   - An output only can send signals to an input (actually the receiving plug should drop a signal if he is an output)

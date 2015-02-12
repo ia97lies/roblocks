@@ -2,6 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include <math.h>
 #include "lua.hpp"
 #include "PolyScenePrimitive.h"
 #include "ValueRangeMapping.hpp"
@@ -19,9 +20,9 @@ namespace Synthetics {
       class Body : public ::Synthetics::Part {
         public:
           Body() {
-            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.5,20);
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.2,0.5,0.5);
             m_entity->setMaterialByName("ComponentMaterial");
-            m_color = Color(0.4, 0.4, 1.0, 1.0);
+            m_color = Color(0.4, 0.4, 0.7, 0.0);
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
@@ -39,6 +40,28 @@ namespace Synthetics {
           Polycode::Color m_color;
       };
 
+      class Link : public ::Synthetics::Part {
+        public:
+          Link() {
+            m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 1,0.5,20);
+            m_entity->setMaterialByName("ComponentMaterial");
+            m_color = Color(0.7, 0.7, 0.7, 1.0);
+            m_entity->colorAffectsChildren = false;
+            m_entity->setColor(m_color);
+            m_entity->setPosition(0, 0, 0);
+            m_entity->setRotationEuler(Vector3(0, 60, 0));
+          }
+          virtual ~Link() {}
+
+          Polycode::Entity *getShape() {
+            return m_entity;
+          }
+
+        private:
+          Polycode::ScenePrimitive *m_entity;
+          Polycode::Color m_color;
+      };
+
       //--------------------------------------------------------------------------
       // Components interface
       //--------------------------------------------------------------------------
@@ -46,18 +69,27 @@ namespace Synthetics {
         fprintf(stderr, "Create Wedge\n");
         m_input = Vector3(0,0,0);
         m_output = Vector3(0,0,0);
-        m_body = new Body();
-        Plug *plug = new Plug(Vector3(1,0,1), Vector3(0,-45,0));
-        m_body->addPlug(plug);
-        plug = new Plug(Vector3(-std:sqrt(2),0,1), Vector3(0,45,0));
-        m_body->addPlug(plug);
-        plug = new Plug(Vector3(0,0,-1), Vector3(0,90,0));
-        m_body->addPlug(plug);
+
+        m_body[0] = new Body();
+        Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
+        m_body[0]->addPlug(plug);
+
+        Link *link = new Link();
+        m_body[1] = link;
+        m_body[1]->getShape()->setPosition(0,0,0);
+
+        m_body[2] = new Body();
+        m_body[2]->getShape()->setPosition(0,0,0);
+        plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
+        m_body[2]->addPlug(plug);
+
       }
 
       Wedge::~Wedge() {
         fprintf(stderr, "Destroy Wedge\n");
-        delete m_body;
+        for (int i = 0; i < 3; i++) {
+          delete m_body[i];
+        }
       }
 
       std::string Wedge::getName() {
@@ -65,18 +97,20 @@ namespace Synthetics {
       }
 
       int Wedge::getNoParts() {
-        return 1;
+        return 3;
       }
 
       Part *Wedge::getPart(int i) {
-        if (i == 0) {
-          return m_body;
+        if (i >= 0 || i < getNoParts()) {
+          return m_body[i];
         }
         return NULL;
       }
 
       void Wedge::enable(bool on) {
-        m_body->getShape()->enabled = on;
+        for (int i = 0; i < getNoParts(); i++) {
+          m_body[i]->getShape()->enabled = on;
+        }
       }
 
       void Wedge::send() {

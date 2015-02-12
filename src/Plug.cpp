@@ -80,5 +80,14 @@ namespace Synthetics {
   Compound *Plug::getCompound() {
     return m_compound;
   }
+
+  void Plug::setParent(Compound *compound) {
+    m_parent = compound;
+  }
+
+  Compound *Plug::getParent() {
+    return m_parent;
+  }
+
 }
 
