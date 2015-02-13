@@ -67,12 +67,11 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Wedge::Wedge() {
         fprintf(stderr, "Create Wedge\n");
-        m_input = Vector3(0,0,0);
-        m_output = Vector3(0,0,0);
 
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
         plug->setParent(this);
+        plug->setInOut(true);
         m_body[0]->addPlug(plug);
 
         Link *link = new Link();
@@ -83,6 +82,7 @@ namespace Synthetics {
         m_body[2]->getShape()->setPosition(0,0,0);
         plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
         plug->setParent(this);
+        plug->setInOut(true);
         m_body[2]->addPlug(plug);
 
       }

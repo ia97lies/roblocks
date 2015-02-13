@@ -118,9 +118,6 @@ namespace Synthetics {
         fprintf(stderr, "Create Light\n");
         m_scene = scene;
 
-        m_input = Vector3(0,0,0);
-        m_output = Vector3(0,0,0);
-
         m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 1);
         m_light->setPosition(0.8,0,0);
         m_light->setLightColor(1,1,1);

@@ -31,9 +31,20 @@ namespace Synthetics {
   }
 
   void Component::send() {
-    for (int i = 0; i < getNoEntries(); i++) {
-      Component *component = dynamic_cast<Component *>(get(i));
-      component->update(m_output);
+    for (int i = 0; i < getNoParts(); i++) {
+      Part *part = getPart(i);
+      for (int j = 0; j < part->getNoPlugs(); j++) {
+        Plug *plug = part->getPlug(j);
+        if (plug->isOutput()) {
+          Plug *connectedPlug = plug->getConnectedPlug();
+          if (connectedPlug && connectedPlug->isInput()) {
+            Component *component = dynamic_cast<Component *>(connectedPlug->getParent());
+            if (component) {
+              component->update(m_output);
+            }
+          }
+        }
+      }
     }
     m_output = m_input;
   }

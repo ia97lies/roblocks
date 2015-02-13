@@ -123,7 +123,6 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Potentiometer::Potentiometer() {
         fprintf(stderr, "Create Potentiometer\n");
-        m_output = Vector3(0,0,0);
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
         plug->setParent(this);
@@ -173,17 +172,11 @@ namespace Synthetics {
       }
 
       void Potentiometer::send() {
-        // TODO: actually we should iterate over all plugs and
-        // send to there attached plug->compound
         Shaft *shaft = dynamic_cast<Shaft *>(m_body[1]);
-        for (int i = 0; i < getNoEntries(); i++) {
-          Component *component = dynamic_cast<Component *>(get(i));
-          component->update(shaft->getValue());
-        }
-        m_output = m_input;
+        m_input = shaft->getValue();
+        Component::send();
       }
 
-      // TODO: we should also handover the receiving plug
       void Potentiometer::update(Polycode::Vector3 input) {
         // nothing to do we are ourself a signal source
       }

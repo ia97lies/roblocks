@@ -112,7 +112,6 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Servo::Servo() {
         fprintf(stderr, "Create Servo\n");
-        m_output = Vector3(0,0,0);
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-0.2,0,0), Vector3(0,0,0));
         plug->setInput(true);

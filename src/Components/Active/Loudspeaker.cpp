@@ -96,8 +96,6 @@ namespace Synthetics {
       Loudspeaker::Loudspeaker(Polycode::Scene *scene) {
         fprintf(stderr, "Create Loudspeaker\n");
         m_scene = scene;
-        m_input = Vector3(0, 0, 0);
-        m_output = Vector3(0, 0, 0);
 
         m_sound = new SceneSound("Resources/test.wav", 20, 50, false);
         m_sound->getSound()->Play(true);

@@ -20,13 +20,15 @@ namespace Synthetics {
       virtual Polycode::Vector3 getFaceToFaceRotation(Plug *plug); 
       virtual Polycode::Entity *getShape();
       virtual void setInput(bool on);
+      virtual void setInOut(bool on);
       virtual bool isInput();
+      virtual bool isOutput();
       virtual void activate(bool on);
       virtual bool isActivate(); 
       virtual void setConnectedPlug(Plug *plug);
       virtual void unsetConnectedPlug();
       virtual Plug *getConnectedPlug();
-      virtual void setParent(Compound *component); 
+      virtual void setParent(Compound *compound); 
       virtual Compound *getParent(); 
 
     private:
@@ -34,9 +36,12 @@ namespace Synthetics {
       Polycode::Vector3 m_rotation;
       Polycode::Entity *m_shape;
       bool m_input;
+      bool m_output;
       bool m_on;
       Plug *m_connectedPlug;
       Compound *m_parent;
+
+      void setColor();
   };
 }
 

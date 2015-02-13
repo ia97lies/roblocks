@@ -25,6 +25,8 @@ namespace Synthetics {
 
     protected:
       Polycode::Vector3 m_input;
+
+    private:
       Polycode::Vector3 m_output;
   };
 }
