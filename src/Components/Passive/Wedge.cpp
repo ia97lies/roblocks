@@ -115,7 +115,7 @@ namespace Synthetics {
         }
       }
 
-      void Wedge::update(Polycode::Vector3 input) {
+      void Wedge::update(Plug *sendingPlug, Polycode::Vector3 input) {
         ValueRangeMapping mapping(0, 100, input);
         m_input = mapping.value();
       }

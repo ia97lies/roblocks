@@ -151,7 +151,7 @@ namespace Synthetics {
           m_body->getShape()->enabled = on;
       }
 
-      void Loudspeaker::update(Polycode::Vector3 input) {
+      void Loudspeaker::update(Plug *sendingPlug, Polycode::Vector3 input) {
         Body *body = dynamic_cast<Body *>(m_body);
         body->update(input);
         m_input = input;

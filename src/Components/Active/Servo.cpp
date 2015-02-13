@@ -168,7 +168,7 @@ namespace Synthetics {
         }
       }
 
-      void Servo::update(Polycode::Vector3 input) {
+      void Servo::update(Plug *sendingPlug, Polycode::Vector3 input) {
         Link *link = dynamic_cast<Link *>(m_body[1]);
         link->update(input);
         m_input = input;

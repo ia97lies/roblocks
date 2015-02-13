@@ -14,6 +14,7 @@ BOOST_AUTO_TEST_CASE(test_proper_initialization) {
   BOOST_CHECK(plug.getParent() == NULL);
   BOOST_CHECK(plug.getConnectedPlug() == NULL);
   BOOST_CHECK(plug.isInput() == false);
+  BOOST_CHECK(plug.isOutput() == true);
   BOOST_CHECK(plug.isActivate() == false);
 }
 
@@ -69,5 +70,47 @@ BOOST_AUTO_TEST_CASE(test_plug_set_get_parent) {
   plug1.setParent(compound);
   
   BOOST_CHECK(plug1.getParent() == compound);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_set_input) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.setInput(true);
+
+  BOOST_CHECK(plug.isInput() == true && plug.isOutput() == false);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_set_not_input) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.setInput(false);
+
+  BOOST_CHECK(plug.isInput() == false && plug.isOutput() == true);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_set_inout) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.setInOut(true);
+
+  BOOST_CHECK(plug.isInput() == true && plug.isOutput() == true);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_set_not_inout) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.setInOut(false);
+
+  BOOST_CHECK(plug.isInput() == false && plug.isOutput() == true);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_set_deaf) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.setDeaf(true);
+
+  BOOST_CHECK(plug.isInput() == false && plug.isOutput() == false);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_set_not_deaf) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.setDeaf(false);
+
+  BOOST_CHECK(plug.isInput() == false && plug.isOutput() == true);
 }
 

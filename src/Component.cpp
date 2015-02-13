@@ -40,7 +40,7 @@ namespace Synthetics {
           if (connectedPlug && connectedPlug->isInput()) {
             Component *component = dynamic_cast<Component *>(connectedPlug->getParent());
             if (component) {
-              component->update(m_output);
+              component->update(plug, m_output);
             }
           }
         }

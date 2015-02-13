@@ -21,6 +21,7 @@ namespace Synthetics {
       virtual Polycode::Entity *getShape();
       virtual void setInput(bool on);
       virtual void setInOut(bool on);
+      virtual void setDeaf(bool on);
       virtual bool isInput();
       virtual bool isOutput();
       virtual void activate(bool on);

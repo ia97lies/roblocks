@@ -42,7 +42,7 @@ class ComponentMock : public Component {
     virtual int getNoParts() { return 2; }
     virtual Part *getPart(int i) { return m_part[i]; }
     virtual void enable(bool on) {}
-    virtual void update(Polycode::Vector3 delta) {}
+    virtual void update(Plug *sendingPlug, Polycode::Vector3 delta) {}
     Plug *getMyPlug(int i) { return m_plug[i]; }
   private:
     Part *m_part[2];

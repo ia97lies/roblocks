@@ -80,7 +80,13 @@ namespace Synthetics {
 
   void Plug::setInOut(bool on) {
     m_input = on;
-    m_output = on;
+    m_output = true;
+    setColor();
+  }
+
+  void Plug::setDeaf(bool on) {
+    m_input = false;
+    m_output = !on;
     setColor();
   }
 

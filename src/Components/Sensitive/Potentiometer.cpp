@@ -177,7 +177,7 @@ namespace Synthetics {
         Component::send();
       }
 
-      void Potentiometer::update(Polycode::Vector3 input) {
+      void Potentiometer::update(Plug *sendingPlug, Polycode::Vector3 input) {
         // nothing to do we are ourself a signal source
       }
 

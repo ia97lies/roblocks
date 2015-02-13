@@ -166,7 +166,7 @@ namespace Synthetics {
         }
       }
 
-      void Linear::update(Polycode::Vector3 input) {
+      void Linear::update(Plug *sendingPlug, Polycode::Vector3 input) {
         Rod *rod = dynamic_cast<Rod *>(m_body[1]);
         rod->update(input);
         m_input = input;

@@ -44,6 +44,7 @@ namespace Synthetics {
       //--------------------------------------------------------------------------
       Hub::Hub() {
         fprintf(stderr, "Create Hub\n");
+        m_markerPlug = NULL;
         m_body = new Body();
         Plug *plug = new Plug(Vector3(1.0,0,0), Vector3(0,0,0));
         plug->setParent(this);
@@ -52,7 +53,7 @@ namespace Synthetics {
         plug = new Plug(Vector3(0,0,-1.0), Vector3(0,-90,0));
         plug->setParent(this);
         m_body->addPlug(plug);
-        plug->setInOut(true);
+        plug->setDeaf(true);
         plug = new Plug(Vector3(-1.0,0,0), Vector3(0,0,0));
         plug->setParent(this);
         m_body->addPlug(plug);
@@ -95,9 +96,17 @@ namespace Synthetics {
         m_body->getShape()->enabled = on;
       }
 
-      void Hub::update(Polycode::Vector3 input) {
+      void Hub::update(Plug *sendingPlug, Polycode::Vector3 input) {
         ValueRangeMapping mapping(0, 100, input);
-        m_input = mapping.value();
+        if (!m_markerPlug) {
+          m_markerPlug = sendingPlug;
+        }
+        else if (sendingPlug != m_markerPlug) {
+          m_input += mapping.value();
+        }
+        else {
+          m_input = mapping.value();
+        }
       }
 
       //----------------------------------------------------------------------

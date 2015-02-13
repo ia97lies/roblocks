@@ -22,7 +22,7 @@ namespace Synthetics {
           virtual Part *getPart(int i);
           virtual void enable(bool on); 
 
-          virtual void update(Polycode::Vector3 delta); 
+          virtual void update(Plug *sendingPlug, Polycode::Vector3 delta); 
 
         private:
           Polycode::Scene *m_scene;

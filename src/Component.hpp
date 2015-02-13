@@ -21,7 +21,7 @@ namespace Synthetics {
       virtual Part *getPartByPlug(Polycode::Entity *plugShape);
 
       virtual void send();
-      virtual void update(Polycode::Vector3 delta) = 0;
+      virtual void update(Plug *sendingPlug, Polycode::Vector3 delta) = 0;
 
     protected:
       Polycode::Vector3 m_input;
