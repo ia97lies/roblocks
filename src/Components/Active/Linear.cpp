@@ -166,15 +166,6 @@ namespace Synthetics {
         }
       }
 
-      void Linear::send() {
-        // maybe slightly lesser, lets see how it behaves
-        for (int i = 0; i < getNoEntries(); i++) {
-          Component *component = dynamic_cast<Component *>(get(i));
-          component->update(m_output);
-        }
-        m_output = m_input;
-      }
-
       void Linear::update(Polycode::Vector3 input) {
         Rod *rod = dynamic_cast<Rod *>(m_body[1]);
         rod->update(input);

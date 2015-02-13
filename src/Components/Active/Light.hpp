@@ -22,7 +22,6 @@ namespace Synthetics {
           virtual Part *getPart(int i);
           virtual void enable(bool on); 
 
-          virtual void send();
           virtual void update(Polycode::Vector3 delta);
 
         private:
@@ -30,8 +29,6 @@ namespace Synthetics {
           Part *m_body;
           Knob *m_knob;
           Polycode::SceneLight *m_light;
-          Polycode::Vector3 m_input;
-          Polycode::Vector3 m_output;
       };
 
     }

@@ -20,8 +20,12 @@ namespace Synthetics {
       virtual void enable(bool on) = 0;
       virtual Part *getPartByPlug(Polycode::Entity *plugShape);
 
-      virtual void send() = 0;
+      virtual void send();
       virtual void update(Polycode::Vector3 delta) = 0;
+
+    protected:
+      Polycode::Vector3 m_input;
+      Polycode::Vector3 m_output;
   };
 }
 

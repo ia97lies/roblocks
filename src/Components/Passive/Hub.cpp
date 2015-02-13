@@ -91,14 +91,6 @@ namespace Synthetics {
         m_body->getShape()->enabled = on;
       }
 
-      void Hub::send() {
-        for (int i = 0; i < getNoEntries(); i++) {
-          Component *component = dynamic_cast<Component *>(get(i));
-          component->update(m_output);
-        }
-        m_output = m_input;
-      }
-
       void Hub::update(Polycode::Vector3 input) {
         ValueRangeMapping mapping(0, 100, input);
         m_input = mapping.value();

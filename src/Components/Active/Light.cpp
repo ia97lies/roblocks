@@ -179,15 +179,6 @@ namespace Synthetics {
           m_body->getShape()->enabled = on;
       }
 
-      void Light::send() {
-        // maybe slightly lesser, lets see how it behaves
-        for (int i = 0; i < getNoEntries(); i++) {
-          Component *component = dynamic_cast<Component *>(get(i));
-          component->update(m_output);
-        }
-        m_output = m_input;
-      }
-
       void Light::update(Polycode::Vector3 input) {
         Body *body = dynamic_cast<Body *>(m_body);
         body->update(input);

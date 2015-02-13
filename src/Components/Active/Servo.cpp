@@ -169,15 +169,6 @@ namespace Synthetics {
         }
       }
 
-      void Servo::send() {
-        // maybe slightly lesser, lets see how it behaves
-        for (int i = 0; i < getNoEntries(); i++) {
-          Component *component = dynamic_cast<Component *>(get(i));
-          component->update(m_output);
-        }
-        m_output = m_input;
-      }
-
       void Servo::update(Polycode::Vector3 input) {
         Link *link = dynamic_cast<Link *>(m_body[1]);
         link->update(input);
