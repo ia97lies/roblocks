@@ -40,6 +40,11 @@
 The simulation is based on Polycode (see <a href="http://polycode.org">http://polycode.org</a>).</p>
 
 <h2>
+<a id="Introduction" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+<p>The robots can be easily constructed with predefined components like hubs, motors and sensors. No programming is needed. The "pogramming" is done by construction. The signals flows form the sensor to the actors. The signal bus is the body itself. Even actor may be able to propagate a signal. Sensors only can emit signals. Hubs can propagate and manipulate signals</p>
+<p>There will be special hubs like negator, avarage, logarithm and many more to influence the signal flow. Of course there will be a programmable hub as well, most propably I will integrate a Lua interpreter.</p>
+
+<h2>
 <a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
 <p>The configuration is a simple Lua script. Currently only the initial resolution can be set and the needed components can be loaded.</p>
@@ -77,7 +82,7 @@ I plan to make every component scriptable with Lua in some later versions.</p>
 <p><img src="images/SensitivePotentiometer.png" width="12%"/></p>
 <p>A Potentiometer emiting value [0..100] depending on its posistion.</p>
 
-<h3>Sensor.Distance</h3>
+<h3>Sensitive.Distance</h3>
 <p>Not yet done.</p>
 
 <h3>Morph.Negator</h3>
@@ -87,6 +92,9 @@ I plan to make every component scriptable with Lua in some later versions.</p>
 <p>Not yet done.</p>
 
 <h3>Morph.Trigger</h3>
+<p>Not yet done.</p>
+
+<h3>Morph.Lua</h3>
 <p>Not yet done.</p>
 
 <h2>
