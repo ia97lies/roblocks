@@ -10,6 +10,8 @@
 using namespace Polycode;
 
 namespace Synthetics {
+
+  //--------------------------------------------------------------------------
   class FindActivePlug : public IterateMethod {
     public:
       FindActivePlug(Component *active, Part *activePart, Plug *activePlug, Polycode::Entity *plugShape) { 
@@ -59,6 +61,7 @@ namespace Synthetics {
       Plug *m_activePlug;
   };
 
+  //--------------------------------------------------------------------------
   class FindActiveInPlacePlug : public IterateMethod {
     public:
       FindActiveInPlacePlug(Part *activePart, Plug *activePlug, Polycode::Entity *plugShape) { 
@@ -99,6 +102,7 @@ namespace Synthetics {
       Plug *m_activePlug;
   };
 
+  //--------------------------------------------------------------------------
   class FindActiveKnob : public IterateMethod {
     public:
       FindActiveKnob(Polycode::Entity *knobShape) { 
@@ -131,6 +135,7 @@ namespace Synthetics {
       Knob *m_activeKnob;
   };
 
+  //--------------------------------------------------------------------------
   Robot::Robot(PolycodeFacade *facade) {
     m_powerOn = false;
     m_polycodeFacade = facade;
@@ -195,6 +200,7 @@ namespace Synthetics {
   void Robot::add(Component *component) {
     if (m_mother == NULL) {
       m_mother = component;
+      Compound::add(m_mother);
       m_mother->setId(0);
       m_components->insert(m_mother);
       Robot::constructGraphic(m_polycodeFacade, NULL, component);

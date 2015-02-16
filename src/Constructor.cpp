@@ -14,7 +14,42 @@
 using namespace Polycode;
 
 namespace Synthetics {
+ 
+  //--------------------------------------------------------------------------
+  class Save : public IterateMethod {
+    public:
+      Save(/* file */) { 
+      }
 
+      virtual ~Save() {}
+
+      virtual void call(Compound *parentCompound, Compound *compound) {
+        Component *component = dynamic_cast<Component *>(compound);
+        if (component) {
+          Component *parent= dynamic_cast<Component *>(parentCompound);
+          if (parent) {
+            fprintf(stderr, "parent: %s, %ld\n", parent->getName().c_str(), parent->getId());
+            int parentPlug = 0;
+            for (int i = 0; i < parent->getNoParts(); i++) {
+              Part *parts = parent->getPart(i);
+              for (int i = 0; i < parts->getNoPlugs(); i++) {
+                Plug *plug = parts->getPlug(i)->getConnectedPlug();
+                if (plug && plug->getParent() != component) {
+                  ++parentPlug;
+                }
+              }
+            }
+            fprintf(stderr, "  select parent plug: %d\n", parentPlug);
+            fprintf(stderr, "  compound: %s, %ld\n", compound->getName().c_str(), compound->getId());
+          }
+          else {
+            fprintf(stderr, "  compound: %s, %ld\n", compound->getName().c_str(), compound->getId());
+          }
+        }
+      }
+  };
+
+  //--------------------------------------------------------------------------
   Constructor::Constructor(Core *core, Configurator *conf, Components::Factory *factory) : EventHandler() {
     m_core = core;
     m_conf = conf;
@@ -77,40 +112,53 @@ namespace Synthetics {
               }
               break;
             case KEY_UP:
-              m_mother->rotateInPlace(1);
+              {
+                m_mother->rotateInPlace(1);
+              }
               break;
             case KEY_DOWN:
-              m_mother->rotateInPlace(-1);
+              {
+                m_mother->rotateInPlace(-1);
+              }
               break;
             case KEY_o:
-              m_mother->powerOn(!m_mother->isPowerOn());
+              {
+                m_mother->powerOn(!m_mother->isPowerOn());
+              }
+              break;
+            case KEY_s:
+              {
+                Save *method = new Save();
+                m_mother->iterate(method);
+              }
               break;
             case KEY_l:
-              // start file selection menu
-              /*
-              m_fileDialog->showWindow();
-              */
-              delete m_mother;
-              m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
+              {
+                // start file selection menu
+                /*
+                   m_fileDialog->showWindow();
+                   */
+                delete m_mother;
+                m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
 
-              Lua *lua = new Lua();
-              lua->open();
-              lua->setCPath("./lib/?.so");
-              lua_State *L = lua->L();
-              lua_pushlightuserdata(L, m_core);
-              lua_setfield(L, LUA_REGISTRYINDEX, "core");
-              lua_pushlightuserdata(L, m_scene);
-              lua_setfield(L, LUA_REGISTRYINDEX, "scene");
-              lua_pushlightuserdata(L, m_factory);
-              lua_setfield(L, LUA_REGISTRYINDEX, "factory");
-              lua_pushlightuserdata(L, m_mother);
-              lua_setfield(L, LUA_REGISTRYINDEX, "robot");
+                Lua *lua = new Lua();
+                lua->open();
+                lua->setCPath("./lib/?.so");
+                lua_State *L = lua->L();
+                lua_pushlightuserdata(L, m_core);
+                lua_setfield(L, LUA_REGISTRYINDEX, "core");
+                lua_pushlightuserdata(L, m_scene);
+                lua_setfield(L, LUA_REGISTRYINDEX, "scene");
+                lua_pushlightuserdata(L, m_factory);
+                lua_setfield(L, LUA_REGISTRYINDEX, "factory");
+                lua_pushlightuserdata(L, m_mother);
+                lua_setfield(L, LUA_REGISTRYINDEX, "robot");
 
-              if (luaL_loadfile(L, ".snapshot.lua") || lua_pcall(L, 0, 0, 0)) {
-                lua->error("cannot load .snapshot.lua: %s\n", lua_tostring(L, -1));
+                if (luaL_loadfile(L, ".snapshot.lua") || lua_pcall(L, 0, 0, 0)) {
+                  lua->error("cannot load .snapshot.lua: %s\n", lua_tostring(L, -1));
+                }
+                delete lua;
               }
-              delete lua;
-
               break;
           }
           break;

@@ -94,8 +94,6 @@ set(Synthetics_HDRS
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
   CompoundStore.hpp
-  Printer.hpp
-  Writer.hpp
   Plug.hpp
   Knob.hpp
   Part.hpp

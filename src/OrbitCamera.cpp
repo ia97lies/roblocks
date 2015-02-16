@@ -61,16 +61,6 @@ namespace Synthetics {
       InputEvent *inputEvent = (InputEvent*)e;
 
       switch(e->getEventCode()) {
-        case InputEvent::EVENT_KEYDOWN:
-          switch (inputEvent->keyCode()) {
-            case KEY_w:
-              m_distance -= CAMERA_STEP_SIZE;
-              break;
-            case KEY_s:
-              m_distance += CAMERA_STEP_SIZE;
-              break;
-          }
-          break;
         case InputEvent::EVENT_MOUSEWHEEL_UP:
             m_distance -= CAMERA_STEP_SIZE;
           break;
