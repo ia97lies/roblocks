@@ -28,22 +28,40 @@ namespace Synthetics {
         if (component) {
           Component *parent= dynamic_cast<Component *>(parentCompound);
           if (parent) {
-            fprintf(stderr, "parent: %s, %ld\n", parent->getName().c_str(), parent->getId());
-            int parentPlug = 0;
+            int parentPlugId = 0;
+            Plug *childPlug;
+            int p = 0;
             for (int i = 0; i < parent->getNoParts(); i++) {
               Part *parts = parent->getPart(i);
-              for (int i = 0; i < parts->getNoPlugs(); i++) {
-                Plug *plug = parts->getPlug(i)->getConnectedPlug();
-                if (plug && plug->getParent() != component) {
-                  ++parentPlug;
+              for (int j = 0; j < parts->getNoPlugs(); j++, p++) {
+                Plug *plug = parts->getPlug(j)->getConnectedPlug();
+                if (plug && plug->getParent() == component) {
+                  childPlug = plug;
+                  parentPlugId = p;
                 }
               }
             }
-            fprintf(stderr, "  select parent plug: %d\n", parentPlug);
-            fprintf(stderr, "  compound: %s, %ld\n", compound->getName().c_str(), compound->getId());
+            int childPlugId = 0;
+            p = 0;
+            for (int i = 0; i < component->getNoParts(); i++) {
+              Part *parts = component->getPart(i);
+              for (int j = 0; j < parts->getNoPlugs(); j++, p++) {
+                Plug *plug = parts->getPlug(j);
+                if (plug == childPlug) {
+                  childPlugId = p;
+                }
+              }
+            }
+            fprintf(stderr, "plug = component%ld:getPlug(%d)\n", parent->getId(), parentPlugId);
+            fprintf(stderr, "mother:activate(plug)\n");
+            fprintf(stderr, "component%ld = factory:create(\"%s\")\n", component->getId(), component->getName().c_str());
+            fprintf(stderr, "mother:place(component%ld)\n", component->getId());
+            fprintf(stderr, "plug = component%ld:getPlug(%d)\n", component->getId(), childPlugId);
+            fprintf(stderr, "mother:add()\n");
           }
           else {
-            fprintf(stderr, "  compound: %s, %ld\n", compound->getName().c_str(), compound->getId());
+            fprintf(stderr, "component%ld = factory:create(\"Passive.Hub\")\n", component->getId());
+            fprintf(stderr, "mother:init(component%ld)\n", component->getId());
           }
         }
       }
@@ -128,6 +146,10 @@ namespace Synthetics {
               break;
             case KEY_s:
               {
+                fprintf(stderr, "robot = require \"libRobotLua\"\n");
+                fprintf(stderr, "factory = robot.getFactory()\n");
+                fprintf(stderr, "mother = robot.getRobot()\n");
+
                 Save *method = new Save();
                 m_mother->iterate(method);
               }
