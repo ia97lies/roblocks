@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------------
 
 #include "PolyString.h"
+#include "PolyUITreeEvent.h"
 
 #include "Lua.hpp"
 #include "PolycodeFacade.hpp"
@@ -18,7 +19,8 @@ namespace Synthetics {
   //--------------------------------------------------------------------------
   class Save : public IterateMethod {
     public:
-      Save(/* file */) { 
+      Save(FILE *fp) { 
+        m_fp = fp;
       }
 
       virtual ~Save() {}
@@ -55,20 +57,23 @@ namespace Synthetics {
             Part *part = component->getPart(0);
             Vector3 rotation = part->getShape()->getRotationEuler(); 
 
-            fprintf(stderr, "plug = component%ld:getPlug(%d)\n", parent->getId(), parentPlugId);
-            fprintf(stderr, "mother:activate(plug)\n");
-            fprintf(stderr, "component%ld = factory:create(\"%s\")\n", component->getId(), component->getName().c_str());
-            fprintf(stderr, "mother:place(component%ld)\n", component->getId());
-            fprintf(stderr, "component%ld:rotate(%f, %f, %f)\n", component->getId(), rotation.x, rotation.y, rotation.z);
-            fprintf(stderr, "plug = component%ld:getPlug(%d)\n", component->getId(), childPlugId);
-            fprintf(stderr, "mother:add()\n");
+            fprintf(m_fp, "plug = component%ld:getPlug(%d)\n", parent->getId(), parentPlugId);
+            fprintf(m_fp, "mother:activate(plug)\n");
+            fprintf(m_fp, "component%ld = factory:create(\"%s\")\n", component->getId(), component->getName().c_str());
+            fprintf(m_fp, "mother:place(component%ld)\n", component->getId());
+            fprintf(m_fp, "component%ld:rotate(%f, %f, %f)\n", component->getId(), rotation.x, rotation.y, rotation.z);
+            fprintf(m_fp, "plug = component%ld:getPlug(%d)\n", component->getId(), childPlugId);
+            fprintf(m_fp, "mother:add()\n");
           }
           else {
-            fprintf(stderr, "component%ld = factory:create(\"Passive.Hub\")\n", component->getId());
-            fprintf(stderr, "mother:init(component%ld)\n", component->getId());
+            fprintf(m_fp, "component%ld = factory:create(\"Passive.Hub\")\n", component->getId());
+            fprintf(m_fp, "mother:init(component%ld)\n", component->getId());
           }
         }
       }
+
+    private:
+      FILE *m_fp;
   };
 
   //--------------------------------------------------------------------------
@@ -91,16 +96,15 @@ namespace Synthetics {
 
     m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory);
 
-    /*
-    Scene *scene = new Scene(Scene::SCENE_2D);
+    
+    Scene *scene = new Scene(Scene::SCENE_2D_TOPLEFT);
     scene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
     std::vector<String> extensions;
     extensions.push_back("*.lua");
     m_fileDialog = new UIFileDialog(String("/home/cli"), false, extensions, false);
-    m_fileDialog->setPosition(-100, -100);
     scene->addEntity(m_fileDialog);
     m_fileDialog->hideWindow();
-    */
+
   }
 
   Constructor::~Constructor() {
@@ -150,20 +154,19 @@ namespace Synthetics {
               break;
             case KEY_s:
               {
-                fprintf(stderr, "robot = require \"libRobotLua\"\n");
-                fprintf(stderr, "factory = robot.getFactory()\n");
-                fprintf(stderr, "mother = robot.getRobot()\n");
+                FILE *fp = fopen(".snapshot.lua", "w");
 
-                Save *method = new Save();
+                // open .snapshot.lua
+                fprintf(fp, "robot = require \"libRobotLua\"\n");
+                fprintf(fp, "factory = robot.getFactory()\n");
+                fprintf(fp, "mother = robot.getRobot()\n");
+
+                Save *method = new Save(fp);
                 m_mother->iterate(method);
               }
               break;
             case KEY_l:
               {
-                // start file selection menu
-                /*
-                   m_fileDialog->showWindow();
-                   */
                 delete m_mother;
                 m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
 
@@ -221,8 +224,8 @@ namespace Synthetics {
 
   void Constructor::update() {
     /*
-    m_fileDialog->Update();
     */
+    m_fileDialog->Update();
     m_mother->update();
   }
 }

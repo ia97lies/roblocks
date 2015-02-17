@@ -21,6 +21,9 @@ namespace Synthetics {
     CoreServices::getInstance()->getResourceManager()->addArchive("Resources/default.pak");
     CoreServices::getInstance()->getResourceManager()->addDirResource("default", false);
     CoreServices::getInstance()->getResourceManager()->addDirResource("Resources", false);
+    CoreServices::getInstance()->getConfig()->loadConfig("Polycode", "Resources/Assets/UIThemes/dark/theme.xml");
+    CoreServices::getInstance()->getResourceManager()->addArchive("Resources/Assets");
+
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
     m_constructor = new Constructor(m_core, m_conf, factory);
