@@ -32,9 +32,9 @@ namespace Synthetics {
             Plug *childPlug;
             int p = 0;
             for (int i = 0; i < parent->getNoParts(); i++) {
-              Part *parts = parent->getPart(i);
-              for (int j = 0; j < parts->getNoPlugs(); j++, p++) {
-                Plug *plug = parts->getPlug(j)->getConnectedPlug();
+              Part *part = parent->getPart(i);
+              for (int j = 0; j < part->getNoPlugs(); j++, p++) {
+                Plug *plug = part->getPlug(j)->getConnectedPlug();
                 if (plug && plug->getParent() == component) {
                   childPlug = plug;
                   parentPlugId = p;
@@ -44,18 +44,22 @@ namespace Synthetics {
             int childPlugId = 0;
             p = 0;
             for (int i = 0; i < component->getNoParts(); i++) {
-              Part *parts = component->getPart(i);
-              for (int j = 0; j < parts->getNoPlugs(); j++, p++) {
-                Plug *plug = parts->getPlug(j);
+              Part *part = component->getPart(i);
+              for (int j = 0; j < part->getNoPlugs(); j++, p++) {
+                Plug *plug = part->getPlug(j);
                 if (plug == childPlug) {
                   childPlugId = p;
                 }
               }
             }
+            Part *part = component->getPart(0);
+            Vector3 rotation = part->getShape()->getRotationEuler(); 
+
             fprintf(stderr, "plug = component%ld:getPlug(%d)\n", parent->getId(), parentPlugId);
             fprintf(stderr, "mother:activate(plug)\n");
             fprintf(stderr, "component%ld = factory:create(\"%s\")\n", component->getId(), component->getName().c_str());
             fprintf(stderr, "mother:place(component%ld)\n", component->getId());
+            fprintf(stderr, "component%ld:rotate(%f, %f, %f)\n", component->getId(), rotation.x, rotation.y, rotation.z);
             fprintf(stderr, "plug = component%ld:getPlug(%d)\n", component->getId(), childPlugId);
             fprintf(stderr, "mother:add()\n");
           }

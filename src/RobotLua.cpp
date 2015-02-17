@@ -106,7 +106,7 @@ namespace Synthetics {
       Plug *plug  = NULL;
       for (int i = 0; i < component->component->getNoParts(); i++) {
         Part *part = component->component->getPart(i);
-        if (plugIndex > part->getNoPlugs()) {
+        if (plugIndex >= part->getNoPlugs()) {
           plugIndex -= part->getNoPlugs();
         }
         else {
@@ -127,8 +127,21 @@ namespace Synthetics {
       return 1;
     }
 
+    static int componentRotate(lua_State *L) {
+      component_t *component = checkComponent(L, 1);
+      float x = luaL_checknumber(L, 2);
+      float y = luaL_checknumber(L, 3);
+      float z = luaL_checknumber(L, 4);
+
+      Part *part = component->component->getPart(0);
+      part->getShape()->setRotationEuler(Vector3(x, y, z));
+
+      return 0;
+    }
+
     static const struct luaL_Reg componentMethods[] = {
       { "getPlug", componentGetPlug },
+      { "rotate", componentRotate },
       { NULL, NULL }
     };
 
