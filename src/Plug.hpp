@@ -19,6 +19,8 @@ namespace Synthetics {
       virtual Polycode::Vector3 getRotation();
       virtual Polycode::Vector3 getFaceToFaceRotation(Plug *plug); 
       virtual Polycode::Entity *getShape();
+      virtual void setValue(Polycode::Vector3 value);
+      virtual Polycode::Vector3 getValue();
       virtual void setInput(bool on);
       virtual void setInOut(bool on);
       virtual void setDeaf(bool on);
@@ -36,6 +38,7 @@ namespace Synthetics {
       Polycode::Vector3 m_position;
       Polycode::Vector3 m_rotation;
       Polycode::Entity *m_shape;
+      Polycode::Vector3 m_value;
       bool m_input;
       bool m_output;
       bool m_on;

@@ -96,8 +96,25 @@ namespace Synthetics {
         m_body->getShape()->enabled = on;
       }
 
+      void Hub::shield() {
+        for (int i = 0; i < m_body->getNoPlugs(); i++) {
+          Plug *plug = m_body->getPlug(i);
+          Plug *connectedPlug = m_body->getPlug(i)->getConnectedPlug();
+          if (connectedPlug && (plug->isInput() || plug->isOutput())) {
+            if (connectedPlug && connectedPlug->isInput() && !connectedPlug->isOutput()) {
+              plug->setInput(false);
+            }
+            else if (connectedPlug && !connectedPlug->isInput() && connectedPlug->isOutput()) {
+              plug->setInput(true);
+            }
+          }
+        }
+      }
+
       void Hub::update(Plug *sendingPlug, Polycode::Vector3 input) {
+        shield();
         ValueRangeMapping mapping(0, 100, input);
+        // only receive if there is some pure input connected (a sink)
         if (!m_markerPlug) {
           m_markerPlug = sendingPlug;
         }

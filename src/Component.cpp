@@ -48,5 +48,8 @@ namespace Synthetics {
     }
     m_output = m_input;
   }
+
+  void Component::updateNg() {
+  }
 }
 

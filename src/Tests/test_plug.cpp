@@ -13,6 +13,7 @@ BOOST_AUTO_TEST_CASE(test_proper_initialization) {
   Plug plug(Vector3(0,0,0), Vector3(0,0,0));
   BOOST_CHECK(plug.getParent() == NULL);
   BOOST_CHECK(plug.getConnectedPlug() == NULL);
+  BOOST_CHECK(plug.getValue() == Vector3(0,0,0));
   BOOST_CHECK(plug.isInput() == false);
   BOOST_CHECK(plug.isOutput() == true);
   BOOST_CHECK(plug.isActivate() == false);
@@ -112,5 +113,12 @@ BOOST_AUTO_TEST_CASE(test_plug_set_not_deaf) {
   plug.setDeaf(false);
 
   BOOST_CHECK(plug.isInput() == false && plug.isOutput() == true);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_set_get_value) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.setValue(Vector3(1,2,3));
+
+  BOOST_CHECK(plug.getValue() == Vector3(1,2,3));
 }
 

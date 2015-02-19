@@ -16,6 +16,7 @@ namespace Synthetics {
     m_shape->setColor(1, 0, 0, 0.5);
     m_connectedPlug = NULL;
     m_parent = NULL;
+    m_value = Vector3(0,0,0);
     m_input = false;
     m_output = true;
     m_on = false;
@@ -70,6 +71,14 @@ namespace Synthetics {
   void Plug::activate(bool on) {
     m_on = on;
     setColor();
+  }
+
+  void Plug::setValue(Vector3 value) {
+    m_value = value;
+  }
+
+  Vector3 Plug::getValue() {
+    return m_value;
   }
 
   void Plug::setInput(bool on) {

@@ -49,6 +49,46 @@ class ComponentMock : public Component {
     Plug *m_plug[4];
 };
 
+class SimpleSensorMock : public Component {
+  public:
+    SimpleSensorMock() { 
+      m_part = new PartMock();
+      m_plug = new Plug(Vector3(0, 0, 0), Vector3(0, 0, 0));
+      m_plug->setInput(false);
+      m_part->addPlug(m_plug);
+    }
+    virtual ~SimpleSensorMock() {}
+
+    virtual int getNoParts() { return 1; }
+    virtual Part *getPart(int i) { return m_part; }
+    virtual void enable(bool on) {}
+    virtual void update(Plug *sendingPlug, Polycode::Vector3 delta) {}
+    Plug *getMyPlug(int i) { return m_plug; }
+  private:
+    Part *m_part;
+    Plug *m_plug;
+};
+
+class SimpleActorMock : public Component {
+  public:
+    SimpleActorMock() { 
+      m_part = new PartMock();
+      m_plug = new Plug(Vector3(0, 0, 0), Vector3(0, 0, 0));
+      m_plug->setInput(true);
+      m_part->addPlug(m_plug);
+    }
+    virtual ~SimpleActorMock() {}
+
+    virtual int getNoParts() { return 1; }
+    virtual Part *getPart(int i) { return m_part; }
+    virtual void enable(bool on) {}
+    virtual void update(Plug *sendingPlug, Polycode::Vector3 delta) {}
+    Plug *getMyPlug(int i) { return m_plug; }
+  private:
+    Part *m_part;
+    Plug *m_plug;
+};
+
 BOOST_AUTO_TEST_CASE(test_component_instantiate) {
   ComponentMock *mock = new ComponentMock();
   delete mock;
@@ -61,5 +101,16 @@ BOOST_AUTO_TEST_CASE(test_component_part_by_plug_shape) {
   BOOST_CHECK(mock->getPartByPlug(mock->getMyPlug(2)->getShape()) == mock->getPart(1));
   BOOST_CHECK(mock->getPartByPlug(mock->getMyPlug(3)->getShape()) == mock->getPart(0));
   delete mock;
+}
+
+BOOST_AUTO_TEST_CASE(test_component_sensor_signals_actor) {
+  SimpleSensorMock *sensor = new SimpleSensorMock();
+  SimpleActorMock *actor = new SimpleActorMock();
+
+  sensor->add(actor);
+  sensor->getPart(0)->getPlug(0)->setConnectedPlug(actor->getPart(0)->getPlug(0));
+  actor->getPart(0)->getPlug(0)->setConnectedPlug(sensor->getPart(0)->getPlug(0));
+
+
 }
 

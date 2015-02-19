@@ -27,6 +27,8 @@ namespace Synthetics {
         private:
           Part *m_body;
           Plug *m_markerPlug;
+
+          void shield(); 
       };
 
     }

@@ -23,6 +23,8 @@ namespace Synthetics {
       virtual void send();
       virtual void update(Plug *sendingPlug, Polycode::Vector3 delta) = 0;
 
+      virtual void updateNg();
+
     protected:
       Polycode::Vector3 m_input;
 
