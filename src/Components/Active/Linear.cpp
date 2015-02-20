@@ -166,10 +166,10 @@ namespace Synthetics {
         }
       }
 
-      void Linear::update(Plug *sendingPlug, Polycode::Vector3 input) {
+      void Linear::updateNg() {
+        Component::updateNg();
         Rod *rod = dynamic_cast<Rod *>(m_body[1]);
-        rod->update(input);
-        m_input = input;
+        rod->update(getOutput());
       }
 
       //----------------------------------------------------------------------

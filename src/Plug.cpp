@@ -100,11 +100,19 @@ namespace Synthetics {
   }
 
   bool Plug::isInput() {
-    return m_input;
+    return m_input && !m_output;
   }
 
   bool Plug::isOutput() {
-    return m_output;
+    return m_output && !m_input;
+  }
+
+  bool Plug::isInOut() {
+    return m_output && m_input;
+  }
+
+  bool Plug::isDeaf() {
+    return !m_output && !m_input;
   }
 
   bool Plug::isActivate() {

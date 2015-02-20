@@ -111,21 +111,6 @@ namespace Synthetics {
         }
       }
 
-      void Hub::update(Plug *sendingPlug, Polycode::Vector3 input) {
-        shield();
-        ValueRangeMapping mapping(0, 100, input);
-        // only receive if there is some pure input connected (a sink)
-        if (!m_markerPlug) {
-          m_markerPlug = sendingPlug;
-        }
-        else if (sendingPlug != m_markerPlug) {
-          m_input += mapping.value();
-        }
-        else {
-          m_input = mapping.value();
-        }
-      }
-
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------

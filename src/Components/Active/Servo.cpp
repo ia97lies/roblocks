@@ -168,10 +168,10 @@ namespace Synthetics {
         }
       }
 
-      void Servo::update(Plug *sendingPlug, Polycode::Vector3 input) {
+      void Servo::updateNg() {
+        Component::updateNg();
         Link *link = dynamic_cast<Link *>(m_body[1]);
-        link->update(input);
-        m_input = input;
+        link->update(getOutput());
       }
 
       //----------------------------------------------------------------------

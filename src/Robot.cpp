@@ -377,7 +377,7 @@ namespace Synthetics {
       for (i = map.begin(); i != map.end(); i++) {
         Component *component = dynamic_cast<Component*>(i->second);
         if (component) {
-          component->send();
+          component->updateNg();
         }
       }
     }

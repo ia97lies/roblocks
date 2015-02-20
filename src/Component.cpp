@@ -8,9 +8,9 @@ using namespace Polycode;
 
 namespace Synthetics {
   Component::Component() {
-    m_input = Vector3(0, 0, 0);
-    m_output = Vector3(0, 0, 0);
+    m_output = 0;
   }
+
   Component::~Component() {}
 
   Part *Component::getPartByPlug(Polycode::Entity *plugShape) {
@@ -30,26 +30,56 @@ namespace Synthetics {
   void Component::enable(bool on) {
   }
 
-  void Component::send() {
+
+  Polycode::Vector3 Component::getOutput() {
+    return m_output;
+  }
+
+  void Component::updateNg() {
+    Vector3 value = 0;
+
+    // get connected plugs value depending what kind of plugs are connected 
+    // together
     for (int i = 0; i < getNoParts(); i++) {
       Part *part = getPart(i);
       for (int j = 0; j < part->getNoPlugs(); j++) {
         Plug *plug = part->getPlug(j);
-        if (plug->isOutput()) {
-          Plug *connectedPlug = plug->getConnectedPlug();
-          if (connectedPlug && connectedPlug->isInput()) {
-            Component *component = dynamic_cast<Component *>(connectedPlug->getParent());
-            if (component) {
-              component->update(plug, m_output);
-            }
-          }
+        Plug *connectedPlug = plug->getConnectedPlug();
+        if (connectedPlug && plug->isInOut() && connectedPlug->isOutput()) {
+          plug->setValue(connectedPlug->getValue());
+          value += connectedPlug->getValue();
+        }
+        else if (connectedPlug && plug->isInput() && connectedPlug->isOutput()) {
+          plug->setValue(connectedPlug->getValue());
+          value += connectedPlug->getValue();
+        }
+        else if (connectedPlug && plug->isInput() && connectedPlug->isInOut()) {
+          plug->setValue(connectedPlug->getValue());
+          value += connectedPlug->getValue();
+        }
+        else if (connectedPlug && plug->isInOut() && connectedPlug->isInOut()) {
+          plug->setValue(connectedPlug->getValue());
+          value += connectedPlug->getValue();
         }
       }
     }
-    m_output = m_input;
-  }
 
-  void Component::updateNg() {
+    m_output = value;
+
+    // set collected value to my plugs
+    for (int i = 0; i < getNoParts(); i++) {
+      Part *part = getPart(i);
+      for (int j = 0; j < part->getNoPlugs(); j++) {
+        Plug *plug = part->getPlug(j);
+        Plug *connectedPlug = plug->getConnectedPlug();
+        if (connectedPlug && plug->isInOut() && connectedPlug->isInOut()) {
+          plug->setValue(value - connectedPlug->getValue());
+        }
+        else {
+          plug->setValue(value);
+        }
+      }
+    }
   }
 }
 

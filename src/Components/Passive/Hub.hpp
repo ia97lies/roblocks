@@ -22,8 +22,6 @@ namespace Synthetics {
           virtual Part *getPart(int i);
           virtual void enable(bool on); 
 
-          virtual void update(Plug *sendingPlug, Polycode::Vector3 delta);
-
         private:
           Part *m_body;
           Plug *m_markerPlug;

@@ -91,7 +91,9 @@ BOOST_AUTO_TEST_CASE(test_plug_set_inout) {
   Plug plug(Vector3(1,0,0), Vector3(0,0,0));
   plug.setInOut(true);
 
-  BOOST_CHECK(plug.isInput() == true && plug.isOutput() == true);
+  BOOST_CHECK(plug.isInput() == false);
+  BOOST_CHECK(plug.isOutput() == false);
+  BOOST_CHECK(plug.isInOut() == true);
 }
 
 BOOST_AUTO_TEST_CASE(test_plug_set_not_inout) {
@@ -105,6 +107,7 @@ BOOST_AUTO_TEST_CASE(test_plug_set_deaf) {
   Plug plug(Vector3(1,0,0), Vector3(0,0,0));
   plug.setDeaf(true);
 
+  BOOST_CHECK(plug.isDeaf() == true);
   BOOST_CHECK(plug.isInput() == false && plug.isOutput() == false);
 }
 

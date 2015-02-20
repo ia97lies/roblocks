@@ -22,8 +22,7 @@ namespace Synthetics {
           virtual Part *getPart(int i);
           virtual void enable(bool on); 
 
-          virtual void send();
-          virtual void update(Plug *sendingPlug, Polycode::Vector3 delta);
+          virtual void updateNg();
 
         private:
           Part *m_body[2];

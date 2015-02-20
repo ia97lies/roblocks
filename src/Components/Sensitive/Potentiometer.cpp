@@ -171,15 +171,15 @@ namespace Synthetics {
         }
       }
 
-      void Potentiometer::send() {
+      void Potentiometer::updateNg() {
         Shaft *shaft = dynamic_cast<Shaft *>(m_body[1]);
-        m_input = shaft->getValue();
-        Component::send();
+        shaft->getValue();
+
+        for (int i = 0; i < m_body[0]->getNoPlugs(); i++) {
+          m_body[0]->getPlug(i)->setValue(shaft->getValue());
+        }
       }
 
-      void Potentiometer::update(Plug *sendingPlug, Polycode::Vector3 input) {
-        // nothing to do we are ourself a signal source
-      }
 
       //----------------------------------------------------------------------
       // Components factory

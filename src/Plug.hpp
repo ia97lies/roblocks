@@ -26,6 +26,8 @@ namespace Synthetics {
       virtual void setDeaf(bool on);
       virtual bool isInput();
       virtual bool isOutput();
+      virtual bool isInOut();
+      virtual bool isDeaf();
       virtual void activate(bool on);
       virtual bool isActivate(); 
       virtual void setConnectedPlug(Plug *plug);
