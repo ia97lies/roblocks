@@ -74,6 +74,7 @@ set(Synthetics_SRCS
   PolycodeFacade.cpp
   ValueRangeMapping.cpp
   CompoundStore.cpp
+  FileManager.cpp
   Plug.cpp
   Part.cpp
   Compound.cpp
@@ -94,6 +95,7 @@ set(Synthetics_HDRS
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
   CompoundStore.hpp
+  FileManager.hpp
   Plug.hpp
   Knob.hpp
   Part.hpp

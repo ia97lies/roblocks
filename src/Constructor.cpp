@@ -98,12 +98,15 @@ namespace Synthetics {
 
     
     Scene *scene = new Scene(Scene::SCENE_2D_TOPLEFT);
-    scene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
+    scene->doVisibilityChecking(false);
+    scene->getDefaultCamera()->frustumCulling = false;
+    scene->rootEntity.processInputEvents = true;
+
     std::vector<String> extensions;
-    extensions.push_back("*.lua");
+    extensions.push_back("lua");
     m_fileDialog = new UIFileDialog(String("/home/cli"), false, extensions, false);
     scene->addEntity(m_fileDialog);
-    m_fileDialog->hideWindow();
+    //m_fileDialog->hideWindow();
 
   }
 
