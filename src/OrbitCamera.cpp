@@ -16,12 +16,8 @@ namespace Synthetics {
     m_core = core;
     m_scene = scene;
 
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_UP);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+    m_on = false;
+    activate(true);
 
     m_light = new SceneLight(SceneLight::POINT_LIGHT, scene, 100);
     Vector3 pos = m_scene->getDefaultCamera()->getPosition();
@@ -33,7 +29,6 @@ namespace Synthetics {
     m_scene->addEntity(m_soundListener);
     m_scene->getDefaultCamera()->addChild(m_soundListener);
 
-    m_on = true;
     m_x = -20.0f;
     m_y = 20.0f;
     m_distance = 15.0f;
@@ -119,12 +114,16 @@ namespace Synthetics {
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_UP);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
     }
     else if (!on && m_on) {
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEUP);
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEWHEEL_UP);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
     }
     m_on = on;
   }

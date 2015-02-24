@@ -10,73 +10,12 @@
 #include "Part.hpp"
 #include "OrbitCamera.hpp"
 #include "Robot.hpp"
+#include "FileManager.hpp"
 #include "Constructor.hpp"
 
 using namespace Polycode;
 
 namespace Synthetics {
- 
-  //--------------------------------------------------------------------------
-  class Save : public IterateMethod {
-    public:
-      Save(FILE *fp) { 
-        m_fp = fp;
-      }
-
-      virtual ~Save() {}
-
-      virtual void call(Compound *parentCompound, Compound *compound) {
-        Component *component = dynamic_cast<Component *>(compound);
-        if (component) {
-          Component *parent= dynamic_cast<Component *>(parentCompound);
-          if (parent) {
-            int parentPlugId = 0;
-            Plug *childPlug;
-            int p = 0;
-            for (int i = 0; i < parent->getNoParts(); i++) {
-              Part *part = parent->getPart(i);
-              for (int j = 0; j < part->getNoPlugs(); j++, p++) {
-                Plug *plug = part->getPlug(j)->getConnectedPlug();
-                if (plug && plug->getParent() == component) {
-                  childPlug = plug;
-                  parentPlugId = p;
-                }
-              }
-            }
-            int childPlugId = 0;
-            p = 0;
-            for (int i = 0; i < component->getNoParts(); i++) {
-              Part *part = component->getPart(i);
-              for (int j = 0; j < part->getNoPlugs(); j++, p++) {
-                Plug *plug = part->getPlug(j);
-                if (plug == childPlug) {
-                  childPlugId = p;
-                }
-              }
-            }
-            Part *part = component->getPart(0);
-            Vector3 rotation = part->getShape()->getRotationEuler(); 
-
-            fprintf(m_fp, "plug = component%ld:getPlug(%d)\n", parent->getId(), parentPlugId);
-            fprintf(m_fp, "mother:activate(plug)\n");
-            fprintf(m_fp, "component%ld = factory:create(\"%s\")\n", component->getId(), component->getName().c_str());
-            fprintf(m_fp, "mother:place(component%ld)\n", component->getId());
-            fprintf(m_fp, "component%ld:rotate(%f, %f, %f)\n", component->getId(), rotation.x, rotation.y, rotation.z);
-            fprintf(m_fp, "plug = component%ld:getPlug(%d)\n", component->getId(), childPlugId);
-            fprintf(m_fp, "mother:add()\n");
-          }
-          else {
-            fprintf(m_fp, "component%ld = factory:create(\"Passive.Hub\")\n", component->getId());
-            fprintf(m_fp, "mother:init(component%ld)\n", component->getId());
-          }
-        }
-      }
-
-    private:
-      FILE *m_fp;
-  };
-
-  //--------------------------------------------------------------------------
   Constructor::Constructor(Core *core, Configurator *conf, Components::Factory *factory) : EventHandler() {
     m_core = core;
     m_conf = conf;
@@ -85,10 +24,8 @@ namespace Synthetics {
     m_camera = new OrbitCamera(m_core, m_scene);
     m_camera->activate(true);
 
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+    m_on = false;
+    activate(true);
 
     m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
 
@@ -104,9 +41,9 @@ namespace Synthetics {
 
     std::vector<String> extensions;
     extensions.push_back("lua");
-    m_fileDialog = new UIFileDialog(String("/home/cli"), false, extensions, false);
+    m_fileDialog = new FileManager(String("/home/cli"), extensions);
     scene->addEntity(m_fileDialog);
-    //m_fileDialog->hideWindow();
+    m_fileDialog->hideWindow();
 
   }
 
@@ -157,15 +94,7 @@ namespace Synthetics {
               break;
             case KEY_s:
               {
-                FILE *fp = fopen(".snapshot.lua", "w");
-
-                // open .snapshot.lua
-                fprintf(fp, "robot = require \"libRobotLua\"\n");
-                fprintf(fp, "factory = robot.getFactory()\n");
-                fprintf(fp, "mother = robot.getRobot()\n");
-
-                Save *method = new Save(fp);
-                m_mother->iterate(method);
+                m_fileDialog->save(m_mother, NULL);
               }
               break;
             case KEY_l:
@@ -191,7 +120,6 @@ namespace Synthetics {
                 }
                 delete lua;
               }
-              break;
           }
           break;
         case InputEvent::EVENT_MOUSEDOWN:
@@ -223,6 +151,20 @@ namespace Synthetics {
           break;
       }
     }
+    else if (e->getEventType() == "UIEvent") {
+      fprintf(stderr, "XXX: UIEvent\n");
+      switch(e->getEventCode()) {
+        case  UIEvent::OK_EVENT:
+        case  UIEvent::CANCEL_EVENT:
+          {
+            fprintf(stderr, "XXX: cancel/ok\n");
+          }
+          break;
+      }
+    }
+    else {
+      fprintf(stderr, "XXX: UnknownEvent\n");
+    }
   }
 
   void Constructor::update() {
@@ -231,5 +173,28 @@ namespace Synthetics {
     m_fileDialog->Update();
     m_mother->update();
   }
+
+  void Constructor::activate(bool on) {
+    if (on && !m_on) {
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+      //m_core->getInput()->removeEventListener(this, UIEvent::OK_EVENT);
+      //m_core->getInput()->removeEventListener(this, UIEvent::CANCEL_EVENT);
+      m_core->getInput()->addEventListener(this, UIEvent::OK_EVENT);
+      m_core->getInput()->addEventListener(this, UIEvent::CANCEL_EVENT);
+    }
+    else if (!on && m_on) {
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEUP);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+      m_core->getInput()->addEventListener(this, UIEvent::OK_EVENT);
+      m_core->getInput()->addEventListener(this, UIEvent::CANCEL_EVENT);
+    }
+    m_on = on;
+  }
+
 }
 

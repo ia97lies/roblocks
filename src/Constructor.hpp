@@ -10,6 +10,7 @@
 #include "Polycode3DPhysics.h"
 #include "PolyUIFileDialog.h"
 
+#include "FileManager.hpp"
 #include "MovingCamera.hpp"
 #include "Robot.hpp"
 #include "Configurator.hpp"
@@ -23,8 +24,10 @@ namespace Synthetics {
       ~Constructor();
       void handleEvent(Polycode::Event *e);
       void update();
+      void activate(bool on);
 
     private:
+      bool m_on;
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
       Polycode::Scene *m_hudScene;
@@ -33,7 +36,7 @@ namespace Synthetics {
       Robot *m_mother;
       Configurator *m_conf;
       SelectorDisplay *m_selectorDisplay;
-      Polycode::UIFileDialog *m_fileDialog;
+      FileManager *m_fileDialog;
   };
 }
 #endif
