@@ -12,8 +12,9 @@ using namespace Polycode;
 
 namespace Synthetics {
   class FileManagerCompletion {
-    virtual ~FileManagerCompletion();
-    virtual void done(Robot *robot) = 0;
+    public:
+      virtual ~FileManagerCompletion() {}
+      virtual void done() = 0;
   };
 
   class FileManager : public Polycode::UIFileDialog {
@@ -23,12 +24,19 @@ namespace Synthetics {
 
       virtual void onClose();
       virtual void handleEvent(Event *e);
+      //XXX I AM HERE
 
       virtual void save(Robot *robot, FileManagerCompletion *completion); 
-      virtual void load(FileManagerCompletion *completion);
+      virtual void load(Robot *robot, FileManagerCompletion *completion);
     private:
       Robot *m_robot;
-      FileManagerCompletion *m_completion;
+      FileManagerCompletion *m_saveCompletion;
+      FileManagerCompletion *m_loadCompletion;
+      Polycode::UITextInput *m_fileNameInput; 
+
+      void saveComplete();
+      void loadComplete();
+      void cancel();
   };
 }
 

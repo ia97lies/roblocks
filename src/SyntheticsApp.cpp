@@ -24,6 +24,11 @@ namespace Synthetics {
     CoreServices::getInstance()->getConfig()->loadConfig("Polycode", "Resources/Assets/UIThemes/dark/theme.xml");
     CoreServices::getInstance()->getResourceManager()->addArchive("Resources/Assets");
 
+    SceneLabel::defaultAnchor = Vector3(-1.0, -1.0, 0.0);
+    SceneLabel::defaultPositionAtBaseline = true;
+    SceneLabel::defaultSnapToPixels = true;
+    SceneLabel::createMipmapsForLabels = false;
+
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
     m_constructor = new Constructor(m_core, m_conf, factory);

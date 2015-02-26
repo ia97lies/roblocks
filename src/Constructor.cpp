@@ -16,6 +16,22 @@
 using namespace Polycode;
 
 namespace Synthetics {
+  class SaveCompletion : public FileManagerCompletion {
+    public:
+      SaveCompletion(Constructor *constructor, MovingCamera *camera) {
+        m_constructor = constructor;
+        m_camera = camera;
+      }
+      virtual ~SaveCompletion() {}
+      virtual void done() {
+        m_constructor->activate(true);
+        m_camera->activate(true);
+      }
+    private:
+      Constructor *m_constructor;
+      MovingCamera *m_camera;
+  };
+
   Constructor::Constructor(Core *core, Configurator *conf, Components::Factory *factory) : EventHandler() {
     m_core = core;
     m_conf = conf;
@@ -40,11 +56,9 @@ namespace Synthetics {
     scene->rootEntity.processInputEvents = true;
 
     std::vector<String> extensions;
-    extensions.push_back("lua");
-    m_fileDialog = new FileManager(String("/home/cli"), extensions);
+    extensions.push_back("*.lua");
+    m_fileDialog = new FileManager(m_core->getDefaultWorkingDirectory(), extensions);
     scene->addEntity(m_fileDialog);
-    m_fileDialog->hideWindow();
-
   }
 
   Constructor::~Constructor() {
@@ -94,7 +108,10 @@ namespace Synthetics {
               break;
             case KEY_s:
               {
-                m_fileDialog->save(m_mother, NULL);
+                SaveCompletion *completion = new SaveCompletion(this, m_camera);
+                activate(false);
+                m_camera->activate(false);
+                m_fileDialog->save(m_mother, completion);
               }
               break;
             case KEY_l:

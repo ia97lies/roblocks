@@ -72,23 +72,58 @@ namespace Synthetics {
   FileManager::FileManager(String workingDir, std::vector<String> extentions) 
     : UIFileDialog::UIFileDialog(workingDir, false, extensions, false) {
     m_robot = NULL;
+    m_saveCompletion = NULL;
+    m_loadCompletion = NULL;
+    m_fileNameInput = new UITextInput(false, 270, 12); 
+    addChild(m_fileNameInput); 
+    m_fileNameInput->addEventListener(this, UIEvent::CHANGE_EVENT);
+    m_fileNameInput->setPosition(100, 5);
+    m_fileNameInput->setText(selection.c_str());
+    hideWindow();
   }
 
   FileManager::~FileManager() {
   }
 
+  void FileManager::cancel() {
+    saveComplete();
+    loadComplete();
+  }
+
+  void FileManager::saveComplete() {
+    if (m_saveCompletion) {
+      m_saveCompletion->done();
+      delete m_saveCompletion;
+      m_saveCompletion = NULL;
+    }
+  }
+
+  void FileManager::loadComplete() {
+    if (m_loadCompletion) {
+      m_loadCompletion->done();
+      delete m_loadCompletion;
+      m_loadCompletion = NULL;
+    }
+  }
+
   void FileManager::onClose() {
+    cancel();
     hideWindow();
   }
 
   void FileManager::handleEvent(Event *e) {
     UIFileDialog::handleEvent(e);
-    if (e->getEventType() == "UIEvent") {
+    if (e->getEventCode() == InputEvent::EVENT_DOUBLECLICK) {
+      fprintf(stderr, "Got a double click\n");
+      m_fileNameInput->setText(selection.c_str());
+    }
+
+    else if (e->getEventType() == "UIEvent") {
       if(e->getEventCode() == UIEvent::CLICK_EVENT) {
         if(e->getDispatcher() == okButton && m_robot) {
-          fprintf(stderr, "XXX %s, %s\n", selection.c_str(), currentFolderPath.c_str());
-          //hideWindow();
-          FILE *fp = fopen(".snapshot2.lua", "w");
+          hideWindow();
+          FILE *fp = fopen(m_fileNameInput->getText().c_str(), "w");
+          fprintf(stderr, "XXX %p, %s\n", fp, m_fileNameInput->getText().c_str());
 
           // open .snapshot.lua
           fprintf(fp, "robot = require \"libRobotLua\"\n");
@@ -97,6 +132,11 @@ namespace Synthetics {
 
           Save *method = new Save(fp);
           m_robot->iterate(method);
+          loadComplete();
+        }
+        if(e->getDispatcher() == cancelButton) {
+          cancel();
+          hideWindow();
         }
       }
     }
@@ -105,11 +145,12 @@ namespace Synthetics {
   void FileManager::save(Robot *robot, FileManagerCompletion *completion) {
     showWindow();
     m_robot = robot;
-    m_completion = completion;
+    m_saveCompletion = completion;
   }
 
-  void FileManager::load(FileManagerCompletion *completion) {
-    m_completion = completion;
+  void FileManager::load(Robot *robot, FileManagerCompletion *completion) {
+    showWindow();
+    m_loadCompletion = completion;
   }
 }
 
