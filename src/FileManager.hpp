@@ -6,6 +6,7 @@
 #define SYNTHETICS_FILE_MANAGER_H
 
 #include "PolyUIFileDialog.h"
+#include "Components/Factory.hpp"
 #include "Robot.hpp"
 
 using namespace Polycode;
@@ -19,7 +20,8 @@ namespace Synthetics {
 
   class FileManager : public Polycode::UIFileDialog {
     public:
-      FileManager(Polycode::String workingDir, std::vector<Polycode::String> extentions);
+      FileManager(Polycode::Core *core, Polycode::CollisionScene *scene, Components::Factory *factory, 
+                  std::vector<Polycode::String> extentions);
       virtual ~FileManager();
 
       virtual void onClose();
@@ -30,6 +32,9 @@ namespace Synthetics {
       virtual void load(Robot *robot, FileManagerCompletion *completion);
     private:
       Robot *m_robot;
+      Polycode::Core *m_core;
+      Polycode::Scene *m_scene;
+      Components::Factory *m_factory;
       FileManagerCompletion *m_saveCompletion;
       FileManagerCompletion *m_loadCompletion;
       Polycode::UITextInput *m_fileNameInput; 

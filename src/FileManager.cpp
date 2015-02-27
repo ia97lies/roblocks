@@ -2,6 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "Lua.hpp"
 #include "FileManager.hpp"
 #include "Constructor.hpp"
 
@@ -69,16 +70,18 @@ namespace Synthetics {
   };
 
   //--------------------------------------------------------------------------
-  FileManager::FileManager(String workingDir, std::vector<String> extentions) 
-    : UIFileDialog::UIFileDialog(workingDir, false, extensions, false) {
+  FileManager::FileManager(Core *core, CollisionScene *scene, Components::Factory *factory, std::vector<String> extentions) 
+    : UIFileDialog::UIFileDialog(core->getDefaultWorkingDirectory(), false, extensions, false) {
     m_robot = NULL;
+    m_core = core;
+    m_scene = scene;
+    m_factory = factory;
     m_saveCompletion = NULL;
     m_loadCompletion = NULL;
     m_fileNameInput = new UITextInput(false, 270, 12); 
     addChild(m_fileNameInput); 
     m_fileNameInput->addEventListener(this, UIEvent::CHANGE_EVENT);
     m_fileNameInput->setPosition(100, 5);
-    m_fileNameInput->setText(selection.c_str());
     hideWindow();
   }
 
@@ -114,16 +117,14 @@ namespace Synthetics {
   void FileManager::handleEvent(Event *e) {
     UIFileDialog::handleEvent(e);
     if (e->getEventCode() == InputEvent::EVENT_DOUBLECLICK) {
-      fprintf(stderr, "Got a double click\n");
       m_fileNameInput->setText(selection.c_str());
     }
 
     else if (e->getEventType() == "UIEvent") {
       if(e->getEventCode() == UIEvent::CLICK_EVENT) {
-        if(e->getDispatcher() == okButton && m_robot) {
+        if(e->getDispatcher() == okButton && m_saveCompletion) {
           hideWindow();
           FILE *fp = fopen(m_fileNameInput->getText().c_str(), "w");
-          fprintf(stderr, "XXX %p, %s\n", fp, m_fileNameInput->getText().c_str());
 
           // open .snapshot.lua
           fprintf(fp, "robot = require \"libRobotLua\"\n");
@@ -132,9 +133,32 @@ namespace Synthetics {
 
           Save *method = new Save(fp);
           m_robot->iterate(method);
-          loadComplete();
+          saveComplete();
         }
-        if(e->getDispatcher() == cancelButton) {
+        else if(e->getDispatcher() == okButton && m_loadCompletion) {
+          if (selection.size() > 0) {
+            hideWindow();
+            Lua *lua = new Lua();
+            lua->open();
+            lua->setCPath("./lib/?.so");
+            lua_State *L = lua->L();
+            lua_pushlightuserdata(L, m_core);
+            lua_setfield(L, LUA_REGISTRYINDEX, "core");
+            lua_pushlightuserdata(L, m_scene);
+            lua_setfield(L, LUA_REGISTRYINDEX, "scene");
+            lua_pushlightuserdata(L, m_factory);
+            lua_setfield(L, LUA_REGISTRYINDEX, "factory");
+            lua_pushlightuserdata(L, m_robot);
+            lua_setfield(L, LUA_REGISTRYINDEX, "robot");
+
+            if (luaL_loadfile(L, m_fileNameInput->getText().c_str()) || lua_pcall(L, 0, 0, 0)) {
+              lua->error("cannot load %s: %s\n", m_fileNameInput->getText().c_str(), lua_tostring(L, -1));
+            }
+            delete lua;
+            loadComplete();
+          }
+        }
+        else if(e->getDispatcher() == cancelButton) {
           cancel();
           hideWindow();
         }
@@ -146,10 +170,14 @@ namespace Synthetics {
     showWindow();
     m_robot = robot;
     m_saveCompletion = completion;
+    // TODO: for windows it needs to be a \ instead of a / is there a proper way?
+    selection = currentFolderPath + "/newfile.lua";
+    m_fileNameInput->setText(selection);
   }
 
   void FileManager::load(Robot *robot, FileManagerCompletion *completion) {
     showWindow();
+    m_robot = robot;
     m_loadCompletion = completion;
   }
 }

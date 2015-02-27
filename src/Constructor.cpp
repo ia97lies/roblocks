@@ -5,7 +5,6 @@
 #include "PolyString.h"
 #include "PolyUITreeEvent.h"
 
-#include "Lua.hpp"
 #include "PolycodeFacade.hpp"
 #include "Part.hpp"
 #include "OrbitCamera.hpp"
@@ -16,13 +15,13 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  class SaveCompletion : public FileManagerCompletion {
+  class DoneCompletion : public FileManagerCompletion {
     public:
-      SaveCompletion(Constructor *constructor, MovingCamera *camera) {
+      DoneCompletion(Constructor *constructor, MovingCamera *camera) {
         m_constructor = constructor;
         m_camera = camera;
       }
-      virtual ~SaveCompletion() {}
+      virtual ~DoneCompletion() {}
       virtual void done() {
         m_constructor->activate(true);
         m_camera->activate(true);
@@ -57,7 +56,7 @@ namespace Synthetics {
 
     std::vector<String> extensions;
     extensions.push_back("*.lua");
-    m_fileDialog = new FileManager(m_core->getDefaultWorkingDirectory(), extensions);
+    m_fileDialog = new FileManager(m_core, m_scene, m_factory, extensions);
     scene->addEntity(m_fileDialog);
   }
 
@@ -108,7 +107,7 @@ namespace Synthetics {
               break;
             case KEY_s:
               {
-                SaveCompletion *completion = new SaveCompletion(this, m_camera);
+                DoneCompletion *completion = new DoneCompletion(this, m_camera);
                 activate(false);
                 m_camera->activate(false);
                 m_fileDialog->save(m_mother, completion);
@@ -118,24 +117,10 @@ namespace Synthetics {
               {
                 delete m_mother;
                 m_mother = new Robot(new PolycodeFacade(m_core, m_scene));
-
-                Lua *lua = new Lua();
-                lua->open();
-                lua->setCPath("./lib/?.so");
-                lua_State *L = lua->L();
-                lua_pushlightuserdata(L, m_core);
-                lua_setfield(L, LUA_REGISTRYINDEX, "core");
-                lua_pushlightuserdata(L, m_scene);
-                lua_setfield(L, LUA_REGISTRYINDEX, "scene");
-                lua_pushlightuserdata(L, m_factory);
-                lua_setfield(L, LUA_REGISTRYINDEX, "factory");
-                lua_pushlightuserdata(L, m_mother);
-                lua_setfield(L, LUA_REGISTRYINDEX, "robot");
-
-                if (luaL_loadfile(L, ".snapshot.lua") || lua_pcall(L, 0, 0, 0)) {
-                  lua->error("cannot load .snapshot.lua: %s\n", lua_tostring(L, -1));
-                }
-                delete lua;
+                DoneCompletion *completion = new DoneCompletion(this, m_camera);
+                activate(false);
+                m_camera->activate(false);
+                m_fileDialog->load(m_mother, completion);
               }
           }
           break;
