@@ -27,20 +27,20 @@ namespace Synthetics {
     shape->setColor(0.5, 0.5, 0.5, 0.3);
     shape->setPosition(0, -m_conf->getHeight()/2  + height/2 + border);
 
-    Polycode::SceneLight *light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 40);
-    light->setPosition(3,2,3);
-    light->setLightColor(1,1,1);
-    m_scene->addLight(light);
-
+    m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 70);
+    m_light->setPosition(0,0,0);
+    m_light->setLightColor(1,1,1);
+    m_scene->addLight(m_light);
 
     m_index = 0;
     m_text = factory->getNames().at(m_index);
     m_label = new SceneLabel("< "+ m_text + " >", 16);
-    //m_hudScene->addChild(m_label);
+    m_label->setPosition(-m_label->getTextWidthForString(m_label->getText())/2, -m_conf->getHeight()/2 + 2 * border);
+    m_hudScene->addChild(m_label);
 
-    m_scene->getDefaultCamera()->setPosition(9,9,9);
+    m_scene->getDefaultCamera()->setPosition(0,15,25);
     m_scene->getDefaultCamera()->lookAt(Vector3(0, 0, 0));
-    m_scene->getDefaultCamera()->cameraShift = Vector2(0.0, 1.0 - (1.0/m_conf->getHeight() * (m_conf->getHeight()/2 + height/2 + border)));
+    m_scene->getDefaultCamera()->cameraShift = Vector2(0.0, 1.0 - (1.0/m_conf->getHeight() * (m_conf->getHeight()/2 + height/2 + 2 * border)));
 
     m_polycodeFacade = new PolycodeFacade(core, m_scene);
     for (int i = 0; i < m_factory->getNames().size(); i++) {
@@ -49,10 +49,16 @@ namespace Synthetics {
       for (int j = 0; j < m_components.at(i)->getNoParts(); j++) {
         Robot::constructPlugsGraphic(m_polycodeFacade, m_components.at(i)->getPart(j));
       }
-      m_components.at(i)->enable(false);
-      m_components.at(i)->getPart(0)->getShape()->setPosition(0,0,0);
+      //m_components.at(i)->enable(false);
+      // XXX I AM HERE: place them in x row point camera directly on it, and rotate them to have 2.5 view on it
+      // show all and look at the active one
+      m_components.at(i)->getPart(0)->getShape()->setPosition(3*i, 0, 0);
     }
-    m_components.at(m_index)->enable(true);
+    //m_components.at(m_index)->enable(true);
+    m_light->setPosition(3*m_index, 5, 7);
+    m_components.at(m_index)->getPart(0)->getShape()->setScale(1.5,1.5,1.5);
+      m_components.at(m_index)->getPart(0)->getShape()->setPosition(3*m_index, 1, 0);
+    m_components.at(m_index)->getPart(0)->getShape()->setRotationEuler(Vector3(0, -45, 0));
   }
 
   SelectorDisplay::~SelectorDisplay() {
@@ -62,7 +68,10 @@ namespace Synthetics {
     if(e->getDispatcher() == m_core->getInput()) {
       InputEvent *inputEvent = (InputEvent*)e;
 
-      m_components.at(m_index)->enable(false);
+      //m_components.at(m_index)->enable(false);
+      m_components.at(m_index)->getPart(0)->getShape()->setScale(1,1,1);
+      m_components.at(m_index)->getPart(0)->getShape()->setPosition(3*m_index, 0, 0);
+      m_components.at(m_index)->getPart(0)->getShape()->setRotationEuler(0);
       switch(e->getEventCode()) {
         case InputEvent::EVENT_KEYDOWN:
           switch (inputEvent->keyCode()) {
@@ -81,7 +90,14 @@ namespace Synthetics {
       }
       m_text = m_factory->getNames().at(m_index);
       m_label->setText("< "+ m_text + " >");
-      m_components.at(m_index)->enable(true);
+      m_label->setPosition(-m_label->getTextWidthForString(m_label->getText())/2, m_label->getPosition2D().y);
+      //m_components.at(m_index)->enable(true);
+      m_light->setPosition(3*m_index, 5, 7);
+      m_components.at(m_index)->getPart(0)->getShape()->setScale(1.5,1.5,1.5);
+      m_components.at(m_index)->getPart(0)->getShape()->setPosition(3*m_index, 1, 0);
+      m_components.at(m_index)->getPart(0)->getShape()->setRotationEuler(Vector3(0, -45, 0));
+      m_scene->getDefaultCamera()->setPosition(3* m_index, 15, 25);
+      m_scene->getDefaultCamera()->lookAt(Vector3(3* m_index, 0, 0));
     }
   }
 

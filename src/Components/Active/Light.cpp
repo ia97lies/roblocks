@@ -121,6 +121,7 @@ namespace Synthetics {
         m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 1);
         m_light->setPosition(0.8,0,0);
         m_light->setLightColor(1,1,1);
+        m_light->setIntensity(0);
         m_scene->addLight(m_light);
 
         m_body = new Body(m_light);

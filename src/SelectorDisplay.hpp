@@ -25,6 +25,7 @@ namespace Synthetics {
       Configurator *m_conf;
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
+      Polycode::SceneLight *m_light;
       PolycodeFacade *m_polycodeFacade;
       Polycode::Scene *m_hudScene;
       Polycode::SceneLabel *m_label;
