@@ -37,6 +37,9 @@ namespace Synthetics {
       Configurator *m_conf;
       SelectorDisplay *m_selectorDisplay;
       FileManager *m_fileDialog;
+      unsigned int m_lastClickTime;
+
+      void place();
   };
 }
 #endif

@@ -38,6 +38,7 @@ namespace Synthetics {
     m_scene = new CollisionScene();
     m_camera = new OrbitCamera(m_core, m_scene);
     m_camera->activate(true);
+    m_lastClickTime = 0;
 
     m_on = false;
     activate(true);
@@ -77,17 +78,8 @@ namespace Synthetics {
               }
               break;
             case KEY_RETURN:
-              // add current selected component to current active component
-              if (m_mother->isEmpty()) {
-                Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
-                m_mother->add(component);
-              }
-              else if (!m_mother->inPlace()) {
-                Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
-                m_mother->place(component);
-              }
-              else {
-                m_mother->add();
+              {
+                place();
               }
               break;
             case KEY_UP:
@@ -127,13 +119,21 @@ namespace Synthetics {
         case InputEvent::EVENT_MOUSEDOWN:
           switch(inputEvent->getMouseButton()) {
             case CoreInput::MOUSE_BUTTON1:
-              Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
-              RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 300.0);
-              if(res.entity) {
-                m_mother->activate(res.entity);
-              }
-              if (m_mother->getActiveKnob()) {
-                m_camera->activate(false);
+              {
+                Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
+                RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 300.0);
+                if(res.entity) {
+                  m_mother->activate(res.entity);
+                }
+                if (m_mother->getActiveKnob()) {
+                  m_camera->activate(false);
+                }
+                // double click, somehow InputEvent::EVENT_DOUBLECLICK won't work, do it by my self
+                unsigned int timestamp = m_core->getTicks();
+                if (timestamp - m_lastClickTime < 400) {
+                  place();
+                }
+                m_lastClickTime = m_core->getTicks();
               }
               break;
           }
@@ -141,26 +141,19 @@ namespace Synthetics {
         case InputEvent::EVENT_MOUSEUP:
           switch(inputEvent->getMouseButton()) {
             case CoreInput::MOUSE_BUTTON1:
-              m_mother->deactivate();
-              m_camera->activate(true);
+              {
+                m_mother->deactivate();
+                m_camera->activate(true);
+              }
               break;
           }
           break;
         case InputEvent::EVENT_MOUSEMOVE:
-          // TODO only if mouse left mouse button down
-          Vector3 delta(m_core->getInput()->getMouseDelta().x, m_core->getInput()->getMouseDelta().y, 0);
-          m_mother->mouseMove(delta);
-          break;
-      }
-    }
-    else if (e->getEventType() == "UIEvent") {
-      fprintf(stderr, "XXX: UIEvent\n");
-      switch(e->getEventCode()) {
-        case  UIEvent::OK_EVENT:
-        case  UIEvent::CANCEL_EVENT:
           {
-            fprintf(stderr, "XXX: cancel/ok\n");
+            Vector3 delta(m_core->getInput()->getMouseDelta().x, m_core->getInput()->getMouseDelta().y, 0);
+            m_mother->mouseMove(delta);
           }
+          break;
           break;
       }
     }
@@ -170,8 +163,6 @@ namespace Synthetics {
   }
 
   void Constructor::update() {
-    /*
-    */
     m_fileDialog->Update();
     m_mother->update();
   }
@@ -182,8 +173,7 @@ namespace Synthetics {
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
-      //m_core->getInput()->removeEventListener(this, UIEvent::OK_EVENT);
-      //m_core->getInput()->removeEventListener(this, UIEvent::CANCEL_EVENT);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_DOUBLECLICK);
       m_core->getInput()->addEventListener(this, UIEvent::OK_EVENT);
       m_core->getInput()->addEventListener(this, UIEvent::CANCEL_EVENT);
     }
@@ -192,11 +182,26 @@ namespace Synthetics {
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEUP);
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEMOVE);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_DOUBLECLICK);
       m_core->getInput()->addEventListener(this, UIEvent::OK_EVENT);
       m_core->getInput()->addEventListener(this, UIEvent::CANCEL_EVENT);
     }
     m_on = on;
   }
 
+  void Constructor::place() {
+    // add current selected component to current active component
+    if (m_mother->isEmpty()) {
+      Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
+      m_mother->add(component);
+    }
+    else if (!m_mother->inPlace()) {
+      Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
+      m_mother->place(component);
+    }
+    else {
+      m_mother->add();
+    }
+  }
 }
 
