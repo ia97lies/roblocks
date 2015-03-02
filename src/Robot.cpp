@@ -293,6 +293,20 @@ namespace Synthetics {
     }
   }
 
+  void Robot::replace(Component *component) {
+    if (m_inPlace != NULL) {
+      Robot::destructGraphic(m_polycodeFacade, m_inPlace);
+      delete m_inPlace;
+      m_inPlace = NULL;
+      m_inPlacePart = NULL;
+      m_inPlacePlug = NULL;
+      place(component);
+    }
+    else {
+      delete component;
+    }
+  }
+
   void Robot::activate(Polycode::Entity *plugShape) {
     if (m_inPlace == NULL) {
       {

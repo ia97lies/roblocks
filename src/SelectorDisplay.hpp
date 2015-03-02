@@ -13,9 +13,15 @@
 #include "Configurator.hpp"
 
 namespace Synthetics {
+  class ChangeSelection {
+    public:
+      virtual ~ChangeSelection() {}
+      virtual void onChange(std::string name) = 0;
+  };
+
   class SelectorDisplay : public Polycode::EventHandler {
     public:
-      SelectorDisplay(Polycode::Core *core, Configurator *conf, Components::Factory *factory);
+      SelectorDisplay(Polycode::Core *core, Configurator *conf, Components::Factory *factory, ChangeSelection *changeSelection);
       ~SelectorDisplay();
       void handleEvent(Polycode::Event *e);
       void turnOn(bool on); 
@@ -33,6 +39,7 @@ namespace Synthetics {
       int m_index;
       std::string m_text; 
       std::vector<Component *> m_components;
+      ChangeSelection *m_changeSelection;
   };
 }
 #endif

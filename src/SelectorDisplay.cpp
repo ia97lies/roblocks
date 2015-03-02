@@ -8,10 +8,11 @@
 using namespace Polycode;
 
 namespace Synthetics {
-  SelectorDisplay::SelectorDisplay(Core *core, Configurator *conf, Components::Factory *factory) : EventHandler() {
+  SelectorDisplay::SelectorDisplay(Core *core, Configurator *conf, Components::Factory *factory, ChangeSelection *changeSelection) : EventHandler() {
     m_conf = conf;
     m_core = core;
     m_factory = factory;
+    m_changeSelection = changeSelection;
 
     m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
 
@@ -78,11 +79,13 @@ namespace Synthetics {
             case KEY_LEFT:
               if (m_index > 0) {
                 --m_index;
+                m_changeSelection->onChange(m_factory->getNames().at(m_index));
               }
               break;
             case KEY_RIGHT:
               if (m_index < m_factory->getNames().size()-1) {
                 ++m_index;
+                m_changeSelection->onChange(m_factory->getNames().at(m_index));
               }
               break;
           }

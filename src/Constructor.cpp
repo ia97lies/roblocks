@@ -15,6 +15,28 @@
 using namespace Polycode;
 
 namespace Synthetics {
+  class ChangeInPlace : public ChangeSelection {
+    public:
+      ChangeInPlace(Core *core, CollisionScene *scene, Components::Factory *factory, Robot *robot) {
+        m_core = core;
+        m_scene = scene;
+        m_factory = factory;
+        m_robot = robot;
+      }
+      virtual ~ChangeInPlace() {}
+      virtual void onChange(std::string name) {
+        if (m_robot->inPlace()) {
+          Component *component = m_factory->createComponent(name, m_core, m_scene);
+          m_robot->replace(component);
+        }
+      }
+    private:
+      Core *m_core;
+      CollisionScene *m_scene;
+      Components::Factory *m_factory;
+      Robot *m_robot;
+  };
+
   class DoneCompletion : public FileManagerCompletion {
     public:
       DoneCompletion(Constructor *constructor, MovingCamera *camera) {
@@ -47,7 +69,7 @@ namespace Synthetics {
 
     m_camera->update();
 
-    m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory);
+    m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory, new ChangeInPlace(m_core, m_scene, m_factory, m_mother));
 
     
     Scene *scene = new Scene(Scene::SCENE_2D_TOPLEFT);
