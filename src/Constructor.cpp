@@ -179,9 +179,6 @@ namespace Synthetics {
           break;
       }
     }
-    else {
-      fprintf(stderr, "XXX: UnknownEvent\n");
-    }
   }
 
   void Constructor::update() {

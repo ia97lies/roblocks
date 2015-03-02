@@ -14,19 +14,17 @@ namespace Synthetics {
     m_factory = factory;
     m_changeSelection = changeSelection;
 
-    m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
-
-    float border = 10;
-    float height = 100;
-    float length = m_conf->getWidth();
+    m_border = 10;
+    m_height = 100;
+    m_width = m_conf->getWidth();
 
     m_hudScene = new Scene(Scene::SCENE_2D);
     m_scene = new CollisionScene();
     m_hudScene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
-    ScenePrimitive *shape = new ScenePrimitive(ScenePrimitive::TYPE_VPLANE, length, height);
+    ScenePrimitive *shape = new ScenePrimitive(ScenePrimitive::TYPE_VPLANE, m_width, m_height);
     m_hudScene->addChild(shape);
     shape->setColor(0.5, 0.5, 0.5, 0.3);
-    shape->setPosition(0, -m_conf->getHeight()/2  + height/2 + border);
+    shape->setPosition(0, -m_conf->getHeight()/2  + m_height/2 + m_border);
 
     m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 70);
     m_light->setPosition(0,0,0);
@@ -36,12 +34,12 @@ namespace Synthetics {
     m_index = 0;
     m_text = factory->getNames().at(m_index);
     m_label = new SceneLabel("< "+ m_text + " >", 16);
-    m_label->setPosition(-m_label->getTextWidthForString(m_label->getText())/2, -m_conf->getHeight()/2 + 2 * border);
+    m_label->setPosition(-m_label->getTextWidthForString(m_label->getText())/2, -m_conf->getHeight()/2 + 2 * m_border);
     m_hudScene->addChild(m_label);
 
     m_scene->getDefaultCamera()->setPosition(0,15,25);
     m_scene->getDefaultCamera()->lookAt(Vector3(0, 0, 0));
-    m_scene->getDefaultCamera()->cameraShift = Vector2(0.0, 1.0 - (1.0/m_conf->getHeight() * (m_conf->getHeight()/2 + height/2 + 2 * border)));
+    m_scene->getDefaultCamera()->cameraShift = Vector2(0.0, 1.0 - (1.0/m_conf->getHeight() * (m_conf->getHeight()/2 + m_height/2 + 2 * m_border)));
 
     m_polycodeFacade = new PolycodeFacade(core, m_scene);
     for (int i = 0; i < m_factory->getNames().size(); i++) {
@@ -50,16 +48,14 @@ namespace Synthetics {
       for (int j = 0; j < m_components.at(i)->getNoParts(); j++) {
         Robot::constructPlugsGraphic(m_polycodeFacade, m_components.at(i)->getPart(j));
       }
-      //m_components.at(i)->enable(false);
-      // XXX I AM HERE: place them in x row point camera directly on it, and rotate them to have 2.5 view on it
-      // show all and look at the active one
       m_components.at(i)->getPart(0)->getShape()->setPosition(3*i, 0, 0);
     }
-    //m_components.at(m_index)->enable(true);
     m_light->setPosition(3*m_index, 5, 7);
     m_components.at(m_index)->getPart(0)->getShape()->setScale(1.5,1.5,1.5);
       m_components.at(m_index)->getPart(0)->getShape()->setPosition(3*m_index, 1, 0);
     m_components.at(m_index)->getPart(0)->getShape()->setRotationEuler(Vector3(0, -45, 0));
+
+    turnOn(true);
   }
 
   SelectorDisplay::~SelectorDisplay() {
@@ -69,7 +65,6 @@ namespace Synthetics {
     if(e->getDispatcher() == m_core->getInput()) {
       InputEvent *inputEvent = (InputEvent*)e;
 
-      //m_components.at(m_index)->enable(false);
       m_components.at(m_index)->getPart(0)->getShape()->setScale(1,1,1);
       m_components.at(m_index)->getPart(0)->getShape()->setPosition(3*m_index, 0, 0);
       m_components.at(m_index)->getPart(0)->getShape()->setRotationEuler(0);
@@ -90,11 +85,26 @@ namespace Synthetics {
               break;
           }
           break;
+        case InputEvent::EVENT_MOUSEDOWN:
+          {
+            if (inputEvent->mousePosition.y > m_conf->getHeight() - m_height &&
+                inputEvent->mousePosition.x > m_conf->getWidth()/2 + 50 &&
+                m_index < m_factory->getNames().size()-1) {
+              ++m_index;
+              m_changeSelection->onChange(m_factory->getNames().at(m_index));
+            }
+            else if(inputEvent->mousePosition.y > m_conf->getHeight() - m_height &&
+                    inputEvent->mousePosition.x < m_conf->getWidth()/2 - 50 &&
+                    m_index > 0) {
+              --m_index;
+              m_changeSelection->onChange(m_factory->getNames().at(m_index));
+            }
+          }
+          break;
       }
       m_text = m_factory->getNames().at(m_index);
       m_label->setText("< "+ m_text + " >");
       m_label->setPosition(-m_label->getTextWidthForString(m_label->getText())/2, m_label->getPosition2D().y);
-      //m_components.at(m_index)->enable(true);
       m_light->setPosition(3*m_index, 5, 7);
       m_components.at(m_index)->getPart(0)->getShape()->setScale(1.5,1.5,1.5);
       m_components.at(m_index)->getPart(0)->getShape()->setPosition(3*m_index, 1, 0);
@@ -113,9 +123,11 @@ namespace Synthetics {
     m_scene->setEnabled(on);
     if (on) {
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
+      m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
     }
     else {
       m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
+      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
     }
   }
 }

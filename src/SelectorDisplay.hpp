@@ -28,6 +28,9 @@ namespace Synthetics {
       std::string getText();
 
     private:
+      float m_border;
+      float m_height;
+      float m_width;
       Configurator *m_conf;
       Polycode::Core *m_core;
       Polycode::CollisionScene *m_scene;
