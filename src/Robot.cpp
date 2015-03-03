@@ -252,10 +252,6 @@ namespace Synthetics {
     }
     else if (m_activeComponent) {
       // TODO an algorithme to detect wether it is possible to remove or not
-      // * First shot whould be remove only elements with no childs. But if we 
-      //   also support thigt connection it is most likely that there are no 
-      //   removable elements with this approache. But as a first solution this
-      //   is feasable.
       // * For more advanced removal, we need a island detection. If there are
       //   no parents which point directly or indirectly to the childs of the
       //   "removal" object, excluding the path over the "removal" object of
@@ -308,7 +304,7 @@ namespace Synthetics {
   }
 
   void Robot::activate(Polycode::Entity *plugShape) {
-    if (m_inPlace == NULL) {
+    if (m_inPlace == NULL && m_mother) {
       {
         FindActivePlug *method = new FindActivePlug(m_activeComponent, m_activePart, m_activePlug, plugShape);
         m_mother->iterate(method);
@@ -326,7 +322,7 @@ namespace Synthetics {
       }
 
     }
-    else {
+    else if (m_inPlace) {
       {
         FindActiveInPlacePlug *method = new FindActiveInPlacePlug(m_inPlacePart, m_inPlacePlug, plugShape);
         m_inPlace->iterate(method);

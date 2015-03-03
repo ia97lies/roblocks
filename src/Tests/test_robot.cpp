@@ -105,6 +105,15 @@ BOOST_AUTO_TEST_CASE(test_robot_is_not_empty) {
   BOOST_CHECK(!robot->isEmpty());
 }
 
+// this cores if m_mother is not checked to NULL
+BOOST_AUTO_TEST_CASE(test_robot_activated_plug_no_component) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  ComponentMock *componentMock = new ComponentMock(&dummy);
+  robot->activate(componentMock->getMyPlug(0)->getShape());
+}
+
 BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_no_activated_plug) {
   bool deleted = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
