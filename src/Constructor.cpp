@@ -152,7 +152,7 @@ namespace Synthetics {
                 }
                 // double click, somehow InputEvent::EVENT_DOUBLECLICK won't work, do it by my self
                 unsigned int timestamp = m_core->getTicks();
-                if (timestamp - m_lastClickTime < 400) {
+                if (timestamp - m_lastClickTime < 200) {
                   place();
                 }
                 m_lastClickTime = m_core->getTicks();
