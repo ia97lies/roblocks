@@ -115,7 +115,7 @@ namespace Synthetics {
     return !m_output && !m_input;
   }
 
-  bool Plug::isActivate() {
+  bool Plug::isActive() {
     return m_on;
   }
 

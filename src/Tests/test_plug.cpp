@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(test_proper_initialization) {
   BOOST_CHECK(plug.getValue() == Vector3(0,0,0));
   BOOST_CHECK(plug.isInput() == false);
   BOOST_CHECK(plug.isOutput() == true);
-  BOOST_CHECK(plug.isActivate() == false);
+  BOOST_CHECK(plug.isActive() == false);
 }
 
 BOOST_AUTO_TEST_CASE(test_plug_getter) {
@@ -123,5 +123,19 @@ BOOST_AUTO_TEST_CASE(test_plug_set_get_value) {
   plug.setValue(Vector3(1,2,3));
 
   BOOST_CHECK(plug.getValue() == Vector3(1,2,3));
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_activate) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.activate(true);
+
+  BOOST_CHECK(plug.isActive() == true);
+}
+
+BOOST_AUTO_TEST_CASE(test_plug_deactivate) {
+  Plug plug(Vector3(1,0,0), Vector3(0,0,0));
+  plug.activate(false);
+
+  BOOST_CHECK(plug.isActive() == false);
 }
 

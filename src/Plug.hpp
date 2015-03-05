@@ -29,7 +29,7 @@ namespace Synthetics {
       virtual bool isInOut();
       virtual bool isDeaf();
       virtual void activate(bool on);
-      virtual bool isActivate(); 
+      virtual bool isActive(); 
       virtual void setConnectedPlug(Plug *plug);
       virtual void unsetConnectedPlug();
       virtual Plug *getConnectedPlug();

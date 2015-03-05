@@ -188,7 +188,7 @@ namespace Synthetics {
       m_inPlacePlug->activate(true);
       Vector3 rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
       m_inPlacePart->getShape()->setRotationEuler(rotation);
-      m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 2);
+      m_inPlacePart->plug(m_activePart, 2);
       Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
       Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(0));
     }
@@ -229,7 +229,7 @@ namespace Synthetics {
       // TODO: Wire: find all component/plugs which collide with our plugs
       //       and connect them, found component add us, found plugs point to us
 
-      m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 0.5);
+      m_inPlacePart->plug(m_activePart, 0.5);
 
       m_activePlug->activate(false);
       m_inPlacePlug->activate(false);
@@ -332,7 +332,7 @@ namespace Synthetics {
         Vector3 rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
         m_inPlacePart->getShape()->setRotationEuler(rotation);
 
-        m_inPlacePart->plug(m_activePlug, m_inPlacePlug, 2);
+        m_inPlacePart->plug(m_activePart, 2);
         delete method;
       }
     }

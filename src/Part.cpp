@@ -14,7 +14,7 @@ namespace Synthetics {
   };
 
   Part::~Part() {
-    for (int i = 0; i < m_plugs.size(); i++) {
+    for (int i = 0; i < getNoPlugs(); i++) {
       if (m_plugs.at(i)) {
         delete m_plugs.at(i);
       }
@@ -38,7 +38,7 @@ namespace Synthetics {
 
   Plug *Part::getPlug(Polycode::Entity *plugShape) {
     Plug *found = NULL;
-    for (int i = 0; !found && i < m_plugs.size(); i++) {
+    for (int i = 0; !found && i < getNoPlugs(); i++) {
       if (plugShape == m_plugs.at(i)->getShape()) {
         found = m_plugs.at(i);
       }
@@ -46,14 +46,22 @@ namespace Synthetics {
     return found;
   }
 
-  // TODO: Part::plug(Part *part, float factor)
-  //       Need to get my active plug, do nothing when no active plug
-  void Part::plug(Plug *plug1, Plug *plug2, float factor) {
-      Vector3 pos1 = plug1->getPosition();
-      Vector3 pos2 = plug2->getPosition();
-      float len = pos1.length() + pos2.length();
-      pos1.Normalize();
-      getShape()->setPosition(pos1 * len * factor);
+  void Part::plug(Part *part, float factor) {
+    Vector3 pos1 = 0;
+    for (int i = 0; i < part->getNoPlugs(); i++) {
+      if (part->getPlug(i)->isActive()) {
+        pos1 = part->getPlug(i)->getPosition();
+      }
+    }
+    Vector3 pos2 = 0;
+    for (int i = 0; i < getNoPlugs(); i++) {
+      if (m_plugs.at(i)->isActive()) {
+        pos2 = m_plugs.at(i)->getPosition();
+      }
+    }
+    float len = pos1.length() + pos2.length();
+    pos1.Normalize();
+    getShape()->setPosition(pos1 * len * factor);
   }
 
   void Part::setKnob(Knob *knob) {
