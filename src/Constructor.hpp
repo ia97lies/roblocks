@@ -29,7 +29,7 @@ namespace Synthetics {
     private:
       bool m_on;
       Polycode::Core *m_core;
-      Polycode::CollisionScene *m_scene;
+      Polycode::PhysicsScene *m_scene;
       Polycode::Scene *m_hudScene;
       MovingCamera *m_camera;
       Components::Factory *m_factory;

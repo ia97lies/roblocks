@@ -11,16 +11,17 @@
 namespace Synthetics {
   class PolycodeFacade {
     public:
-      PolycodeFacade(Polycode::Core *core, Polycode::CollisionScene *scene); 
+      PolycodeFacade(Polycode::Core *core, Polycode::PhysicsScene *scene); 
       virtual ~PolycodeFacade();
 
       virtual void addEntity(Polycode::Entity *entity);
-      virtual void trackEntity(Polycode::Entity *entity);
+      virtual void trackCollisionEntity(Polycode::Entity *entity);
+      virtual void trackPhysicsEntity(Polycode::Entity *entity, float mass);
       virtual void removeEntity(Polycode::Entity *entity);
 
     private:
       Polycode::Core *m_core;
-      Polycode::CollisionScene *m_scene;
+      Polycode::PhysicsScene *m_scene;
   };
 }
 

@@ -17,6 +17,7 @@ namespace Synthetics {
       virtual ~Part();
 
       virtual Polycode::Entity *getShape() = 0;
+      virtual float getMass() = 0;
       
       int getNoPlugs();
       void addPlug(Plug *plug);

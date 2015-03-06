@@ -17,7 +17,7 @@ class PolycodeMock : public PolycodeFacade {
     ~PolycodeMock() {}
  
     virtual void addEntity(Polycode::Entity *entity) { addedEntity = entity; }
-    virtual void trackEntity(Polycode::Entity *entity) { trackedEntity = entity; }
+    virtual void trackCollisionEntity(Polycode::Entity *entity) { trackedEntity = entity; }
     virtual void removeEntity(Polycode::Entity *entity) { removedEntity = entity; }
 
     Polycode::Entity *addedEntity;
@@ -43,6 +43,7 @@ class PartMock : public Part {
     }
     ~PartMock() {}
     Polycode::Entity *getShape() { return m_shape; }
+    float getMass() { return 1; }
   private:
     Polycode::Entity *m_shape;
 };

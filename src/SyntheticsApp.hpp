@@ -23,7 +23,6 @@ namespace Synthetics {
 
     private:
       Polycode::Core *m_core;
-      Polycode::CollisionScene *m_scene;
       Configurator *m_conf;
       Constructor *m_constructor;
   };

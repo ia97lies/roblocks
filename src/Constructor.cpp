@@ -17,7 +17,7 @@ using namespace Polycode;
 namespace Synthetics {
   class ChangeInPlace : public ChangeSelection {
     public:
-      ChangeInPlace(Core *core, CollisionScene *scene, Components::Factory *factory, Robot *robot) {
+      ChangeInPlace(Core *core, PhysicsScene *scene, Components::Factory *factory, Robot *robot) {
         m_core = core;
         m_scene = scene;
         m_factory = factory;
@@ -32,7 +32,7 @@ namespace Synthetics {
       }
     private:
       Core *m_core;
-      CollisionScene *m_scene;
+      PhysicsScene *m_scene;
       Components::Factory *m_factory;
       Robot *m_robot;
   };
@@ -57,7 +57,7 @@ namespace Synthetics {
     m_core = core;
     m_conf = conf;
     m_factory = factory;
-    m_scene = new CollisionScene();
+    m_scene = new PhysicsScene();
     m_camera = new OrbitCamera(m_core, m_scene);
     m_camera->activate(true);
     m_lastClickTime = 0;

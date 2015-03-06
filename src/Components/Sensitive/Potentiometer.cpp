@@ -34,8 +34,12 @@ namespace Synthetics {
             delete m_entity;
           }
 
-          Polycode::Entity *getShape() {
+          virtual Polycode::Entity *getShape() {
             return m_entity;
+          }
+
+          virtual float getMass() {
+            return 1;
           }
 
         private:
@@ -59,8 +63,12 @@ namespace Synthetics {
             return m_output;
           }
 
-          Polycode::Entity *getShape() {
+          virtual Polycode::Entity *getShape() {
             return m_entity;
+          }
+
+          virtual float getMass() {
+            return 0.2;
           }
 
           void rotate(Polycode::Vector3 rotate) {

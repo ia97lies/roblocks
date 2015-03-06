@@ -31,8 +31,12 @@ namespace Synthetics {
             delete m_entity;
           }
 
-          Polycode::Entity *getShape() {
+          virtual Polycode::Entity *getShape() {
             return m_entity;
+          }
+
+          virtual float getMass() {
+            return 0.1;
           }
 
         private:
@@ -53,8 +57,12 @@ namespace Synthetics {
           }
           virtual ~Link() {}
 
-          Polycode::Entity *getShape() {
+          virtual Polycode::Entity *getShape() {
             return m_entity;
+          }
+
+          virtual float getMass() {
+            return 1;
           }
 
         private:

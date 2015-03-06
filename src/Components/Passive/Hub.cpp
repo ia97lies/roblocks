@@ -30,8 +30,12 @@ namespace Synthetics {
             delete m_entity;
           }
 
-          Polycode::Entity *getShape() {
+          virtual Polycode::Entity *getShape() {
             return m_entity;
+          }
+
+          virtual float getMass() {
+            return 1;
           }
 
         private:

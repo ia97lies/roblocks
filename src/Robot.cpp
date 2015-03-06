@@ -410,7 +410,7 @@ namespace Synthetics {
   void Robot::constructPlugsGraphic(PolycodeFacade *facade, Part *curPart) {
     for (int j = 0; j < curPart->getNoPlugs(); j++) {
       Plug *curPlug = curPart->getPlug(j);
-      facade->trackEntity(curPlug->getShape());
+      facade->trackCollisionEntity(curPlug->getShape());
       curPart->getShape()->addChild(curPlug->getShape());
       curPlug->getShape()->setRotationEuler(curPlug->getRotation());
       curPlug->getShape()->setPosition(curPlug->getPosition() * 0.5);
@@ -420,7 +420,7 @@ namespace Synthetics {
   void Robot::constructKnobGraphic(PolycodeFacade *facade, Part *curPart) {
     Knob *knob = curPart->getKnob();
     if (knob) {
-      facade->trackEntity(knob->getShape());
+      facade->trackCollisionEntity(knob->getShape());
     }
   }
 

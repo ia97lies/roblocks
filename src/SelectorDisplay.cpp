@@ -19,7 +19,7 @@ namespace Synthetics {
     m_width = m_conf->getWidth();
 
     m_hudScene = new Scene(Scene::SCENE_2D);
-    m_scene = new CollisionScene();
+    m_scene = new PhysicsScene();
     m_hudScene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
     ScenePrimitive *shape = new ScenePrimitive(ScenePrimitive::TYPE_VPLANE, m_width, m_height);
     m_hudScene->addChild(shape);

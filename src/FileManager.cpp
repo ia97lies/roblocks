@@ -70,7 +70,7 @@ namespace Synthetics {
   };
 
   //--------------------------------------------------------------------------
-  FileManager::FileManager(Core *core, CollisionScene *scene, Components::Factory *factory, std::vector<String> extentions) 
+  FileManager::FileManager(Core *core, PhysicsScene *scene, Components::Factory *factory, std::vector<String> extentions) 
     : UIFileDialog::UIFileDialog(core->getDefaultWorkingDirectory(), false, extensions, false) {
     m_robot = NULL;
     m_core = core;

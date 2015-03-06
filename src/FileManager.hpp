@@ -20,7 +20,7 @@ namespace Synthetics {
 
   class FileManager : public Polycode::UIFileDialog {
     public:
-      FileManager(Polycode::Core *core, Polycode::CollisionScene *scene, Components::Factory *factory, 
+      FileManager(Polycode::Core *core, Polycode::PhysicsScene *scene, Components::Factory *factory, 
                   std::vector<Polycode::String> extentions);
       virtual ~FileManager();
 

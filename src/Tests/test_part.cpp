@@ -14,6 +14,7 @@ class MyPart : public Part {
     MyPart() {}
     ~MyPart() {}
     Polycode::Entity *getShape() { return new Entity(); }
+    float getMass() { return 1; }
 };
 
 class MyKnob : public Knob {

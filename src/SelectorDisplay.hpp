@@ -33,7 +33,7 @@ namespace Synthetics {
       float m_width;
       Configurator *m_conf;
       Polycode::Core *m_core;
-      Polycode::CollisionScene *m_scene;
+      Polycode::PhysicsScene *m_scene;
       Polycode::SceneLight *m_light;
       PolycodeFacade *m_polycodeFacade;
       Polycode::Scene *m_hudScene;
