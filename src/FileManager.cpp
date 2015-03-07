@@ -51,16 +51,16 @@ namespace Synthetics {
             Vector3 rotation = part->getShape()->getRotationEuler(); 
 
             fprintf(m_fp, "plug = component%ld:getPlug(%d)\n", parent->getId(), parentPlugId);
-            fprintf(m_fp, "mother:activate(plug)\n");
+            fprintf(m_fp, "root:activate(plug)\n");
             fprintf(m_fp, "component%ld = factory:create(\"%s\")\n", component->getId(), component->getName().c_str());
-            fprintf(m_fp, "mother:place(component%ld)\n", component->getId());
+            fprintf(m_fp, "root:place(component%ld)\n", component->getId());
             fprintf(m_fp, "component%ld:rotate(%f, %f, %f)\n", component->getId(), rotation.x, rotation.y, rotation.z);
             fprintf(m_fp, "plug = component%ld:getPlug(%d)\n", component->getId(), childPlugId);
-            fprintf(m_fp, "mother:add()\n");
+            fprintf(m_fp, "root:add()\n");
           }
           else {
             fprintf(m_fp, "component%ld = factory:create(\"Passive.Hub\")\n", component->getId());
-            fprintf(m_fp, "mother:init(component%ld)\n", component->getId());
+            fprintf(m_fp, "root:init(component%ld)\n", component->getId());
           }
         }
       }
@@ -129,7 +129,7 @@ namespace Synthetics {
           // open .snapshot.lua
           fprintf(fp, "robot = require \"libRobotLua\"\n");
           fprintf(fp, "factory = robot.getFactory()\n");
-          fprintf(fp, "mother = robot.getRobot()\n");
+          fprintf(fp, "root = robot.getRobot()\n");
 
           Save *method = new Save(fp);
           m_robot->iterate(method);

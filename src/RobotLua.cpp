@@ -23,7 +23,7 @@ namespace Synthetics {
     } factory_t;
 
     typedef struct robot_s {
-      Robot *mother;
+      Robot *root;
     } robot_t;
 
     //------------------------------------------------------------------------
@@ -53,14 +53,14 @@ namespace Synthetics {
 
     static int getRobot(lua_State *L) {
       lua_getfield(L, LUA_REGISTRYINDEX, "robot");
-      Robot *mother = (Robot *)lua_touserdata(L, 1);
+      Robot *root = (Robot *)lua_touserdata(L, 1);
       lua_pop(L, 1);
 
       robot_t *newRobot = (robot_t *)lua_newuserdata(L, sizeof(robot_t));
       luaL_getmetatable(L, __ROBOT_NAME);
       lua_setmetatable(L, -2);
 
-      newRobot->mother = mother;
+      newRobot->root = root;
 
       return 1;
     }
@@ -185,7 +185,7 @@ namespace Synthetics {
     static int robotInit(lua_State *L) {
       robot_t *roboter = checkRobot(L, 1);
       component_t *component = checkComponent (L, 2);
-      roboter->mother->add(component->component);
+      roboter->root->add(component->component);
 
       return 0;
     }
@@ -193,7 +193,7 @@ namespace Synthetics {
     static int robotActivate(lua_State *L) {
       robot_t *roboter = checkRobot(L, 1);
       plug_t *plug = checkPlug (L, 2);
-      roboter->mother->activate(plug->plug->getShape());
+      roboter->root->activate(plug->plug->getShape());
 
       return 0;
     }
@@ -201,14 +201,14 @@ namespace Synthetics {
     static int robotPlace(lua_State *L) {
       robot_t *roboter = checkRobot(L, 1);
       component_t *component = checkComponent (L, 2);
-      roboter->mother->place(component->component);
+      roboter->root->place(component->component);
 
       return 0;
     }
 
     static int robotAdd(lua_State *L) {
       robot_t *roboter = checkRobot(L, 1);
-      roboter->mother->add();
+      roboter->root->add();
 
       return 0;
     }

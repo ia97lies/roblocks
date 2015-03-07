@@ -139,7 +139,7 @@ namespace Synthetics {
   Robot::Robot(PolycodeFacade *facade) {
     m_powerOn = false;
     m_polycodeFacade = facade;
-    m_mother = NULL;
+    m_root = NULL;
     m_activeComponent = NULL;
     m_activePart = NULL;
     m_activePlug = NULL;
@@ -198,11 +198,11 @@ namespace Synthetics {
   }
 
   void Robot::add(Component *component) {
-    if (m_mother == NULL) {
-      m_mother = component;
-      Compound::add(m_mother);
-      m_mother->setId(0);
-      m_components->insert(m_mother);
+    if (m_root == NULL) {
+      m_root = component;
+      Compound::add(m_root);
+      m_root->setId(0);
+      m_components->insert(m_root);
       Robot::constructGraphic(m_polycodeFacade, NULL, component);
       for (int i = 0; i < component->getNoParts(); i++) {
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
@@ -259,7 +259,7 @@ namespace Synthetics {
       //
       // Implement first bullet point, then think about the second one.
       if (m_activeComponent->getNoEntries() == 0) {
-        std::vector<Compound *> parents =  m_mother->getParents(m_activeComponent);
+        std::vector<Compound *> parents =  m_root->getParents(m_activeComponent);
         for (int i = 0; i < parents.size(); i++) {
           parents.at(i)->remove(m_activeComponent);
           Component *component = dynamic_cast<Component *>(parents.at(i));
@@ -279,8 +279,8 @@ namespace Synthetics {
         Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
       }
       m_components->remove(m_activeComponent->getId());
-      if (m_activeComponent == m_mother) {
-        m_mother = NULL;
+      if (m_activeComponent == m_root) {
+        m_root = NULL;
       }
       delete m_activeComponent;
       m_activeComponent = NULL;
@@ -304,10 +304,10 @@ namespace Synthetics {
   }
 
   void Robot::activate(Polycode::Entity *plugShape) {
-    if (m_inPlace == NULL && m_mother) {
+    if (m_inPlace == NULL && m_root) {
       {
         FindActivePlug *method = new FindActivePlug(m_activeComponent, m_activePart, m_activePlug, plugShape);
-        m_mother->iterate(method);
+        m_root->iterate(method);
         m_activeComponent = method->getNewActiveComponent();
         m_activePart = method->getNewActivePart();
         m_activePlug = method->getNewActivePlug();
@@ -316,7 +316,7 @@ namespace Synthetics {
 
       {
         FindActiveKnob *method = new FindActiveKnob(plugShape);
-        m_mother->iterate(method);
+        m_root->iterate(method);
         m_activeKnob = method->getActiveKnob();
         delete method;
       }
@@ -365,7 +365,7 @@ namespace Synthetics {
   }
 
   bool Robot::isEmpty() {
-    return m_mother == NULL;
+    return m_root == NULL;
   }
 
   bool Robot::inPlace() {

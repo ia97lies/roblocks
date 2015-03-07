@@ -49,7 +49,7 @@ namespace Synthetics {
       bool m_powerOn;
       long m_curId;
       PolycodeFacade *m_polycodeFacade;
-      Component *m_mother;
+      Component *m_root;
       Component *m_inPlace;
 
       CompoundStore *m_components;
