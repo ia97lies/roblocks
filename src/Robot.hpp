@@ -27,7 +27,7 @@ namespace Synthetics {
       bool isEmpty(); 
       bool inPlace(); 
       void place(Component *component);
-      void add(Component *component);
+      void setRoot(Component *component);
       void add();
       void remove();
       void replace(Component *component);

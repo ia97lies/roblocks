@@ -185,7 +185,7 @@ namespace Synthetics {
     static int robotInit(lua_State *L) {
       robot_t *roboter = checkRobot(L, 1);
       component_t *component = checkComponent (L, 2);
-      roboter->root->add(component->component);
+      roboter->root->setRoot(component->component);
 
       return 0;
     }

@@ -197,7 +197,7 @@ namespace Synthetics {
     }
   }
 
-  void Robot::add(Component *component) {
+  void Robot::setRoot(Component *component) {
     if (m_root == NULL) {
       m_root = component;
       Compound::add(m_root);

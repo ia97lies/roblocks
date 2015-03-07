@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component) {
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
 
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   BOOST_CHECK(deleted == false);
 }
 
@@ -101,11 +101,11 @@ BOOST_AUTO_TEST_CASE(test_robot_is_not_empty) {
   PolycodeMock *polycodeMock = new PolycodeMock();
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   BOOST_CHECK(!robot->isEmpty());
 }
 
-// this cores if m_mother is not checked to NULL
+// this cores if m_root is not checked to NULL
 BOOST_AUTO_TEST_CASE(test_robot_activated_plug_no_component) {
   bool dummy = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
@@ -120,12 +120,12 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_no_activated_plug) 
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
 
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   BOOST_CHECK(deleted == false);
 
   // first element is set, no plug is activated
   componentMock = new ComponentMock(&deleted);
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   BOOST_CHECK(deleted == true);
 }
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug_one_level) {
 
   BOOST_CHECK(componentMock->getMyPlug(0) != NULL);
 
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
 
   BOOST_CHECK(componentMock->getMyPlug(0)->isActivated);
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug_one_more_level) {
   PolycodeMock *polycodeMock = new PolycodeMock();
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
   componentMock = new ComponentMock(&deleted);
   robot->place(componentMock);
@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug_more_level) {
   PolycodeMock *polycodeMock = new PolycodeMock();
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
   componentMock = new ComponentMock(&deleted);
   robot->place(componentMock);
@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(test_robot_get_activate_plug) {
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
 
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
 
   BOOST_CHECK(robot->getActivePlug() == componentMock->getMyPlug(0));
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(test_robot_add_one_component_add_second_to_activated_plug) 
   ComponentMock *componentMock = new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
 
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   BOOST_CHECK(deleted == false);
 
   robot->activate(componentMock->getMyPlug(0)->getShape());
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component) {
   Robot *robot = new Robot(polycodeMock);
   ComponentMock *componentMock = new ComponentMock(&deleted);
 
-  robot->add(componentMock);
+  robot->setRoot(componentMock);
   robot->activate(componentMock->getMyPlug(0)->getShape());
   deleted = false;
   ComponentMock *componentMock2 = new ComponentMock(&deleted);
@@ -234,15 +234,15 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component) {
 BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents) {
   bool dummy = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
-  ComponentMock *mother= new ComponentMock(&dummy);
+  ComponentMock *root= new ComponentMock(&dummy);
   Robot *robot = new Robot(polycodeMock);
 
-  robot->add(mother);
-  robot->activate(mother->getMyPlug(0)->getShape());
+  robot->setRoot(root);
+  robot->activate(root->getMyPlug(0)->getShape());
   ComponentMock *componentMock1 = new ComponentMock(&dummy);
   robot->place(componentMock1);
   robot->add();
-  robot->activate(mother->getMyPlug(1)->getShape());
+  robot->activate(root->getMyPlug(1)->getShape());
   ComponentMock *componentMock2 = new ComponentMock(&dummy);
   robot->place(componentMock2);
   robot->add();
@@ -266,15 +266,15 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents) {
 BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents_2) {
   bool dummy = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
-  ComponentMock *mother= new ComponentMock(&dummy);
+  ComponentMock *root= new ComponentMock(&dummy);
   Robot *robot = new Robot(polycodeMock);
 
-  robot->add(mother);
-  robot->activate(mother->getMyPlug(0)->getShape());
+  robot->setRoot(root);
+  robot->activate(root->getMyPlug(0)->getShape());
   ComponentMock *componentMock1 = new ComponentMock(&dummy);
   robot->place(componentMock1);
   robot->add();
-  robot->activate(mother->getMyPlug(1)->getShape());
+  robot->activate(root->getMyPlug(1)->getShape());
   ComponentMock *componentMock2 = new ComponentMock(&dummy);
   robot->place(componentMock2);
   robot->add();
@@ -295,31 +295,31 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents_2) {
   // TODO: write tests for destruct component (all parts get destructed?)
 }
 
-BOOST_AUTO_TEST_CASE(test_robot_destruction_null_mother) {
+BOOST_AUTO_TEST_CASE(test_robot_destruction_null_root) {
   PolycodeMock *polycodeMock = new PolycodeMock();
   Robot *robot = new Robot(polycodeMock);
   delete robot;
 }
 
-BOOST_AUTO_TEST_CASE(test_robot_destruction_only_mother) {
+BOOST_AUTO_TEST_CASE(test_robot_destruction_only_root) {
   bool deleted = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
-  ComponentMock *mother= new ComponentMock(&deleted);
+  ComponentMock *root= new ComponentMock(&deleted);
   Robot *robot = new Robot(polycodeMock);
 
-  robot->add(mother);
+  robot->setRoot(root);
   delete robot;
   BOOST_CHECK(deleted == true);
 }
 
-BOOST_AUTO_TEST_CASE(test_robot_destruction_mother_and_child) {
+BOOST_AUTO_TEST_CASE(test_robot_destruction_root_and_child) {
   bool deleted[2] = { false, false };
   PolycodeMock *polycodeMock = new PolycodeMock();
   Robot *robot = new Robot(polycodeMock);
 
-  ComponentMock *mother= new ComponentMock(&deleted[0]);
-  robot->add(mother);
-  robot->activate(mother->getMyPlug(0)->getShape());
+  ComponentMock *root= new ComponentMock(&deleted[0]);
+  robot->setRoot(root);
+  robot->activate(root->getMyPlug(0)->getShape());
   ComponentMock *componentMock1 = new ComponentMock(&deleted[1]);
   robot->place(componentMock1);
   robot->add();
@@ -330,18 +330,18 @@ BOOST_AUTO_TEST_CASE(test_robot_destruction_mother_and_child) {
   }
 }
 
-BOOST_AUTO_TEST_CASE(test_robot_destruction_mother_and_many_children) {
+BOOST_AUTO_TEST_CASE(test_robot_destruction_root_and_many_children) {
   bool deleted[5] = { false, false, false, false, false };
   PolycodeMock *polycodeMock = new PolycodeMock();
   Robot *robot = new Robot(polycodeMock);
 
-  ComponentMock *mother= new ComponentMock(&deleted[0]);
-  robot->add(mother);
-  robot->activate(mother->getMyPlug(0)->getShape());
+  ComponentMock *root= new ComponentMock(&deleted[0]);
+  robot->setRoot(root);
+  robot->activate(root->getMyPlug(0)->getShape());
   ComponentMock *componentMock1 = new ComponentMock(&deleted[1]);
   robot->place(componentMock1);
   robot->add();
-  robot->activate(mother->getMyPlug(1)->getShape());
+  robot->activate(root->getMyPlug(1)->getShape());
   ComponentMock *componentMock2 = new ComponentMock(&deleted[2]);
   robot->place(componentMock2);
   robot->add();
