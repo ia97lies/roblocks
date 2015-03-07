@@ -30,6 +30,7 @@ namespace Synthetics {
             m_entity->setColor(m_color);
             m_entity->setPosition(0, 0, 0);
             m_entity->addChild(m_sound);
+            setMass(0.5);
           }
           virtual ~Body() {
             delete m_entity;
@@ -37,10 +38,6 @@ namespace Synthetics {
 
           virtual Polycode::Entity *getShape() {
             return m_entity;
-          }
-
-          virtual float getMass() {
-            return 1;
           }
 
           void update(Polycode::Vector3 input) {

@@ -11,6 +11,7 @@ using namespace Polycode;
 namespace Synthetics {
   Part::Part() {
     m_knob = NULL;
+    m_mass = 1.0;
   };
 
   Part::~Part() {
@@ -23,6 +24,14 @@ namespace Synthetics {
       delete m_knob;
     }
   };
+
+  void Part::setMass(float mass) {
+    m_mass = mass;
+  }
+
+  float Part::getMass() {
+    return m_mass;
+  }
 
   int Part::getNoPlugs() {
     return m_plugs.size();

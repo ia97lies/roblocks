@@ -17,7 +17,6 @@ class PartMock : public Part {
     }
     ~PartMock() {}
     Polycode::Entity *getShape() { return m_shape; }
-    float getMass() { return 1; }
   private:
     Polycode::Entity *m_shape;
 };

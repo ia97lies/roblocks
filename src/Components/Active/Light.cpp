@@ -48,6 +48,7 @@ namespace Synthetics {
               wall[i]->setColor(m_color);
               m_entity->addChild(wall[i]);
             }
+            setMass(0.5);
           }
           virtual ~Body() {
             for (int i = 0; i < 5; i++) {
@@ -58,10 +59,6 @@ namespace Synthetics {
 
           virtual Polycode::Entity *getShape() {
             return m_entity;
-          }
-
-          virtual float getMass() {
-            return 1;
           }
 
           void update(Polycode::Vector3 input) {

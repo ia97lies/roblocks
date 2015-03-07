@@ -17,7 +17,9 @@ namespace Synthetics {
       virtual ~Part();
 
       virtual Polycode::Entity *getShape() = 0;
-      virtual float getMass() = 0;
+
+      virtual void setMass(float mass);
+      virtual float getMass();
       
       int getNoPlugs();
       void addPlug(Plug *plug);
@@ -29,6 +31,7 @@ namespace Synthetics {
       Knob *getKnob();
 
     private:
+      float m_mass;
       std::vector<Plug *> m_plugs;
       Knob *m_knob;
   };

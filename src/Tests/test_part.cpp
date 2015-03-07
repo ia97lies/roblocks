@@ -14,7 +14,6 @@ class MyPart : public Part {
     MyPart() {}
     ~MyPart() {}
     Polycode::Entity *getShape() { return new Entity(); }
-    float getMass() { return 1; }
 };
 
 class MyKnob : public Knob {
@@ -47,6 +46,15 @@ BOOST_AUTO_TEST_CASE(test_part_default_values) {
   BOOST_CHECK_THROW(part->getPlug(0), std::out_of_range);
   BOOST_CHECK(part->getPlug((Entity *)NULL) == NULL);
   BOOST_CHECK(part->getShape() != NULL);
+  BOOST_CHECK(part->getMass() == 1.0);
+}
+
+BOOST_AUTO_TEST_CASE(test_part_set_get_mass) {
+  MyPart *part = new MyPart();
+
+  BOOST_CHECK(part->getMass() == 1.0);
+  part->setMass(2.0); 
+  BOOST_CHECK(part->getMass() == 2.0);
 }
 
 BOOST_AUTO_TEST_CASE(test_part_add_plug) {

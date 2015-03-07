@@ -25,6 +25,7 @@ namespace Synthetics {
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
+            setMass(0.2);
           }
           virtual ~Body() {
             delete m_entity;
@@ -32,10 +33,6 @@ namespace Synthetics {
 
           virtual Polycode::Entity *getShape() {
             return m_entity;
-          }
-
-          virtual float getMass() {
-            return 1;
           }
 
         private:
@@ -52,6 +49,7 @@ namespace Synthetics {
             m_entity->colorAffectsChildren = false;
             m_entity->setColor(m_color);
             m_entity->setPosition(0.0, 0.0, 0.0);
+            setMass(0.8);
           }
           virtual ~Link() {}
 
@@ -67,10 +65,6 @@ namespace Synthetics {
 
           virtual Polycode::Entity *getShape() {
             return m_entity;
-          }
-
-          virtual float getMass() {
-            return 1;
           }
 
         private:
