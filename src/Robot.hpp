@@ -19,24 +19,27 @@ namespace Synthetics {
       virtual ~Robot();
 
       void powerOn(bool on); 
-      bool isPowerOn(); 
 
       void save(std::string file);
       void load(std::string file);
 
-      bool isEmpty(); 
-      bool inPlace(); 
-      void place(Component *component);
       void setRoot(Component *component);
+      void place(Component *component);
+      void rotateInPlace(int direction);
       void add();
       void remove();
       void replace(Component *component);
+
       void activate(Polycode::Entity *plugShape); 
       void deactivate(); 
-      void rotateInPlace(int direction);
       void mouseMove(Polycode::Vector3 delta);
+
       Plug *getActivePlug();
       Knob *getActiveKnob();
+
+      bool isEmpty(); 
+      bool inPlace(); 
+      bool isPowerOn(); 
 
       void update();
 

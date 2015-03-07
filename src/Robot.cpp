@@ -180,6 +180,22 @@ namespace Synthetics {
   void Robot::load(std::string file) {
   }
 
+  void Robot::setRoot(Component *component) {
+    if (m_root == NULL) {
+      m_root = component;
+      Compound::add(m_root);
+      m_root->setId(0);
+      m_components->insert(m_root);
+      Robot::constructGraphic(m_polycodeFacade, NULL, component);
+      for (int i = 0; i < component->getNoParts(); i++) {
+        Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
+      }
+    }
+    else {
+      delete component;
+    }
+  }
+
   void Robot::place(Component *component) {
     if (m_activeComponent != NULL && m_inPlace == NULL) {
       m_inPlace = component;
@@ -191,22 +207,8 @@ namespace Synthetics {
       m_inPlacePart->plug(m_activePart, 2);
       Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
       Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(0));
-    }
-    else {
-      delete component;
-    }
-  }
-
-  void Robot::setRoot(Component *component) {
-    if (m_root == NULL) {
-      m_root = component;
-      Compound::add(m_root);
-      m_root->setId(0);
-      m_components->insert(m_root);
-      Robot::constructGraphic(m_polycodeFacade, NULL, component);
-      for (int i = 0; i < component->getNoParts(); i++) {
-        Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(i));
-      }
+      // Robot::setInPhysicsEnv(component)
+      // hold it with a constraint
     }
     else {
       delete component;
@@ -227,9 +229,15 @@ namespace Synthetics {
       }
 
       // TODO: Wire: find all component/plugs which collide with our plugs
-      //       and connect them, found component add us, found plugs point to us
-
+      //       and connect them, find component add us, find plugs point to us
       m_inPlacePart->plug(m_activePart, 0.5);
+
+      // TODO: Simple:
+      //       place a stiff hinge constraint between inplace and active part
+      //       (use plugs for constraint coordinates)
+      //       Complex:
+      //       place a stiff hinge constraint to all sides (use plugs for
+      //       collision and constraint coordinates)
 
       m_activePlug->activate(false);
       m_inPlacePlug->activate(false);
