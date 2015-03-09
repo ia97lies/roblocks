@@ -2,25 +2,29 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#include "CommandSetRoot.hpp"
+#include "CommandAdd.hpp"
 
 namespace Synthetics {
   namespace Constructor {
-
-    CommandSetRoot::CommandSetRoot(Robot *robot, Component *component) {
+    CommandAdd::CommandAdd(Robot *robot, Component *component) {
       m_robot = robot;
       m_component = component;
+      m_activePlug = robot->getActivePlug();
     }
-    CommandSetRoot::~CommandSetRoot() {}
-    void CommandSetRoot::execute() {
-      m_robot->setRoot(m_component);
+
+    CommandAdd::~CommandAdd() {}
+
+    void CommandAdd::execute() {
+      m_robot->add();
     }
-    void CommandSetRoot::undo() {
-      // select one plug no mather which one
+
+    void CommandAdd::undo() {
       Plug *plug = m_component->getPart(0)->getPlug(0);
       m_robot->activate(plug->getShape());
       m_robot->remove();
+      m_robot->activate(m_activePlug->getShape());
     }
   }
 }
+
 

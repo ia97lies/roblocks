@@ -260,6 +260,9 @@ namespace Synthetics {
         m_inPlacePlug = NULL;
       }
       else if (m_activeComponent) {
+        Plug *activePlug = NULL;
+        Part *activePart = NULL;
+        Component *activeComponent = NULL;
         // TODO an algorithme to detect wether it is possible to remove or not
         // * For more advanced removal, we need a island detection. If there are
         //   no parents which point directly or indirectly to the childs of the
@@ -280,6 +283,11 @@ namespace Synthetics {
                   if (plug->getConnectedPlug() && 
                       plug->getConnectedPlug()->getParent() == m_activeComponent) {
                     part->getPlug(k)->unsetConnectedPlug();
+                    // TODO: Make an object out of this ugly part
+                    activePlug = plug;
+                    activePart = part;
+                    activeComponent = component;
+                    activePlug->activate(true);
                   }
                 }
               }
@@ -292,9 +300,9 @@ namespace Synthetics {
           m_root = NULL;
         }
         delete m_activeComponent;
-        m_activeComponent = NULL;
-        m_activePart = NULL;
-        m_activePlug = NULL;
+        m_activeComponent = activeComponent;
+        m_activePart = activePart;
+        m_activePlug = activePlug;
       }
     }
 
@@ -387,6 +395,10 @@ namespace Synthetics {
 
     Knob *Robot::getActiveKnob() {
       return m_activeKnob;
+    }
+
+    Component *Robot::getInPlace() {
+      return m_inPlace;
     }
 
     void Robot::update() {

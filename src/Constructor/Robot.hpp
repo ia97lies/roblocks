@@ -37,6 +37,7 @@ namespace Synthetics {
 
         Plug *getActivePlug();
         Knob *getActiveKnob();
+        Component *getInPlace();
 
         bool isEmpty(); 
         bool inPlace(); 

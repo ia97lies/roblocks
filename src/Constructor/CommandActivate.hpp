@@ -2,24 +2,25 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_CONSTRUCTOR_COMMAND_SET_ROOT_H
-#define SYNTHETICS_CONSTRUCTOR_COMMAND_SET_ROOT_H
+#ifndef SYNTHETICS_CONSTRUCTOR_COMMAND_ACTIVATE_H
+#define SYNTHETICS_CONSTRUCTOR_COMMAND_ACTIVATE_H
 
 #include "Robot.hpp"
 
 namespace Synthetics {
   namespace Constructor {
 
-    class CommandSetRoot {
+    class CommandActivate {
       public:
-        CommandSetRoot(Robot *robot, Component *component); 
-        virtual ~CommandSetRoot();
+        CommandActivate(Robot *robot, Plug *plug); 
+        virtual ~CommandActivate();
         virtual void execute();
         virtual void undo();
 
       private:
         Robot *m_robot;
-        Component *m_component;
+        Plug *m_plug;
+        Plug *m_previousPlug;
     };
   }
 }

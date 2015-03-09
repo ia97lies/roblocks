@@ -34,7 +34,7 @@ namespace Synthetics {
         Polycode::Scene *m_hudScene;
         MovingCamera *m_camera;
         Components::Factory *m_factory;
-        Robot *m_root;
+        Robot *m_robot;
         Configurator *m_conf;
         SelectorDisplay *m_selectorDisplay;
         FileManager *m_fileDialog;

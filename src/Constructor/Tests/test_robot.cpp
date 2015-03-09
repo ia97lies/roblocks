@@ -74,11 +74,10 @@ class ComponentMock : public Component {
     PlugMock *m_plug[2];
 };
 
-BOOST_AUTO_TEST_CASE(test_robot_instantiate) {
+BOOST_AUTO_TEST_CASE(test_robot_defaults) {
   PolycodeMock *polycodeMock = new PolycodeMock();
   Robot *robot = new Robot(polycodeMock);
-  delete robot;
-  delete polycodeMock;
+  BOOST_CHECK(robot->getInPlace() == NULL);
 }
 
 BOOST_AUTO_TEST_CASE(test_robot_add_one_component) {
@@ -148,6 +147,18 @@ BOOST_AUTO_TEST_CASE(test_robot_activate_plug_one_level) {
 
   BOOST_CHECK(!componentMock->getMyPlug(0)->isActivated);
   BOOST_CHECK(componentMock->getMyPlug(1)->isActivated);
+}
+
+BOOST_AUTO_TEST_CASE(test_robot_place) {
+  bool deleted = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  ComponentMock *componentMock = new ComponentMock(&deleted);
+  Robot *robot = new Robot(polycodeMock);
+  robot->setRoot(componentMock);
+  robot->activate(componentMock->getMyPlug(0)->getShape());
+  componentMock = new ComponentMock(&deleted);
+  robot->place(componentMock);
+  BOOST_CHECK(robot->getInPlace() == componentMock);
 }
 
 BOOST_AUTO_TEST_CASE(test_robot_activate_plug_one_more_level) {
@@ -229,7 +240,7 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component) {
   robot->remove();
   BOOST_CHECK(deleted == true);
   BOOST_CHECK(componentMock->getMyPlug(0)->getConnectedPlug() == NULL);
-  // TODO: write tests for destruct component (all parts get destructed?)
+  BOOST_CHECK(componentMock->getMyPlug(0)->isActive());
 }
 
 BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents) {
