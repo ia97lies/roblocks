@@ -68,18 +68,14 @@ set(Synthetics_SRCS
   SyntheticsApp.cpp
   Configurator.cpp
   OrbitCamera.cpp
-  Constructor.cpp
-  SelectorDisplay.cpp
   HeadUpDisplay.cpp
   PolycodeFacade.cpp
   ValueRangeMapping.cpp
   CompoundStore.cpp
-  FileManager.cpp
   Plug.cpp
   Part.cpp
   Compound.cpp
   Component.cpp
-  Robot.cpp
 )
 
 set(Synthetics_HDRS
@@ -89,19 +85,15 @@ set(Synthetics_HDRS
   Configurator.hpp
   MovingCamera.hpp
   OrbitCamera.hpp
-  Constructor.hpp
-  SelectorDisplay.hpp
   HeadUpDisplay.hpp
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
   CompoundStore.hpp
-  FileManager.hpp
   Plug.hpp
   Knob.hpp
   Part.hpp
   Compound.hpp
   Component.hpp
-  Robot.hpp
 )
 
 set(Polycode_LIBS
@@ -138,14 +130,10 @@ add_library(
   ${Synthetics_SRCS} ${Synthetics_HDRS}
 )
 
-add_library(
-  RobotLua SHARED
-  RobotLua.cpp
-)
-
 target_link_libraries(
   Synthetics 
   synthetics
+  constructor
   components
   ${Polycode_LIBS}
 )
@@ -154,11 +142,6 @@ target_link_libraries(
 # INSTALL 
 ##############################################################################
 install(TARGETS Synthetics
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-)
-
-install(TARGETS RobotLua
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )
@@ -190,6 +173,7 @@ add_definitions(-DBOOST_TEST_DYN_LINK)
 add_executable(test_compound Tests/test_compound.cpp)
 target_link_libraries(test_compound
   synthetics
+  constructor
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -200,6 +184,7 @@ target_link_libraries(test_compound
 add_executable(test_plug Tests/test_plug.cpp)
 target_link_libraries(test_plug
   synthetics
+  constructor
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -210,6 +195,7 @@ target_link_libraries(test_plug
 add_executable(test_part Tests/test_part.cpp)
 target_link_libraries(test_part
   synthetics
+  constructor
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -220,16 +206,7 @@ target_link_libraries(test_part
 add_executable(test_component Tests/test_component.cpp)
 target_link_libraries(test_component
   synthetics
-  components
-  ${Polycode_LIBS}
-  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
-)
-
-add_executable(test_robot Tests/test_robot.cpp)
-target_link_libraries(test_robot
-  synthetics
+  constructor
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -240,6 +217,7 @@ target_link_libraries(test_robot
 add_executable(test_value_range_mapping Tests/test_value_range_mapping.cpp)
 target_link_libraries(test_value_range_mapping
   synthetics
+  constructor
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -250,6 +228,7 @@ target_link_libraries(test_value_range_mapping
 add_executable(test_compound_store Tests/test_compound_store.cpp)
 target_link_libraries(test_compound_store
   synthetics
+  constructor
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -261,12 +240,12 @@ add_test(test_compound test_compound)
 add_test(test_part test_part)
 add_test(test_plug test_plug)
 add_test(test_component test_component)
-add_test(test_robot test_robot)
 add_test(test_value_range_mapping test_value_range_mapping)
 add_test(test_compound_store test_compound_store)
 
 ##############################################################################
 # SUBDIRS
 ##############################################################################
+add_subdirectory(Constructor)
 add_subdirectory(Components)
 

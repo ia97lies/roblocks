@@ -10,7 +10,7 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "Constructor.hpp"
+#include "Constructor/Display.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
@@ -24,7 +24,7 @@ namespace Synthetics {
     private:
       Polycode::Core *m_core;
       Configurator *m_conf;
-      Constructor *m_constructor;
+      Constructor::Display *m_constructor;
   };
 }
 #endif

@@ -5,7 +5,7 @@
 
 #include "SyntheticsApp.hpp"
 #include "Configurator.hpp"
-#include "Constructor.hpp"
+#include "Constructor/Display.hpp"
 #include "Components/Factory.hpp"
 
 using namespace Polycode;
@@ -31,7 +31,7 @@ namespace Synthetics {
 
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
-    m_constructor = new Constructor(m_core, m_conf, factory);
+    m_constructor = new Constructor::Display(m_core, m_conf, factory);
   }
 
   SyntheticsApp::~SyntheticsApp() {

@@ -6,9 +6,10 @@
 #include <boost/test/unit_test.hpp>
 #include "PolycodeFacade.hpp"
 #include "Plug.hpp"
-#include "Robot.hpp"
+#include "Constructor/Robot.hpp"
 
 using namespace Synthetics;
+using namespace Synthetics::Constructor;
 using namespace Polycode;
 
 class PolycodeMock : public PolycodeFacade {

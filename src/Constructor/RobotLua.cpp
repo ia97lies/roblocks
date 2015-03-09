@@ -4,7 +4,7 @@
 
 #include "lua.hpp"
 #include "Polycode.h"
-#include "Robot.hpp"
+#include "Constructor/Robot.hpp"
 #include "Components/Factory.hpp"
 
 #define __FACTORY_NAME "Synthetics.Components.Factory"
