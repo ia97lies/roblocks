@@ -8,6 +8,7 @@ set(Constructor_SRCS
   SelectorDisplay.cpp
   Display.cpp
   Robot.cpp
+  CommandSetRoot.cpp
 )
 
 set(Constructor_HDRS
@@ -15,6 +16,8 @@ set(Constructor_HDRS
   SelectorDisplay.hpp
   Display.hpp
   Robot.hpp
+  Command.hpp
+  CommandSetRoot.hpp
 )
 
 ##############################################################################
