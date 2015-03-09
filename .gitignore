@@ -19,10 +19,11 @@ CTestTestfile.cmake
 src/test_compound
 src/Components/test_load_components
 src/Components/test_factory
+src/Constructor/test_robot
+src/Constructor/test_command
 src/OldStuff/
 src/test_plug
 src/test_part
 src/test_component
-src/test_robot
 src/test_value_range_mapping
 src/test_compound_store

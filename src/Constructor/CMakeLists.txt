@@ -9,6 +9,8 @@ set(Constructor_SRCS
   Display.cpp
   Robot.cpp
   CommandSetRoot.cpp
+  CommandActivate.cpp
+  CommandPlace.cpp
 )
 
 set(Constructor_HDRS
@@ -18,6 +20,8 @@ set(Constructor_HDRS
   Robot.hpp
   Command.hpp
   CommandSetRoot.hpp
+  CommandActivate.hpp
+  CommandPlace.hpp
 )
 
 ##############################################################################
@@ -57,4 +61,16 @@ target_link_libraries(test_robot
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
-add_test(test_robot test_robot)
+add_executable(test_command Tests/test_command.cpp)
+target_link_libraries(test_command
+  synthetics
+  constructor
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_test(test_command test_command)
+
