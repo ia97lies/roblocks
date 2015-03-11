@@ -2,7 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 //
-#define BOOST_TEST_MODULE TestRobot
+#define BOOST_TEST_MODULE TestConstructorCommands
 #include <boost/test/unit_test.hpp>
 #include "PolycodeFacade.hpp"
 #include "Plug.hpp"
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(test_command_remove_execute) {
   robot->place(component2);
   robot->add();
   robot->activate(component2->getMyPlug(0)->getShape());
-  CommandRemove *command = new CommandRemove(robot);
+  CommandRemove *command = new CommandRemove(robot, component2);
   command->execute();
   BOOST_CHECK_THROW(component1->get(0), std::out_of_range);
 }
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(test_command_remove_undo) {
   robot->place(component2);
   robot->add();
   robot->activate(component2->getMyPlug(0)->getShape());
-  CommandRemove *command = new CommandRemove(robot);
+  CommandRemove *command = new CommandRemove(robot, component2);
   command->execute();
   command->undo();
   BOOST_CHECK(component1->get(0) == component2);

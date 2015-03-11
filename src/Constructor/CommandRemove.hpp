@@ -12,13 +12,14 @@ namespace Synthetics {
 
     class CommandRemove {
       public:
-        CommandRemove(Robot *robot); 
+        CommandRemove(Robot *robot, Component *component); 
         virtual ~CommandRemove();
         virtual void execute();
         virtual void undo();
 
       private:
         Robot *m_robot;
+        Component *m_component;
     };
   }
 }

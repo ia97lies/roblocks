@@ -2,18 +2,23 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_CONSTRUCTOR_COMMAND_H
-#define SYNTHETICS_CONSTRUCTOR_COMMAND_H
+#include "History.hpp"
 
 namespace Synthetics {
   namespace Constructor {
+    History::History(int size) {
+    }
 
-    class Command {
-      virtual ~Command() {}
-      virtual void execute() = 0;
-      virtual void undo() = 0;
-    };
+    History::~History() {}
+
+    void History::execute(Command *command) {
+    }
+
+    void History::undo() {
+    }
+
+    void History::redo() {
+    }
   }
 }
 
-#endif

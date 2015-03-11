@@ -14,6 +14,7 @@ set(Constructor_SRCS
   CommandRotateInPlace.cpp
   CommandAdd.cpp
   CommandRemove.cpp
+  History.cpp
 )
 
 set(Constructor_HDRS
@@ -28,6 +29,7 @@ set(Constructor_HDRS
   CommandRotateInPlace.hpp
   CommandAdd.hpp
   CommandRemove.hpp
+  History.hpp
 )
 
 ##############################################################################
@@ -79,4 +81,17 @@ target_link_libraries(test_command
 )
 
 add_test(test_command test_command)
+
+add_executable(test_history Tests/test_history.cpp)
+target_link_libraries(test_history
+  synthetics
+  constructor
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_test(test_history test_history)
 
