@@ -153,7 +153,6 @@ namespace Synthetics {
     }
 
     Robot::~Robot() {
-      std::vector<Compound*>deletables;
       std::map<long, Compound*> map = m_components->getMap();
       std::map<long, Compound*>::iterator i;
       for (i = map.begin(); i != map.end(); i++) {

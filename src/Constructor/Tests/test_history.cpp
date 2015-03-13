@@ -115,41 +115,117 @@ BOOST_AUTO_TEST_CASE(test_history_size_1_undo_redo_twice) {
   BOOST_CHECK(!deleted);
 }
 
-BOOST_AUTO_TEST_CASE(test_history_size_3_add_6_executes_4_undo_4_redo) {
+BOOST_AUTO_TEST_CASE(test_history_fill_up) {
   int didExecute = 0;
   int didUndo = 0;
-  bool deleted[6] = { false, false, false, false, false, false };
+  bool deleted[3] = { false, false, false };
   History *history = new History(3);
-  MyCommand *command[6] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+  MyCommand *command[3] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
                             new MyCommand(&didExecute, &didUndo, &deleted[1]),
-                            new MyCommand(&didExecute, &didUndo, &deleted[2]),
-                            new MyCommand(&didExecute, &didUndo, &deleted[3]),
-                            new MyCommand(&didExecute, &didUndo, &deleted[4]),
-                            new MyCommand(&didExecute, &didUndo, &deleted[5]) };
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]) };
   history->execute(command[0]);
   history->execute(command[1]);
   history->execute(command[2]);
   BOOST_CHECK(!deleted[0]);
   BOOST_CHECK(!deleted[1]);
   BOOST_CHECK(!deleted[2]);
+  BOOST_CHECK(didExecute == 3);
+}
+
+BOOST_AUTO_TEST_CASE(test_history_fill_up_and_one) {
+  int didExecute = 0;
+  int didUndo = 0;
+  bool deleted[4] = { false, false, false, false };
+  History *history = new History(3);
+  MyCommand *command[4] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[1]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[3]) };
+  history->execute(command[0]);
+  history->execute(command[1]);
+  history->execute(command[2]);
   history->execute(command[3]);
   BOOST_CHECK(deleted[0]);
   BOOST_CHECK(!deleted[1]);
   BOOST_CHECK(!deleted[2]);
   BOOST_CHECK(!deleted[3]);
-  history->execute(command[4]);
-  history->execute(command[5]);
+  BOOST_CHECK(didExecute == 4);
+}
+
+BOOST_AUTO_TEST_CASE(test_history_clean_up) {
+  int didExecute = 0;
+  int didUndo = 0;
+  bool deleted[3] = { false, false, false };
+  History *history = new History(3);
+  MyCommand *command[3] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[1]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]) };
+  history->execute(command[0]);
+  history->execute(command[1]);
+  history->execute(command[2]);
+  delete history;
   BOOST_CHECK(deleted[0]);
   BOOST_CHECK(deleted[1]);
   BOOST_CHECK(deleted[2]);
-  BOOST_CHECK(!deleted[3]);
-  BOOST_CHECK(!deleted[4]);
-  BOOST_CHECK(!deleted[5]);
+}
+
+BOOST_AUTO_TEST_CASE(test_history_undo_beyond_history) {
+  int didExecute = 0;
+  int didUndo = 0;
+  bool deleted[3] = { false, false, false };
+  History *history = new History(3);
+  MyCommand *command[3] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[1]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]) };
+  history->execute(command[0]);
+  history->execute(command[1]);
+  history->execute(command[2]);
   history->undo();
   history->undo();
   history->undo();
   history->undo();
-  // XXX: I AM HERE
+  history->undo();
   BOOST_CHECK(didUndo == 3);
+}
+
+BOOST_AUTO_TEST_CASE(test_history_redo_beyond_history) {
+  int didExecute = 0;
+  int didUndo = 0;
+  bool deleted[3] = { false, false, false };
+  History *history = new History(3);
+  MyCommand *command[3] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[1]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]) };
+  history->execute(command[0]);
+  history->execute(command[1]);
+  history->execute(command[2]);
+  history->undo();
+  history->undo();
+  history->undo();
+  history->redo();
+  history->redo();
+  history->redo();
+  history->redo();
+  history->redo();
+  BOOST_CHECK(didExecute == 6);
+}
+
+BOOST_AUTO_TEST_CASE(test_history_not_full_redo_beyond_history) {
+  int didExecute = 0;
+  int didUndo = 0;
+  bool deleted[3] = { false, false, false };
+  History *history = new History(3);
+  MyCommand *command[3] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[1]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]) };
+  history->execute(command[0]);
+  history->execute(command[1]);
+  history->undo();
+  history->undo();
+  history->redo();
+  history->redo();
+  history->redo();
+  BOOST_CHECK(didExecute == 4);
+  history->undo();
 }
 
