@@ -226,6 +226,54 @@ BOOST_AUTO_TEST_CASE(test_history_not_full_redo_beyond_history) {
   history->redo();
   history->redo();
   BOOST_CHECK(didExecute == 4);
+  // this undo did fail and is also a good hint, that we did not go over boundary
   history->undo();
+  BOOST_CHECK(didUndo == 3);
+}
+
+BOOST_AUTO_TEST_CASE(test_history_undo_execute) {
+  int didExecute = 0;
+  int didUndo = 0;
+  bool deleted[5] = { false, false, false, false, false };
+  History *history = new History(4);
+  MyCommand *command[5] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[1]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[3]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[4]) };
+
+  history->execute(command[0]);
+  history->execute(command[1]);
+  history->execute(command[2]);
+  history->execute(command[3]);
+  history->undo();
+  history->undo();
+  history->execute(command[4]);
+  BOOST_CHECK(deleted[2]);
+  BOOST_CHECK(deleted[3]);
+}
+
+BOOST_AUTO_TEST_CASE(test_history_undo_redo_execute) {
+  int didExecute = 0;
+  int didUndo = 0;
+  bool deleted[5] = { false, false, false, false, false };
+  History *history = new History(4);
+  MyCommand *command[5] = { new MyCommand(&didExecute, &didUndo, &deleted[0]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[1]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[2]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[3]),
+                            new MyCommand(&didExecute, &didUndo, &deleted[4]) };
+
+  history->execute(command[0]);
+  history->execute(command[1]);
+  history->execute(command[2]);
+  history->execute(command[3]);
+  history->undo();
+  history->undo();
+  history->undo();
+  history->redo();
+  history->execute(command[4]);
+  BOOST_CHECK(deleted[2]);
+  BOOST_CHECK(deleted[3]);
 }
 

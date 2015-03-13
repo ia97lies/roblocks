@@ -31,6 +31,16 @@ namespace Synthetics {
         m_commands.erase(m_commands.begin());
         delete command;
       }
+      else if (m_cur < m_commands.size()) {
+        try {
+          for (int i = m_cur; i <= m_commands.size(); i++) {
+            Command *command = m_commands.at(i-1);
+            delete command;
+          }
+        }
+        catch (std::out_of_range &e) {}
+        m_commands.erase(m_commands.begin() + m_cur, m_commands.end());
+      }
     }
 
     void History::undo() {
