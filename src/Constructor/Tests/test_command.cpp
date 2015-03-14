@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(test_command_activate_execute) {
   Robot *robot = new Robot(polycodeMock);
   ComponentMock *component = new ComponentMock(&dummy);
   robot->setRoot(component);
-  CommandActivate *command = new CommandActivate(robot, component->getMyPlug(0));
+  CommandActivate *command = new CommandActivate(robot, component->getMyPlug(0)->getShape());
   command->execute();
   BOOST_CHECK(component->getMyPlug(0)->isActive());
 }
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(test_command_activate_undo) {
   ComponentMock *component = new ComponentMock(&dummy);
   robot->setRoot(component);
   robot->activate(component->getMyPlug(0)->getShape());
-  CommandActivate *command = new CommandActivate(robot, component->getMyPlug(1));
+  CommandActivate *command = new CommandActivate(robot, component->getMyPlug(1)->getShape());
   command->execute();
   command->undo();
   BOOST_CHECK(component->getMyPlug(0)->isActive());
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(test_command_activate_undo_previous_plug_not_active) {
   Robot *robot = new Robot(polycodeMock);
   ComponentMock *component = new ComponentMock(&dummy);
   robot->setRoot(component);
-  CommandActivate *command = new CommandActivate(robot, component->getMyPlug(1));
+  CommandActivate *command = new CommandActivate(robot, component->getMyPlug(1)->getShape());
   command->execute();
   command->undo();
   // currently if non was active before we just do not touch anything
@@ -136,6 +136,10 @@ BOOST_AUTO_TEST_CASE(test_command_activate_undo_previous_plug_not_active) {
   BOOST_CHECK(component->getMyPlug(1)->isActive());
 }
 
+// XXX I AM HERE
+// TODO: place undo redo do not work robot remove the component
+//       maybe have to rewrite the robot or something
+// TODO: forgot replace I also have to make CommandReplace !
 BOOST_AUTO_TEST_CASE(test_command_place_execute) {
   bool dummy = false;
   PolycodeMock *polycodeMock = new PolycodeMock();
@@ -163,6 +167,24 @@ BOOST_AUTO_TEST_CASE(test_command_place_undo) {
   command->undo();
   BOOST_CHECK(component1->getPart(0)->getPlug(0)->isActive());
   BOOST_CHECK(robot->getInPlace() == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_command_place_redo) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  ComponentMock *component1 = new ComponentMock(&dummy);
+  robot->setRoot(component1);
+  robot->activate(component1->getMyPlug(0)->getShape());
+  ComponentMock *component2 = new ComponentMock(&dummy);
+  CommandPlace *command = new CommandPlace(robot, component2);
+  command->execute();
+  command->undo();
+  command->execute();
+  // XXX I AM HERE
+  // TODO: every command must test this sequence for implement
+  //       redo in History object
+  BOOST_CHECK(robot->getInPlace() != NULL);
 }
 
 BOOST_AUTO_TEST_CASE(test_command_rotate_in_place_execute) {
@@ -235,7 +257,7 @@ BOOST_AUTO_TEST_CASE(test_command_remove_execute) {
   robot->place(component2);
   robot->add();
   robot->activate(component2->getMyPlug(0)->getShape());
-  CommandRemove *command = new CommandRemove(robot, component2, NULL, NULL);
+  CommandRemove *command = new CommandRemove(robot, NULL, NULL);
   command->execute();
   BOOST_CHECK_THROW(component1->get(0), std::out_of_range);
 }
@@ -252,9 +274,62 @@ BOOST_AUTO_TEST_CASE(test_command_remove_undo) {
   robot->place(component2);
   robot->add();
   robot->activate(component2->getMyPlug(0)->getShape());
-  CommandRemove *command = new CommandRemove(robot, component2, NULL, NULL);
+  CommandRemove *command = new CommandRemove(robot, NULL, NULL);
   command->execute();
   command->undo();
   BOOST_CHECK(component1->get(0) != NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_command_remove_execute_in_place) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  ComponentMock *component1 = new ComponentMock(&dummy);
+  robot->setRoot(component1);
+  robot->activate(component1->getMyPlug(0)->getShape());
+  bool deleted = false;
+  ComponentMock *component2 = new ComponentMock(&deleted);
+  robot->place(component2);
+  CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+  command->execute();
+  BOOST_CHECK(robot->getInPlace() == NULL);
+  BOOST_CHECK(deleted == true);
+}
+
+BOOST_AUTO_TEST_CASE(test_command_remove_undo_in_place) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  ComponentMock *component1 = new ComponentMock(&dummy);
+  robot->setRoot(component1);
+  robot->activate(component1->getMyPlug(0)->getShape());
+  bool deleted = false;
+  ComponentMock *component2 = new ComponentMock(&deleted);
+  robot->place(component2);
+  CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+  command->execute();
+  command->undo();
+  BOOST_CHECK(robot->getInPlace() != NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_command_remove_execute_none) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  ComponentMock *component1 = new ComponentMock(&dummy);
+  robot->setRoot(component1);
+  CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+  command->execute();
+}
+
+BOOST_AUTO_TEST_CASE(test_command_remove_undo_none) {
+  bool dummy = false;
+  PolycodeMock *polycodeMock = new PolycodeMock();
+  Robot *robot = new Robot(polycodeMock);
+  ComponentMock *component1 = new ComponentMock(&dummy);
+  robot->setRoot(component1);
+  CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+  command->execute();
+  command->undo();
 }
 

@@ -400,6 +400,10 @@ namespace Synthetics {
       return m_inPlace;
     }
 
+    Component *Robot::getActiveComponent() {
+      return m_activeComponent;
+    }
+
     void Robot::update() {
       if (m_powerOn) {
         std::map<long, Compound*> map = m_components->getMap();

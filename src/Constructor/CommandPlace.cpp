@@ -19,6 +19,7 @@ namespace Synthetics {
 
     void CommandPlace::undo() {
       m_robot->remove();
+      m_component = NULL;
     }
   }
 }

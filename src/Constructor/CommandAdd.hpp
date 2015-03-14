@@ -5,12 +5,13 @@
 #ifndef SYNTHETICS_CONSTRUCTOR_COMMAND_ADD_H
 #define SYNTHETICS_CONSTRUCTOR_COMMAND_ADD_H
 
+#include "Command.hpp"
 #include "Robot.hpp"
 
 namespace Synthetics {
   namespace Constructor {
 
-    class CommandAdd {
+    class CommandAdd : public Command {
       public:
         CommandAdd(Robot *robot, Component *component); 
         virtual ~CommandAdd();

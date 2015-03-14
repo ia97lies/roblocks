@@ -5,22 +5,24 @@
 #ifndef SYNTHETICS_CONSTRUCTOR_COMMAND_ACTIVATE_H
 #define SYNTHETICS_CONSTRUCTOR_COMMAND_ACTIVATE_H
 
+#include "PolyEntity.h"
+#include "Command.hpp"
 #include "Robot.hpp"
 
 namespace Synthetics {
   namespace Constructor {
 
-    class CommandActivate {
+    class CommandActivate : public Command {
       public:
-        CommandActivate(Robot *robot, Plug *plug); 
+        CommandActivate(Robot *robot, Polycode::Entity *plugShape); 
         virtual ~CommandActivate();
         virtual void execute();
         virtual void undo();
 
       private:
         Robot *m_robot;
-        Plug *m_plug;
-        Plug *m_previousPlug;
+        Polycode::Entity *m_plugShape;
+        Polycode::Entity *m_prevPlugShape;
     };
   }
 }
