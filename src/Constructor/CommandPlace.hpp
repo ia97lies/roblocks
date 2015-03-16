@@ -13,7 +13,7 @@ namespace Synthetics {
 
     class CommandPlace : public Command {
       public:
-        CommandPlace(Robot *robot, Component *component); 
+        CommandPlace(Robot *robot, Component *component, Polycode::Core *core, Polycode::Scene *scene); 
         virtual ~CommandPlace();
         virtual void execute();
         virtual void undo();
@@ -21,7 +21,9 @@ namespace Synthetics {
       private:
         Robot *m_robot;
         Component *m_component;
-        Plug *m_previousPlug;
+        std::string m_name; 
+        Polycode::Core *m_core;
+        Polycode::Scene *m_scene;
     };
   }
 }

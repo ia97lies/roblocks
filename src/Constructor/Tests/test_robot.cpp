@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component) {
   robot->remove();
   BOOST_CHECK(deleted == true);
   BOOST_CHECK(componentMock->getMyPlug(0)->getConnectedPlug() == NULL);
-  BOOST_CHECK(componentMock->getMyPlug(0)->isActive());
+  BOOST_CHECK(componentMock->getMyPlug(0)->isActivated);
 }
 
 BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents) {
@@ -268,6 +268,7 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents) {
   componentMock2->getMyPlug(0)->setConnectedPlug(componentMock3->getMyPlug(1));
 
   robot->activate(componentMock3->getMyPlug(0)->getShape());
+  robot->remove();
   robot->remove();
   BOOST_CHECK(deleted == true);
   BOOST_CHECK(componentMock1->getMyPlug(0)->getConnectedPlug() == NULL);
@@ -300,6 +301,7 @@ BOOST_AUTO_TEST_CASE(test_robot_remove_component_with_more_parents_2) {
   componentMock2->getMyPlug(1)->setConnectedPlug(componentMock3->getMyPlug(1));
 
   robot->activate(componentMock3->getMyPlug(0)->getShape());
+  robot->remove();
   robot->remove();
   BOOST_CHECK(deleted == true);
   BOOST_CHECK(componentMock1->getMyPlug(0)->getConnectedPlug() == NULL);

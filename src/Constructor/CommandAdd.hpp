@@ -13,7 +13,7 @@ namespace Synthetics {
 
     class CommandAdd : public Command {
       public:
-        CommandAdd(Robot *robot, Component *component); 
+        CommandAdd(Robot *robot, Component *component, Polycode::Core *core, Polycode::Scene *scene); 
         virtual ~CommandAdd();
         virtual void execute();
         virtual void undo();
@@ -21,6 +21,9 @@ namespace Synthetics {
       private:
         Robot *m_robot;
         Component *m_component;
+        std::string m_name; 
+        Polycode::Core *m_core;
+        Polycode::Scene *m_scene;
         Plug *m_activePlug;
     };
   }

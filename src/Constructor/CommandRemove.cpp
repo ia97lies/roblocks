@@ -20,6 +20,7 @@ namespace Synthetics {
         m_isNone = false;
         m_name = component->getName();
         m_rotation = component->getPart(0)->getShape()->getRotationEuler();
+        // TODO: add a possibility to get active plug index
         m_core = core;
         m_scene = scene;
       }
