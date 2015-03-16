@@ -68,6 +68,7 @@ target_link_libraries(test_robot
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
 )
+add_test(test_robot test_robot)
 
 add_executable(test_command Tests/test_command.cpp)
 target_link_libraries(test_command
@@ -79,7 +80,6 @@ target_link_libraries(test_command
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
 )
-
 add_test(test_command test_command)
 
 add_executable(test_history Tests/test_history.cpp)
@@ -92,6 +92,5 @@ target_link_libraries(test_history
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
 )
-
 add_test(test_history test_history)
 
