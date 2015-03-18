@@ -34,7 +34,7 @@ namespace Synthetics {
         }
         virtual ~ChangeInPlace() {}
         virtual void onChange(std::string name) {
-          if (m_robot->inPlace()) {
+          if (m_robot->getInPlace()) {
             Component *component = m_factory->createComponent(name, m_core, m_scene);
             m_robot->replace(component);
           }
@@ -118,12 +118,14 @@ namespace Synthetics {
                 break;
               case KEY_UP:
                 {
-                  m_robot->rotateInPlace(1);
+                  Command *command = new CommandRotateInPlace(m_robot, 1);
+                  m_history->execute(command);
                 }
                 break;
               case KEY_DOWN:
                 {
-                  m_robot->rotateInPlace(-1);
+                  Command *command = new CommandRotateInPlace(m_robot, -1);
+                  m_history->execute(command);
                 }
                 break;
               case KEY_o:
@@ -148,6 +150,16 @@ namespace Synthetics {
                   m_camera->activate(false);
                   m_fileDialog->load(m_robot, completion);
                 }
+              case KEY_u:
+                {
+                  m_history->undo();
+                }
+                break;
+              case KEY_r:
+                {
+                  m_history->redo();
+                }
+                break;
             }
             break;
           case InputEvent::EVENT_MOUSEDOWN:
@@ -157,7 +169,8 @@ namespace Synthetics {
                   Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
                   RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 300.0);
                   if(res.entity) {
-                    m_robot->activate(res.entity);
+                    Command *command = new CommandActivate(m_robot, res.entity);
+                    m_history->execute(command);
                   }
                   if (m_robot->getActiveKnob()) {
                     m_camera->activate(false);
@@ -224,14 +237,18 @@ namespace Synthetics {
       // add current selected component to current active component
       if (m_robot->isEmpty()) {
         Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
-        m_robot->setRoot(component);
+        Command *command = new CommandSetRoot(m_robot, component, m_core, m_scene);
+        m_history->execute(command);
       }
-      else if (!m_robot->inPlace()) {
+      else if (!m_robot->getInPlace()) {
         Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
-        m_robot->place(component);
+        Command *command = new CommandPlace(m_robot, component, m_core, m_scene);
+        m_history->execute(command);
       }
       else {
-        m_robot->add();
+        Component *component = m_robot->getInPlace();
+        Command *command = new CommandAdd(m_robot, component, m_core, m_scene);
+        m_history->execute(command);
       }
     }
   }

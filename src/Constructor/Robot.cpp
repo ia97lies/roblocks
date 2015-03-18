@@ -396,10 +396,6 @@ namespace Synthetics {
       return m_root == NULL;
     }
 
-    bool Robot::inPlace() {
-      return m_inPlace != NULL;
-    }
-
     Plug *Robot::getActivePlug() {
       return m_activePlug;
     }

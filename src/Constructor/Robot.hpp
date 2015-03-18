@@ -41,7 +41,6 @@ namespace Synthetics {
         Component *getActiveComponent();
 
         bool isEmpty(); 
-        bool inPlace(); 
         bool isPowerOn(); 
 
         void update();
