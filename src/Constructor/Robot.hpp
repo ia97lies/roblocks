@@ -28,7 +28,7 @@ namespace Synthetics {
         void place(Component *component);
         void rotateInPlace(int direction);
         void add();
-        void remove();
+        Component *remove();
         void replace(Component *component);
 
         void activate(Polycode::Entity *plugShape); 

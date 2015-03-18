@@ -250,10 +250,11 @@ namespace Synthetics {
       }
     }
 
-    void Robot::remove() {
+    Component *Robot::remove() {
+      Component *removedComponent;
       if (m_inPlace != NULL) {
         Robot::destructGraphic(m_polycodeFacade, m_inPlace);
-        delete m_inPlace;
+        removedComponent = m_inPlace;
         m_inPlace = NULL;
         m_inPlacePart = NULL;
         m_inPlacePlug = NULL;
@@ -298,11 +299,12 @@ namespace Synthetics {
         if (m_activeComponent == m_root) {
           m_root = NULL;
         }
-        delete m_activeComponent;
+        removedComponent = m_activeComponent;
         m_activeComponent = activeComponent;
         m_activePart = activePart;
         m_activePlug = activePlug;
       }
+      return removedComponent;
     }
 
     void Robot::replace(Component *component) {

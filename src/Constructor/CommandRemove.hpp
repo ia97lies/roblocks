@@ -19,13 +19,8 @@ namespace Synthetics {
         virtual void undo();
 
       private:
-        bool m_isNone;
-        bool m_isInPlace;
         Robot *m_robot;
-        Polycode::Vector3 m_rotation;
-        std::string m_name; 
-        Polycode::Core *m_core;
-        Polycode::Scene *m_scene;
+        Component *m_component;
     };
   }
 }

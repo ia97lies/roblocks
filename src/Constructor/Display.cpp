@@ -104,7 +104,8 @@ namespace Synthetics {
               case KEY_DELETE:
                 // delete active component
                 if (m_robot) {
-                  m_robot->remove();
+                  Component *removed = m_robot->remove();
+                  delete removed;
                 }
                 break;
               case KEY_RETURN:
