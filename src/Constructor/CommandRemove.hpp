@@ -21,6 +21,7 @@ namespace Synthetics {
       private:
         Robot *m_robot;
         Component *m_component;
+        Plug *m_activePlug;
     };
   }
 }

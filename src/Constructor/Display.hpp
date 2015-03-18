@@ -15,6 +15,7 @@
 #include "Robot.hpp"
 #include "Configurator.hpp"
 #include "SelectorDisplay.hpp"
+#include "History.hpp"
 #include "Components/Factory.hpp"
 
 namespace Synthetics {
@@ -39,6 +40,7 @@ namespace Synthetics {
         SelectorDisplay *m_selectorDisplay;
         FileManager *m_fileDialog;
         unsigned int m_lastClickTime;
+        History *m_history;
 
         void place();
     };

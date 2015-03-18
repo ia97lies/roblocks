@@ -374,7 +374,7 @@ class RemoveAddedFixture {
       component2 = new ComponentMock(&deleted);
       robot->place(component2);
       robot->add();
-      robot->activate(component2->getMyPlug(0)->getShape());
+      robot->activate(component2->getMyPlug(1)->getShape());
     }
 
     bool deleted;
@@ -398,6 +398,7 @@ BOOST_FIXTURE_TEST_SUITE(RemoveAdded, RemoveAddedFixture)
     command->undo();
     BOOST_CHECK(robot->getInPlace() == NULL);
     BOOST_CHECK(component1->get(0) == component2);
+    BOOST_CHECK(robot->getActivePlug() == component2->getMyPlug(1));
   }
 
   BOOST_AUTO_TEST_CASE(test_command_remove_added_redo) {

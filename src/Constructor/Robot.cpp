@@ -197,7 +197,7 @@ namespace Synthetics {
     }
 
     void Robot::place(Component *component) {
-      if (m_activeComponent != NULL && m_inPlace == NULL) {
+      if (component && m_activeComponent != NULL && m_inPlace == NULL) {
         m_inPlace = component;
         m_inPlacePart = component->getPart(0);
         m_inPlacePlug = m_inPlacePart->getPlug(0);
@@ -247,11 +247,21 @@ namespace Synthetics {
         m_inPlace = NULL;
         m_inPlacePart = NULL;
         m_inPlacePlug = NULL;
+
+        for (int i = 0; i < component->getNoParts(); i++) {
+          for (int j = 0; j < component->getPart(i)->getNoPlugs(); j++) {
+            if (component->getPart(i)->getPlug(j)->isActive()) {
+              m_activeComponent = component;
+              m_activePart = component->getPart(i);
+              m_activePlug = component->getPart(i)->getPlug(j);
+            }
+          }
+        }
       }
     }
 
     Component *Robot::remove() {
-      Component *removedComponent;
+      Component *removedComponent = NULL;
       if (m_inPlace != NULL) {
         Robot::destructGraphic(m_polycodeFacade, m_inPlace);
         removedComponent = m_inPlace;

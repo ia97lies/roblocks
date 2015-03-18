@@ -17,6 +17,7 @@
 #include "CommandPlace.hpp"
 #include "CommandRotateInPlace.hpp"
 #include "CommandAdd.hpp"
+#include "CommandRemove.hpp"
 
 
 using namespace Polycode;
@@ -89,6 +90,8 @@ namespace Synthetics {
       extensions.push_back("*.lua");
       m_fileDialog = new FileManager(m_core, m_scene, m_factory, extensions);
       scene->addEntity(m_fileDialog);
+      
+      m_history = new History(10);
     }
 
     Display::~Display() {
@@ -104,8 +107,8 @@ namespace Synthetics {
               case KEY_DELETE:
                 // delete active component
                 if (m_robot) {
-                  Component *removed = m_robot->remove();
-                  delete removed;
+                  Command *command = new CommandRemove(m_robot, m_core, m_scene);
+                  m_history->execute(command);
                 }
                 break;
               case KEY_RETURN:

@@ -12,6 +12,7 @@ namespace Synthetics {
     CommandRemove::CommandRemove(Robot *robot, Polycode::Core *core, Polycode::Scene *scene) {
       m_robot = robot;
       m_component = NULL;
+      m_activePlug = NULL;
     }
 
     CommandRemove::~CommandRemove() {
@@ -25,6 +26,7 @@ namespace Synthetics {
         m_component = m_robot->remove();
       }
       else {
+        m_activePlug = m_robot->getActivePlug();
         m_component = m_robot->remove();
         m_robot->place(m_component);
       }
