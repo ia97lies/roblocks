@@ -16,15 +16,17 @@ namespace Synthetics {
       virtual ~Configurator();
       int getWidth();
       int getHeight();
+      int getHistory(); 
 
     private:
       int m_width;
       int m_height;
+      int m_history;
       Lua *m_lua;
 
       void readWidth(); 
       void readHeight(); 
-      int getNumber(const char *name); 
+      int getTableIntegerEntry(const char *name); 
   };
 }
 

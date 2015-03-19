@@ -112,6 +112,16 @@ BOOST_FIXTURE_TEST_SUITE(SetRoot, SetRootFixture)
     command->execute();
     BOOST_CHECK(!robot->isEmpty());
   }
+
+  BOOST_AUTO_TEST_CASE(test_command_set_root_redo_preserve_active_plug) {
+    CommandSetRoot *command = new CommandSetRoot(robot, component, NULL, NULL);
+    command->execute();
+    robot->activate(component->getMyPlug(0)->getShape());
+    command->undo();
+    command->execute();
+    BOOST_CHECK(robot->getActivePlug() == component->getMyPlug(0));
+  }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 

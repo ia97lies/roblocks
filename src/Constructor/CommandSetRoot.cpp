@@ -26,9 +26,11 @@ namespace Synthetics {
     }
 
     void CommandSetRoot::undo() {
-      // select one plug no mather which one
-      Plug *plug = m_component->getPart(0)->getPlug(0);
-      m_robot->activate(plug->getShape());
+      if (m_robot->getActivePlug() == NULL) {
+        // select one plug no mather which one
+        Plug *plug = m_component->getPart(0)->getPlug(0);
+        m_robot->activate(plug->getShape());
+      }
       m_robot->remove();
       m_component = NULL;
     }

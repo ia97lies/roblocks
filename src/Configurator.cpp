@@ -34,6 +34,15 @@ namespace Synthetics {
       readWidth();
       readHeight();
     }
+
+    lua_getglobal(L, "history");
+    if (!lua_isnumber(L, -1)) {
+      m_lua->error("history is not a valid directive, try history = 100");
+    }
+    else {
+      m_history = (int) lua_tonumber(L, -1);
+      lua_pop(L, 1);
+    }
   }
 
   Configurator::~Configurator() {
@@ -48,18 +57,23 @@ namespace Synthetics {
     return m_height;
   }
 
+  int Configurator::getHistory() {
+    return m_history;
+  }
+
   //--------------------------------------------------------------------------
   // private:
   //--------------------------------------------------------------------------
   void Configurator::readWidth() {
-    m_width = getNumber("width");
+    m_width = getTableIntegerEntry("width");
   }
 
   void Configurator::readHeight() {
-    m_height = getNumber("height");
+    lua_State *L = m_lua->L();
+    m_height = getTableIntegerEntry("height");
   }
 
-  int Configurator::getNumber(const char *name) {
+  int Configurator::getTableIntegerEntry(const char *name) {
     int result;
     lua_State *L = m_lua->L();
     lua_pushstring(L, name);

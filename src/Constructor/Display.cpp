@@ -91,7 +91,7 @@ namespace Synthetics {
       m_fileDialog = new FileManager(m_core, m_scene, m_factory, extensions);
       scene->addEntity(m_fileDialog);
       
-      m_history = new History(10);
+      m_history = new History(m_conf->getHistory());
     }
 
     Display::~Display() {
