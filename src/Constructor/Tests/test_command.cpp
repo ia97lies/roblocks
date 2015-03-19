@@ -173,14 +173,16 @@ BOOST_AUTO_TEST_SUITE_END()
 class PlaceFixture {
   public:
     PlaceFixture() {
+      deleted = false;
       polycodeMock = new PolycodeMock();
       robot = new Robot(polycodeMock);
       component1 = new ComponentMock();
       robot->setRoot(component1);
       robot->activate(component1->getMyPlug(0)->getShape());
-      component2 = new ComponentMock();
+      component2 = new ComponentMock(&deleted);
     }
 
+    bool deleted;
     PolycodeMock *polycodeMock;
     Robot *robot;
     ComponentMock *component1;
@@ -192,16 +194,42 @@ BOOST_FIXTURE_TEST_SUITE(Place, PlaceFixture)
   BOOST_AUTO_TEST_CASE(test_command_place_execute) {
     CommandPlace *command = new CommandPlace(robot, component2, NULL, NULL);
     command->execute();
-    BOOST_CHECK(component2->getPart(0)->getPlug(0)->isActive());
     BOOST_CHECK(robot->getInPlace() == component2);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_place_execute_command_destroy) {
+    CommandPlace *command = new CommandPlace(robot, component2, NULL, NULL);
+    command->execute();
+    delete command;
+    BOOST_CHECK(!deleted);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_place_execute_restore_active_plug) {
+    CommandPlace *command = new CommandPlace(robot, component2, NULL, NULL);
+    command->execute();
+    BOOST_CHECK(component2->getPart(0)->getPlug(0)->isActive());
   }
 
   BOOST_AUTO_TEST_CASE(test_command_place_undo) {
     CommandPlace *command = new CommandPlace(robot, component2, NULL, NULL);
     command->execute();
     command->undo();
-    BOOST_CHECK(component1->getPart(0)->getPlug(0)->isActive());
     BOOST_CHECK(robot->getInPlace() == NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_place_undo_command_destroy) {
+    CommandPlace *command = new CommandPlace(robot, component2, NULL, NULL);
+    command->execute();
+    command->undo();
+    delete command;
+    BOOST_CHECK(deleted);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_place_undo_restore_active_plug) {
+    CommandPlace *command = new CommandPlace(robot, component2, NULL, NULL);
+    command->execute();
+    command->undo();
+    BOOST_CHECK(component1->getPart(0)->getPlug(0)->isActive());
   }
 
   BOOST_AUTO_TEST_CASE(test_command_place_redo) {
@@ -264,15 +292,17 @@ BOOST_AUTO_TEST_SUITE_END()
 class AddFixture {
   public:
     AddFixture() {
+      deleted = false;
       polycodeMock = new PolycodeMock();
       robot = new Robot(polycodeMock);
       component1 = new ComponentMock();
       robot->setRoot(component1);
       robot->activate(component1->getMyPlug(0)->getShape());
-      component2 = new ComponentMock();
+      component2 = new ComponentMock(&deleted);
       robot->place(component2);
     }
 
+    bool deleted;
     PolycodeMock *polycodeMock;
     Robot *robot;
     ComponentMock *component1;
@@ -287,13 +317,40 @@ BOOST_FIXTURE_TEST_SUITE(Add, AddFixture)
     BOOST_CHECK(component1->get(0) == component2);
   }
 
+  BOOST_AUTO_TEST_CASE(test_command_add_execute_command_destroy) {
+    CommandAdd *command = new CommandAdd(robot, component2, NULL, NULL);
+    command->execute();
+    delete command;
+    BOOST_CHECK(!deleted);
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_add_undo) {
     CommandAdd *command = new CommandAdd(robot, component2, NULL, NULL);
     command->execute();
     command->undo();
     BOOST_CHECK_THROW(component1->get(0), std::out_of_range);
-    BOOST_CHECK(robot->getActivePlug() == component1->getMyPlug(0));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_add_undo_command_destroy) {
+    CommandAdd *command = new CommandAdd(robot, component2, NULL, NULL);
+    command->execute();
+    command->undo();
+    delete command;
+    BOOST_CHECK(!deleted);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_add_undo_in_place_again) {
+    CommandAdd *command = new CommandAdd(robot, component2, NULL, NULL);
+    command->execute();
+    command->undo();
     BOOST_CHECK(robot->getInPlace() != NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_add_undo_restore_selected_plug) {
+    CommandAdd *command = new CommandAdd(robot, component2, NULL, NULL);
+    command->execute();
+    command->undo();
+    BOOST_CHECK(robot->getActivePlug() == component1->getMyPlug(0));
   }
 
   BOOST_AUTO_TEST_CASE(test_command_add_redo) {
@@ -336,6 +393,19 @@ BOOST_FIXTURE_TEST_SUITE(RemoveInPlace, RemoveInPlaceFixture)
     BOOST_CHECK(robot->getInPlace() == NULL);
   }
 
+  BOOST_AUTO_TEST_CASE(test_command_remove_in_place_execute_command_presist_dont_destroy_component) {
+    CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+    command->execute();
+    BOOST_CHECK(!deleted);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_in_place_execute_command_destroy) {
+    CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+    command->execute();
+    delete command;
+    BOOST_CHECK(deleted);
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_remove_in_place_undo) {
     CommandRemove *command = new CommandRemove(robot, NULL, NULL);
     command->execute();
@@ -348,7 +418,7 @@ BOOST_FIXTURE_TEST_SUITE(RemoveInPlace, RemoveInPlaceFixture)
     command->execute();
     command->undo();
     delete command;
-    BOOST_CHECK(deleted == true);
+    BOOST_CHECK(!deleted);
   }
 
   BOOST_AUTO_TEST_CASE(test_command_remove_in_place_redo) {
@@ -392,13 +462,40 @@ BOOST_FIXTURE_TEST_SUITE(RemoveAdded, RemoveAddedFixture)
     BOOST_CHECK(robot->getInPlace() == component2);
   }
 
+  BOOST_AUTO_TEST_CASE(test_command_remove_added_execute_command_destroy) {
+    CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+    command->execute();
+    delete command;
+    BOOST_CHECK(!deleted);
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_remove_added_undo) {
     CommandRemove *command = new CommandRemove(robot, NULL, NULL);
     command->execute();
     command->undo();
-    BOOST_CHECK(robot->getInPlace() == NULL);
     BOOST_CHECK(component1->get(0) == component2);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_added_undo_not_in_place) {
+    CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+    command->execute();
+    command->undo();
+    BOOST_CHECK(robot->getInPlace() == NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_added_undo_restore_active_plug) {
+    CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+    command->execute();
+    command->undo();
     BOOST_CHECK(robot->getActivePlug() == component2->getMyPlug(1));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_added_undo_command_destroy) {
+    CommandRemove *command = new CommandRemove(robot, NULL, NULL);
+    command->execute();
+    command->undo();
+    delete command;
+    BOOST_CHECK(!deleted);
   }
 
   BOOST_AUTO_TEST_CASE(test_command_remove_added_redo) {

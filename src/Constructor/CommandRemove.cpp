@@ -29,15 +29,18 @@ namespace Synthetics {
         m_activePlug = m_robot->getActivePlug();
         m_component = m_robot->remove();
         m_robot->place(m_component);
+        m_component = NULL;
       }
     }
 
     void CommandRemove::undo() {
       if (!m_robot->getInPlace()) {
         m_robot->place(m_component);
+        m_component = NULL;
       }
       else {
         m_robot->add();
+        m_component = NULL;
       }
     }
   }
