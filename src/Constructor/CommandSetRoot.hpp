@@ -24,6 +24,7 @@ namespace Synthetics {
         std::string m_name; 
         Polycode::Core *m_core;
         Polycode::Scene *m_scene;
+        Plug *m_activePlug;
     };
   }
 }

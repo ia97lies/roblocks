@@ -77,16 +77,18 @@ Component *MockCreator(Polycode::Core *core, Polycode::Scene *scene) {
 }
 
 
+//----------------------------------------------------------------------------
 class SetRootFixture {
   public:
     SetRootFixture() {
+      deleted = false;
       Components::Factory::get()->addCreator("My.Mock", MockCreator);
-      polycodeMock = new PolycodeMock();
+      PolycodeMock * polycodeMock = new PolycodeMock();
       robot = new Robot(polycodeMock);
-      component = new ComponentMock();
+      component = new ComponentMock(&deleted);
     }
 
-    PolycodeMock *polycodeMock;
+    bool deleted;
     Robot *robot;
     ComponentMock *component;
 };
@@ -120,6 +122,21 @@ BOOST_FIXTURE_TEST_SUITE(SetRoot, SetRootFixture)
     command->undo();
     command->execute();
     BOOST_CHECK(robot->getActivePlug() == component->getMyPlug(0));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_set_root_execute_command_destroy) {
+    CommandSetRoot *command = new CommandSetRoot(robot, component, NULL, NULL);
+    command->execute();
+    delete command;
+    BOOST_CHECK(!deleted);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_set_root_undo_command_destroy) {
+    CommandSetRoot *command = new CommandSetRoot(robot, component, NULL, NULL);
+    command->execute();
+    command->undo();
+    delete command;
+    BOOST_CHECK(deleted);
   }
 
 BOOST_AUTO_TEST_SUITE_END()

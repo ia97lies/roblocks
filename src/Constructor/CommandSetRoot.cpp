@@ -14,25 +14,27 @@ namespace Synthetics {
       m_name = component->getName();
       m_core = core;
       m_scene = scene;
+      m_activePlug = NULL;
     }
 
-    CommandSetRoot::~CommandSetRoot() {}
+    CommandSetRoot::~CommandSetRoot() {
+      delete m_component;
+    }
 
     void CommandSetRoot::execute() {
-      if (m_component == NULL) {
-        m_component = Components::Factory::get()->createComponent(m_name, m_core, m_scene);
-      }
       m_robot->setRoot(m_component);
+      if (m_activePlug) {
+        m_robot->activate(m_activePlug->getShape());
+      }
+      else {
+        m_activePlug = m_component->getPart(0)->getPlug(0);
+      }
+      m_component = NULL;
     }
 
     void CommandSetRoot::undo() {
-      if (m_robot->getActivePlug() == NULL) {
-        // select one plug no mather which one
-        Plug *plug = m_component->getPart(0)->getPlug(0);
-        m_robot->activate(plug->getShape());
-      }
-      m_robot->remove();
-      m_component = NULL;
+      m_robot->activate(m_activePlug->getShape());
+      m_component = m_robot->remove();
     }
   }
 }
