@@ -303,8 +303,8 @@ namespace Synthetics {
               }
             }
           }
-          Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
         }
+        Robot::destructGraphic(m_polycodeFacade, m_activeComponent);
         m_components->remove(m_activeComponent->getId());
         if (m_activeComponent == m_root) {
           m_root = NULL;

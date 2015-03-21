@@ -93,7 +93,9 @@ namespace Synthetics {
             m_curValue = (0,0,0);
           }
 
-          virtual ~ShaftKnob() {}
+          virtual ~ShaftKnob() {
+            delete m_entity;
+          }
           
           virtual void activate(bool on) {
             if (on) {
@@ -150,6 +152,8 @@ namespace Synthetics {
       }
 
       Potentiometer::~Potentiometer() {
+        delete m_body[0];
+        delete m_body[1];
       }
 
       std::string Potentiometer::getName() {
