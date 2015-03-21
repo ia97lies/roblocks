@@ -47,13 +47,14 @@ The simulation is based on Polycode (see <a href="http://polycode.org">http://po
 <h2>
 <a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
 
-<p>The configuration is a simple Lua script. Currently only the initial resolution can be set and the needed components can be loaded.</p>
+<p>The configuration file is a simple Lua script. The initial resolution and the build history size can be set. As well all needed components will be loaded by the configuration file.</p>
 
 <h2>
 <a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h2>
 
 <p>There are a set of predefined components.
 I plan to make every component scriptable with Lua in some later versions.</p>
+<p>All connectable faces do have specific colors. Red faces emits signals. Green faces receive signals. Yellow faces can either receive ore emit signals and do have the function of a hub. Last but not least there are black faces which neither emit nor receive signals, they are needed to decouple signal buses.</p>
 
 <h3>Passive.Hub</h3>
 <p><img src="images/PassiveHub.png" width=12%></p>
