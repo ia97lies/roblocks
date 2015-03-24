@@ -23,42 +23,37 @@ namespace Synthetics {
 
     void History::execute(Command *command) {
       command->execute();
-      m_commands.push_back(command);
-      ++m_cur;
-      if (m_cur > m_size) {
+      if (m_cur >= m_size) {
         --m_cur;
         Command *command = m_commands.at(0);
         m_commands.erase(m_commands.begin());
         delete command;
       }
-      else if (m_cur < m_commands.size()) {
-        try {
-          for (int i = m_cur; i <= m_commands.size(); i++) {
-            Command *command = m_commands.at(i-1);
-            delete command;
-          }
+      if (m_cur < m_commands.size()) {
+        for (int i = m_cur; i < m_commands.size(); i++) {
+          Command *command = m_commands.at(i);
+          delete command;
         }
-        catch (std::out_of_range &e) {}
-        m_commands.erase(m_commands.begin() + m_cur, m_commands.end());
+        m_commands.erase(m_commands.begin()+m_cur, m_commands.end());
       }
+      m_commands.push_back(command);
+      ++m_cur;
     }
 
     void History::undo() {
       if (m_cur > 0) {
-        m_commands.at(m_cur-1)->undo();
         --m_cur;
+        m_commands.at(m_cur)->undo();
       }
     }
 
     void History::redo() {
       if (m_cur < m_size) {
-        ++m_cur;
         try {
-          m_commands.at(m_cur-1)->execute();
+          m_commands.at(m_cur)->execute();
+          ++m_cur;
         }
-        catch (std::out_of_range &e) {
-          --m_cur;
-        }
+        catch (std::out_of_range &e) {}
       }
     }
   }
