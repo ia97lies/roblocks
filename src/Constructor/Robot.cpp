@@ -452,6 +452,7 @@ namespace Synthetics {
     void Robot::constructKnobGraphic(PolycodeFacade *facade, Part *curPart) {
       Knob *knob = curPart->getKnob();
       if (knob) {
+        curPart->getShape()->addChild(knob->getShape());
         facade->trackCollisionEntity(knob->getShape());
       }
     }
@@ -486,6 +487,7 @@ namespace Synthetics {
 
           Knob *knob = curPart->getKnob();
           if (knob) {
+            curPart->getShape()->removeChild(knob->getShape());
             facade->removeEntity(knob->getShape());
           }
         }
