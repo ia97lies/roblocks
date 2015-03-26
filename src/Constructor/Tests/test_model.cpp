@@ -93,3 +93,12 @@ BOOST_AUTO_TEST_CASE(test_model_set_root_destroy) {
   BOOST_CHECK(deleted);
 }
 
+//----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE(test_model_) {
+  Model model;
+  ComponentMock *component = new ComponentMock();
+  model.setRoot(component);
+  //model.activate(Polycode::Entity *shape);
+}
+
+

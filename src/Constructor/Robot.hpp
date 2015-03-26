@@ -21,9 +21,6 @@ namespace Synthetics {
 
         void powerOn(bool on); 
 
-        void save(std::string file);
-        void load(std::string file);
-
         void setRoot(Component *component);
         void place(Component *component);
         void rotateInPlace(int direction);

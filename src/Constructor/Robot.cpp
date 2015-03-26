@@ -174,12 +174,6 @@ namespace Synthetics {
       return m_powerOn;
     }
 
-    void Robot::save(std::string file) {
-    }
-
-    void Robot::load(std::string file) {
-    }
-
     void Robot::setRoot(Component *component) {
       if (m_root == NULL) {
         m_root = component;
