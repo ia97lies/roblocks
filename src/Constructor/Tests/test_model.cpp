@@ -62,12 +62,10 @@ class ComponentMock : public Component {
     Plug *m_plug[2];
 };
 
-//----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(test_model_instantiate) {
   Model model();
 }
 
-//----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(test_model_set_get_root) {
   Model model;
   ComponentMock *component = new ComponentMock();
@@ -75,14 +73,12 @@ BOOST_AUTO_TEST_CASE(test_model_set_get_root) {
   BOOST_CHECK(model.getRoot() == component);
 }
 
-//----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(test_model_get_root_default) {
   Model model;
   ComponentMock *component = new ComponentMock();
   BOOST_CHECK(model.getRoot() == NULL);
 }
 
-//----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(test_model_set_root_destroy) {
   bool deleted = false;
   {
@@ -93,12 +89,95 @@ BOOST_AUTO_TEST_CASE(test_model_set_root_destroy) {
   BOOST_CHECK(deleted);
 }
 
-//----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(test_model_) {
+BOOST_AUTO_TEST_CASE(test_model_empty_get_default_active_component) {
   Model model;
-  ComponentMock *component = new ComponentMock();
-  model.setRoot(component);
-  //model.activate(Polycode::Entity *shape);
+  BOOST_CHECK(model.getActiveComponent() == NULL);
 }
 
+BOOST_AUTO_TEST_CASE(test_model_empty_get_default_active_part) {
+  Model model;
+  BOOST_CHECK(model.getActivePart() == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_model_empty_get_default_active_plug) {
+  Model model;
+  BOOST_CHECK(model.getActivePlug() == NULL);
+}
+
+BOOST_AUTO_TEST_CASE(test_model_empty_activate_null) {
+  Model model;
+  model.activate(NULL);
+  BOOST_CHECK(model.getActiveComponent() == NULL);
+}
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+class RootActivateOneFixture {
+  public:
+    RootActivateOneFixture() {
+      component = new ComponentMock();
+      model.setRoot(component);
+      model.activate(NULL);
+    }
+    Model model;
+    ComponentMock *component;
+};
+
+BOOST_FIXTURE_TEST_SUITE(RootActivateOne, RootActivateOneFixture)
+
+  BOOST_AUTO_TEST_CASE(test_model_one_element_activate_null) {
+    model.activate(NULL);
+    BOOST_CHECK(model.getActiveComponent() == NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_one_element_activate_one) {
+    model.activate(component->getMyPlug(0)->getShape());
+    BOOST_CHECK(model.getActiveComponent() == component);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_one_element_activate_one_get_active_part) {
+    model.activate(component->getMyPlug(1)->getShape());
+    BOOST_CHECK(model.getActivePart() == component->getPart(0));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_one_element_activate_one_get_active_plug) {
+    model.activate(component->getMyPlug(1)->getShape());
+    BOOST_CHECK(model.getActivePlug() == component->getMyPlug(1));
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+class RootActivateTwoFixture {
+  public:
+    RootActivateTwoFixture() {
+      component[0] = new ComponentMock();
+      component[1] = new ComponentMock();
+      component[0]->add(component[1]);
+      model.setRoot(component[0]);
+      model.activate(NULL);
+    }
+    Model model;
+    ComponentMock *component[2];
+};
+
+BOOST_FIXTURE_TEST_SUITE(RootActivateTwo, RootActivateTwoFixture)
+
+  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_null) {
+    model.activate(NULL);
+    BOOST_CHECK(model.getActiveComponent() == NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_root) {
+    model.activate(component[0]->getMyPlug(0)->getShape());
+    BOOST_CHECK(model.getActiveComponent() == component[0]);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_second) {
+    model.activate(component[1]->getMyPlug(0)->getShape());
+    BOOST_CHECK(model.getActiveComponent() == component[1]);
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
 

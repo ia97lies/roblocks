@@ -43,19 +43,6 @@ namespace Synthetics {
           }
         }
 
-        Component *getNewActiveComponent() {
-          return m_activeComponent;
-        }
-
-        Part *getNewActivePart() {
-          return m_activePart;
-        }
-
-        Plug *getNewActivePlug() {
-          return m_activePlug;
-        }
-
-      private:
         Polycode::Entity *m_plugShape;
         Component *m_activeComponent;
         Part *m_activePart;
@@ -89,15 +76,6 @@ namespace Synthetics {
           }
         }
 
-        Part *getNewActivePart() {
-          return m_activePart;
-        }
-
-        Plug *getNewActivePlug() {
-          return m_activePlug;
-        }
-
-      private:
         Polycode::Entity *m_plugShape;
         Part *m_activePart;
         Plug *m_activePlug;
@@ -127,11 +105,6 @@ namespace Synthetics {
           }
         }
 
-        Knob *getActiveKnob() {
-          return m_activeKnob;
-        }
-
-      private:
         Polycode::Entity *m_knobShape;
         Knob *m_activeKnob;
     };
@@ -330,16 +303,16 @@ namespace Synthetics {
         {
           FindActivePlug *method = new FindActivePlug(m_activeComponent, m_activePart, m_activePlug, plugShape);
           m_root->iterate(method);
-          m_activeComponent = method->getNewActiveComponent();
-          m_activePart = method->getNewActivePart();
-          m_activePlug = method->getNewActivePlug();
+          m_activeComponent = method->m_activeComponent;
+          m_activePart = method->m_activePart;
+          m_activePlug = method->m_activePlug;
           delete method;
         }
 
         {
           FindActiveKnob *method = new FindActiveKnob(plugShape);
           m_root->iterate(method);
-          m_activeKnob = method->getActiveKnob();
+          m_activeKnob = method->m_activeKnob;
           delete method;
         }
 
@@ -348,8 +321,8 @@ namespace Synthetics {
         {
           FindActiveInPlacePlug *method = new FindActiveInPlacePlug(m_inPlacePart, m_inPlacePlug, plugShape);
           m_inPlace->iterate(method);
-          m_inPlacePart = method->getNewActivePart();
-          m_inPlacePlug = method->getNewActivePlug();
+          m_inPlacePart = method->m_activePart;
+          m_inPlacePlug = method->m_activePlug;
 
           Vector3 rotation = m_activePlug->getFaceToFaceRotation(m_inPlacePlug);
           m_inPlacePart->getShape()->setRotationEuler(rotation);

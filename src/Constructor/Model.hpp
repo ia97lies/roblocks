@@ -20,9 +20,16 @@ namespace Synthetics {
 
         virtual void setRoot(Component *component);
         virtual Component *getRoot();
+        virtual void activate(Polycode::Entity *shape);
+        virtual Component *getActiveComponent();
+        virtual Part *getActivePart();
+        virtual Plug *getActivePlug();
 
       private:
         Component *m_root;
+        Component *m_activeComponent;
+        Part *m_activePart;
+        Plug *m_activePlug;
     };
   }
 }
