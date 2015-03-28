@@ -23,6 +23,19 @@ class PolycodeMock : public PolycodeFacade {
     virtual void removeEntity(Polycode::Entity *entity) { }
 };
 
+class KnobMock : public Knob {
+  public:
+    KnobMock() {
+      m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1, 1, 1);
+    }
+    ~KnobMock() {}
+    Polycode::Entity *getShape() { return m_shape; }
+    void activate(bool on) { }
+    void handleInput(Polycode::Vector3 delta) { }
+  private:
+    Polycode::Entity *m_shape;
+};
+
 class PartMock : public Part {
   public:
     PartMock() {
@@ -112,18 +125,17 @@ BOOST_AUTO_TEST_CASE(test_model_empty_activate_null) {
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-class RootActivateOneFixture {
+class RootActivateFixture {
   public:
-    RootActivateOneFixture() {
+    RootActivateFixture() {
       component = new ComponentMock();
       model.setRoot(component);
-      model.activate(NULL);
     }
     Model model;
     ComponentMock *component;
 };
 
-BOOST_FIXTURE_TEST_SUITE(RootActivateOne, RootActivateOneFixture)
+BOOST_FIXTURE_TEST_SUITE(RootActivateOne, RootActivateFixture)
 
   BOOST_AUTO_TEST_CASE(test_model_one_element_activate_null) {
     model.activate(NULL);
@@ -149,20 +161,20 @@ BOOST_AUTO_TEST_SUITE_END()
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-class RootActivateTwoFixture {
+class TwoElementActivateFixture {
   public:
-    RootActivateTwoFixture() {
+    TwoElementActivateFixture() {
       component[0] = new ComponentMock();
+      model.setRoot(component[0]);
       component[1] = new ComponentMock();
       component[0]->add(component[1]);
-      model.setRoot(component[0]);
-      model.activate(NULL);
+      component[2] = new ComponentMock();
     }
     Model model;
-    ComponentMock *component[2];
+    ComponentMock *component[3];
 };
 
-BOOST_FIXTURE_TEST_SUITE(RootActivateTwo, RootActivateTwoFixture)
+BOOST_FIXTURE_TEST_SUITE(RootActivateTwo, TwoElementActivateFixture)
 
   BOOST_AUTO_TEST_CASE(test_model_two_element_activate_null) {
     model.activate(NULL);
@@ -174,10 +186,60 @@ BOOST_FIXTURE_TEST_SUITE(RootActivateTwo, RootActivateTwoFixture)
     BOOST_CHECK(model.getActiveComponent() == component[0]);
   }
 
-  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_second) {
+  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_second_get_component) {
     model.activate(component[1]->getMyPlug(0)->getShape());
     BOOST_CHECK(model.getActiveComponent() == component[1]);
   }
 
+  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_second_get_part) {
+    model.activate(component[1]->getMyPlug(0)->getShape());
+    BOOST_CHECK(model.getActivePart() == component[1]->getPart(0));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_second_get_plug) {
+    model.activate(component[1]->getMyPlug(0)->getShape());
+    BOOST_CHECK(model.getActivePlug() == component[1]->getMyPlug(0));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_two_element_activate_exist_activate_non_exist) {
+    model.activate(component[1]->getMyPlug(0)->getShape());
+    model.activate(component[2]->getMyPlug(0)->getShape());
+    BOOST_CHECK(model.getActiveComponent() == NULL);
+  }
+
 BOOST_AUTO_TEST_SUITE_END()
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+class OneKnobOnRootActivateFixture {
+  public:
+    OneKnobOnRootActivateFixture() {
+      component = new ComponentMock();
+      model.setRoot(component);
+      knob = new KnobMock();
+      component->getPart(0)->setKnob(knob);
+    }
+    Model model;
+    ComponentMock *component;
+    KnobMock *knob;
+};
+
+BOOST_FIXTURE_TEST_SUITE(OneKnobOnRootActivate, OneKnobOnRootActivateFixture)
+
+  BOOST_AUTO_TEST_CASE(test_model_root_one_knob_null) {
+    model.activate(component->getPart(0)->getKnob()->getShape());
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+
+
+
+
+
+
+
+
+
 
