@@ -12,6 +12,7 @@ namespace Synthetics {
           activeComponent = NULL;
           activePart = NULL;
           activePlug = NULL;
+          activeKnob = NULL;
           m_plugShape = plugShape; 
         }
 

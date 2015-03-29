@@ -247,29 +247,46 @@ BOOST_AUTO_TEST_SUITE_END()
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
-class OneKnobOnRootActivateFixture {
+class KnobActivateFixture {
   public:
-    OneKnobOnRootActivateFixture() {
-      component = new ComponentMock();
-      model.setRoot(component);
-      knob = new KnobMock();
-      component->getPart(0)->setKnob(knob);
+    KnobActivateFixture() {
+      component[0] = new ComponentMock();
+      component[1] = new ComponentMock();
+      component[2] = new ComponentMock();
+      model.setRoot(component[0]);
+      knob[0] = new KnobMock();
+      component[0]->getPart(0)->setKnob(knob[0]);
+      knob[1] = new KnobMock();
+      component[1]->getPart(0)->setKnob(knob[1]);
+      knob[2] = new KnobMock();
+      component[2]->getPart(0)->setKnob(knob[2]);
+      component[0]->add(component[1]);
     }
     Model model;
-    ComponentMock *component;
-    KnobMock *knob;
+    ComponentMock *component[3];
+    KnobMock *knob[3];
 };
 
-BOOST_FIXTURE_TEST_SUITE(OneKnobOnRootActivate, OneKnobOnRootActivateFixture)
+BOOST_FIXTURE_TEST_SUITE(KnobOnRootActivate, KnobActivateFixture)
 
-  BOOST_AUTO_TEST_CASE(test_model_root_one_knob_null) {
+  BOOST_AUTO_TEST_CASE(test_model_knob_null) {
     model.activate(NULL);
     BOOST_CHECK(model.getActiveKnob() == NULL);
   }
 
-  BOOST_AUTO_TEST_CASE(test_model_root_one_knob_activate_knob) {
-    model.activate(component->getPart(0)->getKnob()->getShape());
-    BOOST_CHECK(model.getActiveKnob() == component->getPart(0)->getKnob());
+  BOOST_AUTO_TEST_CASE(test_model_knob_activate_knob) {
+    model.activate(component[1]->getPart(0)->getKnob()->getShape());
+    BOOST_CHECK(model.getActiveKnob() == component[1]->getPart(0)->getKnob());
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_knob_activate_non_existing_knob) {
+    model.activate(component[2]->getPart(0)->getKnob()->getShape());
+    BOOST_CHECK(model.getActiveKnob() == NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_knob_activate_wrong_shape) {
+    model.activate(component[2]->getPart(0)->getShape());
+    BOOST_CHECK(model.getActiveKnob() == NULL);
   }
 
 BOOST_AUTO_TEST_SUITE_END()
