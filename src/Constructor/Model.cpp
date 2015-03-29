@@ -27,6 +27,9 @@ namespace Synthetics {
                   activePart = cur->getPart(i);
                   activePlug = cur->getPart(i)->getPlug(j);
                 }
+                else if (cur->getPart(i)->getKnob() && cur->getPart(i)->getKnob()->getShape() == m_plugShape) {
+                  activeKnob = cur->getPart(i)->getKnob();
+                }
               }
             }
           }
@@ -35,6 +38,7 @@ namespace Synthetics {
         Component *activeComponent;
         Part *activePart;
         Plug *activePlug;
+        Knob *activeKnob;
 
       private:
         Polycode::Entity *m_plugShape;
@@ -45,6 +49,7 @@ namespace Synthetics {
       m_activeComponent = NULL;
       m_activePart = NULL;
       m_activePlug = NULL;
+      m_activeKnob = NULL;
     }
 
     Model::~Model() {
@@ -66,6 +71,7 @@ namespace Synthetics {
         m_activeComponent = method->activeComponent;
         m_activePart = method->activePart;
         m_activePlug = method->activePlug;
+        m_activeKnob = method->activeKnob;
       }
     }
 
@@ -81,6 +87,9 @@ namespace Synthetics {
       return m_activePlug;
     }
 
+    Knob *Model::getActiveKnob() {
+      return m_activeKnob;
+    }
   }
 }
 

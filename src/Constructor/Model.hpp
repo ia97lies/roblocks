@@ -24,12 +24,14 @@ namespace Synthetics {
         virtual Component *getActiveComponent();
         virtual Part *getActivePart();
         virtual Plug *getActivePlug();
+        virtual Knob *getActiveKnob();
 
       private:
         Component *m_root;
         Component *m_activeComponent;
         Part *m_activePart;
         Plug *m_activePlug;
+        Knob *m_activeKnob;
     };
   }
 }

@@ -75,6 +75,9 @@ class ComponentMock : public Component {
     Plug *m_plug[2];
 };
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(test_model_instantiate) {
   Model model();
 }
@@ -123,6 +126,7 @@ BOOST_AUTO_TEST_CASE(test_model_empty_activate_null) {
   BOOST_CHECK(model.getActiveComponent() == NULL);
 }
 
+
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 class RootActivateFixture {
@@ -158,6 +162,7 @@ BOOST_FIXTURE_TEST_SUITE(RootActivateOne, RootActivateFixture)
   }
 
 BOOST_AUTO_TEST_SUITE_END()
+
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
@@ -209,6 +214,7 @@ BOOST_FIXTURE_TEST_SUITE(RootActivateTwo, TwoElementActivateFixture)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
 class OneKnobOnRootActivateFixture {
@@ -227,11 +233,46 @@ class OneKnobOnRootActivateFixture {
 BOOST_FIXTURE_TEST_SUITE(OneKnobOnRootActivate, OneKnobOnRootActivateFixture)
 
   BOOST_AUTO_TEST_CASE(test_model_root_one_knob_null) {
+    model.activate(NULL);
+    BOOST_CHECK(model.getActiveKnob() == NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_root_one_knob_activate_knob) {
     model.activate(component->getPart(0)->getKnob()->getShape());
+    BOOST_CHECK(model.getActiveKnob() == component->getPart(0)->getKnob());
   }
 
 BOOST_AUTO_TEST_SUITE_END()
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+class OneKnobOnRootActivateFixture {
+  public:
+    OneKnobOnRootActivateFixture() {
+      component = new ComponentMock();
+      model.setRoot(component);
+      knob = new KnobMock();
+      component->getPart(0)->setKnob(knob);
+    }
+    Model model;
+    ComponentMock *component;
+    KnobMock *knob;
+};
+
+BOOST_FIXTURE_TEST_SUITE(OneKnobOnRootActivate, OneKnobOnRootActivateFixture)
+
+  BOOST_AUTO_TEST_CASE(test_model_root_one_knob_null) {
+    model.activate(NULL);
+    BOOST_CHECK(model.getActiveKnob() == NULL);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_model_root_one_knob_activate_knob) {
+    model.activate(component->getPart(0)->getKnob()->getShape());
+    BOOST_CHECK(model.getActiveKnob() == component->getPart(0)->getKnob());
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 
 
