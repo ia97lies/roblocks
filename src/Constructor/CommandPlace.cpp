@@ -10,7 +10,6 @@ namespace Synthetics {
     CommandPlace::CommandPlace(Robot *robot, Component *component, Polycode::Core *core, Polycode::Scene *scene) {
       m_robot = robot;
       m_component = component;
-      m_core = core;
       m_scene = scene;
     }
 

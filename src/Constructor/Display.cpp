@@ -35,7 +35,7 @@ namespace Synthetics {
         virtual ~ChangeInPlace() {}
         virtual void onChange(std::string name) {
           if (m_robot->getInPlace()) {
-            Component *component = m_factory->createComponent(name, m_core, m_scene);
+            Component *component = m_factory->createComponent(name, m_scene);
             m_robot->replace(component);
           }
         }
@@ -236,12 +236,12 @@ namespace Synthetics {
     void Display::place() {
       // add current selected component to current active component
       if (m_robot->isEmpty()) {
-        Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
+        Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_scene);
         Command *command = new CommandSetRoot(m_robot, component, m_core, m_scene);
         m_history->execute(command);
       }
       else if (!m_robot->getInPlace()) {
-        Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_core, m_scene);
+        Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_scene);
         Command *command = new CommandPlace(m_robot, component, m_core, m_scene);
         m_history->execute(command);
       }

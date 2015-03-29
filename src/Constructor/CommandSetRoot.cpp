@@ -12,7 +12,6 @@ namespace Synthetics {
       m_robot = robot;
       m_component = component;
       m_name = component->getName();
-      m_core = core;
       m_scene = scene;
       m_activePlug = NULL;
     }

@@ -190,7 +190,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *PotentiometerCreator(Polycode::Core *core, Polycode::Scene *scene) {
+      Component *PotentiometerCreator(Polycode::PhysicsScene *scene) {
         Potentiometer *potentiometer = new Potentiometer();
         return potentiometer;
       }

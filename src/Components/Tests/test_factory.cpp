@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(test_get_instantiate) {
   BOOST_CHECK(factory == factory2);
 }
 
-Component *MockCreator(Polycode::Core *core, Polycode::Scene *scene) {
+Component *MockCreator(Polycode::PhysicsScene *scene) {
   return (Component *)1;
 }
 
@@ -27,9 +27,9 @@ BOOST_AUTO_TEST_CASE(test_add_create_func_get_create_func) {
   BOOST_CHECK(factory != NULL);
 
   factory->addCreator("My.Super.Mock", MockCreator);
-  Component *test = factory->createComponent("My.Super.Mock", NULL, NULL);
+  Component *test = factory->createComponent("My.Super.Mock", NULL);
   BOOST_CHECK(test == (Component *)1);
-  test = factory->createComponent("Do.Not.Exist", NULL, NULL);
+  test = factory->createComponent("Do.Not.Exist", NULL);
   BOOST_CHECK(test == NULL);
 }
 

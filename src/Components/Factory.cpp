@@ -21,10 +21,10 @@ namespace Synthetics {
       m_map[name] = creator;
     }
 
-    Component *Factory::createComponent(const std::string name, Polycode::Core *core, Polycode::Scene *scene) {
+    Component *Factory::createComponent(const std::string name, Polycode::PhysicsScene *scene) {
       std::map<std::string, ComponentCreateFn>::iterator it = m_map.find(name);
       if (it != m_map.end()) {
-        return it->second(core, scene);
+        return it->second(scene);
       }
       return NULL;
     }

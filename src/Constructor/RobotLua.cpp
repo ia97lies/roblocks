@@ -18,8 +18,7 @@ namespace Synthetics {
   namespace Constructor {
     typedef struct factory_s {
       Components::Factory *factory;
-      Polycode::Core *core;
-      Polycode::Scene *scene;
+      Polycode::PhysicsScene *scene;
     } factory_t;
 
     typedef struct robot_s {
@@ -28,12 +27,8 @@ namespace Synthetics {
 
     //------------------------------------------------------------------------
     static int getFactory(lua_State *L) {
-      lua_getfield(L, LUA_REGISTRYINDEX, "core");
-      Polycode::Core *core = (Polycode::Core *)lua_touserdata(L, 1);
-      lua_pop(L, 1);
-
       lua_getfield(L, LUA_REGISTRYINDEX, "scene");
-      Polycode::Scene *scene = (Polycode::Scene *)lua_touserdata(L, 1);
+      Polycode::PhysicsScene *scene = (Polycode::PhysicsScene *)lua_touserdata(L, 1);
       lua_pop(L, 1);
 
       lua_getfield(L, LUA_REGISTRYINDEX, "factory");
@@ -44,7 +39,6 @@ namespace Synthetics {
       luaL_getmetatable(L, __FACTORY_NAME);
       lua_setmetatable(L, -2);
 
-      newFactory->core = core;
       newFactory->scene = scene;
       newFactory->factory = factory;
 
@@ -89,7 +83,6 @@ namespace Synthetics {
 
     //------------------------------------------------------------------------
     typedef struct component_s { 
-      Polycode::Core *core;
       Polycode::Scene *scene;
       Component *component;
     } component_t;
@@ -155,7 +148,7 @@ namespace Synthetics {
     static int factoryCreate(lua_State *L) {
       factory_t *factory = checkFactory(L);
       const char *name = luaL_checklstring(L, 2, NULL);
-      Component *component = factory->factory->createComponent(name, factory->core, factory->scene);
+      Component *component = factory->factory->createComponent(name, factory->scene);
       lua_pop(L, 1);
       lua_pop(L, 1);
 
@@ -164,7 +157,6 @@ namespace Synthetics {
       lua_setmetatable(L, -2);
 
       newComponent->component = component;
-      newComponent->core = factory->core;
       newComponent->scene = factory->scene;
 
       return 1;

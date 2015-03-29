@@ -161,7 +161,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *LoudspeakerCreator(Polycode::Core *core, Polycode::Scene *scene) {
+      Component *LoudspeakerCreator(Polycode::PhysicsScene *scene) {
         Loudspeaker *loudspeaker = new Loudspeaker(scene);
         return loudspeaker;
       }

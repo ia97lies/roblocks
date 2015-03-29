@@ -72,7 +72,7 @@ class ComponentMock : public Component {
     Plug *m_plug[2];
 };
 
-Component *MockCreator(Polycode::Core *core, Polycode::Scene *scene) {
+Component *MockCreator(Polycode::PhysicsScene *scene) {
   return new ComponentMock();
 }
 

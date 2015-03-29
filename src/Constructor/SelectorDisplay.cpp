@@ -44,7 +44,7 @@ namespace Synthetics {
 
       m_polycodeFacade = new PolycodeFacade(core, m_scene);
       for (int i = 0; i < m_factory->getNames().size(); i++) {
-        m_components.push_back(m_factory->createComponent(m_factory->getNames().at(i), m_core, m_scene));
+        m_components.push_back(m_factory->createComponent(m_factory->getNames().at(i), m_scene));
         Robot::constructGraphic(m_polycodeFacade, NULL, m_components.at(i));
         for (int j = 0; j < m_components.at(i)->getNoParts(); j++) {
           Robot::constructPlugsGraphic(m_polycodeFacade, m_components.at(i)->getPart(j));

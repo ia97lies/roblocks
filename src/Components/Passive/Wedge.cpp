@@ -120,7 +120,7 @@ namespace Synthetics {
       //----------------------------------------------------------------------
       // Components factory
       //----------------------------------------------------------------------
-      Component *WedgeCreator(Polycode::Core *core, Polycode::Scene *scene) {
+      Component *WedgeCreator(Polycode::PhysicsScene *scene) {
         Wedge *hub = new Wedge();
         return hub;
       }
