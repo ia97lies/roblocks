@@ -8,9 +8,7 @@
 #include <Polycode.h>
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
-#include "PolyUIFileDialog.h"
 
-#include "FileManager.hpp"
 #include "MovingCamera.hpp"
 #include "Robot.hpp"
 #include "Configurator.hpp"
@@ -38,7 +36,6 @@ namespace Synthetics {
         Robot *m_robot;
         Configurator *m_conf;
         SelectorDisplay *m_selectorDisplay;
-        FileManager *m_fileDialog;
         unsigned int m_lastClickTime;
         History *m_history;
 

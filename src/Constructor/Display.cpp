@@ -9,7 +9,6 @@
 #include "Part.hpp"
 #include "OrbitCamera.hpp"
 #include "Robot.hpp"
-#include "FileManager.hpp"
 #include "Display.hpp"
 
 #include "CommandSetRoot.hpp"
@@ -46,22 +45,6 @@ namespace Synthetics {
         Robot *m_robot;
     };
 
-    class DoneCompletion : public FileManagerCompletion {
-      public:
-        DoneCompletion(Display *constructor, MovingCamera *camera) {
-          m_constructor = constructor;
-          m_camera = camera;
-        }
-        virtual ~DoneCompletion() {}
-        virtual void done() {
-          m_constructor->activate(true);
-          m_camera->activate(true);
-        }
-      private:
-        Display *m_constructor;
-        MovingCamera *m_camera;
-    };
-
     Display::Display(Core *core, Configurator *conf, Components::Factory *factory) : EventHandler() {
       m_core = core;
       m_conf = conf;
@@ -86,11 +69,6 @@ namespace Synthetics {
       scene->getDefaultCamera()->frustumCulling = false;
       scene->rootEntity.processInputEvents = true;
 
-      std::vector<String> extensions;
-      extensions.push_back("*.lua");
-      m_fileDialog = new FileManager(m_core, m_scene, m_factory, extensions);
-      scene->addEntity(m_fileDialog);
-      
       m_history = new History(m_conf->getHistory());
     }
 
@@ -105,7 +83,6 @@ namespace Synthetics {
           case InputEvent::EVENT_KEYDOWN:
             switch (inputEvent->keyCode()) {
               case KEY_DELETE:
-                // delete active component
                 if (m_robot) {
                   Command *command = new CommandRemove(m_robot, m_core, m_scene);
                   m_history->execute(command);
@@ -133,23 +110,6 @@ namespace Synthetics {
                   m_robot->powerOn(!m_robot->isPowerOn());
                 }
                 break;
-              case KEY_s:
-                {
-                  DoneCompletion *completion = new DoneCompletion(this, m_camera);
-                  activate(false);
-                  m_camera->activate(false);
-                  m_fileDialog->save(m_robot, completion);
-                }
-                break;
-              case KEY_l:
-                {
-                  delete m_robot;
-                  m_robot = new Robot(new PolycodeFacade(m_core, m_scene));
-                  DoneCompletion *completion = new DoneCompletion(this, m_camera);
-                  activate(false);
-                  m_camera->activate(false);
-                  m_fileDialog->load(m_robot, completion);
-                }
               case KEY_u:
                 {
                   m_history->undo();
@@ -177,7 +137,7 @@ namespace Synthetics {
                   }
                   // double click, somehow InputEvent::EVENT_DOUBLECLICK won't work, do it by my self
                   unsigned int timestamp = m_core->getTicks();
-                  if (timestamp - m_lastClickTime < 200) {
+                  if (timestamp - m_lastClickTime < 300) {
                     place();
                   }
                   m_lastClickTime = m_core->getTicks();
@@ -207,7 +167,6 @@ namespace Synthetics {
     }
 
     void Display::update() {
-      m_fileDialog->Update();
       m_robot->update();
     }
 
@@ -218,8 +177,6 @@ namespace Synthetics {
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_DOUBLECLICK);
-        m_core->getInput()->addEventListener(this, UIEvent::OK_EVENT);
-        m_core->getInput()->addEventListener(this, UIEvent::CANCEL_EVENT);
       }
       else if (!on && m_on) {
         m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
@@ -227,14 +184,11 @@ namespace Synthetics {
         m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEUP);
         m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEMOVE);
         m_core->getInput()->removeEventListener(this, InputEvent::EVENT_DOUBLECLICK);
-        m_core->getInput()->addEventListener(this, UIEvent::OK_EVENT);
-        m_core->getInput()->addEventListener(this, UIEvent::CANCEL_EVENT);
       }
       m_on = on;
     }
 
     void Display::place() {
-      // add current selected component to current active component
       if (m_robot->isEmpty()) {
         Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_scene);
         Command *command = new CommandSetRoot(m_robot, component, m_core, m_scene);
