@@ -426,4 +426,81 @@ BOOST_FIXTURE_TEST_SUITE(RobotPlace, RobotPlaceFixture)
     BOOST_CHECK(robot->getInPlace() == NULL);
   }
 
+  BOOST_AUTO_TEST_CASE(test_robot_deactivate_plug_visibilty) {
+    robot->deactivate(componentMock->getMyPlug(0)->getShape());
+    BOOST_CHECK(!componentMock->getMyPlug(0)->isActivated);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_robot_deactivate_plug_get_active_component) {
+    robot->deactivate(componentMock->getMyPlug(0)->getShape());
+    BOOST_CHECK(robot->getActiveComponent() == NULL);
+    BOOST_CHECK(robot->getActivePlug() == NULL);
+  }
+
 BOOST_AUTO_TEST_SUITE_END()
+
+
+//----------------------------------------------------------------------------
+class RobotNotActiveFixture {
+  public:
+    RobotNotActiveFixture() {
+      deleted = false;
+      polycodeMock = new PolycodeMock();
+      componentMock = new ComponentMock(&deleted);
+      robot = new Robot(polycodeMock);
+      robot->setRoot(componentMock);
+    }
+
+    bool deleted;
+    PolycodeMock *polycodeMock;
+    ComponentMock *componentMock;
+    Robot *robot;
+};
+
+BOOST_FIXTURE_TEST_SUITE(RobotNotActive, RobotNotActiveFixture)
+
+  BOOST_AUTO_TEST_CASE(test_robot_deactivet_not_active_plug) {
+    componentMock = new ComponentMock(&deleted);
+    robot->deactivate(componentMock->getMyPlug(0)->getShape());
+    BOOST_CHECK(robot->getActiveComponent() == NULL);
+    BOOST_CHECK(robot->getActivePlug() == NULL);
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+//----------------------------------------------------------------------------
+class RobotInPlaceFixture {
+  public:
+    RobotInPlaceFixture() {
+      deleted = false;
+      polycodeMock = new PolycodeMock();
+      componentMock = new ComponentMock(&deleted);
+      robot = new Robot(polycodeMock);
+      robot->setRoot(componentMock);
+      robot->activate(componentMock->getMyPlug(0)->getShape());
+      componentMock = new ComponentMock(&deleted);
+      robot->place(componentMock);
+      robot->activate(componentMock->getMyPlug(0)->getShape());
+    }
+
+    bool deleted;
+    PolycodeMock *polycodeMock;
+    ComponentMock *componentMock;
+    Robot *robot;
+};
+
+BOOST_FIXTURE_TEST_SUITE(RobotInPlace, RobotInPlaceFixture)
+
+  BOOST_AUTO_TEST_CASE(test_robot_deactivate_in_place_plug_visibilty) {
+    robot->deactivate(componentMock->getMyPlug(0)->getShape());
+    BOOST_CHECK(!componentMock->getMyPlug(0)->isActivated);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_robot_deactivate_in_place_plug_get_in_place_component) {
+    robot->deactivate(componentMock->getMyPlug(0)->getShape());
+    BOOST_CHECK(robot->getInPlace() == NULL);
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
+

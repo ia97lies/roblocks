@@ -29,6 +29,7 @@ namespace Synthetics {
         void replace(Component *component);
 
         void activate(Polycode::Entity *plugShape); 
+        void deactivate(Polycode::Entity *plugShape); 
         void deactivate(); 
         void mouseMove(Polycode::Vector3 delta);
 
