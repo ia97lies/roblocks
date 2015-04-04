@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 2.8)
 # DEFINE 
 ##############################################################################
 set(Constructor_SRCS
-  FileManager.cpp
   SelectorDisplay.cpp
   Display.cpp
   Robot.cpp
@@ -19,7 +18,6 @@ set(Constructor_SRCS
 )
 
 set(Constructor_HDRS
-  FileManager.hpp
   SelectorDisplay.hpp
   Display.hpp
   Robot.hpp
