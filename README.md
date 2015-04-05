@@ -1,5 +1,5 @@
 #Synthetics
-Simple components. Simple construction. Complex robots.
+Assemble complex robots with simple components.
 The simulation is based on Polycode (see http://polycode.org).
 
 See http://artificials.ch/synthetics
