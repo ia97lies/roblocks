@@ -52,7 +52,6 @@ namespace Synthetics {
       m_scene = new PhysicsScene();
       m_camera = new OrbitCamera(m_core, m_scene);
       m_camera->activate(true);
-      m_lastClickTime = 0;
 
       m_on = false;
       activate(true);
@@ -135,12 +134,6 @@ namespace Synthetics {
                   if (m_robot->getActiveKnob()) {
                     m_camera->activate(false);
                   }
-                  // double click, somehow InputEvent::EVENT_DOUBLECLICK won't work, do it by my self
-                  unsigned int timestamp = m_core->getTicks();
-                  if (timestamp - m_lastClickTime < 300) {
-                    place();
-                  }
-                  m_lastClickTime = m_core->getTicks();
                 }
                 break;
             }

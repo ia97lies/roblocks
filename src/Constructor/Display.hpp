@@ -30,13 +30,11 @@ namespace Synthetics {
         bool m_on;
         Polycode::Core *m_core;
         Polycode::PhysicsScene *m_scene;
-        Polycode::Scene *m_hudScene;
         MovingCamera *m_camera;
         Components::Factory *m_factory;
         Robot *m_robot;
         Configurator *m_conf;
         SelectorDisplay *m_selectorDisplay;
-        unsigned int m_lastClickTime;
         History *m_history;
 
         void place();

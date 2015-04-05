@@ -3,9 +3,9 @@
 ## Current
 * Builder
 ** Bugfix exectute/undo activate plug command (robot is prepared now)
-** Simplify (remove Robot, use commands and model instead)
-** Remove the entiry Knob stuff from robot into Constructor/Display.cpp
-
+** Fix orbit camera (?) -> inspect TrackballCamera from Polycode IDE
+** Simplify (remove Robot, use commands and model instead) (?)
+** Remove the entier Knob stuff from robot into Constructor/Display.cpp
 
 ## Futur
 * Record/Replay (for bughunting)
@@ -22,10 +22,6 @@
 ** Passive/Weel
 ** Sensitive/Actor feedback
 ** Sensitive/Sinus signal generator 
-* Builder
-** add/delete/select
-** undo/redo
-** save/load
 * Physical simulation
 ** Terrain builder
 ** interaction

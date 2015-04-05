@@ -86,22 +86,6 @@ namespace Synthetics {
                 break;
             }
             break;
-          case InputEvent::EVENT_MOUSEDOWN:
-            {
-              if (inputEvent->mousePosition.y > m_conf->getHeight() - m_height &&
-                  inputEvent->mousePosition.x > m_conf->getWidth()/2 + 50 &&
-                  m_index < m_factory->getNames().size()-1) {
-                ++m_index;
-                m_changeSelection->onChange(m_factory->getNames().at(m_index));
-              }
-              else if(inputEvent->mousePosition.y > m_conf->getHeight() - m_height &&
-                  inputEvent->mousePosition.x < m_conf->getWidth()/2 - 50 &&
-                  m_index > 0) {
-                --m_index;
-                m_changeSelection->onChange(m_factory->getNames().at(m_index));
-              }
-            }
-            break;
         }
         m_text = m_factory->getNames().at(m_index);
         m_label->setText("< "+ m_text + " >");
@@ -133,3 +117,4 @@ namespace Synthetics {
     }
   }
 }
+
