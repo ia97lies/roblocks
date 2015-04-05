@@ -2,15 +2,14 @@
 
 ## Current
 * Builder
-** Bugfix exectute/undo activate plug command (robot is prepared now)
+** __Bugfix exectute/undo activate plug command (robot is prepared now)__
 ** Fix orbit camera (?) -> inspect TrackballCamera from Polycode IDE
 ** Simplify (remove Robot, use commands and model instead) (?)
 ** Remove the entier Knob stuff from robot into Constructor/Display.cpp
 
 ## Futur
 * Record/Replay (for bughunting)
-* Orbiting Camera
-* Ego Camera
+* POV Camera
 * Robotic Components
 ** Plugin System
 ** Morphing/Scripting block
