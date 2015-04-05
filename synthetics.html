@@ -35,7 +35,6 @@
         <a href="synthetics.html">Synthetics</a> |
         <h1>
 <a id="synthetics" class="anchor" href="#synthetics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Synthetics</h1>
-<p><img src="images/SyntheticAnt.png" width="50%" height="50%"/></p>
 <p>A robotics framework for assemble complex robots with simple components and run them in synthetic enviroment.
 The simulation is based on Polycode (see <a href="http://polycode.org">http://polycode.org</a>).</p>
 
@@ -52,31 +51,31 @@ I plan to make every component scriptable with Lua in some later versions.</p>
 <p>All connectable faces do have specific colors. Red faces emits signals. Green faces receive signals. Yellow faces can either receive ore emit signals and do have the function of a hub. Last but not least there are black faces which neither emit nor receive signals, they are needed to decouple signal buses.</p>
 
 <h3>Passive.Hub</h3>
-<p><img src="images/PassiveHub.png" width=12%></p>
+<p><img src="images/PassiveHub.png" width=8%></p>
 <p>A passive hub forwards every signal to its successors. No signal manipulation is done.</p>
 
 <h3>Passive.Wedge</h3>
-<p><img src="images/PassiveWedge.png" width=12%></p>
+<p><img src="images/PassiveWedge.png" width=8%></p>
 <p>A passive wedge forwards every signal to its successors. No signal manipulation is done.</p>
 
 <h3>Active.Servo</h3>
-<p><img src="images/ActiveServo.png" width="12%"/></p>
+<p><img src="images/ActiveServo.png" width="8%"/></p>
 <p>A servo reacting on input [0..100] with rotation from -90 degree to 90 degree.</p>
 
 <h3>Active.Linear</h3>
-<p><img src="images/ActiveLinear.png" width="12%"/></p>
+<p><img src="images/ActiveLinear.png" width="8%"/></p>
 <p>A linear actuator reacting on input [0..100] with stretching from 0 to 1 unit.</p>
 
 <h3>Active.Light</h3>
-<p><img src="images/ActiveLight.png" width="12%"/></p>
+<p><img src="images/ActiveLight.png" width="8%"/></p>
 <p>A light reacting on input [0..100] with light intens change. Makes your robot more interessting.</p>
 
 <h3>Active.Loudspeaker</h3>
-<p><img src="images/ActiveLoudspeaker.png" width="12%"/></p>
+<p><img src="images/ActiveLoudspeaker.png" width="8%"/></p>
 <p>A loudspeaker reacting on input [0..100] with changing the volume. Currently only a beeb beeb sound. Actually just for fun becaus I wanted to try out positional sound system :)</p>
 
 <h3>Sensitive.Potentiometer</h3>
-<p><img src="images/SensitivePotentiometer.png" width="12%"/></p>
+<p><img src="images/SensitivePotentiometer.png" width="8%"/></p>
 <p>A Potentiometer emiting value [0..100] depending on its posistion.</p>
 
 <h2>
