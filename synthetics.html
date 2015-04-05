@@ -4,7 +4,7 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Synthetics : robot simulation for easy assemble robots">
+    <meta name="description" content="Synthetics : Assemble complex robots with simple components">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -19,7 +19,7 @@
           <a id="forkme_banner" href="https://github.com/ia97lies/synthetics">View on GitHub</a>
 
           <h1 id="project_title">Synthetics</h1>
-          <h2 id="project_tagline">robot simulation for easy assemble robots</h2>
+          <h2 id="project_tagline">Assemble complex robots with simple components</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/ia97lies/synthetics/zipball/master">Download this project as a .zip file</a>
@@ -36,18 +36,13 @@
         <h1>
 <a id="synthetics" class="anchor" href="#synthetics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Synthetics</h1>
 <p><img src="images/SyntheticAnt.png" width="50%" height="50%"/></p>
-<p>A robotics framework for easily assemble robots out of robotic components and run them in synthetic enviroment.
+<p>A robotics framework for assemble complex robots with simple components and run them in synthetic enviroment.
 The simulation is based on Polycode (see <a href="http://polycode.org">http://polycode.org</a>).</p>
 
 <h2>
 <a id="Introduction" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
 <p>The robots can be easily constructed with predefined components like hubs, motors and sensors. No programming is needed. The "pogramming" is done by construction. The signals flows form the sensor to the actors. The signal bus is the body itself. Even actor may be able to propagate a signal. Sensors only can emit signals. Hubs can propagate and manipulate signals</p>
 <p>There will be special hubs like negator, avarage, logarithm and many more to influence the signal flow. Of course there will be a programmable hub as well, most propably I will integrate a Lua interpreter.</p>
-
-<h2>
-<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
-
-<p>The configuration file is a simple Lua script. The initial resolution and the build history size can be set. As well all needed components will be loaded by the configuration file.</p>
 
 <h2>
 <a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h2>
@@ -80,53 +75,9 @@ I plan to make every component scriptable with Lua in some later versions.</p>
 <p><img src="images/ActiveLoudspeaker.png" width="12%"/></p>
 <p>A loudspeaker reacting on input [0..100] with changing the volume. Currently only a beeb beeb sound. Actually just for fun becaus I wanted to try out positional sound system :)</p>
 
-<h3>Active.Motor</h3>
-<p>Not yet done.</p>
-
 <h3>Sensitive.Potentiometer</h3>
 <p><img src="images/SensitivePotentiometer.png" width="12%"/></p>
 <p>A Potentiometer emiting value [0..100] depending on its posistion.</p>
-
-<h3>Sensitive.Distance</h3>
-<p>Not yet done.</p>
-
-<h3>Morph.Negator</h3>
-<p>Not yet done.</p>
-
-<h3>Morph.Average</h3>
-<p>Not yet done.</p>
-
-<h3>Morph.Trigger</h3>
-<p>Not yet done.</p>
-
-<h3>Morph.Lua</h3>
-<p>Not yet done.</p>
-
-<h2>
-<a id="components" class="anchor" href="#components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Components</h2>
-
-<p>Every component specifies its connect faces, event handler and shape. A component consist of parts and every part do have plugs (connecting faces).</p>
-
-<h3>
-<a id="part" class="anchor" href="#part" aria-hidden="true"><span class="octicon octicon-link"></span></a>Part</h3>
-
-<p>A part do have plugs, which define the connectiong faces for the component. The first part is the parent of the others. only the first part can be used to plug into an existing robot.
-Parts can be connected fix or with a joint. You can apply force and velocity to a joint or just set a given position which the join should hold.</p>
-
-<h3>
-<a id="plug" class="anchor" href="#plug" aria-hidden="true"><span class="octicon octicon-link"></span></a>Plug</h3>
-
-<p>A plug defines the coordinate of the pluggable faces of a component.</p>
-
-<h3>
-<a id="knob" class="anchor" href="#knob" aria-hidden="true"><span class="octicon octicon-link"></span></a>Knob</h3>
-
-<p>Active elements like servo, light or linear actuator do have a knob to change the default position while construction</p>
-
-<h2>
-<a id="custom-components" class="anchor" href="#custom-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Custom Components</h2>
-
-<p>It is possible to implement own components as a shared C++ library as all existing components are as well shared libraries. All used components must be specified in the Resource/synthetics.conf. </p>
 
 <h2>
 <a id="acknowledgements" class="anchor" href="#acknowledgements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgements</h2>
