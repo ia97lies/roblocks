@@ -13,7 +13,7 @@ namespace Synthetics {
 
     class CommandSetRoot : public Command {
       public:
-        CommandSetRoot(Robot *robot, Component *component, Polycode::Core *core, Polycode::Scene *scene); 
+        CommandSetRoot(Robot *robot, Component *component); 
         virtual ~CommandSetRoot();
         virtual void execute();
         virtual void undo();
@@ -21,9 +21,7 @@ namespace Synthetics {
       private:
         Robot *m_robot;
         Component *m_component;
-        std::string m_name; 
-        Polycode::Scene *m_scene;
-        Plug *m_activePlug;
+        Component *m_deletable;
     };
   }
 }

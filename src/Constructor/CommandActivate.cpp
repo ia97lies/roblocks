@@ -30,6 +30,9 @@ namespace Synthetics {
       if (m_prevPlugShape) {
         m_robot->activate(m_prevPlugShape);
       }
+      else {
+        m_robot->deactivate(m_plugShape);
+      }
     }
   }
 }

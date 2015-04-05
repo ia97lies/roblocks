@@ -83,7 +83,7 @@ namespace Synthetics {
             switch (inputEvent->keyCode()) {
               case KEY_DELETE:
                 if (m_robot) {
-                  Command *command = new CommandRemove(m_robot, m_core, m_scene);
+                  Command *command = new CommandRemove(m_robot);
                   m_history->execute(command);
                 }
                 break;
@@ -184,17 +184,17 @@ namespace Synthetics {
     void Display::place() {
       if (m_robot->isEmpty()) {
         Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_scene);
-        Command *command = new CommandSetRoot(m_robot, component, m_core, m_scene);
+        Command *command = new CommandSetRoot(m_robot, component);
         m_history->execute(command);
       }
       else if (!m_robot->getInPlace()) {
         Component *component = m_factory->createComponent(m_selectorDisplay->getText(), m_scene);
-        Command *command = new CommandPlace(m_robot, component, m_core, m_scene);
+        Command *command = new CommandPlace(m_robot, component);
         m_history->execute(command);
       }
       else {
         Component *component = m_robot->getInPlace();
-        Command *command = new CommandAdd(m_robot, component, m_core, m_scene);
+        Command *command = new CommandAdd(m_robot, component);
         m_history->execute(command);
       }
     }

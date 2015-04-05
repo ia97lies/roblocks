@@ -7,10 +7,9 @@
 
 namespace Synthetics {
   namespace Constructor {
-    CommandPlace::CommandPlace(Robot *robot, Component *component, Polycode::Core *core, Polycode::Scene *scene) {
+    CommandPlace::CommandPlace(Robot *robot, Component *component) {
       m_robot = robot;
       m_component = component;
-      m_scene = scene;
     }
 
     CommandPlace::~CommandPlace() {

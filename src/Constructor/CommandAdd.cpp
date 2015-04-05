@@ -7,10 +7,9 @@
 
 namespace Synthetics {
   namespace Constructor {
-    CommandAdd::CommandAdd(Robot *robot, Component *component, Polycode::Core *core, Polycode::Scene *scene) {
+    CommandAdd::CommandAdd(Robot *robot, Component *component) {
       m_robot = robot;
       m_component = component;
-      m_scene = scene;
       m_activePlug = robot->getActivePlug();
     }
 

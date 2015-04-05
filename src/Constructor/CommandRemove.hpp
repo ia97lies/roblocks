@@ -13,7 +13,7 @@ namespace Synthetics {
 
     class CommandRemove : public Command {
       public:
-        CommandRemove(Robot *robot, Polycode::Core *core, Polycode::Scene *scene); 
+        CommandRemove(Robot *robot); 
         virtual ~CommandRemove();
         virtual void execute();
         virtual void undo();

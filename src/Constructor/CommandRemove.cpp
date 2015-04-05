@@ -9,7 +9,7 @@
 namespace Synthetics {
   namespace Constructor {
 
-    CommandRemove::CommandRemove(Robot *robot, Polycode::Core *core, Polycode::Scene *scene) {
+    CommandRemove::CommandRemove(Robot *robot) {
       m_robot = robot;
       m_component = NULL;
       m_activePlug = NULL;
