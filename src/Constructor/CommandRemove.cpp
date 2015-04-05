@@ -16,32 +16,35 @@ namespace Synthetics {
     }
 
     CommandRemove::~CommandRemove() {
-      if (m_component) {
-        delete m_component;
-      }
+      delete m_component;
     }
 
     void CommandRemove::execute() {
+      m_activePlug = m_robot->getActivePlug();
       if (m_robot->getInPlace()) {
         m_component = m_robot->remove();
       }
       else {
-        m_activePlug = m_robot->getActivePlug();
         m_component = m_robot->remove();
-        m_robot->place(m_component);
-        m_component = NULL;
+        if (!m_robot->isEmpty()) {
+          m_robot->place(m_component);
+          m_component = NULL;
+        }
       }
     }
 
     void CommandRemove::undo() {
-      if (!m_robot->getInPlace()) {
+      if (!m_robot->getInPlace() && !m_robot->isEmpty()) {
         m_robot->place(m_component);
-        m_component = NULL;
+      }
+      else if (!m_robot->isEmpty()) {
+        m_robot->add();
       }
       else {
-        m_robot->add();
-        m_component = NULL;
+        m_robot->setRoot(m_component);
       }
+      m_robot->activate(m_activePlug->getShape());
+      m_component = NULL;
     }
   }
 }

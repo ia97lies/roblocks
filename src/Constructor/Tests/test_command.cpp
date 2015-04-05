@@ -564,3 +564,46 @@ BOOST_FIXTURE_TEST_SUITE(RemoveAdded, RemoveAddedFixture)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+
+//----------------------------------------------------------------------------
+class RemoveSetRootFixture {
+  public:
+    RemoveSetRootFixture() {
+      polycodeMock = new PolycodeMock();
+      robot = new Robot(polycodeMock);
+      component = new ComponentMock();
+      robot->setRoot(component);
+      robot->activate(component->getMyPlug(0)->getShape());
+    }
+
+    bool deleted;
+    PolycodeMock *polycodeMock;
+    Robot *robot;
+    ComponentMock *component;
+};
+
+BOOST_FIXTURE_TEST_SUITE(RemoveSetRoot, RemoveSetRootFixture)
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_set_root_execute) {
+    CommandRemove *command = new CommandRemove(robot);
+    command->execute();
+    BOOST_CHECK(robot->isEmpty());
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_set_root_undo) {
+    CommandRemove *command = new CommandRemove(robot);
+    command->execute();
+    command->undo();
+    BOOST_CHECK(!robot->isEmpty());
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_set_root_undo_redo) {
+    CommandRemove *command = new CommandRemove(robot);
+    command->execute();
+    command->undo();
+    command->execute();
+    BOOST_CHECK(robot->isEmpty());
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
+
