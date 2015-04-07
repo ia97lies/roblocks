@@ -16,8 +16,12 @@ namespace Synthetics {
       delete m_component;
     }
 
-    void CommandPlace::execute() {
+    bool CommandPlace::execute() {
+      bool success = false;
       m_robot->place(m_component);
+      if (m_component == m_robot->getInPlace()) {
+        success = true;
+      }
       m_component = NULL;
     }
 

@@ -13,8 +13,13 @@ namespace Synthetics {
 
     CommandRotateInPlace::~CommandRotateInPlace() {}
 
-    void CommandRotateInPlace::execute() {
-      m_robot->rotateInPlace(m_direction);
+    bool CommandRotateInPlace::execute() {
+      bool success = false;
+      if (m_robot->getInPlace() != NULL) {
+        success = true;
+        m_robot->rotateInPlace(m_direction);
+      }
+      return success;
     }
 
     void CommandRotateInPlace::undo() {

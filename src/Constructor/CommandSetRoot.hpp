@@ -15,7 +15,7 @@ namespace Synthetics {
       public:
         CommandSetRoot(Robot *robot, Component *component); 
         virtual ~CommandSetRoot();
-        virtual void execute();
+        virtual bool execute();
         virtual void undo();
 
       private:

@@ -16,7 +16,7 @@ namespace Synthetics {
       public:
         CommandActivate(Robot *robot, Polycode::Entity *plugShape); 
         virtual ~CommandActivate();
-        virtual void execute();
+        virtual bool execute();
         virtual void undo();
 
       private:

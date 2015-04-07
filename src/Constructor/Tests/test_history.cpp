@@ -21,7 +21,7 @@ class MyCommand : public Command {
       m_deleted = deleted;
     }
     virtual ~MyCommand() { *m_deleted = true; }
-    virtual void execute() { *m_didExecute = *m_didExecute + 1; }
+    virtual bool execute() { *m_didExecute = *m_didExecute + 1; return true; }
     virtual void undo() { *m_didUndo = *m_didUndo + 1; }
   private:
     int *m_didExecute;

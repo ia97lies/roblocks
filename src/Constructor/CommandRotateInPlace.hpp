@@ -15,7 +15,7 @@ namespace Synthetics {
       public:
         CommandRotateInPlace(Robot *robot, int direction); 
         virtual ~CommandRotateInPlace();
-        virtual void execute();
+        virtual bool execute();
         virtual void undo();
 
       private:

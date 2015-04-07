@@ -15,7 +15,7 @@ namespace Synthetics {
       public:
         CommandRemove(Robot *robot); 
         virtual ~CommandRemove();
-        virtual void execute();
+        virtual bool execute();
         virtual void undo();
 
       private:

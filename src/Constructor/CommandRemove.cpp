@@ -19,18 +19,24 @@ namespace Synthetics {
       delete m_component;
     }
 
-    void CommandRemove::execute() {
+    bool CommandRemove::execute() {
+      bool success = false;
       m_activePlug = m_robot->getActivePlug();
       if (m_robot->getInPlace()) {
         m_component = m_robot->remove();
+        success = true;
       }
       else {
+        if (m_robot->getActivePlug()) {
+          success = true;
+        }
         m_component = m_robot->remove();
         if (!m_robot->isEmpty()) {
           m_robot->place(m_component);
           m_component = NULL;
         }
       }
+      return success;
     }
 
     void CommandRemove::undo() {

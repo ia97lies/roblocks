@@ -15,7 +15,7 @@ namespace Synthetics {
       public:
         CommandPlace(Robot *robot, Component *component); 
         virtual ~CommandPlace();
-        virtual void execute();
+        virtual bool execute();
         virtual void undo();
 
       private:

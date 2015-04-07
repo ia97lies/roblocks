@@ -94,6 +94,12 @@ class SetRootFixture {
 };
 
 BOOST_FIXTURE_TEST_SUITE(SetRoot, SetRootFixture)
+
+  BOOST_AUTO_TEST_CASE(test_command_set_root_execute_always_true) {
+    CommandSetRoot *command = new CommandSetRoot(robot, component);
+    BOOST_CHECK(command->execute());
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_set_root_execute) {
     CommandSetRoot *command = new CommandSetRoot(robot, component);
     command->execute();
@@ -159,6 +165,11 @@ class ActivateFixture {
 };
 
 BOOST_FIXTURE_TEST_SUITE(Activate, ActivateFixture)
+
+  BOOST_AUTO_TEST_CASE(test_command_activate_execute_always_true) {
+    CommandActivate *command = new CommandActivate(robot, component->getMyPlug(1)->getShape());
+    BOOST_CHECK(command->execute());
+  }
 
   BOOST_AUTO_TEST_CASE(test_command_activate_execute) {
     CommandActivate *command = new CommandActivate(robot, component->getMyPlug(1)->getShape());
@@ -247,6 +258,25 @@ class PlaceFixture {
 
 BOOST_FIXTURE_TEST_SUITE(Place, PlaceFixture)
 
+  BOOST_AUTO_TEST_CASE(test_command_place_execute_true_on_success) {
+    CommandPlace *command = new CommandPlace(robot, component2);
+    BOOST_CHECK(command->execute());
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_place_execute_false_on_failure) {
+    robot->deactivate(component1->getMyPlug(0)->getShape());
+    CommandPlace *command = new CommandPlace(robot, component2);
+    BOOST_CHECK(!command->execute());
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_place_execute_failure_undo_redo_false) {
+    robot->deactivate(component1->getMyPlug(0)->getShape());
+    CommandPlace *command = new CommandPlace(robot, component2);
+    command->execute();
+    command->undo();
+    BOOST_CHECK(!command->execute());
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_place_execute) {
     CommandPlace *command = new CommandPlace(robot, component2);
     command->execute();
@@ -320,6 +350,17 @@ class RotateInPlaceFixture {
 
 BOOST_FIXTURE_TEST_SUITE(RotateInPlace, RotateInPlaceFixture)
 
+  BOOST_AUTO_TEST_CASE(test_command_rotate_in_place_execute_true_on_success) {
+    CommandRotateInPlace *command = new CommandRotateInPlace(robot, 1);
+    BOOST_CHECK(command->execute());
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_rotate_in_place_execute_false_on_failure) {
+    robot->remove(); // remove inplace
+    CommandRotateInPlace *command = new CommandRotateInPlace(robot, 1);
+    BOOST_CHECK(!command->execute());
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_rotate_in_place_execute) {
     CommandRotateInPlace *command = new CommandRotateInPlace(robot, 1);
     command->execute();
@@ -366,6 +407,11 @@ class AddFixture {
 };
 
 BOOST_FIXTURE_TEST_SUITE(Add, AddFixture)
+
+  BOOST_AUTO_TEST_CASE(test_command_add_execute_always_true) {
+    CommandAdd *command = new CommandAdd(robot, component2);
+    BOOST_CHECK(command->execute());
+  }
 
   BOOST_AUTO_TEST_CASE(test_command_add_execute) {
     CommandAdd *command = new CommandAdd(robot, component2);
@@ -443,6 +489,11 @@ class RemoveInPlaceFixture {
 
 BOOST_FIXTURE_TEST_SUITE(RemoveInPlace, RemoveInPlaceFixture)
 
+  BOOST_AUTO_TEST_CASE(test_command_remove_in_place_execute_always_true) {
+    CommandRemove *command = new CommandRemove(robot);
+    BOOST_CHECK(command->execute());
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_remove_in_place_execute) {
     CommandRemove *command = new CommandRemove(robot);
     command->execute();
@@ -511,6 +562,17 @@ class RemoveAddedFixture {
 };
 
 BOOST_FIXTURE_TEST_SUITE(RemoveAdded, RemoveAddedFixture)
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_added_execute_true_on_success) {
+    CommandRemove *command = new CommandRemove(robot);
+    BOOST_CHECK(command->execute());
+  }
+
+  BOOST_AUTO_TEST_CASE(test_command_remove_added_execute_false_on_failure) {
+    robot->deactivate(component2->getMyPlug(1)->getShape());
+    CommandRemove *command = new CommandRemove(robot);
+    BOOST_CHECK(!command->execute());
+  }
 
   BOOST_AUTO_TEST_CASE(test_command_remove_added_execute) {
     CommandRemove *command = new CommandRemove(robot);

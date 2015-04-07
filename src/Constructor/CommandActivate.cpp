@@ -15,7 +15,7 @@ namespace Synthetics {
 
     CommandActivate::~CommandActivate() {}
 
-    void CommandActivate::execute() {
+    bool CommandActivate::execute() {
       Plug *plug = m_robot->getActivePlug();
       if (plug) {
         m_prevPlugShape = plug->getShape();
@@ -24,6 +24,7 @@ namespace Synthetics {
         m_prevPlugShape = NULL;
       }
       m_robot->activate(m_plugShape);
+      return true;
     }
 
     void CommandActivate::undo() {

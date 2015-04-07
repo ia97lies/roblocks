@@ -15,7 +15,7 @@ namespace Synthetics {
       public:
         CommandAdd(Robot *robot, Component *component); 
         virtual ~CommandAdd();
-        virtual void execute();
+        virtual bool execute();
         virtual void undo();
 
       private:

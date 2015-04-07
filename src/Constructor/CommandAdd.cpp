@@ -15,8 +15,9 @@ namespace Synthetics {
 
     CommandAdd::~CommandAdd() { }
 
-    void CommandAdd::execute() {
+    bool CommandAdd::execute() {
       m_robot->add();
+      return true;
     }
 
     void CommandAdd::undo() {

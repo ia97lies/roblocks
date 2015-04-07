@@ -17,7 +17,7 @@ namespace Synthetics {
       delete m_deletable;
     }
 
-    void CommandSetRoot::execute() {
+    bool CommandSetRoot::execute() {
       m_robot->setRoot(m_component);
       m_deletable = NULL;
     }
