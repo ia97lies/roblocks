@@ -19,10 +19,12 @@ class MyCommand : public Command {
       m_didExecute = didExecute;
       m_didUndo = didUndo;
       m_deleted = deleted;
+      fail = false;
     }
     virtual ~MyCommand() { *m_deleted = true; }
-    virtual bool execute() { *m_didExecute = *m_didExecute + 1; return true; }
+    virtual bool execute() { *m_didExecute = *m_didExecute + 1; return !fail; }
     virtual void undo() { *m_didUndo = *m_didUndo + 1; }
+    bool fail;
   private:
     int *m_didExecute;
     int *m_didUndo;
@@ -54,6 +56,16 @@ class HistoryOneElementFixture {
 };
 
 BOOST_FIXTURE_TEST_SUITE(HistoryOneElement, HistoryOneElementFixture)
+
+  BOOST_AUTO_TEST_CASE(test_history_undo_empty_history) {
+    history->undo();
+    BOOST_CHECK_EQUAL(0, didUndo);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_history_redo_empty_history) {
+    history->redo();
+    BOOST_CHECK_EQUAL(0, didExecute);
+  }
 
   BOOST_AUTO_TEST_CASE(test_history_execute) {
     history->execute(command);
@@ -157,6 +169,13 @@ BOOST_FIXTURE_TEST_SUITE(HistoryOneElement, HistoryOneElementFixture)
     history->undo();
     history->execute(command);
     BOOST_CHECK(deleted);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_history_execute_fail) {
+    command->fail = true;
+    history->execute(command);
+    history->undo();
+    BOOST_CHECK_EQUAL(0, didUndo);
   }
 
 BOOST_AUTO_TEST_SUITE_END()

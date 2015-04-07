@@ -100,8 +100,7 @@ namespace Synthetics {
     Quaternion rotation;
     rotation.fromAxes(m_y, m_x, 0);
     Vector3 position;
-    fprintf(stderr, "XXX %f\n", m_y);
-      position = rotation.applyTo(Vector3(0.0, 0.0, -m_distance));
+    position = rotation.applyTo(Vector3(0.0, 0.0, -m_distance));
     m_scene->getDefaultCamera()->setPosition(position);
     m_scene->getDefaultCamera()->setRotationQuat(rotation.w, rotation.x, rotation.y, rotation.z);
     m_scene->getDefaultCamera()->lookAt(m_target);

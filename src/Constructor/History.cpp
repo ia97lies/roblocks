@@ -22,22 +22,26 @@ namespace Synthetics {
     }
 
     void History::execute(Command *command) {
-      command->execute();
-      if (m_cur >= m_size) {
-        --m_cur;
-        Command *command = m_commands.at(0);
-        m_commands.erase(m_commands.begin());
-        delete command;
-      }
-      if (m_cur < m_commands.size()) {
-        for (int i = m_cur; i < m_commands.size(); i++) {
-          Command *command = m_commands.at(i);
+      if (command->execute()) {
+        if (m_cur >= m_size) {
+          --m_cur;
+          Command *command = m_commands.at(0);
+          m_commands.erase(m_commands.begin());
           delete command;
         }
-        m_commands.erase(m_commands.begin()+m_cur, m_commands.end());
+        if (m_cur < m_commands.size()) {
+          for (int i = m_cur; i < m_commands.size(); i++) {
+            Command *command = m_commands.at(i);
+            delete command;
+          }
+          m_commands.erase(m_commands.begin()+m_cur, m_commands.end());
+        }
+        m_commands.push_back(command);
+        ++m_cur;
       }
-      m_commands.push_back(command);
-      ++m_cur;
+      else {
+        delete command;
+      }
     }
 
     void History::undo() {

@@ -269,14 +269,6 @@ BOOST_FIXTURE_TEST_SUITE(Place, PlaceFixture)
     BOOST_CHECK(!command->execute());
   }
 
-  BOOST_AUTO_TEST_CASE(test_command_place_execute_failure_undo_redo_false) {
-    robot->deactivate(component1->getMyPlug(0)->getShape());
-    CommandPlace *command = new CommandPlace(robot, component2);
-    command->execute();
-    command->undo();
-    BOOST_CHECK(!command->execute());
-  }
-
   BOOST_AUTO_TEST_CASE(test_command_place_execute) {
     CommandPlace *command = new CommandPlace(robot, component2);
     command->execute();

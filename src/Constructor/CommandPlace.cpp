@@ -23,6 +23,7 @@ namespace Synthetics {
         success = true;
       }
       m_component = NULL;
+      return success;
     }
 
     void CommandPlace::undo() {
