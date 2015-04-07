@@ -43,7 +43,9 @@ namespace Synthetics {
       else {
         m_robot->setRoot(m_component);
       }
-      m_robot->activate(m_activePlug->getShape());
+      if (m_activePlug) {
+        m_robot->activate(m_activePlug->getShape());
+      }
       m_component = NULL;
     }
   }
