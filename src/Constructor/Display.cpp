@@ -142,8 +142,10 @@ namespace Synthetics {
             switch(inputEvent->getMouseButton()) {
               case CoreInput::MOUSE_BUTTON1:
                 {
-                  m_robot->deactivate();
-                  m_camera->activate(true);
+                  if (m_robot->getActiveKnob()) {
+                    m_robot->deactivate(m_robot->getActiveKnob()->getShape());
+                    m_camera->activate(true);
+                  }
                 }
                 break;
             }

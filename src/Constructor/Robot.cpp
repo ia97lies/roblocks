@@ -333,26 +333,23 @@ namespace Synthetics {
       }
     }
 
-    void Robot::deactivate(Polycode::Entity *plugShape) {
-        if (m_activePlug && m_activePlug->getShape() == plugShape) {
+    void Robot::deactivate(Polycode::Entity *shape) {
+        if (m_activePlug && m_activePlug->getShape() == shape) {
           m_activePlug->activate(false);
           m_activeComponent = NULL;
           m_activePart = NULL;
           m_activePlug = NULL;
         }
-        if (m_inPlacePlug && m_inPlacePlug->getShape() == plugShape) {
+        if (m_inPlacePlug && m_inPlacePlug->getShape() == shape) {
           m_inPlacePlug->activate(false);
           m_inPlace = NULL;
           m_inPlacePart = NULL;
           m_inPlacePlug = NULL;
         }
-    }
-
-    void Robot::deactivate() {
-      if (m_activeKnob) {
-        m_activeKnob->activate(false);
-      }
-      m_activeKnob = NULL;
+        if (m_activeKnob && m_activeKnob->getShape() == shape) {
+          m_activeKnob->activate(false);
+        }
+        m_activeKnob = NULL;
     }
 
     void Robot::rotateInPlace(int direction) {
