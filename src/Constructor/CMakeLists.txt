@@ -62,6 +62,7 @@ add_executable(test_robot Tests/test_robot.cpp)
 target_link_libraries(test_robot
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -74,6 +75,7 @@ add_executable(test_command Tests/test_command.cpp)
 target_link_libraries(test_command
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -86,6 +88,7 @@ add_executable(test_history Tests/test_history.cpp)
 target_link_libraries(test_history
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -98,6 +101,7 @@ add_executable(test_model Tests/test_model.cpp)
 target_link_libraries(test_model
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}

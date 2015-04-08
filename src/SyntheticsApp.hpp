@@ -10,7 +10,7 @@
 #include "PolycodeView.h"
 #include "Polycode3DPhysics.h"
 
-#include "DisplayKeyHits.hpp"
+#include "ShowKeyHits/Display.hpp"
 #include "Constructor/Display.hpp"
 #include "Configurator.hpp"
 
@@ -25,7 +25,7 @@ namespace Synthetics {
     private:
       Polycode::Core *m_core;
       Configurator *m_conf;
-      DisplayKeyHits *m_displayKeyHits;
+      ShowKeyHits::Display *m_displayKeyHits;
       Constructor::Display *m_constructor;
   };
 }

@@ -68,7 +68,6 @@ set(Synthetics_SRCS
   SyntheticsApp.cpp
   Configurator.cpp
   OrbitCamera.cpp
-  DisplayKeyHits.cpp
   PolycodeFacade.cpp
   ValueRangeMapping.cpp
   CompoundStore.cpp
@@ -85,7 +84,6 @@ set(Synthetics_HDRS
   Configurator.hpp
   MovingCamera.hpp
   OrbitCamera.hpp
-  DisplayKeyHits.hpp
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
   CompoundStore.hpp
@@ -134,6 +132,7 @@ target_link_libraries(
   Synthetics 
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
 )
@@ -174,6 +173,7 @@ add_executable(test_compound Tests/test_compound.cpp)
 target_link_libraries(test_compound
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -185,6 +185,7 @@ add_executable(test_plug Tests/test_plug.cpp)
 target_link_libraries(test_plug
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -196,6 +197,7 @@ add_executable(test_part Tests/test_part.cpp)
 target_link_libraries(test_part
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -207,6 +209,7 @@ add_executable(test_component Tests/test_component.cpp)
 target_link_libraries(test_component
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -218,6 +221,7 @@ add_executable(test_value_range_mapping Tests/test_value_range_mapping.cpp)
 target_link_libraries(test_value_range_mapping
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -229,6 +233,7 @@ add_executable(test_compound_store Tests/test_compound_store.cpp)
 target_link_libraries(test_compound_store
   synthetics
   constructor
+  showkeyhits
   components
   ${Polycode_LIBS}
   ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -246,6 +251,7 @@ add_test(test_compound_store test_compound_store)
 ##############################################################################
 # SUBDIRS
 ##############################################################################
+add_subdirectory(ShowKeyHits)
 add_subdirectory(Constructor)
 add_subdirectory(Components)
 
