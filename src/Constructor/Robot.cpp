@@ -391,7 +391,7 @@ namespace Synthetics {
       return m_activeComponent;
     }
 
-    void Robot::update() {
+    void Robot::update(Number dt) {
       if (m_powerOn) {
         std::map<long, Compound*> map = m_components->getMap();
         std::map<long, Compound*>::iterator i;

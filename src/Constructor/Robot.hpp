@@ -40,7 +40,7 @@ namespace Synthetics {
         bool isEmpty(); 
         bool isPowerOn(); 
 
-        void update();
+        void update(Number dt);
 
         static void constructGraphic(PolycodeFacade *facade, Part *parent, Component *component);
         static void constructPlugsGraphic(PolycodeFacade *facade, Part *curPart); 

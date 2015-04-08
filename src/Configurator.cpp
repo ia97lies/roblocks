@@ -43,6 +43,16 @@ namespace Synthetics {
       m_history = (int) lua_tonumber(L, -1);
       lua_pop(L, 1);
     }
+
+    lua_getglobal(L, "displayKeyHits");
+    if (!lua_isboolean(L, -1)) {
+      m_lua->error("displayKeyHits is not a valid directive, try displayKeyHits=true");
+    }
+    else {
+      m_displayKeyHits = (int) lua_toboolean(L, -1);
+      lua_pop(L, 1);
+    }
+
   }
 
   Configurator::~Configurator() {
@@ -59,6 +69,10 @@ namespace Synthetics {
 
   int Configurator::getHistory() {
     return m_history;
+  }
+
+  bool Configurator::getDisplayKeyHits() {
+    return m_displayKeyHits;
   }
 
   //--------------------------------------------------------------------------

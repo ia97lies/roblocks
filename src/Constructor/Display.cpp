@@ -161,8 +161,8 @@ namespace Synthetics {
       }
     }
 
-    void Display::update() {
-      m_robot->update();
+    void Display::update(Number dt) {
+      m_robot->update(dt);
     }
 
     void Display::activate(bool on) {

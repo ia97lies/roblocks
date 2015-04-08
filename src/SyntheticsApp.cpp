@@ -4,6 +4,7 @@
 //----------------------------------------------------------------------------
 
 #include "SyntheticsApp.hpp"
+#include "DisplayKeyHits.hpp"
 #include "Configurator.hpp"
 #include "Constructor/Display.hpp"
 #include "Components/Factory.hpp"
@@ -32,6 +33,7 @@ namespace Synthetics {
     CoreServices::getInstance()->getRenderer()->setAmbientColor(1, 1, 1);
 
     m_constructor = new Constructor::Display(m_core, m_conf, factory);
+    m_displayKeyHits = new DisplayKeyHits(m_core, m_conf);
   }
 
   SyntheticsApp::~SyntheticsApp() {
@@ -52,7 +54,10 @@ namespace Synthetics {
   }
 
   bool SyntheticsApp::Update() {
-    m_constructor->update();
+    Number dt = m_core->getElapsed();
+    m_constructor->update(dt);
+    m_displayKeyHits->update(dt);
     return m_core->updateAndRender();
   }
 }
+

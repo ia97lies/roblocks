@@ -23,7 +23,7 @@ namespace Synthetics {
         Display(Polycode::Core *core, Configurator *conf, Components::Factory *factory);
         ~Display();
         void handleEvent(Polycode::Event *e);
-        void update();
+        void update(Number dt);
         void activate(bool on);
 
       private:

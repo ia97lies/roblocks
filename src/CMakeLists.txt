@@ -68,6 +68,7 @@ set(Synthetics_SRCS
   SyntheticsApp.cpp
   Configurator.cpp
   OrbitCamera.cpp
+  DisplayKeyHits.cpp
   PolycodeFacade.cpp
   ValueRangeMapping.cpp
   CompoundStore.cpp
@@ -84,6 +85,7 @@ set(Synthetics_HDRS
   Configurator.hpp
   MovingCamera.hpp
   OrbitCamera.hpp
+  DisplayKeyHits.hpp
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
   CompoundStore.hpp

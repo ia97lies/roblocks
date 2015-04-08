@@ -1,32 +1,30 @@
 //----------------------------------------------------------------------------
 // The MIT License
-// Took the basics from Polycode Examples
 //----------------------------------------------------------------------------
 
-#ifndef SYNTHETICS_APP_H
-#define SYNTHETICS_APP_H
+#ifndef SYNTHETICS_DISPLAYKEYHITS_H
+#define SYNTHETICS_DISPLAYKEYHITS_H
 
 #include <Polycode.h>
 #include "PolycodeView.h"
-#include "Polycode3DPhysics.h"
-
-#include "DisplayKeyHits.hpp"
-#include "Constructor/Display.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
-  class SyntheticsApp {
+  class DisplayKeyHits : public Polycode::EventHandler {
     public:
-      SyntheticsApp(Polycode::PolycodeView *view);
-      ~SyntheticsApp();
+      DisplayKeyHits(Polycode::Core *core, Configurator *conf);
+      ~DisplayKeyHits();
       void handleEvent(Polycode::Event *e);
-      bool Update();
+      void update(Number dt);
+      void activate(bool on); 
 
     private:
       Polycode::Core *m_core;
+      Polycode::Scene *m_scene;
       Configurator *m_conf;
-      DisplayKeyHits *m_displayKeyHits;
-      Constructor::Display *m_constructor;
+      int m_i;
+      Polycode::SceneLabel *m_label[2];
+
   };
 }
 #endif
