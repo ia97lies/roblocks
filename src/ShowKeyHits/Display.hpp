@@ -7,6 +7,7 @@
 
 #include <Polycode.h>
 #include "PolycodeView.h"
+#include "KeyLabel.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
@@ -24,7 +25,7 @@ namespace Synthetics {
         Polycode::Scene *m_scene;
         Configurator *m_conf;
         int m_i;
-        Polycode::SceneLabel *m_label[2];
+        KeyLabel *m_label[2];
 
     };
   }

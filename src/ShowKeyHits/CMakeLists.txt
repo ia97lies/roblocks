@@ -5,10 +5,12 @@ cmake_minimum_required(VERSION 2.8)
 ##############################################################################
 set(ShowKeyHits_SRCS
   Display.cpp
+  KeyLabel.cpp
 )
 
 set(ShowKeyHits_HDRS
   Display.hpp
+  KeyLabel.hpp
 )
 
 ##############################################################################
@@ -27,5 +29,4 @@ add_library(
 # TESTING
 ##############################################################################
 enable_testing()
-
 
