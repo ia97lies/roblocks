@@ -87,7 +87,7 @@ namespace Synthetics {
           ShaftKnob(Shaft *shaft) {
             m_shaft = shaft;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_CYLINDER, 0.2, 0.4,20);
-            m_entity->setColor(0.0, 0.0, 1.0, 0.5);
+            m_entity->setColor(getColor());
             m_entity->setPosition(0.0, 0.2, 0.0);
             m_shaft->getShape()->addChild(m_entity);
             m_curValue = (0,0,0);
@@ -97,15 +97,6 @@ namespace Synthetics {
             delete m_entity;
           }
           
-          virtual void activate(bool on) {
-            if (on) {
-              m_entity->setColor(0.0, 0.0, 1.0, 1.0);
-            }
-            else {
-              m_entity->setColor(0.0, 0.0, 1.0, 0.5);
-            }
-          }
-
           virtual Polycode::Entity *getShape() {
             return m_entity;
           } 

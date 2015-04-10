@@ -9,8 +9,8 @@
 ** __Simplify (remove Robot, use commands and model instead) (?)__
 * __Display key and mouse action on screen.__
 * __Hold two lines where you display key, fade out in time__
-* Knobs have to be blue (better light blue) 
-* Refactor knob color setting and activation do it at one place as it is always the very same code.
+* __Knobs have to be blue (better light blue)__
+* __Refactor knob color setting and activation do it at one place as it is always the very same code.__
 * Record/Replay (?)
 ** Split current robot into robot for simulation (updata) and model for construction (?)
 

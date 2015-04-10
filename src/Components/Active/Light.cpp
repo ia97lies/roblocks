@@ -78,7 +78,7 @@ namespace Synthetics {
           LightKnob(Body *body) {
             m_body = body;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.4,1.25,0.4);
-            m_entity->setColor(0.0, 0.0, 1.0, 0.5);
+            m_entity->setColor(getColor());
             m_body->getShape()->addChild(m_entity);
             m_entity->setPosition(0, 0, 0);
             m_curValue = Vector3(0,0,0);
@@ -87,15 +87,6 @@ namespace Synthetics {
           virtual ~LightKnob() {
           }
           
-          virtual void activate(bool on) {
-            if (on) {
-              m_entity->setColor(0.0, 0.0, 1.0, 1.0);
-            }
-            else {
-              m_entity->setColor(0.0, 0.0, 1.0, 0.5);
-            }
-          }
-
           virtual Polycode::Entity *getShape() {
             return m_entity;
           } 

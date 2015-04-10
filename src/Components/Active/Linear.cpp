@@ -78,22 +78,13 @@ namespace Synthetics {
           LinearKnob(Part *body, Rod *rod) {
             m_rod = rod;
             m_entity = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 0.8,1.2,0.8);
-            m_entity->setColor(0.0, 0.0, 1.0, 0.5);
+            m_entity->setColor(getColor());
             body->getShape()->addChild(m_entity);
             m_curValue = Vector3(0.5,0,0);
           }
 
           virtual ~LinearKnob() {}
           
-          virtual void activate(bool on) {
-            if (on) {
-              m_entity->setColor(0.0, 0.0, 1.0, 1.0);
-            }
-            else {
-              m_entity->setColor(0.0, 0.0, 1.0, 0.5);
-            }
-          }
-
           virtual Polycode::Entity *getShape() {
             return m_entity;
           } 

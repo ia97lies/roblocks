@@ -193,6 +193,18 @@ target_link_libraries(test_plug
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_knob Tests/test_knob.cpp)
+target_link_libraries(test_knob
+  synthetics
+  constructor
+  showkeyhits
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_executable(test_part Tests/test_part.cpp)
 target_link_libraries(test_part
   synthetics
@@ -244,6 +256,7 @@ target_link_libraries(test_compound_store
 add_test(test_compound test_compound)
 add_test(test_part test_part)
 add_test(test_plug test_plug)
+add_test(test_knob test_knob)
 add_test(test_component test_component)
 add_test(test_value_range_mapping test_value_range_mapping)
 add_test(test_compound_store test_compound_store)
