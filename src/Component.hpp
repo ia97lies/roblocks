@@ -8,6 +8,7 @@
 #include "PolyEntity.h"
 #include "Compound.hpp"
 #include "Part.hpp"
+#include "Joint.hpp"
 
 namespace Synthetics {
   class Component : public Compound {
@@ -17,6 +18,8 @@ namespace Synthetics {
 
       virtual int getNoParts() = 0;
       virtual Part *getPart(int i) = 0;
+      virtual int getNoJoints() { return 0; }
+      virtual Joint *getJoint() { return NULL; }
       virtual void enable(bool on) = 0;
       virtual Part *getPartByPlug(Polycode::Entity *plugShape);
 

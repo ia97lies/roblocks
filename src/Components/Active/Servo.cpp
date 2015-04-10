@@ -125,7 +125,8 @@ namespace Synthetics {
         m_body[2]->addPlug(plug);
 
         // TODO: add a hinge joint 
-        // m_hingeJoint(m_body[1], m_body[2], Vector3(0,0,0), Vector3(-1,0,0), Vector3(0,1,0), Vector3(0,1,0))
+        // m_hingeJoint(index1, index2, pivot1, axis1, pivot2, axis2)
+        // m_hingeJoint(1, 2, Vector3(0,0,0), Vector3(0,1,0), Vector3(-0.6,0,0), Vector3(0,1,0))
       }
 
       Servo::~Servo() {
