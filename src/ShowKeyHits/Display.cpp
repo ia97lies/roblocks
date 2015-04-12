@@ -108,8 +108,7 @@ namespace Synthetics {
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
       }
       else if (!on) {
-        m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
-        m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+        m_core->getInput()->removeAllHandlersForListener(this);
       }
     }
 

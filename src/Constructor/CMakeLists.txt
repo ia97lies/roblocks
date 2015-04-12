@@ -62,6 +62,7 @@ add_executable(test_robot Tests/test_robot.cpp)
 target_link_libraries(test_robot
   synthetics
   constructor
+  recorder
   showkeyhits
   components
   ${Polycode_LIBS}
@@ -75,6 +76,7 @@ add_executable(test_command Tests/test_command.cpp)
 target_link_libraries(test_command
   synthetics
   constructor
+  recorder
   showkeyhits
   components
   ${Polycode_LIBS}
@@ -88,6 +90,7 @@ add_executable(test_history Tests/test_history.cpp)
 target_link_libraries(test_history
   synthetics
   constructor
+  recorder
   showkeyhits
   components
   ${Polycode_LIBS}
@@ -101,6 +104,7 @@ add_executable(test_model Tests/test_model.cpp)
 target_link_libraries(test_model
   synthetics
   constructor
+  recorder
   showkeyhits
   components
   ${Polycode_LIBS}

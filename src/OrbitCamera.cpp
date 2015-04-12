@@ -119,12 +119,7 @@ namespace Synthetics {
       m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
     }
     else if (!on && m_on) {
-      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
-      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
-      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEUP);
-      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEMOVE);
-      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEWHEEL_UP);
-      m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
+      m_core->getInput()->removeAllHandlersForListener(this);
     }
     m_on = on;
   }

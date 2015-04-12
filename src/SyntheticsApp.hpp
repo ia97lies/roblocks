@@ -11,6 +11,7 @@
 #include "Polycode3DPhysics.h"
 
 #include "ShowKeyHits/Display.hpp"
+#include "Recorder/RecordEvents.hpp"
 #include "Constructor/Display.hpp"
 #include "Configurator.hpp"
 
@@ -25,6 +26,7 @@ namespace Synthetics {
     private:
       Polycode::Core *m_core;
       Configurator *m_conf;
+      Recorder::RecordEvents *m_recordEvents;
       ShowKeyHits::Display *m_displayKeyHits;
       Constructor::Display *m_constructor;
   };

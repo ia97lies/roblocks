@@ -33,6 +33,7 @@ namespace Synthetics {
 
     m_constructor = new Constructor::Display(m_core, m_conf, factory);
     m_displayKeyHits = new ShowKeyHits::Display(m_core, m_conf);
+    m_recordEvents = new Recorder::RecordEvents(m_core, m_conf);
   }
 
   SyntheticsApp::~SyntheticsApp() {
@@ -56,6 +57,7 @@ namespace Synthetics {
     Number dt = m_core->getElapsed();
     m_constructor->update(dt);
     m_displayKeyHits->update(dt);
+    m_recordEvents->update(dt);
     return m_core->updateAndRender();
   }
 }

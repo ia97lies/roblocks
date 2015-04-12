@@ -21,20 +21,25 @@ namespace Synthetics {
     void RecordEvents::handleEvent(Polycode::Event *e) {
       if(e->getDispatcher() == m_core->getInput()) {
         InputEvent *inputEvent = (InputEvent*)e;
+        m_eventCode = e->getEventCode();
         switch(e->getEventCode()) {
           case InputEvent::EVENT_KEYDOWN:
             {
-              int keyCode = inputEvent->keyCode();
-              wchar_t keyCharCode = inputEvent->getCharCode();
-              int ticks = m_core->getTicks();
-              // TODO: write it down in a file 
+              m_keyCode = inputEvent->keyCode();
+              m_keyCharCode = inputEvent->getCharCode();
             }
             break;
+          case InputEvent::EVENT_MOUSEWHEEL_UP:
+          case InputEvent::EVENT_MOUSEWHEEL_DOWN:
           case InputEvent::EVENT_MOUSEDOWN:
+          case InputEvent::EVENT_MOUSEUP:
             {
-              int button = inputEvent->getMouseButton();
-              // TODO: write it down in a file 
-              int ticks = m_core->getTicks();
+              m_mouseButton = inputEvent->getMouseButton();
+            }
+            break;
+          case InputEvent::EVENT_MOUSEMOVE:
+            {
+              m_mousePosition = inputEvent->getMousePosition();
             }
             break;
         }
@@ -42,19 +47,19 @@ namespace Synthetics {
     }
 
     void RecordEvents::update(Number dt) {
-      // XXX: What shall I do here and how can I replay this in the end?
-      // I somehow would need to wrap up Update in SyntheticsApp.cpp
-      // => In play mode I'm the event source and the frame rate source!
+      // write every frame
     }
 
     void RecordEvents::activate(bool on) {
       if (on) {
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+        m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
+        m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_UP);
+        m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
       }
       else if (!on) {
-        m_core->getInput()->removeEventListener(this, InputEvent::EVENT_KEYDOWN);
-        m_core->getInput()->removeEventListener(this, InputEvent::EVENT_MOUSEDOWN);
+        m_core->getInput()->removeAllHandlersForListener(this);
       }
     }
 
