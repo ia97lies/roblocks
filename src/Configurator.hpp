@@ -18,12 +18,14 @@ namespace Synthetics {
       int getHeight();
       int getHistory(); 
       bool getDisplayKeyHits();
+      bool getRecord();
 
     private:
       int m_width;
       int m_height;
       int m_history;
       bool m_displayKeyHits;
+      bool m_record;
       Lua *m_lua;
 
       void readWidth(); 

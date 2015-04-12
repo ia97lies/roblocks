@@ -53,6 +53,15 @@ namespace Synthetics {
       lua_pop(L, 1);
     }
 
+    lua_getglobal(L, "record");
+    if (!lua_isboolean(L, -1)) {
+      m_lua->error("record is not a valid directive, try record=true");
+    }
+    else {
+      m_record = (int) lua_toboolean(L, -1);
+      lua_pop(L, 1);
+    }
+
   }
 
   Configurator::~Configurator() {
@@ -73,6 +82,10 @@ namespace Synthetics {
 
   bool Configurator::getDisplayKeyHits() {
     return m_displayKeyHits;
+  }
+
+  bool Configurator::getRecord() {
+    return m_record;
   }
 
   //--------------------------------------------------------------------------

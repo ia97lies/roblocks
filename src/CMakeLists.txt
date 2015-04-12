@@ -264,6 +264,7 @@ add_test(test_compound_store test_compound_store)
 ##############################################################################
 # SUBDIRS
 ##############################################################################
+add_subdirectory(Recorder)
 add_subdirectory(ShowKeyHits)
 add_subdirectory(Constructor)
 add_subdirectory(Components)
