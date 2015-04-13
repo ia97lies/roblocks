@@ -5,10 +5,12 @@ cmake_minimum_required(VERSION 2.8)
 ##############################################################################
 set(Recorder_SRCS
   RecordEvents.cpp
+  PlayEvents.cpp
 )
 
 set(Recorder_HDRS
   RecordEvents.hpp
+  PlayEvents.hpp
 )
 
 ##############################################################################

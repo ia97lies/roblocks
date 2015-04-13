@@ -15,6 +15,10 @@ namespace Synthetics {
       m_conf = conf;
 
       activate(m_conf->getRecord());
+      if (m_on) {
+        m_file = fopen("record.bin", "w");
+      }
+      memset(&m_event, 0, sizeof(m_event));
     }
 
     RecordEvents::~RecordEvents() {}
@@ -22,7 +26,9 @@ namespace Synthetics {
     void RecordEvents::handleEvent(Polycode::Event *e) {
       if(e->getDispatcher() == m_core->getInput()) {
         InputEvent *inputEvent = (InputEvent*)e;
+        memset(&m_event, 0, sizeof(m_event));
         m_event.event = e->getEventCode();
+        m_event.ticks = m_core->getTicks();
         switch(e->getEventCode()) {
           case InputEvent::EVENT_KEYDOWN:
             {
@@ -50,8 +56,11 @@ namespace Synthetics {
 
     void RecordEvents::update(Number dt) {
       if (m_on && m_event.event != 0) {
-        // write every frame
-        Polycode::Logger::getInstance()->log("%f;%d;%d;%d;%d;%d\n", dt, m_event.event, m_event.key, m_event.mouseButton, m_event.x, m_event.y);
+        m_event.dt = dt;
+        for (int i = 0; i < sizeof(m_event); i++) {
+          fputc(((char *)&m_event)[i], m_file);
+        }
+        fflush(NULL);
         m_event.event = 0;
       }
     }

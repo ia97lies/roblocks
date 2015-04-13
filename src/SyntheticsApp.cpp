@@ -7,6 +7,7 @@
 #include "Configurator.hpp"
 #include "Constructor/Display.hpp"
 #include "Components/Factory.hpp"
+#include "Recorder/PlayEvents.hpp"
 
 using namespace Polycode;
 
@@ -34,6 +35,11 @@ namespace Synthetics {
     m_constructor = new Constructor::Display(m_core, m_conf, factory);
     m_displayKeyHits = new ShowKeyHits::Display(m_core, m_conf);
     m_recordEvents = new Recorder::RecordEvents(m_core, m_conf);
+
+    if (m_conf->getPlay()) {
+      Recorder::PlayEvents player(m_core, m_conf);
+      player.eventEmitter();
+    }
   }
 
   SyntheticsApp::~SyntheticsApp() {

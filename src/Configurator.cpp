@@ -26,6 +26,11 @@ namespace Synthetics {
       m_lua->error("cannot load Resources/synthetics.conf: %s\n", lua_tostring(L, -1));
     }
 
+    lua_pushinteger(L, 1);
+    lua_setglobal(L, "RECORD");
+    lua_pushinteger(L, 2);
+    lua_setglobal(L, "PLAY");
+
     lua_getglobal(L, "window");
     if (!lua_istable(L, -1)) {
       m_lua->error("window is not a valid directive, try window = { width = 640, height = 480 }");
@@ -53,15 +58,14 @@ namespace Synthetics {
       lua_pop(L, 1);
     }
 
-    lua_getglobal(L, "record");
-    if (!lua_isboolean(L, -1)) {
-      m_lua->error("record is not a valid directive, try record=true");
+    lua_getglobal(L, "recorder");
+    if (!lua_isnumber(L, -1)) {
+      m_lua->error("recorder is not a valid directive, try recorder=RECORD or recorder=PLAY");
     }
     else {
-      m_record = (int) lua_toboolean(L, -1);
+      m_recorder = lua_tointeger(L, -1);
       lua_pop(L, 1);
     }
-
   }
 
   Configurator::~Configurator() {
@@ -85,7 +89,11 @@ namespace Synthetics {
   }
 
   bool Configurator::getRecord() {
-    return m_record;
+    return m_recorder == 1;
+  }
+
+  bool Configurator::getPlay() {
+    return m_recorder == 2;
   }
 
   //--------------------------------------------------------------------------

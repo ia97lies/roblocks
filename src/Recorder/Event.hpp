@@ -8,12 +8,14 @@
 namespace Synthetics {
   namespace Recorder {
     struct Event {
-        int event;
-        int key;
-        wchar_t charCode;
-        int mouseButton;
-        int x;
-        int y;
+      int ticks;
+      int event;
+      int key;
+      int mouseButton;
+      int x;
+      int y;
+      wchar_t charCode;
+      float dt;
     };
   }
 }
