@@ -7,6 +7,7 @@
 
 #include <Polycode.h>
 #include "PolycodeView.h"
+#include "Event.hpp"
 #include "Configurator.hpp"
 
 namespace Synthetics {
@@ -23,12 +24,7 @@ namespace Synthetics {
         bool m_on;
         Polycode::Core *m_core;
         Configurator *m_conf;
-        int m_eventCode;
-        int m_keyCode;
-        wchar_t m_keyCharCode;
-        int m_mouseButton;
-        Polycode::Vector2 m_mousePosition;
-
+        Event m_event;
     };
   }
 }

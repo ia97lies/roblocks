@@ -2,6 +2,7 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "PolyLogger.h"
 #include "RecordEvents.hpp"
 
 using namespace Polycode;
@@ -21,12 +22,12 @@ namespace Synthetics {
     void RecordEvents::handleEvent(Polycode::Event *e) {
       if(e->getDispatcher() == m_core->getInput()) {
         InputEvent *inputEvent = (InputEvent*)e;
-        m_eventCode = e->getEventCode();
+        m_event.event = e->getEventCode();
         switch(e->getEventCode()) {
           case InputEvent::EVENT_KEYDOWN:
             {
-              m_keyCode = inputEvent->keyCode();
-              m_keyCharCode = inputEvent->getCharCode();
+              m_event.key = inputEvent->keyCode();
+              m_event.charCode = inputEvent->getCharCode();
             }
             break;
           case InputEvent::EVENT_MOUSEWHEEL_UP:
@@ -34,12 +35,13 @@ namespace Synthetics {
           case InputEvent::EVENT_MOUSEDOWN:
           case InputEvent::EVENT_MOUSEUP:
             {
-              m_mouseButton = inputEvent->getMouseButton();
+              m_event.mouseButton = inputEvent->getMouseButton();
             }
             break;
           case InputEvent::EVENT_MOUSEMOVE:
             {
-              m_mousePosition = inputEvent->getMousePosition();
+              m_event.x = (int )inputEvent->getMousePosition().x;
+              m_event.y = (int )inputEvent->getMousePosition().y;
             }
             break;
         }
@@ -47,12 +49,10 @@ namespace Synthetics {
     }
 
     void RecordEvents::update(Number dt) {
-      if (m_on && m_eventCode != 0) {
+      if (m_on && m_event.event != 0) {
         // write every frame
-        fprintf(stderr, "%f;%d;%d;%d;%d;%d\n", dt, m_eventCode, m_keyCode, m_mouseButton, (int )m_mousePosition.x, (int )m_mousePosition.y);
-        m_eventCode = 0;
-        m_keyCode = 0;
-        m_mouseButton = 0;
+        Polycode::Logger::getInstance()->log("%f;%d;%d;%d;%d;%d\n", dt, m_event.event, m_event.key, m_event.mouseButton, m_event.x, m_event.y);
+        m_event.event = 0;
       }
     }
 
