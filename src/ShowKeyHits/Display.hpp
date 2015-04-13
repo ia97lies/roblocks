@@ -21,6 +21,7 @@ namespace Synthetics {
         void activate(bool on); 
 
       private:
+        bool m_on;
         Polycode::Core *m_core;
         Polycode::Scene *m_scene;
         Configurator *m_conf;

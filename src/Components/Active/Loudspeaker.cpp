@@ -86,7 +86,6 @@ namespace Synthetics {
       // Components interface
       //--------------------------------------------------------------------------
       Loudspeaker::Loudspeaker(Polycode::Scene *scene) {
-        fprintf(stderr, "Create Loudspeaker\n");
         m_scene = scene;
 
         m_sound = new SceneSound("Resources/test.wav", 20, 50, false);
@@ -119,7 +118,6 @@ namespace Synthetics {
       }
 
       Loudspeaker::~Loudspeaker() {
-        fprintf(stderr, "Destroy Loudspeaker\n");
         delete m_sound;
         delete m_body;
       }

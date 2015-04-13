@@ -47,18 +47,26 @@ namespace Synthetics {
     }
 
     void RecordEvents::update(Number dt) {
-      // write every frame
+      if (m_on && m_eventCode != 0) {
+        // write every frame
+        fprintf(stderr, "%f;%d;%d;%d;%d;%d\n", dt, m_eventCode, m_keyCode, m_mouseButton, (int )m_mousePosition.x, (int )m_mousePosition.y);
+        m_eventCode = 0;
+        m_keyCode = 0;
+        m_mouseButton = 0;
+      }
     }
 
     void RecordEvents::activate(bool on) {
-      if (on) {
+      m_on = on;
+      if (m_on) {
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_UP);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEWHEEL_DOWN);
+        m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
       }
-      else if (!on) {
+      else {
         m_core->getInput()->removeAllHandlersForListener(this);
       }
     }

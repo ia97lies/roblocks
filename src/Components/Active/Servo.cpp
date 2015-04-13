@@ -104,7 +104,6 @@ namespace Synthetics {
       // Components interface
       //--------------------------------------------------------------------------
       Servo::Servo() {
-        fprintf(stderr, "Create Servo\n");
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-0.2,0,0), Vector3(0,0,0));
         plug->setInput(true);
@@ -130,7 +129,6 @@ namespace Synthetics {
       }
 
       Servo::~Servo() {
-        fprintf(stderr, "Destroy Servo\n");
         for (int i = 0; i < 3; i++) {
           delete m_body[i];
         }

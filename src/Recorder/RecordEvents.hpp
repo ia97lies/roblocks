@@ -20,6 +20,7 @@ namespace Synthetics {
         void activate(bool on); 
 
       private:
+        bool m_on;
         Polycode::Core *m_core;
         Configurator *m_conf;
         int m_eventCode;

@@ -44,7 +44,6 @@ namespace Synthetics {
       // Components interface
       //--------------------------------------------------------------------------
       Hub::Hub() {
-        fprintf(stderr, "Create Hub\n");
         m_markerPlug = NULL;
         m_body = new Body();
         Plug *plug = new Plug(Vector3(1.0,0,0), Vector3(0,0,0));
@@ -74,7 +73,6 @@ namespace Synthetics {
       }
 
       Hub::~Hub() {
-        fprintf(stderr, "Destroy Hub\n");
         delete m_body;
       }
 

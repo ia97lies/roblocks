@@ -68,8 +68,6 @@ namespace Synthetics {
       // Components interface
       //--------------------------------------------------------------------------
       Wedge::Wedge() {
-        fprintf(stderr, "Create Wedge\n");
-
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
         plug->setParent(this);
@@ -90,7 +88,6 @@ namespace Synthetics {
       }
 
       Wedge::~Wedge() {
-        fprintf(stderr, "Destroy Wedge\n");
         for (int i = 0; i < 3; i++) {
           delete m_body[i];
         }

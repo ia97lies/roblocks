@@ -117,7 +117,6 @@ namespace Synthetics {
       // Components interface
       //--------------------------------------------------------------------------
       Potentiometer::Potentiometer() {
-        fprintf(stderr, "Create Potentiometer\n");
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(1,0,0), Vector3(0,0,0));
         plug->setParent(this);

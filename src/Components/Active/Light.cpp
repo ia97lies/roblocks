@@ -107,7 +107,6 @@ namespace Synthetics {
       // Components interface
       //--------------------------------------------------------------------------
       Light::Light(Polycode::Scene *scene) {
-        fprintf(stderr, "Create Light\n");
         m_scene = scene;
 
         m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 1);
@@ -140,7 +139,6 @@ namespace Synthetics {
       }
 
       Light::~Light() {
-        fprintf(stderr, "Destroy Light\n");
         m_scene->removeLight(m_light);
         m_body->getShape()->removeChild(m_light);
         // This is done by Part, not sure if that is a good idea

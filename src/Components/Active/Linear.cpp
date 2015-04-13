@@ -105,7 +105,6 @@ namespace Synthetics {
       // Components interface
       //--------------------------------------------------------------------------
       Linear::Linear() {
-        fprintf(stderr, "Create Linear\n");
         m_body[0] = new Body();
         Plug *plug = new Plug(Vector3(-1,0,0), Vector3(0,0,0));
         plug->setInput(true);
@@ -127,7 +126,6 @@ namespace Synthetics {
       }
 
       Linear::~Linear() {
-        fprintf(stderr, "Destroy Linear\n");
         for (int i = 0; i < 2; i++) {
           delete m_body[i];
         }

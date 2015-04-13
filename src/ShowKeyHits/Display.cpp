@@ -98,16 +98,19 @@ namespace Synthetics {
     }
 
     void Display::update(Number dt) {
-      m_label[0]->update(dt);
-      m_label[1]->update(dt);
+      if (m_on) {
+        m_label[0]->update(dt);
+        m_label[1]->update(dt);
+      }
     }
 
     void Display::activate(bool on) {
-      if (on) {
+      m_on = on;
+      if (m_on) {
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
       }
-      else if (!on) {
+      else {
         m_core->getInput()->removeAllHandlersForListener(this);
       }
     }
