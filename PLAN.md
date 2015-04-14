@@ -11,9 +11,25 @@
 * __Knobs have to be blue (better light blue)__
 * __Refactor knob color setting and activation do it at one place as it is always the very same code.__
 * __Record/Replay (just implement a event handler and also take dt in account)__
-* Context Menu depending on object and its state (free, inplace, connected) (?)
-* Split current robot into robot for simulation (updata) and model for construction (?)
-* Logger (in the long term I need a logger no question)(?)
+* Context Menu depending on object and its state (free, inplace, connected) (?)!!!
+-> Problems here is how do I know what the context menu should display
+-> I do not want to polute component with context menu knowledge
+-> Build a context menu depending on robot state (empty, root, inplace, added)
+-> ContextMenu 1 -> * ContextMenuEntry
+-> ContextMenuEntry returns Command on click
+-> ContextMenu on right click (or hoover?)
+* Logger (in the long term I need a logger no question)(?)!!
+-> Not sure how important as we have now record/play
+-> No boiler plate or as little as possible
+-> Configurable which part logs and how much (error, info, debug)
+-> Not sure if Polycode::Logger fits my needs but this is used for start polycode already, so no choice I fear
+* Split current robot into robot for simulation (updata) and model for construction (?)!
+-> For simulation in a physical enviroment we need a clear distinction between robot and builder
+* Bring robot in a physical enviroment (?)
+-> Define joints for servo, linear
+-> Hold the root element with a constrain
+-> attach every component with joints
+-> check the impackt of the huge number of collisions and how to avoid it
 
 ## Futur
 * POV Camera
