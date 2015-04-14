@@ -10,9 +10,9 @@
 * __Hold two lines where you display key, fade out in time__
 * __Knobs have to be blue (better light blue)__
 * __Refactor knob color setting and activation do it at one place as it is always the very same code.__
-* Record/Replay (just implement a event handler and also take dt in account)
-* Split current robot into robot for simulation (updata) and model for construction (?)
+* __Record/Replay (just implement a event handler and also take dt in account)__
 * Context Menu depending on object and its state (free, inplace, connected) (?)
+* Split current robot into robot for simulation (updata) and model for construction (?)
 * Logger (in the long term I need a logger no question)(?)
 
 ## Futur
