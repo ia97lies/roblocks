@@ -14,6 +14,8 @@ namespace Synthetics {
       int mouseButton;
       int x;
       int y;
+      int dx;
+      int dy;
       wchar_t charCode;
       float dt;
     };

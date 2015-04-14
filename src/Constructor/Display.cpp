@@ -125,8 +125,10 @@ namespace Synthetics {
             switch(inputEvent->getMouseButton()) {
               case CoreInput::MOUSE_BUTTON1:
                 {
+                  fprintf(stderr, "mousepos: %f, %f\n", inputEvent->mousePosition.x, inputEvent->mousePosition.y);
                   Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), inputEvent->mousePosition);
                   RayTestResult res = m_scene->getFirstEntityInRay(ray.origin, ray.direction * 300.0);
+                  fprintf(stderr, "res.entity: %p\n", res.entity);
                   if(res.entity) {
                     Command *command = new CommandActivate(m_robot, res.entity);
                     m_history->execute(command);

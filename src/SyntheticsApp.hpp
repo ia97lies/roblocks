@@ -12,6 +12,7 @@
 
 #include "ShowKeyHits/Display.hpp"
 #include "Recorder/RecordEvents.hpp"
+#include "Recorder/PlayEvents.hpp"
 #include "Constructor/Display.hpp"
 #include "Configurator.hpp"
 
@@ -27,6 +28,7 @@ namespace Synthetics {
       Polycode::Core *m_core;
       Configurator *m_conf;
       Recorder::RecordEvents *m_recordEvents;
+      Recorder::PlayEvents *m_playEvents;
       ShowKeyHits::Display *m_displayKeyHits;
       Constructor::Display *m_constructor;
   };

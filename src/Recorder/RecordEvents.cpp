@@ -46,8 +46,10 @@ namespace Synthetics {
             break;
           case InputEvent::EVENT_MOUSEMOVE:
             {
-              m_event.x = (int )inputEvent->getMousePosition().x;
-              m_event.y = (int )inputEvent->getMousePosition().y;
+              m_event.x = (int )m_core->getInput()->getMousePosition().x;
+              m_event.y = (int )m_core->getInput()->getMousePosition().y;
+              m_event.dx = (int )m_core->getInput()->getMouseDelta().x;
+              m_event.dy = (int )m_core->getInput()->getMouseDelta().y;
             }
             break;
         }

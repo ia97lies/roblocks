@@ -16,7 +16,7 @@ namespace Synthetics {
       public:
         PlayEvents(Polycode::Core *core, Configurator *conf);
         ~PlayEvents();
-        void eventEmitter();
+        Number emitEvent();
 
       private:
         bool m_on;

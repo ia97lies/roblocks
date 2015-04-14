@@ -35,11 +35,7 @@ namespace Synthetics {
     m_constructor = new Constructor::Display(m_core, m_conf, factory);
     m_displayKeyHits = new ShowKeyHits::Display(m_core, m_conf);
     m_recordEvents = new Recorder::RecordEvents(m_core, m_conf);
-
-    if (m_conf->getPlay()) {
-      Recorder::PlayEvents player(m_core, m_conf);
-      player.eventEmitter();
-    }
+    m_playEvents = new Recorder::PlayEvents(m_core, m_conf);
   }
 
   SyntheticsApp::~SyntheticsApp() {
@@ -60,7 +56,11 @@ namespace Synthetics {
   }
 
   bool SyntheticsApp::Update() {
-    Number dt = m_core->getElapsed();
+    //TODO: have a look into pattern book how to solve this properly
+    Number dt = m_playEvents->emitEvent();
+    if (dt == -1) {
+      dt = m_core->getElapsed();
+    }
     m_constructor->update(dt);
     m_displayKeyHits->update(dt);
     m_recordEvents->update(dt);
