@@ -7,6 +7,7 @@
 #include "PolycodeFacade.hpp"
 #include "Plug.hpp"
 #include "Components/Factory.hpp"
+#include "Constructor/CommandNone.hpp"
 #include "Constructor/CommandSetRoot.hpp"
 #include "Constructor/CommandActivate.hpp"
 #include "Constructor/CommandPlace.hpp"
@@ -74,6 +75,16 @@ class ComponentMock : public Component {
 
 Component *MockCreator(Polycode::PhysicsScene *scene) {
   return new ComponentMock();
+}
+
+//----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE(test_command_none_instantiate) {
+  CommandNone command;
+}
+
+BOOST_AUTO_TEST_CASE(test_command_none_execute) {
+  CommandNone command;
+  BOOST_CHECK_EQUAL(true, command.execute());
 }
 
 

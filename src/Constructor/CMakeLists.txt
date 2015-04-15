@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 2.8)
 # DEFINE 
 ##############################################################################
 set(Constructor_SRCS
+  Menu.cpp
+  MenuEntry.cpp
   SelectorDisplay.cpp
   Display.cpp
   Robot.cpp
@@ -18,11 +20,14 @@ set(Constructor_SRCS
 )
 
 set(Constructor_HDRS
+  Menu.hpp
+  MenuEntry.hpp
   SelectorDisplay.hpp
   Display.hpp
   Robot.hpp
   Model.hpp
   Command.hpp
+  CommandNone.hpp
   CommandSetRoot.hpp
   CommandActivate.hpp
   CommandPlace.hpp
@@ -113,4 +118,24 @@ target_link_libraries(test_model
   ${Boost_FILESYSTEM_LIBRARY}
 )
 add_test(test_model test_model)
+
+add_executable(test_menu_entry Tests/test_menu_entry.cpp)
+target_link_libraries(test_menu_entry
+  constructor
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+add_test(test_menu_entry test_menu_entry)
+
+add_executable(test_menu Tests/test_menu.cpp)
+target_link_libraries(test_menu
+  constructor
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+add_test(test_menu test_menu)
 
