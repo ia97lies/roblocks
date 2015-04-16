@@ -14,8 +14,12 @@ namespace Synthetics {
         MenuEntry();
         ~MenuEntry();
 
+        void setCommand(Command *);
         Command *getCommand();
         std::string getLabel();
+
+      private:
+        Command *m_command;
     };
   }
 }

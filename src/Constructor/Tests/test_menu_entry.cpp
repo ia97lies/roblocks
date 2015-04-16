@@ -39,12 +39,21 @@ BOOST_AUTO_TEST_CASE(test_menu_entry_get_default_label) {
 class MyMenuEntryFixture {
   public:
     MyMenuEntryFixture() {
+      Command *command = new MyCommand();
+      menuEntry.setCommand(command);
     }
+    MenuEntry menuEntry;
 };
 
 BOOST_FIXTURE_TEST_SUITE(MyMenuEntry, MyMenuEntryFixture)
 
-  BOOST_AUTO_TEST_CASE(test_my_menu_entry_) {
+  BOOST_AUTO_TEST_CASE(test_my_menu_entry_get_my_command) {
+    BOOST_CHECK(dynamic_cast<MyCommand *>(menuEntry.getCommand()));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_my_menu_entry_set_null_command) {
+    menuEntry.setCommand(NULL);
+    BOOST_CHECK(dynamic_cast<CommandNone *>(menuEntry.getCommand()));
   }
 
 BOOST_AUTO_TEST_SUITE_END()

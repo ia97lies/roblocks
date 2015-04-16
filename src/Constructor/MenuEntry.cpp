@@ -9,10 +9,11 @@
 
 namespace Synthetics {
   namespace Constructor {
-    MenuEntry::MenuEntry() {}
+    MenuEntry::MenuEntry() { m_command = new CommandNone(); }
     MenuEntry::~MenuEntry() {}
 
-    Command *MenuEntry::getCommand() { return new CommandNone(); }
+    void MenuEntry::setCommand(Command *command) { m_command = command; }
+    Command *MenuEntry::getCommand() { return m_command; }
     std::string MenuEntry::getLabel() { return "<none>"; }
   }
 }
