@@ -5,6 +5,7 @@
 #ifndef SYNTHETICS_CONSTRUCTOR_MENUENTRY_H
 #define SYNTHETICS_CONSTRUCTOR_MENUENTRY_H
 
+#include "PolyEntity.h"
 #include "Command.hpp"
 
 namespace Synthetics {
@@ -16,10 +17,12 @@ namespace Synthetics {
 
         void setCommand(Command *);
         Command *getCommand();
-        std::string getLabel();
+        void setLabel(Polycode::Entity *label);
+        Polycode::Entity *getLabel();
 
       private:
         Command *m_command;
+        Polycode::Entity *m_label;
     };
   }
 }
