@@ -46,7 +46,7 @@ class MyCommand : public Command {
 class MenuEntryInstantiateFixture {
   public:
     MenuEntryInstantiateFixture() {
-      PolyCoreMock *core = new PolyCoreMock();
+      new PolyCoreMock();
     }
 };
 
@@ -77,6 +77,7 @@ BOOST_AUTO_TEST_SUITE_END()
 class MenuEntryCommandFixture {
   public:
     MenuEntryCommandFixture() {
+      new PolyCoreMock();
       deleted = false;
       Command *command = new MyCommand(&deleted);
       menuEntry.setCommand(command);
@@ -107,7 +108,7 @@ class MenuEntryLabelFixture {
   public:
     MenuEntryLabelFixture() {
       deleted = false;
-      PolyCoreMock *core = new PolyCoreMock();
+      new PolyCoreMock();
       menuEntry.setLabel(new MyEntity(&deleted)); 
     }
     MenuEntry menuEntry;
