@@ -12,32 +12,26 @@ using namespace Polycode;
 
 namespace Synthetics {
   namespace Constructor {
-    MenuEntry::MenuEntry() { 
-      m_command = new CommandNone(); 
-      m_label = new SceneLabel("<none>", 14); 
+    MenuEntry::MenuEntry(Command *command, Entity *label) { 
+      m_command = command; 
+      m_hook = new Entity();
+      m_label = label; 
       m_label->setPosition(1, 0, 0);
+      m_hook->addChild(m_label);
     }
 
-    MenuEntry::~MenuEntry() {}
-
-    void MenuEntry::setCommand(Command *command) { 
-      if (command != NULL) {
-        delete m_command;
-        m_command = command; 
-      }
+    MenuEntry::~MenuEntry() {
+      delete m_command;
+      m_hook->removeChild(m_label);
+      delete m_label;
+      delete m_hook;
     }
 
     Command *MenuEntry::getCommand() { return m_command; }
 
-    void MenuEntry::setLabel(Entity *label) {
-      if (label) {
-        delete m_label;
-        m_label = label;
-        m_label->setPosition(1, 0, 0);
-      }
-    }
-
     Entity *MenuEntry::getLabel() { return m_label; }
+
+    Entity *MenuEntry::getHook() { return m_hook; }
   }
 }
 

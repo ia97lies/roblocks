@@ -46,99 +46,48 @@ class MyCommand : public Command {
 class MenuEntryInstantiateFixture {
   public:
     MenuEntryInstantiateFixture() {
+      commandDeleted = false;
+      labelDeleted = false;
       new PolyCoreMock();
+      command = new MyCommand(&commandDeleted);
+      label = new MyEntity(&labelDeleted);
+      menuEntry = new MenuEntry(command, label);
     }
+    MenuEntry *menuEntry;
+    Command *command;
+    Entity *label;
+    bool commandDeleted;
+    bool labelDeleted;
 };
 
 BOOST_FIXTURE_TEST_SUITE(MenuEntryInstantiate, MenuEntryInstantiateFixture)
 
-  BOOST_AUTO_TEST_CASE(test_menu_entry_instantiate) {
-    MenuEntry menuEntry;
+  BOOST_AUTO_TEST_CASE(test_menu_entry_getCommand) {
+    BOOST_CHECK(menuEntry->getCommand() == command);
   }
 
-  BOOST_AUTO_TEST_CASE(test_menu_entry_get_default_command) {
-    MenuEntry menuEntry;
-    BOOST_CHECK(dynamic_cast<CommandNone *>(menuEntry.getCommand()));
+  BOOST_AUTO_TEST_CASE(test_menu_entry_getLabel) {
+    BOOST_CHECK(menuEntry->getLabel() == label);
   }
 
-  BOOST_AUTO_TEST_CASE(test_menu_entry_get_default_label) {
-    MenuEntry menuEntry;
-    BOOST_CHECK(dynamic_cast<Polycode::SceneLabel *>(menuEntry.getLabel()));
+  BOOST_AUTO_TEST_CASE(test_menu_entry_getHook) {
+    BOOST_CHECK(menuEntry->getHook() == label->getParentEntity());
   }
 
-  BOOST_AUTO_TEST_CASE(test_menu_entry_get_default_label_position) {
-    MenuEntry menuEntry;
-    BOOST_CHECK(menuEntry.getLabel()->getPosition() == Vector3(1, 0, 0));
+  BOOST_AUTO_TEST_CASE(test_menu_entry_get_label_pos) {
+    BOOST_CHECK(menuEntry->getLabel()->getPosition() == Vector3(1,0,0));
   }
 
-BOOST_AUTO_TEST_SUITE_END()
-
-//----------------------------------------------------------------------------
-class MenuEntryCommandFixture {
-  public:
-    MenuEntryCommandFixture() {
-      new PolyCoreMock();
-      deleted = false;
-      Command *command = new MyCommand(&deleted);
-      menuEntry.setCommand(command);
-    }
-    MenuEntry menuEntry;
-    bool deleted;
-};
-
-BOOST_FIXTURE_TEST_SUITE(MenuEntryCommand, MenuEntryCommandFixture)
-
-  BOOST_AUTO_TEST_CASE(test_menu_entry_get_my_command) {
-    BOOST_CHECK(dynamic_cast<MyCommand *>(menuEntry.getCommand()));
+  BOOST_AUTO_TEST_CASE(test_menu_entry_destroy_check_command_deleted) {
+    delete menuEntry;
+    BOOST_CHECK(commandDeleted);
   }
 
-  BOOST_AUTO_TEST_CASE(test_menu_entry_set_null_command) {
-    menuEntry.setCommand(NULL);
-    BOOST_CHECK(dynamic_cast<MyCommand *>(menuEntry.getCommand()));
-  }
-
-  BOOST_AUTO_TEST_CASE(test_menu_entry_delete_on_overwrite) {
-    menuEntry.setCommand(new MyCommand());
-    BOOST_CHECK(deleted);
-  }
-BOOST_AUTO_TEST_SUITE_END()
-
-//----------------------------------------------------------------------------
-class MenuEntryLabelFixture {
-  public:
-    MenuEntryLabelFixture() {
-      deleted = false;
-      new PolyCoreMock();
-      menuEntry.setLabel(new MyEntity(&deleted)); 
-    }
-    MenuEntry menuEntry;
-    bool deleted;
-};
-
-BOOST_FIXTURE_TEST_SUITE(MenuEntryLabel, MenuEntryLabelFixture)
-
-  BOOST_AUTO_TEST_CASE(test_menu_entry_get_custom_label) {
-    BOOST_CHECK(dynamic_cast<MyEntity *>(menuEntry.getLabel()));
-  }
-
-  BOOST_AUTO_TEST_CASE(test_menu_entry_overwrite_label) {
-    menuEntry.setLabel(new Entity); 
-    BOOST_CHECK(dynamic_cast<Entity *>(menuEntry.getLabel()));
-  }
-
-  BOOST_AUTO_TEST_CASE(test_menu_entry_label_delete_on_overwrite) {
-    menuEntry.setLabel(new Entity); 
-    BOOST_CHECK(deleted);
-  }
-
-  BOOST_AUTO_TEST_CASE(test_menu_entry_label_overwrite_null) {
-    menuEntry.setLabel(NULL); 
-    BOOST_CHECK(dynamic_cast<MyEntity *>(menuEntry.getLabel()));
-  }
-
-  BOOST_AUTO_TEST_CASE(test_menu_entry_get_custom_label_pos) {
-    BOOST_CHECK(menuEntry.getLabel()->getPosition() == Vector3(1,0,0));
+  BOOST_AUTO_TEST_CASE(test_menu_entry_destroy_check_label_deleted) {
+    delete menuEntry;
+    BOOST_CHECK(labelDeleted);
   }
 
 BOOST_AUTO_TEST_SUITE_END()
+
 

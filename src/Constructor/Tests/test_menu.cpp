@@ -6,6 +6,7 @@
 #include <boost/test/unit_test.hpp>
 #include "Constructor/Menu.hpp"
 #include "Constructor/MenuEntry.hpp"
+#include "Constructor/CommandNone.hpp"
 #include "PolyCoreMock.hpp"
 
 using namespace Synthetics::Constructor;
@@ -36,7 +37,7 @@ BOOST_FIXTURE_TEST_SUITE(MenuEmpty, MenuEmptyFixture)
   }
 
   BOOST_AUTO_TEST_CASE(test_menu_get_entry_by_shape) {
-    MenuEntry *entry = new MenuEntry();
+    MenuEntry *entry = new MenuEntry(new CommandNone(), new Entity());
     BOOST_CHECK(menu.getEntry(entry->getLabel()) == NULL);
   }
 
@@ -59,7 +60,7 @@ class MenuOneEntryFixture {
   public:
     MenuOneEntryFixture() {
       new PolyCoreMock();
-      entry = new MenuEntry();
+      entry = new MenuEntry(new CommandNone(), new Entity());
       menu.addEntry(entry);
     }
 
@@ -78,7 +79,7 @@ BOOST_FIXTURE_TEST_SUITE(MenuOneEntry, MenuOneEntryFixture)
   }
 
   BOOST_AUTO_TEST_CASE(test_menu_add_another_entry) {
-    menu.addEntry(new MenuEntry());
+    menu.addEntry(new MenuEntry(new CommandNone(), new Entity()));
     BOOST_CHECK_EQUAL(2, menu.getNoEntries());
   }
 
@@ -106,9 +107,9 @@ class MenuManyEntryFixture {
   public:
     MenuManyEntryFixture() {
       new PolyCoreMock();
-      entry[0] = new MenuEntry();
-      entry[1] = new MenuEntry();
-      entry[2] = new MenuEntry();
+      entry[0] = new MenuEntry(new CommandNone(), new Entity());
+      entry[1] = new MenuEntry(new CommandNone(), new Entity());
+      entry[2] = new MenuEntry(new CommandNone(), new Entity());
       menu.addEntry(entry[0]);
       menu.addEntry(entry[1]);
       menu.addEntry(entry[2]);

@@ -12,17 +12,17 @@ namespace Synthetics {
   namespace Constructor {
     class MenuEntry {
       public:
-        MenuEntry();
+        MenuEntry(Command *command, Polycode::Entity *label);
         ~MenuEntry();
 
-        void setCommand(Command *);
         Command *getCommand();
-        void setLabel(Polycode::Entity *label);
         Polycode::Entity *getLabel();
+        Polycode::Entity *getHook();
 
       private:
         Command *m_command;
         Polycode::Entity *m_label;
+        Polycode::Entity *m_hook;
     };
   }
 }
