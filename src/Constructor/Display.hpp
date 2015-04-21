@@ -10,6 +10,7 @@
 #include "Polycode3DPhysics.h"
 
 #include "MovingCamera.hpp"
+#include "Controller.hpp"
 #include "Robot.hpp"
 #include "Configurator.hpp"
 #include "SelectorDisplay.hpp"
@@ -18,13 +19,14 @@
 
 namespace Synthetics {
   namespace Constructor {
-    class Display : public Polycode::EventHandler {
+    class Display : public Controller {
       public:
         Display(Polycode::Core *core, Configurator *conf, Components::Factory *factory);
         ~Display();
         void handleEvent(Polycode::Event *e);
         void update(Number dt);
-        void activate(bool on);
+        void activate();
+        void deactivate();
 
       private:
         bool m_on;

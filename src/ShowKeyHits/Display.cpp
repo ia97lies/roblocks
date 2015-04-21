@@ -90,6 +90,11 @@ namespace Synthetics {
                   m_label[m_i]->setLabel("Left mouse button");
                 }
                 break;
+              case CoreInput::MOUSE_BUTTON2:
+                {
+                  m_label[m_i]->setLabel("Right mouse button");
+                }
+                break;
             }
             break;
         }

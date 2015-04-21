@@ -21,6 +21,7 @@ namespace Synthetics {
       virtual void updateTarget(Polycode::Vector3 pos);
       virtual void update(); 
       virtual void activate(bool on);
+      virtual bool isActive(); 
 
     private:
       bool m_on;

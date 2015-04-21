@@ -45,7 +45,7 @@ namespace Synthetics {
         Robot *m_robot;
     };
 
-    Display::Display(Core *core, Configurator *conf, Components::Factory *factory) : EventHandler() {
+    Display::Display(Core *core, Configurator *conf, Components::Factory *factory) {
       m_core = core;
       m_conf = conf;
       m_factory = factory;
@@ -54,7 +54,7 @@ namespace Synthetics {
       m_camera->activate(true);
 
       m_on = false;
-      activate(true);
+      activate();
 
       m_robot = new Robot(new PolycodeFacade(m_core, m_scene));
 
@@ -63,10 +63,17 @@ namespace Synthetics {
       m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory, new ChangeInPlace(m_core, m_scene, m_factory, m_robot));
 
 
+      /* Need this for UI stuff
       Scene *scene = new Scene(Scene::SCENE_2D_TOPLEFT);
       scene->doVisibilityChecking(false);
       scene->getDefaultCamera()->frustumCulling = false;
       scene->rootEntity.processInputEvents = true;
+      */
+
+      /* HUD Scene
+       *  scene = new PhysicsScene2D(0.01, 50);
+       *  scene->trackCollisionChild(shape, PhysicsScene2DEntity::ENTITY_RECT);
+       */
 
       m_history = new History(m_conf->getHistory());
     }
@@ -136,6 +143,11 @@ namespace Synthetics {
                   }
                 }
                 break;
+              case CoreInput::MOUSE_BUTTON2:
+                {
+                  /* TODO make context menu visible */
+                }
+                break;
             }
             break;
           case InputEvent::EVENT_MOUSEUP:
@@ -148,6 +160,18 @@ namespace Synthetics {
                   }
                 }
                 break;
+                case CoreInput::MOUSE_BUTTON2:
+                {
+                  /* TODO make context menu invisible and execute active menu entry if any */
+                  /*
+                  Vector2 mouse = core->getInput()->getMousePosition();
+                  Ray ray = scene->projectRayFromCameraAndViewportCoordinate(scene->getActiveCamera(), mouse);
+
+                  SceneEntity * entity = scene->getEntityAtPosition(ray.origin.x, ray.origin.y);
+                  */
+                }
+                break;
+
             }
             break;
           case InputEvent::EVENT_MOUSEMOVE:
@@ -165,18 +189,22 @@ namespace Synthetics {
       m_robot->update(dt);
     }
 
-    void Display::activate(bool on) {
-      if (on && !m_on) {
+    void Display::activate() {
+      if (!m_on) {
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_KEYDOWN);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEDOWN);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEUP);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
         m_core->getInput()->addEventListener(this, InputEvent::EVENT_DOUBLECLICK);
+        m_on = true;
       }
-      else if (!on && m_on) {
+    }
+
+    void Display::deactivate() {
+      if (m_on) {
         m_core->getInput()->removeAllHandlersForListener(this);
+        m_on = false;
       }
-      m_on = on;
     }
 
     void Display::place() {

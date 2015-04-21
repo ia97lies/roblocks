@@ -70,6 +70,7 @@ set(Synthetics_SRCS
   OrbitCamera.cpp
   PolycodeFacade.cpp
   ValueRangeMapping.cpp
+  Controller.cpp
   CompoundStore.cpp
   Plug.cpp
   Part.cpp
@@ -86,6 +87,7 @@ set(Synthetics_HDRS
   OrbitCamera.hpp
   PolycodeFacade.hpp
   ValueRangeMapping.hpp
+  Controller.hpp
   CompoundStore.hpp
   Plug.hpp
   Knob.hpp
@@ -261,6 +263,19 @@ target_link_libraries(test_compound_store
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_controller Tests/test_controller.cpp)
+target_link_libraries(test_controller
+  synthetics
+  constructor
+  recorder
+  showkeyhits
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_test(test_compound test_compound)
 add_test(test_part test_part)
 add_test(test_plug test_plug)
@@ -268,6 +283,7 @@ add_test(test_knob test_knob)
 add_test(test_component test_component)
 add_test(test_value_range_mapping test_value_range_mapping)
 add_test(test_compound_store test_compound_store)
+add_test(test_controller test_controller)
 
 ##############################################################################
 # SUBDIRS

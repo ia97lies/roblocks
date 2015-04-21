@@ -20,6 +20,7 @@ namespace Synthetics {
       virtual void updateTarget(Polycode::Vector3 pos) = 0;
       virtual void update() = 0;
       virtual void activate(bool on) = 0;
+      virtual bool isActive() = 0;
   };
 
 }

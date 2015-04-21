@@ -123,4 +123,8 @@ namespace Synthetics {
     }
     m_on = on;
   }
+
+  bool OrbitCamera::isActive() {
+    return m_on;
+  }
 }
