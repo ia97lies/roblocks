@@ -10,6 +10,7 @@
 #include "OrbitCamera.hpp"
 #include "Robot.hpp"
 #include "Display.hpp"
+#include "ContextMenu.hpp"
 
 #include "CommandSetRoot.hpp"
 #include "CommandActivate.hpp"
@@ -70,12 +71,8 @@ namespace Synthetics {
       scene->rootEntity.processInputEvents = true;
       */
 
-      /* HUD Scene
-       *  scene = new PhysicsScene2D(0.01, 50);
-       *  scene->trackCollisionChild(shape, PhysicsScene2DEntity::ENTITY_RECT);
-       */
-
       m_history = new History(m_conf->getHistory());
+      ContextMenu *menu = new ContextMenu(m_core, m_conf);
     }
 
     Display::~Display() {
@@ -179,7 +176,6 @@ namespace Synthetics {
               Vector3 delta(m_core->getInput()->getMouseDelta().x, m_core->getInput()->getMouseDelta().y, 0);
               m_robot->mouseMove(delta);
             }
-            break;
             break;
         }
       }

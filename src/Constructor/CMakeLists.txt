@@ -8,6 +8,7 @@ set(Constructor_SRCS
   MenuEntry.cpp
   SelectorDisplay.cpp
   Display.cpp
+  ContextMenu.cpp
   Robot.cpp
   Model.cpp
   CommandSetRoot.cpp
@@ -24,6 +25,7 @@ set(Constructor_HDRS
   MenuEntry.hpp
   SelectorDisplay.hpp
   Display.hpp
+  ContextMenu.hpp
   Robot.hpp
   Model.hpp
   Command.hpp
