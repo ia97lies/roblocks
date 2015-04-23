@@ -4,6 +4,8 @@
 
 #include "Menu.hpp"
 
+using namespace Polycode;
+
 namespace Synthetics {
   namespace Constructor {
     Menu::Menu() {
@@ -13,8 +15,11 @@ namespace Synthetics {
     Menu::~Menu() {}
 
     void Menu::addEntry(MenuEntry *entry) {
+      int size = getNoEntries();
       m_shape->addChild(entry->getLabel());
       m_entries.push_back(entry);
+      entry->getHook()->setRotationEuler(Vector3(0.0, 0.0, size * 45.0));
+      entry->getLabel()->setRotationEuler(Vector3(0.0, 0.0, -size * 45.0));
     }
 
     MenuEntry *Menu::getEntry(int index) {

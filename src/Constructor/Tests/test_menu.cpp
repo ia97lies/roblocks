@@ -100,6 +100,11 @@ BOOST_FIXTURE_TEST_SUITE(MenuOneEntry, MenuOneEntryFixture)
     BOOST_CHECK(menu.getShape()->getChildAtIndex(0) == label);
   }
 
+  BOOST_AUTO_TEST_CASE(test_menu_get_label_entity_rotation_in_shape) {
+    BOOST_CHECK(entry->getLabel()->getRotationEuler() == Vector3(0.0, 0.0, 0.0));
+    BOOST_CHECK(entry->getHook()->getRotationEuler() == Vector3(0.0, 0.0, 0.0));
+  }
+
 BOOST_AUTO_TEST_SUITE_END()
 
 //----------------------------------------------------------------------------
@@ -160,6 +165,21 @@ BOOST_FIXTURE_TEST_SUITE(MenuManyEntry, MenuManyEntryFixture)
   BOOST_AUTO_TEST_CASE(test_menu_get_label_entity_in_shape) {
     Polycode::Entity *label = entry[1]->getLabel();
     BOOST_CHECK(menu.getShape()->getChildAtIndex(1) == label);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_menu_get_label_1_entity_rotation_in_shape) {
+    BOOST_CHECK(entry[0]->getLabel()->getRotationEuler() == Vector3(0.0, 0.0, 0.0));
+    BOOST_CHECK(entry[0]->getHook()->getRotationEuler() == Vector3(0.0, 0.0, 0.0));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_menu_get_label_2_entity_rotation_in_shape) {
+    BOOST_CHECK(entry[1]->getLabel()->getRotationEuler() == Vector3(0.0, 0.0, -45.0));
+    BOOST_CHECK(entry[1]->getHook()->getRotationEuler() == Vector3(0.0, 0.0, 45.0));
+  }
+
+  BOOST_AUTO_TEST_CASE(test_menu_get_label_3_entity_rotation_in_shape) {
+    BOOST_CHECK(entry[2]->getLabel()->getRotationEuler() == Vector3(0.0, 0.0, -90.0));
+    BOOST_CHECK(entry[2]->getHook()->getRotationEuler() == Vector3(0.0, 0.0, 90.0));
   }
 
 BOOST_AUTO_TEST_SUITE_END()

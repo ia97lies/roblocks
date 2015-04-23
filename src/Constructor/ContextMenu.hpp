@@ -9,6 +9,7 @@
 #include "Polycode2DPhysics.h"
 #include "Configurator.hpp"
 #include "Controller.hpp"
+#include "Menu.hpp"
 
 namespace Synthetics {
   namespace Constructor {
@@ -28,6 +29,7 @@ namespace Synthetics {
         Polycode::Core *m_core;
         Configurator *m_conf;
         Polycode::PhysicsScene2D *m_scene;
+        Menu *m_menu;
     };
   }
 }

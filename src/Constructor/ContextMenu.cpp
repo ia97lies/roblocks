@@ -18,11 +18,23 @@ namespace Synthetics {
       m_scene = new PhysicsScene2D(0.01, 50);
       m_scene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
 
-      SceneLabel *label = new SceneLabel("fooooooooo", 14);
-      m_scene->addCollisionChild(label, PhysicsScene2DEntity::ENTITY_RECT);
+      //SceneImage *label = new SceneImage("Resources/Icons/add.png");
+      //SceneLabel *label = new SceneLabel("ffooooooooo", 14);
+      //m_scene->addCollisionChild(label, PhysicsScene2DEntity::ENTITY_RECT);
       /* TODO build up menu and display menu */
 
+      m_menu = new Menu();
+      m_menu->addEntry(new MenuEntry(new CommandNone(), new SceneImage("Resources/Icons/Add.png")));
+      m_menu->addEntry(new MenuEntry(new CommandNone(), new SceneImage("Resources/Icons/Delete.png")));
+      m_menu->addEntry(new MenuEntry(new CommandNone(), new SceneImage("Resources/Icons/Rotate.png")));
+
+      /*
+      SceneImage *shape = new SceneImage("Resources/Icons/Add.png");
+      shape->setRotationEuler(Vector3(0.0, 0.0, 45.0));
+      m_scene->addCollisionChild(shape, PhysicsScene2DEntity::ENTITY_RECT);
+      */
       //m_scene->trackCollisionChild(shape, PhysicsScene2DEntity::ENTITY_RECT);
+      //activate();
     }
 
     ContextMenu::~ContextMenu() {}
@@ -36,7 +48,6 @@ namespace Synthetics {
             {
               /* TODO: Highlight menu entries on hoover. */
 
-              /*
               Vector2 mouse = m_core->getInput()->getMousePosition();
               Ray ray = m_scene->projectRayFromCameraAndViewportCoordinate(m_scene->getActiveCamera(), mouse);
 
@@ -44,7 +55,6 @@ namespace Synthetics {
               if(entity) {
                 entity->setColor(1.0, 0.0, 0.0, 1.0);
               }
-              */
             }
             break;
           case InputEvent::EVENT_MOUSEDOWN:

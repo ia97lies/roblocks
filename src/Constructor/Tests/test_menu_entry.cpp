@@ -75,7 +75,7 @@ BOOST_FIXTURE_TEST_SUITE(MenuEntryInstantiate, MenuEntryInstantiateFixture)
   }
 
   BOOST_AUTO_TEST_CASE(test_menu_entry_get_label_pos) {
-    BOOST_CHECK(menuEntry->getLabel()->getPosition() == Vector3(1,0,0));
+    BOOST_CHECK(menuEntry->getLabel()->getPosition() == Vector3(0,1,0));
   }
 
   BOOST_AUTO_TEST_CASE(test_menu_entry_destroy_check_command_deleted) {

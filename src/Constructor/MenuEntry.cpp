@@ -16,7 +16,7 @@ namespace Synthetics {
       m_command = command; 
       m_hook = new Entity();
       m_label = label; 
-      m_label->setPosition(1, 0, 0);
+      m_label->setPosition(0, 1, 0);
       m_hook->addChild(m_label);
     }
 
