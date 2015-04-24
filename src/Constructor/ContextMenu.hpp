@@ -7,9 +7,9 @@
 
 #include "Polycode.h"
 #include "Polycode2DPhysics.h"
+#include "PolyUIMenu.h"
 #include "Configurator.hpp"
 #include "Controller.hpp"
-#include "Menu.hpp"
 
 namespace Synthetics {
   namespace Constructor {
@@ -24,12 +24,10 @@ namespace Synthetics {
         void handleEvent(Polycode::Event *e);
 
       private:
-        bool m_on;
         typedef Controller super;
         Polycode::Core *m_core;
         Configurator *m_conf;
-        Polycode::PhysicsScene2D *m_scene;
-        Menu *m_menu;
+        Polycode::UIMenu *m_menu;
     };
   }
 }

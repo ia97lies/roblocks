@@ -64,13 +64,6 @@ namespace Synthetics {
       m_selectorDisplay = new SelectorDisplay(m_core, m_conf, m_factory, new ChangeInPlace(m_core, m_scene, m_factory, m_robot));
 
 
-      /* Need this for UI stuff
-      Scene *scene = new Scene(Scene::SCENE_2D_TOPLEFT);
-      scene->doVisibilityChecking(false);
-      scene->getDefaultCamera()->frustumCulling = false;
-      scene->rootEntity.processInputEvents = true;
-      */
-
       m_history = new History(m_conf->getHistory());
       ContextMenu *menu = new ContextMenu(m_core, m_conf);
     }

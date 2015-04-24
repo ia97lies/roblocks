@@ -114,6 +114,7 @@ set(Polycode_LIBS
   libBulletDynamics
   libBulletCollision
   libLinearMath
+  libPolycore
   rt dl pthread X11 GL GLU SDL
 )
 
