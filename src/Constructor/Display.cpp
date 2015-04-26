@@ -10,7 +10,6 @@
 #include "OrbitCamera.hpp"
 #include "Robot.hpp"
 #include "Display.hpp"
-#include "ContextMenu.hpp"
 
 #include "CommandSetRoot.hpp"
 #include "CommandActivate.hpp"
@@ -65,7 +64,7 @@ namespace Synthetics {
 
 
       m_history = new History(m_conf->getHistory());
-      ContextMenu *menu = new ContextMenu(m_core, m_conf);
+      m_menu = new ContextMenu(m_core, m_conf);
     }
 
     Display::~Display() {
@@ -135,6 +134,7 @@ namespace Synthetics {
                 break;
               case CoreInput::MOUSE_BUTTON2:
                 {
+                  m_menu->enter(this);
                   /* TODO make context menu visible */
                 }
                 break;
@@ -148,17 +148,6 @@ namespace Synthetics {
                     m_robot->deactivate(m_robot->getActiveKnob()->getShape());
                     m_camera->activate(true);
                   }
-                }
-                break;
-                case CoreInput::MOUSE_BUTTON2:
-                {
-                  /* TODO make context menu invisible and execute active menu entry if any */
-                  /*
-                  Vector2 mouse = core->getInput()->getMousePosition();
-                  Ray ray = scene->projectRayFromCameraAndViewportCoordinate(scene->getActiveCamera(), mouse);
-
-                  SceneEntity * entity = scene->getEntityAtPosition(ray.origin.x, ray.origin.y);
-                  */
                 }
                 break;
 

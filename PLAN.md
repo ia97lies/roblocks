@@ -11,6 +11,8 @@
 * __Knobs have to be blue (better light blue)__
 * __Refactor knob color setting and activation do it at one place as it is always the very same code.__
 * __Record/Replay (just implement a event handler and also take dt in account)__
+* Split current robot into robot for simulation (updata) and model for construction (?)!
+-> For simulation in a physical enviroment we need a clear distinction between robot and builder
 * Context Menu depending on object and its state (free, inplace, connected) (?)!!!
 -> Problems here is how do I know what the context menu should display
 -> I do not want to polute component with context menu knowledge
@@ -23,8 +25,6 @@
 -> No boiler plate or as little as possible
 -> Configurable which part logs and how much (error, info, debug)
 -> Not sure if Polycode::Logger fits my needs but this is used for start polycode already, so no choice I fear
-* Split current robot into robot for simulation (updata) and model for construction (?)!
--> For simulation in a physical enviroment we need a clear distinction between robot and builder
 * Bring robot in a physical enviroment (?)
 -> Define joints for servo, linear
 -> Hold the root element with a constrain

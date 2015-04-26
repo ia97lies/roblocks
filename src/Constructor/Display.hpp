@@ -15,6 +15,7 @@
 #include "Configurator.hpp"
 #include "SelectorDisplay.hpp"
 #include "History.hpp"
+#include "ContextMenu.hpp"
 #include "Components/Factory.hpp"
 
 namespace Synthetics {
@@ -38,6 +39,7 @@ namespace Synthetics {
         Configurator *m_conf;
         SelectorDisplay *m_selectorDisplay;
         History *m_history;
+        ContextMenu *m_menu;
 
         void place();
     };

@@ -22,14 +22,11 @@ namespace Synthetics {
       scene->rootEntity.processInputEvents = true;
 
       m_menu = new UIMenu(80);
-      m_menu->setPosition(100,100);
-      m_menu->addOption("Add", 1);
-      m_menu->addOption("Remove", 1);
-      m_menu->addOption("Rotate", 1);
+      m_menu->addOption("Add", 1, (void *)1);
+      m_menu->addOption("Remove", 1, (void *)2);
+      m_menu->addOption("Rotate", 1, (void *)3);
       scene->addChild(m_menu);
       m_menu->enabled = false;
-
-      activate();
     }
 
     ContextMenu::~ContextMenu() {}
@@ -38,7 +35,14 @@ namespace Synthetics {
       if(e->getDispatcher() == m_menu) {
         switch(e->getEventCode()) {
           case UIEvent::OK_EVENT:
-            fprintf(stderr, "XXXXXX2\n");
+            {
+              UIMenuItem *item = m_menu->getSelectedItem();
+              fprintf(stderr, "XXXXXX2: %p\n", item);
+              leave();
+            }
+            break;
+          case UIEvent::CANCEL_EVENT:
+            leave();
             break;
         }
       }
@@ -48,8 +52,11 @@ namespace Synthetics {
       if (!m_menu->enabled) {
         //m_core->getInput()->addEventListener(this, InputEvent::EVENT_MOUSEMOVE);
         m_menu->addEventListener(this, UIEvent::OK_EVENT);
+        m_menu->addEventListener(this, UIEvent::CANCEL_EVENT);
         /* show the context menu */
         m_menu->enabled = true;
+        Vector2 pos = m_core->getInput()->getMousePosition();
+        m_menu->setPosition(pos.x, pos.y);
       }
     } 
 
