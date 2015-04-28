@@ -2,7 +2,10 @@
 // The MIT License
 //----------------------------------------------------------------------------
 
+#include "PolyVector3.h"
 #include "CommandRotateInPlace.hpp"
+
+using namespace Polycode;
 
 namespace Synthetics {
   namespace Constructor {
@@ -17,14 +20,25 @@ namespace Synthetics {
       bool success = false;
       if (m_robot->getInPlace() != NULL) {
         success = true;
-        m_robot->rotateInPlace(m_direction);
+        rotate(m_direction);
       }
       return success;
     }
 
     void CommandRotateInPlace::undo() {
-      m_robot->rotateInPlace((-1) * m_direction);
+      rotate((-1) * m_direction);
     }
+
+    void CommandRotateInPlace::rotate(int direction) {
+      if (m_robot->getInPlace()) {
+        Vector3 position = m_robot->getActivePlug()->getPosition();
+        position.Normalize();
+        Vector3 rotation =  m_robot->getInPlacePart()->getShape()->getRotationEuler();
+        Vector3 rotate = position * 90 * direction;
+        m_robot->getInPlacePart()->getShape()->setRotationEuler(rotation + rotate);
+      }
+    }
+
   }
 }
 

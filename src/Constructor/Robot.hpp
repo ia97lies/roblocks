@@ -23,7 +23,6 @@ namespace Synthetics {
 
         void setRoot(Component *component);
         void place(Component *component);
-        void rotateInPlace(int direction);
         void add();
         Component *remove();
         void replace(Component *component);
@@ -32,10 +31,17 @@ namespace Synthetics {
         void deactivate(Polycode::Entity *shape); 
         void mouseMove(Polycode::Vector3 delta);
 
+        void setActive(Component *component, Part *part, Plug *plug); 
+        void setActiveKnob(Knob *knob);
         Plug *getActivePlug();
         Knob *getActiveKnob();
-        Component *getInPlace();
+        Part *getActivePart();
         Component *getActiveComponent();
+
+        void setInPlace(Component *component, Part *part, Plug *plug);
+        Plug *getInPlacePlug();
+        Component *getInPlace();
+        Part *getInPlacePart();
 
         bool isEmpty(); 
         bool isPowerOn(); 

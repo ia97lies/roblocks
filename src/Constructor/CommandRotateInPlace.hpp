@@ -21,6 +21,8 @@ namespace Synthetics {
       private:
         Robot *m_robot;
         int m_direction;
+
+        void rotate(int direction);
     };
   }
 }

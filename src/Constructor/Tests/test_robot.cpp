@@ -48,9 +48,22 @@ class PartMock : public Part {
     Polycode::Entity *m_shape;
 };
 
+class KnobMock : public Knob {
+  public:
+    KnobMock() {
+      m_shape = new ScenePrimitive(ScenePrimitive::TYPE_BOX, 1, 1, 1);
+    }
+    ~KnobMock() {}
+    Polycode::Entity *getShape() { return m_shape; }
+    void activate(bool on) { }
+    void handleInput(Polycode::Vector3 delta) { }
+  private:
+    Polycode::Entity *m_shape;
+};
+
 class ComponentMock : public Component {
   public:
-    ComponentMock(bool *deleted) { 
+    ComponentMock(bool *deleted = NULL) { 
       m_deleted = deleted; 
       m_part = new PartMock();
       m_plug[0] = new PlugMock(Vector3(0, 0, 0), Vector3(0, 0, 0));
@@ -60,7 +73,7 @@ class ComponentMock : public Component {
       m_plug[1]->setParent(this);
       m_part->addPlug(m_plug[1]);
     }
-    ~ComponentMock() { *m_deleted = true; }
+    ~ComponentMock() { if (m_deleted) *m_deleted = true; }
 
     int getNoParts() { return 1; }
     Part *getPart(int i) { return m_part; }
@@ -393,6 +406,80 @@ BOOST_AUTO_TEST_CASE(test_robot_destruction_root_and_many_children) {
     BOOST_CHECK(deleted[i] == true);
   }
 }
+
+
+//----------------------------------------------------------------------------
+class RobotSetActiveFixture {
+  public:
+    RobotSetActiveFixture() {
+      PolycodeMock *polycodeMock = new PolycodeMock();
+      robot = new Robot(polycodeMock);
+      component = new ComponentMock();
+      part = component->getPart(0);
+      plug = component->getMyPlug(0);
+      robot->setActive(component, part, plug);
+
+      knob = new KnobMock();
+      robot->setActiveKnob(knob);
+    }
+
+    Robot *robot;
+    ComponentMock *component;
+    Part *part;
+    Plug *plug;
+    Knob *knob;
+};
+
+BOOST_FIXTURE_TEST_SUITE(RobotSetActive, RobotSetActiveFixture)
+
+  BOOST_AUTO_TEST_CASE(test_robot_set_active_check_component) {
+    BOOST_CHECK(robot->getActiveComponent() == component);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_robot_set_active_check_part) {
+    BOOST_CHECK(robot->getActivePart() == part);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_robot_set_active_check_plug) {
+    BOOST_CHECK(robot->getActivePlug() == plug);
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+//----------------------------------------------------------------------------
+class RobotSetInPlaceFixture {
+  public:
+    RobotSetInPlaceFixture() {
+      PolycodeMock *polycodeMock = new PolycodeMock();
+      robot = new Robot(polycodeMock);
+      component = new ComponentMock();
+      part = component->getPart(0);
+      plug = component->getMyPlug(0);
+      robot->setInPlace(component, part, plug);
+    }
+
+    Robot *robot;
+    ComponentMock *component;
+    Part *part;
+    Plug *plug;
+};
+
+BOOST_FIXTURE_TEST_SUITE(RobotSetInPlace, RobotSetInPlaceFixture)
+
+  BOOST_AUTO_TEST_CASE(test_robot_set_inplace_check_component) {
+    BOOST_CHECK(robot->getInPlace() == component);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_robot_set_inplace_check_part) {
+    BOOST_CHECK(robot->getInPlacePart() == part);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_robot_set_inplace_check_plug) {
+    BOOST_CHECK(robot->getInPlacePlug() == plug);
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
 
 
 //----------------------------------------------------------------------------

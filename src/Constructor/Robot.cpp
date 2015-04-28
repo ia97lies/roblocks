@@ -352,19 +352,6 @@ namespace Synthetics {
         m_activeKnob = NULL;
     }
 
-    void Robot::rotateInPlace(int direction) {
-      int one = direction/direction;
-      if (m_inPlace != NULL) {
-        Vector3 position = m_inPlacePlug->getPosition();
-        position.Normalize();
-        Vector3 rotate = position * 90 * direction;
-        Vector3 rotation = m_inPlacePart->getShape()->getRotationEuler();
-        m_inPlacePart->getShape()->Pitch(rotate.x);
-        m_inPlacePart->getShape()->Yaw(rotate.y);
-        m_inPlacePart->getShape()->Roll(rotate.z);
-      }
-    }
-
     void Robot::mouseMove(Vector3 delta) {
       if (m_activeKnob) {
         m_activeKnob->handleInput(delta);
@@ -375,6 +362,22 @@ namespace Synthetics {
       return m_root == NULL;
     }
 
+    void Robot::setActive(Component *component, Part *part, Plug *plug) {
+      m_activeComponent = component;
+      m_activePart = part;
+      m_activePlug = plug;
+    }
+
+    void Robot::setActiveKnob(Knob *knob) {
+      m_activeKnob = knob;
+    }
+
+    void Robot::setInPlace(Component *component, Part *part, Plug *plug) {
+      m_inPlace = component;
+      m_inPlacePart = part;
+      m_inPlacePlug = plug;
+    }
+
     Plug *Robot::getActivePlug() {
       return m_activePlug;
     }
@@ -383,12 +386,24 @@ namespace Synthetics {
       return m_activeKnob;
     }
 
-    Component *Robot::getInPlace() {
-      return m_inPlace;
+    Part *Robot::getActivePart() {
+      return m_activePart;
     }
 
     Component *Robot::getActiveComponent() {
       return m_activeComponent;
+    }
+
+    Plug *Robot::getInPlacePlug() {
+      return m_inPlacePlug;
+    }
+
+    Part *Robot::getInPlacePart() {
+      return m_inPlacePart;
+    }
+
+    Component *Robot::getInPlace() {
+      return m_inPlace;
     }
 
     void Robot::update(Number dt) {
