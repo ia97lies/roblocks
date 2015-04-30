@@ -15,9 +15,11 @@ namespace Synthetics {
       virtual ~PolycodeFacade();
 
       virtual void addEntity(Polycode::Entity *entity);
-      virtual void trackCollisionEntity(Polycode::Entity *entity);
-      virtual void trackPhysicsEntity(Polycode::Entity *entity, float mass);
       virtual void removeEntity(Polycode::Entity *entity);
+      virtual void trackCollisionEntity(Polycode::Entity *entity);
+      virtual void removeCollisionEntity(Polycode::Entity *entity); 
+      virtual void trackPhysicsEntity(Polycode::Entity *entity, float mass);
+      virtual void removePhysicsEntity(Polycode::Entity *entity);
 
     private:
       Polycode::Core *m_core;

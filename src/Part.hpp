@@ -26,6 +26,7 @@ namespace Synthetics {
       Plug *getPlug(int i);
       Plug *getPlug(Polycode::Entity *plugShape);
       void plug(Part *part, float factor); 
+      // TODO: add/remove/get joints
 
       void setKnob(Knob *knob);
       Knob *getKnob();

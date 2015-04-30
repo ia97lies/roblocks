@@ -18,18 +18,25 @@ namespace Synthetics {
     m_scene->addEntity(entity);
   }
 
+  void PolycodeFacade::removeEntity(Polycode::Entity *entity) {
+    m_scene->removeEntity(entity);
+  }
+
   void PolycodeFacade::trackCollisionEntity(Polycode::Entity *entity) {
     m_scene->trackCollision(entity);
   }
 
+  void PolycodeFacade::removeCollisionEntity(Polycode::Entity *entity) {
+    m_scene->removeCollision(entity);
+  }
+
   void PolycodeFacade::trackPhysicsEntity(Polycode::Entity *entity, float mass) {
-    // TODO: is it possible to get shape type by entity some how?
-    //       currently everything is threaded as a box, maybe this is sufficent
     m_scene->trackPhysicsChild(entity, PhysicsSceneEntity::SHAPE_BOX,  mass);
   }
 
-  void PolycodeFacade::removeEntity(Polycode::Entity *entity) {
-    m_scene->removeEntity(entity);
+  void PolycodeFacade::removePhysicsEntity(Polycode::Entity *entity) {
+    m_scene->removePhysicsChild(entity);
   }
+
 }
 

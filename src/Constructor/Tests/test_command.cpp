@@ -106,6 +106,11 @@ class SetRootFixture {
 
 BOOST_FIXTURE_TEST_SUITE(SetRoot, SetRootFixture)
 
+  BOOST_AUTO_TEST_CASE(test_command_instantiate) {
+    CommandSetRoot *command = new CommandSetRoot(robot, component);
+    delete command;
+  }
+
   BOOST_AUTO_TEST_CASE(test_command_set_root_execute_always_true) {
     CommandSetRoot *command = new CommandSetRoot(robot, component);
     BOOST_CHECK(command->execute());

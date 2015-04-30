@@ -35,6 +35,7 @@ class MyPlug : public Plug {
     bool *m_deleted;
 };
 
+//----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(test_part_instantiate) {
   MyPart part();
 }
@@ -143,5 +144,9 @@ BOOST_AUTO_TEST_CASE(test_part_destroy) {
   BOOST_CHECK(deleted1 == true);
   BOOST_CHECK(deleted2 == true);
   BOOST_CHECK(deleted3 == true);
+}
+
+//----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE(test_part_get_polycode_hinge_constraint) {
 }
 

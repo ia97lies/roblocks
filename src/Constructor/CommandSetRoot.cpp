@@ -11,6 +11,7 @@ namespace Synthetics {
     CommandSetRoot::CommandSetRoot(Robot *robot, Component *component) {
       m_robot = robot;
       m_component = component;
+      m_deletable = NULL;
     }
 
     CommandSetRoot::~CommandSetRoot() {

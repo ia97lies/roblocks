@@ -52,6 +52,8 @@ namespace Synthetics {
         static void constructPlugsGraphic(PolycodeFacade *facade, Part *curPart); 
         static void constructKnobGraphic(PolycodeFacade *facade, Part *curPart); 
         static void destructGraphic(PolycodeFacade *facade, Component *component); 
+        static void constructPhysics(PolycodeFacade *facade, Part *parent, Component *component); 
+        static void destructPhysics(PolycodeFacade *facade, Component *component); 
 
       private:
         bool m_powerOn;

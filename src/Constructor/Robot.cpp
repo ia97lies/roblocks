@@ -479,5 +479,24 @@ namespace Synthetics {
         }
       }
     }
+
+    void Robot::constructPhysics(PolycodeFacade *facade, Part *parent, Component *component) {
+      for (int i = 0; i < component->getNoParts(); i++) {
+        Part *curPart = component->getPart(i);
+        if (parent == NULL) {
+          // need a static joint which holds the inital component (root component)
+
+        }
+        else {
+          // need a joint between parent and component
+        }
+        parent = curPart;
+        // facade->trackPhysicsEntity(curPart->getShape(), 0);
+      }
+    }
+
+    void Robot::destructPhysics(PolycodeFacade *facade, Component *component) {
+    }
+
   }
 }

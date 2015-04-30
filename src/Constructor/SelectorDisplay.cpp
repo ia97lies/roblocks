@@ -19,18 +19,21 @@ namespace Synthetics {
       m_height = 100;
       m_width = m_conf->getWidth();
 
-      m_hudScene = new Scene(Scene::SCENE_2D);
       m_scene = new PhysicsScene();
+      m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 70);
+      m_light->setPosition(0,0,0);
+      m_light->setLightColor(1,1,1);
+      m_scene->addLight(m_light);
+      m_scene->getDefaultCamera()->setPosition(0,15,25);
+      m_scene->getDefaultCamera()->lookAt(Vector3(0, 0, 0));
+      m_scene->getDefaultCamera()->cameraShift = Vector2(0.0, 1.0 - (1.0/m_conf->getHeight() * (m_conf->getHeight()/2 + m_height/2 + 2 * m_border)));
+
+      m_hudScene = new Scene(Scene::SCENE_2D);
       m_hudScene->getActiveCamera()->setOrthoSize(m_conf->getWidth(), m_conf->getHeight());
       ScenePrimitive *shape = new ScenePrimitive(ScenePrimitive::TYPE_VPLANE, m_width, m_height);
       m_hudScene->addChild(shape);
       shape->setColor(0.5, 0.5, 0.5, 0.3);
       shape->setPosition(0, -m_conf->getHeight()/2  + m_height/2 + m_border);
-
-      m_light = new SceneLight(SceneLight::POINT_LIGHT, m_scene, 70);
-      m_light->setPosition(0,0,0);
-      m_light->setLightColor(1,1,1);
-      m_scene->addLight(m_light);
 
       m_index = 0;
       m_text = factory->getNames().at(m_index);
@@ -38,18 +41,15 @@ namespace Synthetics {
       m_label->setPosition(-m_label->getTextWidthForString(m_label->getText())/2, -m_conf->getHeight()/2 + 2 * m_border);
       m_hudScene->addChild(m_label);
 
-      m_scene->getDefaultCamera()->setPosition(0,15,25);
-      m_scene->getDefaultCamera()->lookAt(Vector3(0, 0, 0));
-      m_scene->getDefaultCamera()->cameraShift = Vector2(0.0, 1.0 - (1.0/m_conf->getHeight() * (m_conf->getHeight()/2 + m_height/2 + 2 * m_border)));
 
       m_polycodeFacade = new PolycodeFacade(core, m_scene);
       for (int i = 0; i < m_factory->getNames().size(); i++) {
         m_components.push_back(m_factory->createComponent(m_factory->getNames().at(i), m_scene));
+        m_components.at(i)->getPart(0)->getShape()->setPosition(3*i, 0, 0);
         Robot::constructGraphic(m_polycodeFacade, NULL, m_components.at(i));
         for (int j = 0; j < m_components.at(i)->getNoParts(); j++) {
           Robot::constructPlugsGraphic(m_polycodeFacade, m_components.at(i)->getPart(j));
         }
-        m_components.at(i)->getPart(0)->getShape()->setPosition(3*i, 0, 0);
       }
       m_light->setPosition(3*m_index, 5, 7);
       m_components.at(m_index)->getPart(0)->getShape()->setScale(1.5,1.5,1.5);

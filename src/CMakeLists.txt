@@ -76,6 +76,8 @@ set(Synthetics_SRCS
   Part.cpp
   Compound.cpp
   Component.cpp
+  HingePoint.cpp
+  Hinge.cpp
 )
 
 set(Synthetics_HDRS
@@ -94,6 +96,8 @@ set(Synthetics_HDRS
   Part.hpp
   Compound.hpp
   Component.hpp
+  HingePoint.hpp
+  Hinge.hpp
 )
 
 set(Polycode_LIBS
@@ -277,6 +281,32 @@ target_link_libraries(test_controller
   ${Boost_FILESYSTEM_LIBRARY}
 )
 
+add_executable(test_hinge_point Tests/test_hinge_point.cpp)
+target_link_libraries(test_hinge_point
+  synthetics
+  constructor
+  recorder
+  showkeyhits
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
+add_executable(test_hinge Tests/test_hinge.cpp)
+target_link_libraries(test_hinge
+  synthetics
+  constructor
+  recorder
+  showkeyhits
+  components
+  ${Polycode_LIBS}
+  ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+)
+
 add_test(test_compound test_compound)
 add_test(test_part test_part)
 add_test(test_plug test_plug)
@@ -285,6 +315,8 @@ add_test(test_component test_component)
 add_test(test_value_range_mapping test_value_range_mapping)
 add_test(test_compound_store test_compound_store)
 add_test(test_controller test_controller)
+add_test(test_hinge_point test_hinge_point)
+add_test(test_hinge test_hinge)
 
 ##############################################################################
 # SUBDIRS
