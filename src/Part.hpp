@@ -6,6 +6,7 @@
 #define SYNTHETICS_PART_H
 
 #include "PolyEntity.h"
+#include "PolyPhysicsScene.h"
 #include "Plug.hpp"
 #include "Knob.hpp"
 #include "Compound.hpp"
@@ -26,6 +27,8 @@ namespace Synthetics {
       Plug *getPlug(int i);
       Plug *getPlug(Polycode::Entity *plugShape);
       void plug(Part *part, float factor); 
+      void setPhysicsHinge(Polycode::PhysicsHingeConstraint *hinge);
+      Polycode::PhysicsHingeConstraint *getPhysicsHinge();
       // TODO: add/remove/get joints
 
       void setKnob(Knob *knob);
@@ -35,6 +38,7 @@ namespace Synthetics {
       float m_mass;
       std::vector<Plug *> m_plugs;
       Knob *m_knob;
+      Polycode::PhysicsHingeConstraint *m_hinge;
   };
 }
 

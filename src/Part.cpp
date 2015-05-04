@@ -80,5 +80,13 @@ namespace Synthetics {
   Knob *Part::getKnob() {
     return m_knob;
   }
+
+  void Part::setPhysicsHinge(PhysicsHingeConstraint *hinge) {
+    m_hinge = hinge;
+  }
+
+  PhysicsHingeConstraint *Part::getPhysicsHinge() {
+    return m_hinge;
+  }
 }
 

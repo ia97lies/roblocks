@@ -28,6 +28,9 @@ class PolycodeMock : public PolycodeFacade {
     virtual void addEntity(Polycode::Entity *entity) { addedEntity = entity; }
     virtual void trackCollisionEntity(Polycode::Entity *entity) { trackedEntity = entity; }
     virtual void removeEntity(Polycode::Entity *entity) { removedEntity = entity; }
+    virtual void trackPhysicsEntity(Polycode::Entity *entity, float mass) { }
+    virtual void removePhysicsEntity(Polycode::Entity *entity) { }
+    virtual Polycode::PhysicsHingeConstraint *createHingeConstraint(Polycode::Entity *entity) { return NULL; }
 
     Polycode::Entity *addedEntity;
     Polycode::Entity *trackedEntity;

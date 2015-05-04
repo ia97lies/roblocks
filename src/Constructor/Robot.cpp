@@ -110,6 +110,48 @@ namespace Synthetics {
     };
 
     //--------------------------------------------------------------------------
+    class MakeItPhysical : public IterateMethod {
+      public:
+        MakeItPhysical(PolycodeFacade *facade) { 
+          m_facade = facade;
+        }
+
+        virtual ~MakeItPhysical() {}
+
+        virtual void call(Compound *parent, Compound *compound) {
+          Component *component = dynamic_cast<Component *>(compound);
+          if (component) {
+            for (int i = 0; i < component->getNoParts(); i++) {
+              Robot::destructPlugsGraphic(m_facade, component->getPart(i));
+            }
+          }
+        }
+
+        PolycodeFacade *m_facade;
+    };
+
+    //--------------------------------------------------------------------------
+    class MakeItVirtual: public IterateMethod {
+      public:
+        MakeItVirtual(PolycodeFacade *facade) { 
+          m_facade = facade;
+        }
+
+        virtual ~MakeItVirtual() {}
+
+        virtual void call(Compound *parent, Compound *compound) {
+          Component *component = dynamic_cast<Component *>(compound);
+          if (component) {
+            for (int i = 0; i < component->getNoParts(); i++) {
+              Robot::constructPlugsGraphic(m_facade, component->getPart(i));
+            }
+          }
+        }
+
+        PolycodeFacade *m_facade;
+    };
+
+    //--------------------------------------------------------------------------
     Robot::Robot(PolycodeFacade *facade) {
       m_powerOn = false;
       m_polycodeFacade = facade;
@@ -140,6 +182,14 @@ namespace Synthetics {
     }
 
     void Robot::powerOn(bool on) {
+      if (!m_powerOn && on) {
+        MakeItPhysical *method = new MakeItPhysical(m_polycodeFacade);
+        m_root->iterate(method);
+      }
+      else if (m_powerOn && !on) {
+        MakeItVirtual *method = new MakeItVirtual(m_polycodeFacade);
+        m_root->iterate(method);
+      }
       m_powerOn = on;
     }
 
@@ -174,8 +224,6 @@ namespace Synthetics {
         m_inPlacePart->plug(m_activePart, 2);
         Robot::constructGraphic(m_polycodeFacade, m_activePart, component);
         Robot::constructPlugsGraphic(m_polycodeFacade, component->getPart(0));
-        // Robot::setInPhysicsEnv(component)
-        // hold it with a constraint
       }
       else {
         delete component;
@@ -450,6 +498,19 @@ namespace Synthetics {
       }
     }
 
+    void Robot::destructPlugsGraphic(PolycodeFacade *facade, Part *curPart) {
+      for (int j = 0; j < curPart->getNoPlugs(); j++) {
+        Plug *curPlug = curPart->getPlug(j);
+        curPart->getShape()->removeChild(curPlug->getShape());
+        facade->removeEntity(curPlug->getShape());
+
+        Knob *knob = curPart->getKnob();
+        if (knob) {
+          facade->removeEntity(knob->getShape());
+        }
+      }
+    }
+
     void Robot::destructGraphic(PolycodeFacade *facade, Component *component) {
       Part *parent = NULL;
       for (int i = 0; i < component->getNoParts(); i++) {
@@ -467,31 +528,22 @@ namespace Synthetics {
           parent->getShape()->removeChild(curPart->getShape());
         }
         parent = curPart;
-        for (int j = 0; j < curPart->getNoPlugs(); j++) {
-          Plug *curPlug = curPart->getPlug(j);
-          curPart->getShape()->removeChild(curPlug->getShape());
-          facade->removeEntity(curPlug->getShape());
-
-          Knob *knob = curPart->getKnob();
-          if (knob) {
-            facade->removeEntity(knob->getShape());
-          }
-        }
+        Robot::destructPlugsGraphic(facade, curPart);
       }
     }
 
     void Robot::constructPhysics(PolycodeFacade *facade, Part *parent, Component *component) {
       for (int i = 0; i < component->getNoParts(); i++) {
         Part *curPart = component->getPart(i);
+        facade->trackPhysicsEntity(curPart->getShape(), 1.0);
         if (parent == NULL) {
           // need a static joint which holds the inital component (root component)
-
+          PhysicsHingeConstraint *constraint = facade->createHingeConstraint(curPart->getShape());
         }
         else {
           // need a joint between parent and component
         }
         parent = curPart;
-        // facade->trackPhysicsEntity(curPart->getShape(), 0);
       }
     }
 

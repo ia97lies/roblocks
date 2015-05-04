@@ -20,6 +20,8 @@ namespace Synthetics {
       virtual void removeCollisionEntity(Polycode::Entity *entity); 
       virtual void trackPhysicsEntity(Polycode::Entity *entity, float mass);
       virtual void removePhysicsEntity(Polycode::Entity *entity);
+      virtual Polycode::PhysicsHingeConstraint *createHingeConstraint(Polycode::Entity *entity);
+      //XXX => virtual Polycode::PhysicsHingeConstraint *getPhysicsHinge(
 
     private:
       Polycode::Core *m_core;

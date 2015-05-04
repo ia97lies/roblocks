@@ -4,6 +4,7 @@
 //
 #define BOOST_TEST_MODULE TestPart
 #include <boost/test/unit_test.hpp>
+#include "PolyPhysicsScene.h"
 #include "Part.hpp"
 
 using namespace Polycode;
@@ -147,6 +148,28 @@ BOOST_AUTO_TEST_CASE(test_part_destroy) {
 }
 
 //----------------------------------------------------------------------------
-BOOST_AUTO_TEST_CASE(test_part_get_polycode_hinge_constraint) {
-}
+class PhysicsHingeFixture {
+  public:
+    PhysicsHingeFixture() {
+      part = new MyPart();
+      hinge = new PhysicsHingeConstraint();
+      part->setPhysicsHinge(hinge);
+    }
+
+    Part *part;
+    PhysicsHingeConstraint *hinge;
+};
+
+BOOST_FIXTURE_TEST_SUITE(PhysicsHinge, PhysicsHingeFixture)
+
+  BOOST_AUTO_TEST_CASE(test_part_get_polycode_hinge_constraint) {
+    BOOST_CHECK(part->getPhysicsHinge() == hinge);
+  }
+
+  BOOST_AUTO_TEST_CASE(test_part_set_polycode_hinge_constraint_to_null) {
+    part->setPhysicsHinge(NULL);
+    BOOST_CHECK(part->getPhysicsHinge() == NULL);
+  }
+
+BOOST_AUTO_TEST_SUITE_END()
 

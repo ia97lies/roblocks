@@ -38,5 +38,8 @@ namespace Synthetics {
     m_scene->removePhysicsChild(entity);
   }
 
+  PhysicsHingeConstraint *PolycodeFacade::createHingeConstraint(Polycode::Entity *entity) {
+    return m_scene->createHingeConstraint(entity, Vector3(0,0,0), Vector3(0,1,0), 0, 0);
+  }
 }
 
