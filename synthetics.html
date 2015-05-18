@@ -36,47 +36,14 @@
         <h1>
 <a id="synthetics" class="anchor" href="#synthetics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Synthetics</h1>
 <p>A robotics framework for assemble complex robots with simple components and run them in synthetic enviroment.
-The simulation is based on Polycode (see <a href="http://polycode.org">http://polycode.org</a>).</p>
+The simulation is based on jMonkeyEngine 3.0 (see <a href="http://jmonkeyengine.org/">http://jmonkeyengine.org/</a>).</p>
+
+Initial this simulatoin was based on polycode. I now port it to jMonkeyEngine as it seems better documented and will run on all on windows, linux and mac out of the box.
 
 <h2>
-<a id="Introduction" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+<a id="Introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
 <p>The robots can be easily constructed with predefined components like hubs, motors and sensors. No programming is needed. The "pogramming" is done by construction. The signals flows form the sensor to the actors. The signal bus is the body itself. Even actor may be able to propagate a signal. Sensors only can emit signals. Hubs can propagate and manipulate signals</p>
 <p>There will be special hubs like negator, avarage, logarithm and many more to influence the signal flow. Of course there will be a programmable hub as well, most propably I will integrate a Lua interpreter.</p>
-
-<h2>
-<a id="predefined-components" class="anchor" href="#predefined-components" aria-hidden="true"><span class="octicon octicon-link"></span></a>Predefined Components</h2>
-
-<p>There are a set of predefined components.
-I plan to make every component scriptable with Lua in some later versions.</p>
-<p>All connectable faces do have specific colors. Red faces emits signals. Green faces receive signals. Yellow faces can either receive ore emit signals and do have the function of a hub. Last but not least there are black faces which neither emit nor receive signals, they are needed to decouple signal buses.</p>
-
-<h3>Passive.Hub</h3>
-<p><img src="images/PassiveHub.png" width=8%></p>
-<p>A passive hub forwards every signal to its successors. No signal manipulation is done.</p>
-
-<h3>Passive.Wedge</h3>
-<p><img src="images/PassiveWedge.png" width=8%></p>
-<p>A passive wedge forwards every signal to its successors. No signal manipulation is done.</p>
-
-<h3>Active.Servo</h3>
-<p><img src="images/ActiveServo.png" width="8%"/></p>
-<p>A servo reacting on input [0..100] with rotation from -90 degree to 90 degree.</p>
-
-<h3>Active.Linear</h3>
-<p><img src="images/ActiveLinear.png" width="8%"/></p>
-<p>A linear actuator reacting on input [0..100] with stretching from 0 to 1 unit.</p>
-
-<h3>Active.Light</h3>
-<p><img src="images/ActiveLight.png" width="8%"/></p>
-<p>A light reacting on input [0..100] with light intens change. Makes your robot more interessting.</p>
-
-<h3>Active.Loudspeaker</h3>
-<p><img src="images/ActiveLoudspeaker.png" width="8%"/></p>
-<p>A loudspeaker reacting on input [0..100] with changing the volume. Currently only a beeb beeb sound. Actually just for fun becaus I wanted to try out positional sound system :)</p>
-
-<h3>Sensitive.Potentiometer</h3>
-<p><img src="images/SensitivePotentiometer.png" width="8%"/></p>
-<p>A Potentiometer emiting value [0..100] depending on its posistion.</p>
 
 <h2>
 <a id="acknowledgements" class="anchor" href="#acknowledgements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgements</h2>
@@ -84,9 +51,7 @@ I plan to make every component scriptable with Lua in some later versions.</p>
 <p>I'd like to acknowledge the work of the following people or group:</p>
 
 <ul>
-<li>Polycode - Ivan Safrin (<a href="http://polycode.org">http://polycode.org</a>)</li>
-<li>Lua - Lua.org, PUC-Rio, Brazil (<a href="http://lua.org">http://lua.org</a>)</li>
-<li>Icons used in this game made by <a href="http://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>, <a href="http://www.flaticon.com/authors/rami-mcmin" title="Rami McMin">Rami McMin</a>, <a href="http://www.flaticon.com/authors/catalin-fertu" title="Catalin Fertu">Catalin Fertu</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a>             is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a></li>
+<li>jMonkeyEngine (<a href="http://jmonkeyengine.org/">http://jmonkeyengine.org/</a>)</li>
 </ul>
 
 <h2>
