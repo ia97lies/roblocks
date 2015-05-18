@@ -38,17 +38,15 @@
 <p>A robotics framework for assemble complex robots with simple components and run them in synthetic enviroment.
 The simulation is based on jMonkeyEngine 3.0 (see <a href="http://jmonkeyengine.org/">http://jmonkeyengine.org/</a>).</p>
 
-Initial this simulatoin was based on polycode. I now port it to jMonkeyEngine as it seems better documented and will run on all on windows, linux and mac out of the box.
-
 <h2>
-<a id="Introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
-<p>The robots can be easily constructed with predefined components like hubs, motors and sensors. No programming is needed. The "pogramming" is done by construction. The signals flows form the sensor to the actors. The signal bus is the body itself. Even actor may be able to propagate a signal. Sensors only can emit signals. Hubs can propagate and manipulate signals</p>
-<p>There will be special hubs like negator, avarage, logarithm and many more to influence the signal flow. Of course there will be a programmable hub as well, most propably I will integrate a Lua interpreter.</p>
+<a id="More" class="anchor" href="#more" aria-hidden="true"><span class="octicon octicon-link"></span></a>More</h2>
+Predefined components like hubs, motors, servos and different kind of sensors will make it a no-brainer to build robots. The body of the robot is as well the signal bus between the sensors and the actors. Signal transforming hubs i.e. negate a signal will make it possible to build complex behavour without programming. Additional there will be different kind of signal generators to make your robot walk i.e. to swing a servo forth and back.
+It is a creative game which limitations is only given by our own imagination.
 
 <h2>
 <a id="acknowledgements" class="anchor" href="#acknowledgements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Acknowledgements</h2>
 
-<p>I'd like to acknowledge the work of the following people or group:</p>
+<p>I'd like to acknowledge</p>
 
 <ul>
 <li>jMonkeyEngine (<a href="http://jmonkeyengine.org/">http://jmonkeyengine.org/</a>)</li>
