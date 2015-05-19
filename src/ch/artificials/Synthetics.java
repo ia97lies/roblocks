@@ -4,12 +4,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.ChaseCamera;
-import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.jme3.light.DirectionalLight;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
@@ -65,7 +62,7 @@ public class Synthetics extends SimpleApplication {
 
         robot.attachChild(hub);
         
-        Sphere sphere = new Sphere(30, 30, 0.2f);
+        Sphere sphere = new Sphere(30, 30, 0.5f);
         mark = new Geometry("Mark", sphere);
         mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Red);
@@ -82,33 +79,27 @@ public class Synthetics extends SimpleApplication {
         rootNode.attachChild(robot);
     }
     
+    private final static String SELECT = "Select";
+    
     private void initKeys() {
-        inputManager.addMapping("Shoot",
-                new KeyTrigger(KeyInput.KEY_SPACE), // trigger 1: spacebar
-                new MouseButtonTrigger(MouseInput.BUTTON_LEFT)); // trigger 2: left-button click
-        inputManager.addListener(actionListener, "Shoot");
+        inputManager.addMapping(SELECT,
+                new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addListener(actionListener, SELECT);
     }
 
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
-            if (name.equals("Shoot") && !keyPressed) {
+            if (name.equals(SELECT) && !keyPressed) {
                 CollisionResults results = new CollisionResults();
                 Vector2f click2d = inputManager.getCursorPosition();
                 Vector3f click3d = cam.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
                 Vector3f dir = cam.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
                 Ray ray = new Ray(click3d, dir);
                 robot.collideWith(ray, results);
-                System.out.println("----- Collisions? " + results.size() + "-----");
-                for (int i = 0; i < results.size(); i++) {
-                    float dist = results.getCollision(i).getDistance();
-                    Vector3f pt = results.getCollision(i).getContactPoint();
-                    String hit = results.getCollision(i).getGeometry().getName();
-                    System.out.println("* Collision #" + i);
-                    System.out.println("  You shot " + hit + " at " + pt + ", " + dist + " wu away.");
-                }
                 if (results.size() > 0) {
                     CollisionResult closest = results.getClosestCollision();
-                    mark.setLocalTranslation(closest.getContactPoint());
+                    Vector3f pos = new Vector3f(closest.getGeometry().getWorldBound().getCenter().add(closest.getContactNormal().mult(1)));
+                    mark.setLocalTranslation(pos);
                     rootNode.attachChild(mark);
                 } else {
                     rootNode.detachChild(mark);
