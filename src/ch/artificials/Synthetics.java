@@ -40,6 +40,7 @@ public class Synthetics extends SimpleApplication {
     private SpotLight spot;
     private Node robot;
     private Geometry mark;
+    private ChaseCamera chaseCam;
     
     @Override
     public void simpleInitApp() {
@@ -58,6 +59,21 @@ public class Synthetics extends SimpleApplication {
         mat.setColor("Specular", ColorRGBA.White);
         mat.setFloat("Shininess", 4f);
         hub.setMaterial(mat);
+
+        robot.attachChild(hub);
+
+        
+        shape = new Box(1, 1, 1);
+        hub = new Geometry("Hub", shape);
+        hub.setLocalTranslation(3, 4, 5);
+        mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        mat.setBoolean("UseMaterialColors", true);
+        mat.setColor("Diffuse", ColorRGBA.Blue);
+        mat.setColor("Ambient", ColorRGBA.Gray);
+        mat.setColor("Specular", ColorRGBA.White);
+        mat.setFloat("Shininess", 4f);
+        hub.setMaterial(mat);
+
         setupCam(hub);
 
         robot.attachChild(hub);
@@ -101,6 +117,7 @@ public class Synthetics extends SimpleApplication {
                     Vector3f pos = new Vector3f(closest.getGeometry().getWorldBound().getCenter().add(closest.getContactNormal().mult(1)));
                     mark.setLocalTranslation(pos);
                     rootNode.attachChild(mark);
+                    chaseCam.setSpatial(closest.getGeometry());
                 } else {
                     rootNode.detachChild(mark);
                 }
@@ -110,7 +127,7 @@ public class Synthetics extends SimpleApplication {
  
     private void setupCam(Spatial target) {
         flyCam.setEnabled(false);
-        ChaseCamera chaseCam = new ChaseCamera(cam, target, inputManager);
+        chaseCam = new ChaseCamera(cam, target, inputManager);
         chaseCam.setDragToRotate(true);
         chaseCam.setSmoothMotion(true);
         chaseCam.setChasingSensitivity(5);
