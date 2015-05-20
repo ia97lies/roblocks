@@ -8,6 +8,6 @@ package ch.artificials;
  *
  * @author cli
  */
-public interface IComponent {
+public class Component {
     
 }

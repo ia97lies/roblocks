@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
  *
  * @author cli
  */
-public class CommandHistoryOneComandTest {
+public class CommandHistoryOneComandNGTest {
 
     MockCommand command;
     CommandHistory history;

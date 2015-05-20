@@ -15,9 +15,9 @@ import org.testng.annotations.Test;
  *
  * @author cli
  */
-public class PlugTest {
+public class PlugNGTest {
     
-    public PlugTest() {
+    public PlugNGTest() {
     }
 
     @BeforeMethod
