@@ -1,5 +1,6 @@
 package ch.artificials;
 
+import ch.artificials.components.passive.Hub;
 import com.jme3.app.SimpleApplication;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
@@ -49,38 +50,19 @@ public class Synthetics extends SimpleApplication {
         initKeys();
         
         robot = new Node("Robot");
-       
-        Box shape = new Box(1, 1, 1);
-        Geometry hub = new Geometry("Hub", shape);
-        Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setBoolean("UseMaterialColors", true);
-        mat.setColor("Diffuse", ColorRGBA.Blue);
-        mat.setColor("Ambient", ColorRGBA.Gray);
-        mat.setColor("Specular", ColorRGBA.White);
-        mat.setFloat("Shininess", 4f);
-        hub.setMaterial(mat);
+        Hub hub = new Hub();
+        Node hubNode = hub.create(assetManager);
+        robot.attachChild(hubNode);
 
-        robot.attachChild(hub);
+        hubNode = hub.create(assetManager);
+        hubNode.setLocalTranslation(3, 4, 5);
+        robot.attachChild(hubNode);
 
-        
-        shape = new Box(1, 1, 1);
-        hub = new Geometry("Hub", shape);
-        hub.setLocalTranslation(3, 4, 5);
-        mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setBoolean("UseMaterialColors", true);
-        mat.setColor("Diffuse", ColorRGBA.Blue);
-        mat.setColor("Ambient", ColorRGBA.Gray);
-        mat.setColor("Specular", ColorRGBA.White);
-        mat.setFloat("Shininess", 4f);
-        hub.setMaterial(mat);
-
-        setupCam(hub);
-
-        robot.attachChild(hub);
+        setupCam(hubNode);
         
         Sphere sphere = new Sphere(30, 30, 0.5f);
         mark = new Geometry("Mark", sphere);
-        mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Red);
         mark.setMaterial(mat);
 
