@@ -1,7 +1,10 @@
 package ch.artificials;
 
-import ch.artificials.components.passive.Hub;
+import ch.artificials.components.passive.HubFactory;
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.bullet.joints.Point2PointJoint;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.ChaseCamera;
@@ -11,7 +14,6 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Ray;
@@ -28,7 +30,7 @@ import com.jme3.system.AppSettings;
  * WASD keys.
  */
 public class Synthetics extends SimpleApplication {
-    
+
     public static void main(String[] args) {
         AppSettings settings = new AppSettings(true);
         settings.setTitle("Synthetics 2");
@@ -37,29 +39,48 @@ public class Synthetics extends SimpleApplication {
         app.setSettings(settings);
         app.start(); // start the game
     }
-    
     private SpotLight spot;
     private Node robot;
     private Geometry mark;
+    private Node target;
     private ChaseCamera chaseCam;
-    
+    private BulletAppState bulletAppState;
+
     @Override
     public void simpleInitApp() {
+        bulletAppState = new BulletAppState();
+        stateManager.attach(bulletAppState);
+
         inputManager.setCursorVisible(true);
-       
+
         initKeys();
-        
+
         robot = new Node("Robot");
-        Hub hub = new Hub();
-        Node hubNode = hub.create(assetManager);
-        robot.attachChild(hubNode);
+        HubFactory hubFactory = new HubFactory();
+        Node hub = hubFactory.create(new Vector3f(0, 0, 0), assetManager, bulletAppState);
+        robot.attachChild(hub);
 
-        hubNode = hub.create(assetManager);
-        hubNode.setLocalTranslation(3, 4, 5);
-        robot.attachChild(hubNode);
+        Geometry rootPart = (Geometry) hub.getUserData("root");
+        RigidBodyControl hubPhy1 = rootPart.getControl(RigidBodyControl.class);
+        rootPart.getControl(RigidBodyControl.class).setMass(0f);
 
-        setupCam(hubNode);
+        hub = hubFactory.create(new Vector3f(2, 0, 0), assetManager, bulletAppState);
+        robot.attachChild(hub);
+
+        rootPart = (Geometry) hub.getUserData("root");
+        RigidBodyControl hubPhy2 = rootPart.getControl(RigidBodyControl.class);
+
+        System.out.println(hubPhy1);
+        System.out.println(hubPhy2);
+
+        Point2PointJoint connect = new Point2PointJoint(hubPhy1, hubPhy2, new Vector3f(1, 0, 0), new Vector3f(-1, 0, 0));
+        //connect.setCollisionBetweenLinkedBodys(false);
+        connect.setDamping(1);
         
+        bulletAppState.getPhysicsSpace().add(connect);
+
+        setupCam(hub);
+
         Sphere sphere = new Sphere(30, 30, 0.5f);
         mark = new Geometry("Mark", sphere);
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -76,15 +97,13 @@ public class Synthetics extends SimpleApplication {
         rootNode.addLight(spot);
         rootNode.attachChild(robot);
     }
-    
     private final static String SELECT = "Select";
-    
+
     private void initKeys() {
         inputManager.addMapping(SELECT,
                 new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, SELECT);
     }
-
     private ActionListener actionListener = new ActionListener() {
         public void onAction(String name, boolean keyPressed, float tpf) {
             if (name.equals(SELECT) && !keyPressed) {
@@ -94,8 +113,13 @@ public class Synthetics extends SimpleApplication {
                 Vector3f dir = cam.getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
                 Ray ray = new Ray(click3d, dir);
                 robot.collideWith(ray, results);
+                System.out.println("----- Collisions? " + results.size() + "-----");
                 if (results.size() > 0) {
                     CollisionResult closest = results.getClosestCollision();
+                    System.out.println("closest: " + closest + " contact normal " + closest.getContactNormal());
+                    // round the result it is not _exact_
+                    System.out.println("local contact normal " + closest.getGeometry().getWorldRotation().inverse().mult(closest.getContactNormal()));
+                    
                     Vector3f pos = new Vector3f(closest.getGeometry().getWorldBound().getCenter().add(closest.getContactNormal().mult(1)));
                     mark.setLocalTranslation(pos);
                     rootNode.attachChild(mark);
@@ -106,7 +130,7 @@ public class Synthetics extends SimpleApplication {
             }
         }
     };
- 
+
     private void setupCam(Spatial target) {
         flyCam.setEnabled(false);
         chaseCam = new ChaseCamera(cam, target, inputManager);
