@@ -4,6 +4,7 @@ import ch.artificials.components.passive.HubFactory;
 import com.bulletphysics.dynamics.constraintsolver.HingeConstraint;
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.joints.HingeJoint;
 import com.jme3.bullet.joints.Point2PointJoint;
@@ -50,9 +51,7 @@ public class Synthetics extends SimpleApplication {
     private Node target;
     private ChaseCamera chaseCam;
     private BulletAppState bulletAppState;
-    private Geometry rootPart;
-    private HingeConstraint hold1;
-    private HingeConstraint hold2;
+    private RigidBodyControl hubPhy1;
     
     @Override
     public void simpleInitApp() {
@@ -66,48 +65,58 @@ public class Synthetics extends SimpleApplication {
         robot = new Node("Robot");
         
         HubFactory hubFactory = new HubFactory();
-        Node hub = hubFactory.create(new Vector3f(0, 0, 0), assetManager, bulletAppState);
-        robot.attachChild(hub);
+        Node hub1 = hubFactory.create(new Vector3f(0, 0, 0), assetManager, bulletAppState);
+        robot.attachChild(hub1);
+        
+        Node hub2 = hubFactory.create(new Vector3f(0, 1, 0), assetManager, bulletAppState);
+        robot.attachChild(hub2);
+        
+        Node hub3 = hubFactory.create(new Vector3f(1, 0, 0), assetManager, bulletAppState);
+        robot.attachChild(hub3);
+        
+        Node hub4 = hubFactory.create(new Vector3f(1, 1, 0), assetManager, bulletAppState);
+        robot.attachChild(hub4);
+         
+        setupCam(hub1);
 
-        rootPart = (Geometry) hub.getUserData("root");
-        RigidBodyControl hubPhy1 = rootPart.getControl(RigidBodyControl.class);
+        Geometry rootPart = (Geometry) hub1.getUserData("root");
+        hubPhy1 = rootPart.getControl(RigidBodyControl.class);
+        hubPhy1.setKinematic(true);
 
-        hub = hubFactory.create(new Vector3f(2, 0, 0), assetManager, bulletAppState);
-        robot.attachChild(hub);
-
-        rootPart = (Geometry) hub.getUserData("root");
+        rootPart = (Geometry) hub2.getUserData("root");
         RigidBodyControl hubPhy2 = rootPart.getControl(RigidBodyControl.class);
 
-        System.out.println(hubPhy1);
-        System.out.println(hubPhy2);
-
-        hold1 = new HingeConstraint(hubPhy1.getObjectId(), new javax.vecmath.Vector3f(1,0,0), new javax.vecmath.Vector3f(0,0,1));
-        hold2 = new HingeConstraint(hubPhy1.getObjectId(), new javax.vecmath.Vector3f(-1,0,0), new javax.vecmath.Vector3f(0,0,1));
-        bulletAppState.getPhysicsSpace().getDynamicsWorld().addConstraint(hold1);
-        bulletAppState.getPhysicsSpace().getDynamicsWorld().addConstraint(hold2);
-        
-        Point2PointJoint connect = new Point2PointJoint(hubPhy1, hubPhy2, new Vector3f(1, 0, 0), new Vector3f(-1, 0, 0));
-        //connect.setCollisionBetweenLinkedBodys(false);
-        connect.setDamping(1.1f);
-
-        bulletAppState.getPhysicsSpace().add(connect);
-
-        hub = hubFactory.create(new Vector3f(2, 0, 2), assetManager, bulletAppState);
-        robot.attachChild(hub);
-
-        rootPart = (Geometry) hub.getUserData("root");
+        rootPart = (Geometry) hub3.getUserData("root");
         RigidBodyControl hubPhy3 = rootPart.getControl(RigidBodyControl.class);
+        
+        rootPart = (Geometry) hub4.getUserData("root");
+        RigidBodyControl hubPhy4 = rootPart.getControl(RigidBodyControl.class);
+        
+        SixDofJoint dof = new SixDofJoint(hubPhy1, hubPhy2, new Vector3f(0f,0.5f,0), new Vector3f(0f,-0.5f,0), false);
+        dof.setAngularLowerLimit(Vector3f.ZERO);
+        dof.setAngularUpperLimit(Vector3f.ZERO);
+        dof.setLinearLowerLimit(Vector3f.ZERO);
+        dof.setLinearUpperLimit(Vector3f.ZERO);
+        dof.setCollisionBetweenLinkedBodys(false);
+        bulletAppState.getPhysicsSpace().add(dof);
+        
+        dof = new SixDofJoint(hubPhy1, hubPhy3, new Vector3f(0.5f,0,0), new Vector3f(-0.5f,0,0), false);
+        dof.setAngularLowerLimit(Vector3f.ZERO);
+        dof.setAngularUpperLimit(Vector3f.ZERO);
+        dof.setLinearLowerLimit(Vector3f.ZERO);
+        dof.setLinearUpperLimit(Vector3f.ZERO);
+        dof.setCollisionBetweenLinkedBodys(false);
+        bulletAppState.getPhysicsSpace().add(dof);
 
-        connect = new Point2PointJoint(hubPhy2, hubPhy3, new Vector3f(0, 0, 1), new Vector3f(0, 0, -1));
-        //connect.setCollisionBetweenLinkedBodys(false);
-        connect.setDamping(1f);
-
-        bulletAppState.getPhysicsSpace().add(connect);
-
-
-        setupCam(hub);
-
-        Sphere sphere = new Sphere(30, 30, 0.5f);
+        dof = new SixDofJoint(hubPhy2, hubPhy4, new Vector3f(0.5f,0,0), new Vector3f(-0.5f,0,0), false);
+        dof.setAngularLowerLimit(Vector3f.ZERO);
+        dof.setAngularUpperLimit(Vector3f.ZERO);
+        dof.setLinearLowerLimit(Vector3f.ZERO);
+        dof.setLinearUpperLimit(Vector3f.ZERO);
+        dof.setCollisionBetweenLinkedBodys(false);
+        bulletAppState.getPhysicsSpace().add(dof);
+        
+        Sphere sphere = new Sphere(30, 30, 0.25f);
         mark = new Geometry("Mark", sphere);
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Red);
@@ -148,7 +157,7 @@ public class Synthetics extends SimpleApplication {
                     // round the result it is not _exact_
                     System.out.println("local contact normal " + closest.getGeometry().getWorldRotation().inverse().mult(closest.getContactNormal()));
 
-                    Vector3f pos = new Vector3f(closest.getGeometry().getWorldBound().getCenter().add(closest.getContactNormal().mult(1)));
+                    Vector3f pos = new Vector3f(closest.getGeometry().getWorldBound().getCenter().add(closest.getContactNormal().mult(0.5f)));
                     mark.setLocalTranslation(pos);
                     rootNode.attachChild(mark);
                     chaseCam.setSpatial(closest.getGeometry());
@@ -158,8 +167,7 @@ public class Synthetics extends SimpleApplication {
             } 
             else if (name.equals(RUN) && !keyPressed) {
                 System.out.println("XXXXXXXXXXXXXXXXXXX");
-                bulletAppState.getPhysicsSpace().getDynamicsWorld().removeConstraint(hold1);
-                bulletAppState.getPhysicsSpace().getDynamicsWorld().removeConstraint(hold2);
+                hubPhy1.setKinematic(false);
             }
         }
     };

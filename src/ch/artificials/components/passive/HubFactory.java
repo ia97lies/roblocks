@@ -23,7 +23,7 @@ public class HubFactory implements ComponentFactory {
     public Node create(Vector3f loc, AssetManager assetManager, BulletAppState bulletAppState) {
         Node node = new Node("Hub");
                
-        Box shape = new Box(1, 1, 1);
+        Box shape = new Box(0.5f, 0.5f, 0.5f);
         Geometry hub = new Geometry("Hub", shape);
         Material mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setBoolean("UseMaterialColors", true);
@@ -35,11 +35,11 @@ public class HubFactory implements ComponentFactory {
         node.attachChild(hub);
         node.setLocalTranslation(loc);
         RigidBodyControl hubPhyControl = new RigidBodyControl();
+        hubPhyControl.setMass(0.1f);
         hub.addControl(hubPhyControl);
         bulletAppState.getPhysicsSpace().add(hubPhyControl);
         
         node.setUserData("root", hub);
-        // XXX: make it physical dont wait :)
         
         return node;
     }
