@@ -92,7 +92,7 @@ public class Synthetics extends SimpleApplication {
         rootPart = (Geometry) hub4.getUserData("root");
         RigidBodyControl hubPhy4 = rootPart.getControl(RigidBodyControl.class);
         
-        SixDofJoint dof = new SixDofJoint(hubPhy1, hubPhy2, new Vector3f(0f,0.5f,0), new Vector3f(0f,-0.5f,0), false);
+        SixDofJoint dof = new SixDofJoint(hubPhy1, hubPhy2, new Vector3f(0f,0.5f,0f), new Vector3f(0f,-0.5f,0f), false);
         dof.setAngularLowerLimit(Vector3f.ZERO);
         dof.setAngularUpperLimit(Vector3f.ZERO);
         dof.setLinearLowerLimit(Vector3f.ZERO);
@@ -109,6 +109,14 @@ public class Synthetics extends SimpleApplication {
         bulletAppState.getPhysicsSpace().add(dof);
 
         dof = new SixDofJoint(hubPhy2, hubPhy4, new Vector3f(0.5f,0,0), new Vector3f(-0.5f,0,0), false);
+        dof.setAngularLowerLimit(Vector3f.ZERO);
+        dof.setAngularUpperLimit(Vector3f.ZERO);
+        dof.setLinearLowerLimit(Vector3f.ZERO);
+        dof.setLinearUpperLimit(Vector3f.ZERO);
+        dof.setCollisionBetweenLinkedBodys(false);
+        bulletAppState.getPhysicsSpace().add(dof);
+
+        dof = new SixDofJoint(hubPhy3, hubPhy4, new Vector3f(0f,0.5f,0), new Vector3f(0f,-0.5f,0), false);
         dof.setAngularLowerLimit(Vector3f.ZERO);
         dof.setAngularUpperLimit(Vector3f.ZERO);
         dof.setLinearLowerLimit(Vector3f.ZERO);

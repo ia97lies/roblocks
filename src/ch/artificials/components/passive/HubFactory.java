@@ -35,9 +35,10 @@ public class HubFactory implements ComponentFactory {
         node.attachChild(hub);
         node.setLocalTranslation(loc);
         RigidBodyControl hubPhyControl = new RigidBodyControl();
-        hubPhyControl.setMass(0.1f);
+        hubPhyControl.setMass(1f);
         hub.addControl(hubPhyControl);
         bulletAppState.getPhysicsSpace().add(hubPhyControl);
+        hubPhyControl.setDamping(1f, 1f);
         
         node.setUserData("root", hub);
         
